@@ -18,8 +18,8 @@ public class StorageImplTest {
         storage.put(3, elementTree);
 
         Assert.assertEquals(elementOne, storage.get(1));
-        Assert.assertEquals(elementOne, storage.get(2));
-        Assert.assertEquals(elementOne, storage.get(3));
+        Assert.assertEquals(elementTwo, storage.get(2));
+        Assert.assertEquals(elementTree, storage.get(3));
     }
 
     @Test
