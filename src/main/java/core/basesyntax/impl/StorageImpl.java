@@ -42,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         size++;
     }
 
-    public boolean isExit(K key) {
+    public boolean isExist(K key) {
         for (int i = 0; i < size; i++) {
             Entry entry = table[i];
             if (entry.getKey().equals(key)) {
