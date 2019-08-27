@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
-    Object[][] storage = new Object[2][1];
+    private Object[][] storage = new Object[2][1];
 
     @Override
     public void put(K key, V value) {
