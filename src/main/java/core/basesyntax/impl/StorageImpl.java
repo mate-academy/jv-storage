@@ -3,7 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private int capacity;
     private int size;
     private final float loadFactor = 0.75f;
