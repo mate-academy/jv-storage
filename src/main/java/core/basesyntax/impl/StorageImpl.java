@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private Element first;
+    private Element<K, V> first;
 
     public StorageImpl() {
         first = null;
