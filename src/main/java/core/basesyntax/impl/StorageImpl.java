@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        Element current = first;
+        Element<K, V> current = first;
         if (current == null) {
             return null;
         }
