@@ -14,7 +14,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             valueArray[count] = value;
         }
         for (int i = 0; i < count; i++) {
-            if (keyArray[i].equals(key)) {
+            if (key != null && keyArray[i].equals(key)) {
                 valueArray[i] = value;
             }
             keyArray[count] = key;
