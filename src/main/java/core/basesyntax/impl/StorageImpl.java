@@ -28,17 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (arrayCountElement < arraySize * INCREASE_COEFFICIENT) {
-            arraySize = (int) (arraySize * 1 / INCREASE_COEFFICIENT);
-            Object[] keysTemp = new Object[arraySize];
-            Object[] valuesTemp = new Object[arraySize];
-            for (int i = 0; i < arrayCountElement; i++) {
-                keysTemp[i] = keys[i];
-                valuesTemp[i] = values[i];
-            }
-            keys = keysTemp;
-            values = valuesTemp;
-        }
+        resize();
         if (indexOfElement(key) == -1) {
             keys[arrayCountElement] = key;
             values[arrayCountElement] = value;
@@ -54,6 +44,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return null;
         }
         return (V) values[indexOfElement(key)];
+    }
+
+    private void resize() {
+        if (arrayCountElement < arraySize * INCREASE_COEFFICIENT) {
+            arraySize = (int) (arraySize * 1 / INCREASE_COEFFICIENT);
+            Object[] keysTemp = new Object[arraySize];
+            Object[] valuesTemp = new Object[arraySize];
+            for (int i = 0; i < arrayCountElement; i++) {
+                keysTemp[i] = keys[i];
+                valuesTemp[i] = values[i];
+            }
+            keys = keysTemp;
+            values = valuesTemp;
+        }
     }
 }
 
