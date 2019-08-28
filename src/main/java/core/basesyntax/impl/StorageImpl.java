@@ -41,4 +41,3 @@ public class StorageImpl<K, V> implements Storage<K,V> {
         return storage[1].length / 2;
     }
 }
-
