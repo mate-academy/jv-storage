@@ -6,38 +6,38 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
     private int size = 0;
-    private Provision [] provisionArr = new Provision[15];
+    private Entry [] entryArr = new Entry[15];
 
     @Override
     public void put(K key, V value) {
-        if (size > provisionArr.length) {
-            provisionArr = Arrays.copyOfRange(provisionArr, 0, provisionArr.length * 2);
+        if (size > entryArr.length) {
+            entryArr = Arrays.copyOfRange(entryArr, 0, entryArr.length * 2);
         }
         for (int i = 0; i < size; i++) {
-            if (provisionArr[i].getKey().equals(key) || key == null) {
-                provisionArr[i] = new Provision(key, value);
+            if (entryArr[i].getKey() == key || key == null) {
+                entryArr[i] = new Entry(key, value);
                 break;
             }
         }
-        provisionArr[size++] = new Provision(key, value);
+        entryArr[size++] = new Entry(key, value);
     }
 
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (provisionArr[i].getKey() == key || key == null) {
-                return (V) provisionArr[i].getValue();
+            if (entryArr[i].getKey() == key || key == null) {
+                return (V) entryArr[i].getValue();
             }
         }
         return null;
     }
 
-    public class Provision<K, V> {
+    public class Entry<K, V> {
         private K key;
         private V value;
 
-        public Provision(K key, V value) {
+        public Entry(K key, V value) {
             this.key = key;
             this.value = value;
         }
@@ -58,6 +58,5 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             this.value = value;
         }
     }
-
 }
 
