@@ -6,10 +6,11 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
     private Object[][] storage = new Object[2][16];
-    private int size = this.getIndex();
+    private int size;
 
     @Override
     public void put(K key, V value) {
+        size = this.getIndex();
         for (int i = 0; i < size; i++) {
             if (storage[0][i] == key || storage[0][i].equals(key)) {
                 storage[1][i] = value;
