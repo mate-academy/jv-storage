@@ -29,13 +29,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         }
+        increaseLengthIfNeed();
+        keyArray[size] = key;
+        valueArray[size] = value;
+        size++;
+    }
+
+    private void increaseLengthIfNeed() {
         if (size == keyArray.length) {
             keyArray = Arrays.copyOf(keyArray, keyArray.length * 2);
             valueArray = Arrays.copyOf(valueArray, valueArray.length * 2);
         }
-        keyArray[size] = key;
-        valueArray[size] = value;
-        size++;
     }
 
     public V get(K key) {
