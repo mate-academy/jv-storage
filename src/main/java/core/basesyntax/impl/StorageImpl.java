@@ -14,7 +14,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
     public StorageImpl() {
         keys = new Object[initialCapacity];
         values = new Object[initialCapacity];
-        currentCapacity = 1;
+        currentCapacity = 0;
         keys[0] = null;
     }
 
