@@ -6,34 +6,34 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
     private int size = 0;
-    private Entry [] entryArr = new Entry[15];
+    private Entry [] entries = new Entry[15];
 
     @Override
     public void put(K key, V value) {
-        if (size > entryArr.length) {
-            entryArr = Arrays.copyOfRange(entryArr, 0, entryArr.length * 2);
+        if (size > entries.length) {
+            entries = Arrays.copyOfRange(entries, 0, entries.length * 2);
         }
         for (int i = 0; i < size; i++) {
-            if (entryArr[i].getKey() == key || key == null) {
-                entryArr[i] = new Entry(key, value);
+            if (entries[i].getKey() == key || entries[i].getKey().equals(key)) {
+                entries[i] = new Entry(key, value);
                 break;
             }
         }
-        entryArr[size++] = new Entry(key, value);
+        entries[size++] = new Entry(key, value);
     }
 
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (entryArr[i].getKey() == key || key == null) {
-                return (V) entryArr[i].getValue();
+            if (entries[i].getKey() == key || entries[i].getKey().equals(key)) {
+                return (V) entries[i].getValue();
             }
         }
         return null;
     }
 
-    public class Entry<K, V> {
+    private class Entry<K, V> {
         private K key;
         private V value;
 
