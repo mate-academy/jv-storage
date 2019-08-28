@@ -10,15 +10,8 @@ public class StorageImpl<K, V> implements Storage<K,V> {
 
     @Override
     public void put(K key, V value) {
-        if (fill == capacity - 1) {
-            Object[] newKeys = new Object[capacity * 2];
-            Object[] newValues = new Object[capacity * 2];
-            for (int i = 0; i < capacity; i++) {
-                newKeys[i] = keys[i];
-                newValues[i] = values[i];
-            }
-            keys = newKeys;
-            values = newValues;
+        if (fill == capacity) {
+            extension();
         }
 
         for (int i = 0; i < fill; i++) {
@@ -41,6 +34,17 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             }
         }
         return null;
+    }
+
+    public void extension() {
+        Object[] newKeys = new Object[capacity * 2];
+        Object[] newValues = new Object[capacity * 2];
+        for (int i = 0; i < capacity; i++) {
+            newKeys[i] = keys[i];
+            newValues[i] = values[i];
+        }
+        keys = newKeys;
+        values = newValues;
     }
 }
 
