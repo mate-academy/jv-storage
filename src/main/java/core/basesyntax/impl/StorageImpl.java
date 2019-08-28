@@ -28,9 +28,9 @@ public class StorageImpl<K, V> implements Storage<K,V> {
 
     @Override
     public V get(K key) {
-        int i = existsKey(key);
-        if (i >= 0) {
-            return (V) valueArray[i];
+        int index = existsKey(key);
+        if (index >= 0) {
+            return (V) valueArray[index];
         }
         return null;
     }
