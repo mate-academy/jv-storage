@@ -19,8 +19,8 @@ public class StorageImpl<K, V> implements Storage<K,V> {
 
     private void extCapacity() {
         if (curCapacity >= loadFactory * maxSize) {
-            values = Arrays.copyOf(values, values.length * 2);
-            keys = Arrays.copyOf(keys, keys.length * 2);
+            values = Arrays.copyOf(values, values.length + values.length >> 1);
+            keys = Arrays.copyOf(keys, keys.length + keys.length >> 1);
         }
     }
 
