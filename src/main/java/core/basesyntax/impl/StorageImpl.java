@@ -5,14 +5,16 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
 
+    private static final int BASIC_SIZE = 0;
+    private static final int BASIC_CAPACITY = 8;
     private Object[] keys;
     private Object[] values;
     private int size;
     private int capacity;
 
     public StorageImpl() {
-        size = 0;
-        capacity = 8;
+        size = BASIC_SIZE;
+        capacity = BASIC_CAPACITY;
         keys = new Object[capacity];
         values = new Object[capacity];
     }
@@ -26,15 +28,10 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             }
         }
         if (capacity == size) {
-            capacity += 8;
-            Object[] keysTmp = Arrays.copyOf(keys, capacity);
-            Object[] valuesTmp = Arrays.copyOf(values, capacity);
-            keys = keysTmp;
-            values = valuesTmp;
+            increaseCapacity();
         }
         keys[size] = key;
         values[size++] = value;
-
     }
 
     @Override
@@ -48,6 +45,12 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             }
         }
         return  null;
+    }
+
+    private void increaseCapacity() {
+        capacity += BASIC_CAPACITY;
+        keys = Arrays.copyOf(keys, capacity);
+        values = Arrays.copyOf(values, capacity);
     }
 }
 
