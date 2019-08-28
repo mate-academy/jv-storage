@@ -24,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i <size; i++) {
+        for (int i = 0; i < size; i++) {
             if (storage[0][i] == key || storage[0][i].equals(key)) {
                 return (V) storage[1][i];
             }
