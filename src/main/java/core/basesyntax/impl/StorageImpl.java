@@ -12,14 +12,14 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private Entry[] data;
     private int size;
-    private final int defaultCapacity = 16;
+    private static final int DEFAULT_CAPACITY = 16;
 
     public StorageImpl(int capacity) {
         this.data = new Entry[capacity];
     }
 
     public StorageImpl() {
-        this.data = new Entry[defaultCapacity];
+        this.data = new Entry[DEFAULT_CAPACITY];
     }
 
     @Override
@@ -29,7 +29,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         for (int i = 0; i < size; i++) {
-            if (key == null || data[i].getKey().equals(key)) {
+            if (key == null && data[i].getKey() == null
+                    || data[i].getKey().equals(key)) {
                 return (V) data[i].getValue();
             }
         }
