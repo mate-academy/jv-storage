@@ -2,6 +2,8 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.util.Arrays;
+
 public class StorageImpl<K, V> implements Storage<K,V> {
     private int capacity = 16;
     private int fill = 0;
@@ -10,12 +12,12 @@ public class StorageImpl<K, V> implements Storage<K,V> {
 
     @Override
     public void put(K key, V value) {
-        if (fill == capacity) {
+        if (fill == keys.length) {
             extension();
         }
 
         for (int i = 0; i < fill; i++) {
-            if (keys[i] == key) {
+            if (keys[i] == key || keys[i].equals(key)) {
                 values[i] = value;
                 break;
             }
@@ -29,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < fill; i++) {
-            if (keys[i] == key) {
+            if (keys[i] == key || keys[i].equals(key)) {
                 return (V) values[i];
             }
         }
@@ -37,14 +39,8 @@ public class StorageImpl<K, V> implements Storage<K,V> {
     }
 
     public void extension() {
-        Object[] newKeys = new Object[capacity * 2];
-        Object[] newValues = new Object[capacity * 2];
-        for (int i = 0; i < capacity; i++) {
-            newKeys[i] = keys[i];
-            newValues[i] = values[i];
-        }
-        keys = newKeys;
-        values = newValues;
+        Arrays.copyOf(keys, keys.length * 2);
+        Arrays.copyOf(values, values.length * 2);
     }
 }
 
