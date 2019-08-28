@@ -9,7 +9,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
     private Object[] keyArray = new Object[16];
     private Object[] valueArray = new Object[16];
 
-    public int existsKey(K key) {
+    private int existsKey(K key) {
         for (int i = 0; i < counter; i++) {
             if ((keyArray[i] == null && key == null)
                     || (keyArray[i] != null && keyArray[i].equals(key))) {
@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
         return -1;
     }
 
-    public void resizeArray() {
+    private void resizeArray() {
         Object[] newKeyArray = Arrays.copyOf(keyArray, keyArray.length * 2);
         Object[] newValueArray = Arrays.copyOf(valueArray, valueArray.length * 2);
         keyArray = newKeyArray;
@@ -37,12 +37,9 @@ public class StorageImpl<K, V> implements Storage<K,V> {
 
     @Override
     public void put(K key, V value) {
-        if (counter == 0) {
-            keyArray[counter] = key;
-            valueArray[counter] = value;
-        }
-        if (existsKey(key) >= 0) {
-            valueArray[existsKey(key)] = value;
+        int index = existsKey(key);
+        if (index >= 0) {
+            valueArray[index] = value;
         } else {
             if (counter >= keyArray.length) {
                 resizeArray();
