@@ -14,7 +14,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             valueArray[count] = value;
         }
         for (int i = 0; i < count; i++) {
-            if (key != null && keyArray[i].equals(key)) {
+            if (key == null && keyArray[i] == null || keyArray[i].equals(key)) {
                 valueArray[i] = value;
             }
             keyArray[count] = key;
@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < count; i++) {
-            if (key == null || key.equals(keyArray[i])) {
+            if (key == null && keyArray[i] == null || key.equals(keyArray[i])) {
                 return (V) valueArray[i];
             }
         }
