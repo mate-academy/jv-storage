@@ -19,22 +19,6 @@ public class StorageImpl<K, V> implements Storage<K,V> {
         storage[0][index] = key;
         storage[1][index] = value;
     }
-        /*if (storage == null)  {
-            storage = new Object[][] {{key}, {value}};
-        } else {
-            for (int i = 0; i < storage[0].length; i++) {
-                if (storage[0][i] == key || storage[0][i].equals(key)) {
-                    storage[1][i] = value;
-                    break;
-                }
-            }
-            storage[0] = Arrays.copyOf(storage[0], storage[0].length + 1);
-            storage[0][storage[0].length - 1] = key;
-            storage[1] = Arrays.copyOf(storage[1], storage[1].length + 1);
-            storage[1][storage[1].length - 1] = value;
-        }
-    }*/
-
 
     @Override
     public V get(K key) {
