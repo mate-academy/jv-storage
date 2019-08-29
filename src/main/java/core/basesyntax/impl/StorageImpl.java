@@ -10,9 +10,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
     @Override
     public void put(K key, V value) {
         if (entriesCount == entryArr.length - 2) {
-            Entry[] toCopy = new Entry[entryArr.length + ENTRY_ARRAY_EXTEND];
-            System.arraycopy(entryArr, 0, toCopy, 0, entriesCount);
-            entryArr = toCopy;
+            resize();
         }
         for (int i = 0; i < entryArr.length; i++) {
             if (entryArr[i] != null) {
@@ -51,6 +49,12 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             }
         }
         return null;
+    }
+
+    public void resize() {
+        Entry[] toCopy = new Entry[entryArr.length + ENTRY_ARRAY_EXTEND];
+        System.arraycopy(entryArr, 0, toCopy, 0, entriesCount);
+        entryArr = toCopy;
     }
 
     public class Entry<K, V> {
