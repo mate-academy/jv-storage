@@ -7,24 +7,16 @@ import java.util.Arrays;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keys;
     private Object[] values;
-    private int capacity;
+    private static final int CAPACITY = 16;
     private int size;
 
     public StorageImpl() {
-        capacity = 16;
-        keys = new Object[capacity];
-        values = new Object[capacity];
+        keys = new Object[CAPACITY];
+        values = new Object[CAPACITY];
         int size = 0;
     }
 
-    @Override
-    public void put(K key, V value) {
-        if (size == 0) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-            return;
-        }
+    public void resize(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (key == null) {
                 if (keys[i] == null) {
@@ -38,11 +30,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         }
-
-        if (size == capacity) {
-            keys = Arrays.copyOf(keys, capacity * 2);
-            values = Arrays.copyOf(values, capacity * 2);
+        if (size == CAPACITY) {
+            keys = Arrays.copyOf(keys, CAPACITY * 2);
+            values = Arrays.copyOf(values, CAPACITY * 2);
         }
+    }
+
+    @Override
+    public void put(K key, V value) {
+        if (size == 0) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+            return;
+        }
+        resize(key, value);
         keys[size] = key;
         values[size] = value;
         size++;
