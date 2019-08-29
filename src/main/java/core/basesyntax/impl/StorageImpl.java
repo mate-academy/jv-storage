@@ -16,7 +16,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int size = 0;
     }
 
-    public void resize(K key, V value) {
+    private void resize(K key, V value) {
+        keys = Arrays.copyOf(keys, DEFAULT_CAPACITY * 3 / 2);
+        values = Arrays.copyOf(values, DEFAULT_CAPACITY * 3 / 2);
+    }
+
+    @Override
+    public void put(K key, V value) {
+        if (size == 0) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+            return;
+        }
         for (int i = 0; i < size; i++) {
             if (key == null) {
                 if (keys[i] == null) {
@@ -31,20 +43,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         if (size == DEFAULT_CAPACITY) {
-            keys = Arrays.copyOf(keys, DEFAULT_CAPACITY + 1);
-            values = Arrays.copyOf(values, DEFAULT_CAPACITY + 1);
+            resize(key, value);
         }
-    }
-
-    @Override
-    public void put(K key, V value) {
-        if (size == 0) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-            return;
-        }
-        resize(key, value);
         keys[size] = key;
         values[size] = value;
         size++;
