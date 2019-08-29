@@ -7,12 +7,12 @@ import java.util.Arrays;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keys;
     private Object[] values;
-    private static final int CAPACITY = 16;
+    private static final int DEFAULT_CAPACITY = 16;
     private int size;
 
     public StorageImpl() {
-        keys = new Object[CAPACITY];
-        values = new Object[CAPACITY];
+        keys = new Object[DEFAULT_CAPACITY];
+        values = new Object[DEFAULT_CAPACITY];
         int size = 0;
     }
 
@@ -30,9 +30,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         }
-        if (size == CAPACITY) {
-            keys = Arrays.copyOf(keys, CAPACITY * 2);
-            values = Arrays.copyOf(values, CAPACITY * 2);
+        if (size == DEFAULT_CAPACITY) {
+            keys = Arrays.copyOf(keys, DEFAULT_CAPACITY + 1);
+            values = Arrays.copyOf(values, DEFAULT_CAPACITY + 1);
         }
     }
 
