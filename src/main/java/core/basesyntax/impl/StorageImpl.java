@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
 
-    private final int arrSize = 16;
-    private Object[] keys = new Object[arrSize];
-    private Object[] values = new Object[arrSize];
+    private static final int ARRAYSIZE = 10;
+    private Object[] keys = new Object[ARRAYSIZE];
+    private Object[] values = new Object[ARRAYSIZE];
     private int topArray = 0;
 
     @Override
@@ -39,6 +39,6 @@ public class StorageImpl<K, V> implements Storage<K,V> {
     }
 
     private Object[] resizeAndCopyArr(Object[] input) {
-        return Arrays.copyOf(input, input.length * 2);
+        return Arrays.copyOf(input, input.length * 3 / 2);
     }
 }
