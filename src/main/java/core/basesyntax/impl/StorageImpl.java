@@ -3,13 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
+    private static final int ENTRY_ARRAY_EXTEND = 16;
     private static int entriesCount = 0;
-    Entry[] entryArr = new Entry[16];
+    Entry[] entryArr = new Entry[ENTRY_ARRAY_EXTEND];
 
     @Override
     public void put(K key, V value) {
         if (entriesCount == entryArr.length - 2) {
-            Entry[] toCopy = new Entry[entryArr.length + 16];
+            Entry[] toCopy = new Entry[entryArr.length + ENTRY_ARRAY_EXTEND];
             System.arraycopy(entryArr, 0, toCopy, 0, entriesCount);
             entryArr = toCopy;
         }
