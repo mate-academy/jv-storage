@@ -4,47 +4,44 @@ import core.basesyntax.Storage;
 import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
-    private final int maxSize = 16;
+    private static final int MAX_SIZE = 16;
     private Object[] keys;
     private Object[] values;
-    private double loadFactory = 0.75;
+    private static final double LOAD_FACTORY = 0.75;
     private int curCapacity;
 
     public StorageImpl() {
-        keys = new Object[maxSize];
-        values = new Object[maxSize];
+        keys = new Object[MAX_SIZE];
+        values = new Object[MAX_SIZE];
         curCapacity = 1;
         keys[0] = null;
     }
 
-    private void extCapacity() {
-        if (curCapacity >= loadFactory * maxSize) {
+    private void increaseCapacity() {
+        if (curCapacity >= LOAD_FACTORY * MAX_SIZE) {
             values = Arrays.copyOf(values, values.length + values.length >> 1);
             keys = Arrays.copyOf(keys, keys.length + keys.length >> 1);
         }
     }
 
-    private int isKeyThere(K key) {
+    private int indexOfElement(K key) {
         if (key == null) {
             return 0;
         }
         for (int i = 1; i < curCapacity; i++) {
-            if (key.equals((K) keys[i])) {
+            if (key.equals(keys[i])) {
                 return i;
             }
         }
-        extCapacity();
+        increaseCapacity();
         return curCapacity++;
     }
 
     @Override
     public void put(K key, V value) {
-        int num;
-        if (value != null) {
-            num = isKeyThere(key);
-            keys[num] = key;
-            values[num] = value;
-        }
+        int num = indexOfElement(key);
+        keys[num] = key;
+        values[num] = value;
     }
 
     @Override
