@@ -6,8 +6,9 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
 
-    private Object[] keys = new Object[16];
-    private Object[] values = new Object[16];
+    private final int arrSize = 16;
+    private Object[] keys = new Object[arrSize];
+    private Object[] values = new Object[arrSize];
     private int topArray = 0;
 
     @Override
