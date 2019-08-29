@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K,V> {
     private static int entriesCount = 0;
-    Entry[] entryArr = new Entry[4];
+    Entry[] entryArr = new Entry[16];
 
     @Override
     public void put(K key, V value) {
@@ -13,7 +13,6 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             System.arraycopy(entryArr, 0, toCopy, 0, entriesCount);
             entryArr = toCopy;
         }
-
         for (int i = 0; i < entryArr.length; i++) {
             if (entryArr[i] != null) {
                 if (key != null) {
@@ -46,7 +45,6 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             }
             if (key != null && entryArr[i].getKey() != null) {
                 if (entryArr[i].getKey().equals(key)) {
-
                     return (V) entryArr[i].getValue();
                 }
             }
