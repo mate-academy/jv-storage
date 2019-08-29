@@ -12,10 +12,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
 
     @Override
     public void put(K key, V value) {
-        if (fill == keys.length) {
-            extension();
-        }
-
+        extension();
         for (int i = 0; i < fill; i++) {
             if (keys[i] == key || keys[i].equals(key)) {
                 values[i] = value;
@@ -39,8 +36,10 @@ public class StorageImpl<K, V> implements Storage<K,V> {
     }
 
     public void extension() {
-        Arrays.copyOf(keys, keys.length * 2);
-        Arrays.copyOf(values, values.length * 2);
+        if (fill == keys.length) {
+            keys = Arrays.copyOf(keys, keys.length * 2);
+            values = Arrays.copyOf(values, values.length * 2);
+        }
     }
 }
 
