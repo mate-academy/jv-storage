@@ -8,17 +8,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keys;
     private Object[] values;
     private static final int DEFAULT_CAPACITY = 16;
+    private int capacity = DEFAULT_CAPACITY;
+
     private int size;
 
     public StorageImpl() {
-        keys = new Object[DEFAULT_CAPACITY];
-        values = new Object[DEFAULT_CAPACITY];
+        keys = new Object[capacity];
+        values = new Object[capacity];
         int size = 0;
     }
 
     private void resize(K key, V value) {
-        keys = Arrays.copyOf(keys, DEFAULT_CAPACITY * 3 / 2);
-        values = Arrays.copyOf(values, DEFAULT_CAPACITY * 3 / 2);
+        keys = Arrays.copyOf(keys, capacity * 3 / 2);
+        values = Arrays.copyOf(values, capacity * 3 / 2);
     }
 
     @Override
@@ -42,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         }
-        if (size == DEFAULT_CAPACITY) {
+        if (size > capacity) {
             resize(key, value);
         }
         keys[size] = key;
