@@ -32,6 +32,40 @@ public class StorageImplTest {
     }
 
     @Test
+    public void getElementWithKeyNull() {
+        Storage<Integer, String> storage = new StorageImpl<>();
+        String elementOne = "Element 1";
+        String elementTwo = "Element 2";
+        String elementTree = "Element 3";
+        storage.put(1, elementOne);
+        storage.put(null, elementTwo);
+        storage.put(3, elementTree);
+        Assert.assertEquals(
+                "Test failed! Method get(null) should return value",
+                elementTwo,
+                storage.get(null));
+    }
+
+    @Test
+    public void getElementWhenKeyIsObject() {
+        Storage<Cat, String> storage = new StorageImpl<>();
+        String elementOne = "Element 1";
+        String elementTwo = "Element 2";
+        String elementTree = "Element 3";
+        Cat firstCat = new Cat("Myrchyk", "white");
+        Cat secondCat = new Cat("Barsik", "black");
+        Cat sameSecondCat = new Cat("Barsik", "black");
+        Cat thirdCat = new Cat("Musia", "grey");
+
+        storage.put(firstCat, elementOne);
+        storage.put(secondCat, elementTwo);
+        storage.put(thirdCat, elementTree);
+        Assert.assertEquals(
+                "Test failed! Method get(key) should return correct value",
+                elementTwo, storage.get(sameSecondCat));
+    }
+
+    @Test
     public void addTwoElementsWithSameKey() {
         Storage<Integer, String> storage = new StorageImpl<>();
         Integer key = 1;
