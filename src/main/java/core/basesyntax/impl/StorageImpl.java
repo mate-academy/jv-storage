@@ -3,7 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int HASHCODE_FOR_NULL = 121314;
     private static final int ARRAY_CAPACITY = 10;
     private Object[] keys;
     private Object[] values;
@@ -25,10 +24,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 values[i] = value;
                 break;
             }
-            if (key == null) {
+            if (key == null && keys[i] == null) {
                 keys[i] = key;
                 values[i] = value;
+
             }
+            System.out.println(values[i]);
         }
     }
 
