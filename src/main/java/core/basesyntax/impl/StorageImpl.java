@@ -6,6 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_CAPACITY = 10;
     private Object[] keys;
     private Object[] values;
+    private int orderCounter;
 
     public StorageImpl() {
         this.keys = new Object[ARRAY_CAPACITY];
@@ -15,30 +16,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && key != null) {
-                keys[i] = key;
+            if (key != null && key.equals(keys[i])) {
                 values[i] = value;
-                break;
+                return;
             }
-            if (key != null && keys[i].equals(key)) {
-                values[i] = value;
-                break;
-            }
-            if (key == null && keys[i] == null) {
-                keys[i] = key;
-                values[i] = value;
-            }
-            System.out.println(values[i]);
         }
+        keys[orderCounter] = key;
+        values[orderCounter] = value;
+        orderCounter++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if (key != null && keys[i] != null && keys[i].equals(key)) {
-                return (V) values[i];
-            }
-            if (key == null && keys[i] == null) {
+            if (keys[i] == key || (key != null && key.equals(keys[i]))) {
                 return (V) values[i];
             }
         }
