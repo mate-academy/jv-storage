@@ -5,42 +5,54 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
     private Object[] store;
-    private Entry nullEntry;
-    private int pos;
+    private int position;
 
     public StorageImpl() {
-        this.store = new Object[CAPACITY];
-        nullEntry = new Entry(null, null);
-        this.pos = 0;
+        store = new Object[CAPACITY];
+        position = 0;
     }
 
     @Override
     public void put(K key, V value) {
         Entry temp;
         if (key == null) {
-            nullEntry.setValue(value);
+            for (int i = 0; i < position; i++) {
+                temp = (Entry) store[i];
+                if (key == temp.getKey()) {
+                    temp.setValue(value);
+                    store[i] = temp;
+                }
+            }
+            store[position] = new Entry(key, value);
+            position++;
         } else {
-            for (int i = 0; i < pos; i++) {
+            for (int i = 0; i < position; i++) {
                 temp = (Entry) store[i];
                 if (key.equals(temp.getKey())) {
                     temp.setValue(value);
                     store[i] = temp;
                 }
             }
-            store[pos] = new Entry(key, value);
-            pos++;
+
+            store[position] = new Entry(key, value);
+            position++;
         }
     }
 
     @Override
     public V get(K key) {
+        Entry temp;
         if (key == null) {
-            return nullEntry.getValue();
-        } else {
-            Entry temp;
-            for (int i = 0; i < pos; i++) {
+            for (int i = 0; i < position; i++) {
                 temp = (Entry) store[i];
-                if (key.equals(temp.getKey())) {
+                if (key == temp.getKey()) {
+                    return temp.getValue();
+                }
+            }
+        } else {
+            for (int i = 0; i < position; i++) {
+                temp = (Entry) store[i];
+                if (key == temp.getKey() || key.equals(temp.getKey())) {
                     return temp.getValue();
                 }
             }
@@ -48,7 +60,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    private class Entry {
+    public class Entry {
         private K key;
         private V value;
 
