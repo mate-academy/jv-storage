@@ -6,20 +6,8 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     int countData = 0;
-    private Object[] keys = new Object[10];
-    private Object[] values = new Object[10];
-
-    private int keyPosition(K key) {
-
-        for (int i = 0; i < keys.length; i++) {
-
-            if (keys[i] == null && key == null
-                    || keys[i] != null && keys[i].equals(key)) {
-                return i;
-            }
-        }
-        return ++countData;
-    }
+    private Object[] keys = new Object[3];
+    private Object[] values = new Object[3];
 
     private boolean checkCapacity(int value) {
         return value >= keys.length;
@@ -27,12 +15,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int position = keyPosition(key);
+        int position = exists(key) < 0 ? countData : exists(key);
         if (checkCapacity(position)) {
             copyArrays();
         }
         keys[position] = key;
         values[position] = value;
+        countData++;
     }
 
     private void copyArrays() {
@@ -42,22 +31,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (!exists(key)) {
+        int position = exists(key);
+        if (position < 0) {
             System.out.println("This key doesn't exist, please check");
             return null;
         }
-        int position = keyPosition(key);
-
         return (V) values[position];
     }
 
-    public boolean exists(K k) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && k == null
+    public int exists(K k) {
+        for (int i = 0; i < countData; i++) {
+            if (keys[i] == (k)
                     || keys[i] != null && keys[i].equals(k)) {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }
