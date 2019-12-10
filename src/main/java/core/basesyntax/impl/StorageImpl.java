@@ -2,24 +2,33 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
-    List<Entry> list = new ArrayList<>();
-    Entry nullEntry = new Entry(null, null);
+    private static final int CAPACITY = 10;
+    Object[] store;
+    Entry nullEntry;
+    int pos;
+
+    public StorageImpl() {
+        this.store = new Object[CAPACITY];
+        nullEntry = new Entry(null, null);
+        this.pos = 0;
+    }
 
     @Override
     public void put(K key, V value) {
+        Entry temp;
         if (key == null) {
             nullEntry.setValue(value);
         } else {
-            for (Entry entry : list) {
-                if (key.equals(entry.getKey())) {
-                    entry.setValue(value);
+            for (int i = 0; i < pos; i++) {
+                temp = (Entry) store[i];
+                if (key.equals(temp.getKey())) {
+                    temp.setValue(value);
+                    store[i] = temp;
                 }
             }
-            list.add(new Entry(key, value));
+            store[pos] = new Entry(key, value);
+            pos++;
         }
     }
 
@@ -28,9 +37,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (key == null) {
             return nullEntry.getValue();
         } else {
-            for (Entry entry : list) {
-                if (key.equals(entry.getKey())) {
-                    return entry.getValue();
+            Entry temp;
+            for (int i = 0; i < pos; i++) {
+                temp = (Entry) store[i];
+                if (key.equals(temp.getKey())) {
+                    return temp.getValue();
                 }
             }
         }
@@ -57,14 +68,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         public V getValue() {
             return value;
         }
-    }
-
-    public static void main(String[] args) {
-        Storage<Integer, String> storage = new StorageImpl<>();
-        String element = "Element";
-
-        storage.put(null, element);
-
-        System.out.println(storage.get(1));
     }
 }
