@@ -6,14 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys = (K[]) new Object[10];
     private V[] values = (V[]) new Object[10];
     private int index = 0;
-    private int nullIndex = 0;
 
     @Override
     public void put(K key, V value) {
         if (key == null) {
             keys[index] = null;
             values[index] = value;
-            nullIndex = index;
             index++;
         } else {
             for (int i = 0; i < index; i++) {
@@ -30,11 +28,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            return values[nullIndex];
-        }
         for (int i = 0; i < index; i++) {
-            if (keys[i].equals(key)) {
+            if (key != null && key.equals(keys[i]) || key == keys[i]) {
                 return values[i];
             }
         }
