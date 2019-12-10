@@ -27,7 +27,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (key == null && keys[i] == null) {
                 keys[i] = key;
                 values[i] = value;
-
             }
             System.out.println(values[i]);
         }
