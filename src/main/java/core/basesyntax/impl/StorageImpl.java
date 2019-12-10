@@ -3,7 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int CAPACITY = 10;
+    private static final int CAPACITY = 10;
 
     private Object[] keys;
     private Object[] values;
@@ -20,6 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < itemsCount; i++) {
             if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 values[i] = value;
+                break;
             }
         }
         keys[itemsCount] = key;
