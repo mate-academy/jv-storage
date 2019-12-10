@@ -16,18 +16,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size < CAPACITY) {
-            for (int i = 0; i < size + 1; i++) {
-                if (key == keyArr[i] || (key != null && key.equals(keyArr[i]))) {
-                    valueArr[i] = value;
-                    break;
-                } else if (i == size) {
-                    keyArr[i] = key;
-                    valueArr[i] = value;
-                }
+        for (int i = 0; i < size + 1; i++) {
+            if (key == keyArr[i] || (key != null && key.equals(keyArr[i]))) {
+                valueArr[i] = value;
+                break;
+            } else if (i == size && size < CAPACITY) {
+                keyArr[i] = key;
+                valueArr[i] = value;
             }
-            size++;
         }
+        size++;
     }
 
     @Override
