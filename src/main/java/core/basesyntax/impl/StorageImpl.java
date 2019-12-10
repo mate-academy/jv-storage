@@ -4,9 +4,9 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
-    Object[] store;
-    Entry nullEntry;
-    int pos;
+    private Object[] store;
+    private Entry nullEntry;
+    private int pos;
 
     public StorageImpl() {
         this.store = new Object[CAPACITY];
