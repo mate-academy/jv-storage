@@ -3,41 +3,36 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static int DEFAULT_CAPACITY = 10;
     private Object[] valueArr;
-    private int[] keyArr;
+    private Object[] keyArr;
     private int counter;
 
     public <K, V> StorageImpl() {
-        this.valueArr = new Object[10];
-        this.keyArr = new int[10];
+        this.valueArr = new Object[DEFAULT_CAPACITY];
+        this.keyArr = new Object[DEFAULT_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keyArr.length; i++) {
-            if (key != null && key.hashCode() == keyArr[i]) {
-                keyArr[i] = key.hashCode();
+            if (key != null && key.equals(keyArr[i])) {
+                keyArr[i] = key;
                 valueArr[i] = value;
                 return;
             }
         }
-        if (key != null) {
-            keyArr[counter] = key.hashCode();
-            valueArr[counter] = value;
-            counter++;
-        } else {
-            keyArr[counter] = 0;
-            valueArr[counter] = value;
-            counter++;
-        }
+        keyArr[counter] = key;
+        valueArr[counter] = value;
+        counter++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < keyArr.length; i++) {
-            if (key != null && keyArr[i] == key.hashCode()) {
+            if (keyArr[i] == null && key == null) {
                 return (V) valueArr[i];
-            } else if (key == null && keyArr[i] == 0) {
+            } else if (keyArr[i] != null && key != null && keyArr[i].equals(key)) {
                 return (V) valueArr[i];
             }
         }
