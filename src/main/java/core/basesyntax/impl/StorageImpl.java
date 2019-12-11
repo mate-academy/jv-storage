@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < LENGTH; i++) {
             if (objects[i] == null) {
                 objects[i] = node;
-                break;
+                return;
             } else if (((objects[i]).getKey()  == node.getKey())
                     || (((objects[i]).getKey() != null)
                     && (objects[i]).getKey().equals(node.getKey()))) {
