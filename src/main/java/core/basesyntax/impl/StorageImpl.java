@@ -19,19 +19,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        V val = null;
-
         for (int i = 0; i < collection.length; ++i) {
             if (collection[i] != null
                     && (collection[i].key == key
                     || collection[i].key.equals(key))) {
-                val = (V) collection[i].value;
+                return (V) collection[i].value;
             }
         }
-        return val;
+        return null;
     }
 
-    static class Node<K, V> {
+    private static class Node<K, V> {
         private K key;
         private V value;
 
