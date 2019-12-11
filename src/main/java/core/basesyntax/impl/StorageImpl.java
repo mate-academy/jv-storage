@@ -21,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 keyArr[i] = key;
                 valueArr[i] = value;
                 break;
-            } else if (key != null && key.equals(keyArr[i])) {
+            } else if (key.equals(keyArr[i])) {
                 valueArr[i] = value;
                 break;
             }
