@@ -5,7 +5,11 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int LENGTH = 10;
-    Node<K,V>[] objects = new Node[LENGTH];
+    private Node<K,V>[] objects;
+
+    public StorageImpl() {
+        this.objects = new Node[LENGTH];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -20,7 +24,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     || (((objects[i]).getKey() != null)
                     && (objects[i]).getKey().equals(node.getKey()))) {
                 objects[i] = node;
-                break;
             }
         }
     }
