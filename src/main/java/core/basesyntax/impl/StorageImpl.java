@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int LENGTH = 10;
-    Object[] objects = new Object[LENGTH];
+    Node<K,V>[] objects = new Node[LENGTH];
 
     @Override
     public void put(K key, V value) {
@@ -16,9 +16,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (objects[i] == null) {
                 objects[i] = node;
                 break;
-            } else if ((((Node) objects[i]).getKey() == null && node.getKey() == null)
-                            || ((((Node) objects[i]).getKey() != null)
-                            && ((Node) objects[i]).getKey().equals(node.getKey()))) {
+            } else if (((objects[i]).getKey()  == node.getKey())
+                    || (((objects[i]).getKey() != null)
+                    && (objects[i]).getKey().equals(node.getKey()))) {
                 objects[i] = node;
                 break;
             }
@@ -28,20 +28,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < LENGTH; i++) {
-            if (objects[i] != null) {
-                if ((((Node) objects[i]).getKey() == null
-                        && key == null)
-                        || ((Node) objects[i]).getKey().equals(key)) {
-                    return (V) ((Node) objects[i]).getValue();
-                }
+            
+            if (objects[i] != null && ((objects[i]).getKey() == key)
+                    || (objects[i] != null && (objects[i]).getKey().equals(key))) {
+                return objects[i].getValue();
             }
         }
         return null;
     }
 
     private static final class Node<K, V> {
-        K key;
-        V value;
+        private K key;
+        private V value;
 
         public K getKey() {
             return key;
