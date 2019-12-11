@@ -27,7 +27,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         arrayItems++;
     }
 
-    @Override @SuppressWarnings("unchecked")
+    @Override
+    @SuppressWarnings("unchecked")
     public V get(K key) {
         for (int i = 0; i < LENGTH; i++) {
             if ((keysArray[i] == key) || (keysArray[i] != null && keysArray[i].equals(key))) {
