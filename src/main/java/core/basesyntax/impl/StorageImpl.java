@@ -14,15 +14,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < position; i++) {
-            if (key == store[i].getKey() || (key != null && key.equals(store[i].getKey()))) {
+        for (int i = 0; i <= position; i++) {
+            if (i != position && (key == store[i].getKey()
+                    || (key != null && key.equals(store[i].getKey())))) {
                 store[i].setValue(value);
+                break;
+            } else {
+                store[position] = new Entry<>(key, value);
                 position++;
                 break;
             }
         }
-        store[position] = new Entry<>(key, value);
-        position++;
     }
 
     @Override
