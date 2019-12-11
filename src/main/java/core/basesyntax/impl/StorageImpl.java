@@ -11,9 +11,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int positionCounter;
 
     public StorageImpl() {
-        this.keyStorage = new Object[STORAGE_SIZE];
-        this.valueStorage = new Object[STORAGE_SIZE];
-        this.positionCounter = 0;
+        keyStorage = new Object[STORAGE_SIZE];
+        valueStorage = new Object[STORAGE_SIZE];
+        positionCounter = 0;
     }
 
     @Override
@@ -25,7 +25,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         } else {
             for (int i = 0; i < positionCounter; i++) {
                 if (key != null && key.equals(keyStorage[i]) || key == keyStorage[i]) {
-                    keyStorage[i] = key;
                     valueStorage[i] = value;
                     positionCounter++;
                 }
