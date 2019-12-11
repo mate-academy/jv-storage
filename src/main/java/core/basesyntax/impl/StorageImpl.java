@@ -9,9 +9,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] arrayValues;
 
     public StorageImpl() {
-        this.size = 0;
-        this.arrayKeys = new Object[CAPACITY];
-        this.arrayValues = new Object[CAPACITY];
+        size = 0;
+        arrayKeys = new Object[CAPACITY];
+        arrayValues = new Object[CAPACITY];
     }
 
     @Override
