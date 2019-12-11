@@ -10,18 +10,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            keys[indexCounter] = null;
-            values[indexCounter] = value;
-            indexCounter++;
-        } else {
-            keys[indexCounter] = key;
-            values[indexCounter] = value;
-            indexCounter++;
-            for (int i = 0; i < keys.length; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                }
+        keys[indexCounter] = key;
+        values[indexCounter] = value;
+        indexCounter++;
+        for (int i = 0; i < keys.length; i++) {
+            if (key != null && key.equals(keys[i])) {
+                values[i] = value;
             }
         }
     }
