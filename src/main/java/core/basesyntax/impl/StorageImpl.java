@@ -16,9 +16,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int idx = getIdxTheSameKey(key);
-        arrayOfKey[idx] = key;
-        arrayOfValue[idx] = value;
+        if (indexOf(key) != -1) {
+            arrayOfValue[indexOf(key)] = value;
+        } else {
+            arrayOfKey[size] = key;
+            arrayOfValue[size] = value;
+            size++;
+        }
     }
 
     @Override
@@ -33,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    private int getIdxTheSameKey(K key) {
+    private int indexOf(K key) {
         if (size > 0) {
             for (int i = 0; i < size; i++) {
                 if (arrayOfKey[i] == key) {
@@ -41,6 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         }
-        return size++;
+        return -1;
     }
 }
