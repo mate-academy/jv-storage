@@ -3,29 +3,29 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int CELLSLENGTH = 10;
-    private Cell[] cell = new Cell[CELLSLENGTH];
-    //private Object[] value = new Object[ARRAYLENGTH];
+    private static final int CELLS_LENGTH = 10;
+    private Cell[] cell = new Cell[CELLS_LENGTH];
     private int freeCell = 0;
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i <= freeCell; i++) {
-            if (key != null && value != null) {
+            if (value != null) {
                 if (freeCell == 0) {
                     cell[i] = new Cell<>(key, value);
                     freeCell++;
                     break;
                 }
-                if (freeCell < CELLSLENGTH && i == freeCell) {
+                if (freeCell < CELLS_LENGTH && i == freeCell) {
                     cell[i] = new Cell<>(key, value);
                     freeCell++;
                     break;
                 }
-                K temp = (K) cell[i].getKey();
-                if (freeCell < CELLSLENGTH && temp.equals(key)) {
-                    cell[i].setValue(value);
-                    break;
+                if (cell[i].getKey() != null) {
+                    if (freeCell < CELLS_LENGTH && ((K) cell[i].getKey()).equals(key)) {
+                        cell[i].setValue(value);
+                        break;
+                    }
                 }
             }
         }
@@ -33,13 +33,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key != null) {
-            for (int i = 0; i < freeCell; i++) {
-                K temp = (K) cell[i].getKey();
-                if (temp.equals(key)) {
-                    V temp1 = (V) cell[i].getValue();
-                    return (V) cell[i].getValue();
-                }
+        for (int i = 0; i < freeCell; i++) {
+            if (cell[i].getKey() == key || ((K) cell[i].getKey()).equals(key)) {
+                return (V) cell[i].getValue();
             }
         }
         return null;
