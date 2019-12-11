@@ -6,9 +6,15 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int INITIAL_SIZE = 10;
-    int countData = 0;
-    private Object[] keys = new Object[INITIAL_SIZE];
-    private Object[] values = new Object[INITIAL_SIZE];
+    private int countData;
+    private Object[] keys;
+    private Object[] values;
+
+    public StorageImpl() {
+        countData = 0;
+        keys = new Object[10];
+        values = new Object[10];
+    }
 
     private boolean checkCapacity(int value) {
         return value >= keys.length;
