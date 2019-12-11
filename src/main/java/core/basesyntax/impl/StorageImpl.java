@@ -4,19 +4,29 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private final int arrayCapacity = 10;
-    private Object[] arrayOfKeys = new Object[arrayCapacity];
-    private Object[] arrayOfValues = new Object[arrayCapacity];
+    private static final int ARRAY_CAPACITY = 10;
+    private Object[] arrayOfKeys;
+    private Object[] arrayOfValues;
 
-    int size = 1;
+    public StorageImpl() {
+        arrayOfKeys = new Object[ARRAY_CAPACITY];
+        arrayOfValues = new Object[ARRAY_CAPACITY];
+    }
+
+    int size = 0;
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < arrayCapacity - size; i++) {
-            arrayOfKeys[i] = key;
-            arrayOfValues[i] = value;
-            size++;
+
+        for (int i = 0; i < size; i++) {
+            if (arrayOfKeys[i] == key) {
+                arrayOfValues[i] = value;
+            }
         }
+        arrayOfKeys[size] = key;
+        arrayOfValues[size] = value;
+        size++;
+
     }
 
     @Override
