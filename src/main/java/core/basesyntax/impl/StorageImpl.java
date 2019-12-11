@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
-    private final int ARRAY_SIZE = 10;
+    private static final int ARRAY_SIZE = 10;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[ARRAY_SIZE];
