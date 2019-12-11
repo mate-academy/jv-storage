@@ -2,23 +2,37 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.HashMap;
-import java.util.Map;
-//import java.util.Set; for (MapEntry entry : storage.entrySet())
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
-    private Map<K, V> storage = new HashMap<K, V>();
+    private int indexCounter = 0;
+    private static final int DEFAULT_ARRAY_LENGTH = 10;
+    private Object[] keyArray = new Object[DEFAULT_ARRAY_LENGTH];
+    private Object[] valueArray = new Object[DEFAULT_ARRAY_LENGTH];
 
     @Override
     public void put(K key, V value) {
-        storage.put(key, value);
+        for (int i = 0; i < indexCounter; i++) {
+            if (key == null || key.equals(keyArray[i])) {
+                valueArray[i] = value;
+                //I was thinking it should be - valueArray[indexCounter] = value;. Please, help:)!
+                return;
+            }
+        }
+        keyArray[indexCounter] = key;
+        valueArray[indexCounter] = value;
+        indexCounter++;
     }
 
     @Override
     public V get(K key) {
-        return storage.get(key);
+        //
+        for (int i = 0; i < keyArray.length; i++) {
+            if (key == null || key.equals(keyArray[i])) {
+                return (V) valueArray[i];
+            }
+        }
+        return null;
     }
 }
 
