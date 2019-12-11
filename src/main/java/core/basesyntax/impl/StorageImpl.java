@@ -4,63 +4,38 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
-    private Object[] store;
+    private Entry<K, V>[] store;
     private int position;
 
     public StorageImpl() {
-        store = new Object[CAPACITY];
+        store = new Entry[CAPACITY];
         position = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        Entry temp;
-        if (key == null) {
-            for (int i = 0; i < position; i++) {
-                temp = (Entry) store[i];
-                if (key == temp.getKey()) {
-                    temp.setValue(value);
-                    store[i] = temp;
-                }
+        for (int i = 0; i < position; i++) {
+            if (key == store[i].getKey() || (key != null && key.equals(store[i].getKey()))) {
+                store[i].setValue(value);
+                position++;
+                break;
             }
-            store[position] = new Entry(key, value);
-            position++;
-        } else {
-            for (int i = 0; i < position; i++) {
-                temp = (Entry) store[i];
-                if (key.equals(temp.getKey())) {
-                    temp.setValue(value);
-                    store[i] = temp;
-                }
-            }
-
-            store[position] = new Entry(key, value);
-            position++;
         }
+        store[position] = new Entry<>(key, value);
+        position++;
     }
 
     @Override
     public V get(K key) {
-        Entry temp;
-        if (key == null) {
-            for (int i = 0; i < position; i++) {
-                temp = (Entry) store[i];
-                if (key == temp.getKey()) {
-                    return temp.getValue();
-                }
-            }
-        } else {
-            for (int i = 0; i < position; i++) {
-                temp = (Entry) store[i];
-                if (key == temp.getKey() || key.equals(temp.getKey())) {
-                    return temp.getValue();
-                }
+        for (int i = 0; i < position; i++) {
+            if (key == store[i].getKey() || (key != null && key.equals(store[i].getKey()))) {
+                return store[i].getValue();
             }
         }
         return null;
     }
 
-    public class Entry {
+    private static class Entry<K, V> {
         private K key;
         private V value;
 
