@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
+    private int objectsCapacity = 1;
     private static final int LENGTH = 10;
     private Node<K,V>[] objects;
 
@@ -16,16 +17,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         Node<K, V> node = new Node<>(key, value);
 
-        for (int i = 0; i < LENGTH; i++) {
+        for (int i = 0; i < objectsCapacity; i++) {
             if (objects[i] == null) {
                 objects[i] = node;
-                return;
+
             } else if (((objects[i]).getKey()  == node.getKey())
                     || (((objects[i]).getKey() != null)
                     && (objects[i]).getKey().equals(node.getKey()))) {
                 objects[i] = node;
             }
         }
+        objectsCapacity++;
     }
 
     @Override
