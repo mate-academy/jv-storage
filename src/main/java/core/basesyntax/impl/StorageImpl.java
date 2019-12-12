@@ -10,18 +10,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i <= freeCell; i++) {
-            if (value != null && freeCell == 0) {
+        for (int i = 0; i <= freeCell && value != null; i++) {
+            if (freeCell == 0) {
                 cell[i] = new Cell<>(key, value);
                 freeCell++;
                 break;
             }
-            if (value != null && freeCell < CELLS_LENGTH && i == freeCell) {
+            if (freeCell < CELLS_LENGTH && i == freeCell) {
                 cell[i] = new Cell<>(key, value);
                 freeCell++;
                 break;
             }
-            if (value != null && cell[i].getKey() != null) {
+            if (cell[i].getKey() != null) {
                 if (freeCell < CELLS_LENGTH && ((K) cell[i].getKey()).equals(key)) {
                     cell[i].setValue(value);
                     break;
