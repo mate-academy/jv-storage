@@ -3,6 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+
     private static final int CELLS_LENGTH = 10;
     private Cell[] cell = new Cell[CELLS_LENGTH];
     private int freeCell = 0;
@@ -10,22 +11,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i <= freeCell; i++) {
-            if (value != null) {
-                if (freeCell == 0) {
-                    cell[i] = new Cell<>(key, value);
-                    freeCell++;
+            if (value != null && freeCell == 0) {
+                cell[i] = new Cell<>(key, value);
+                freeCell++;
+                break;
+            }
+            if (value != null && freeCell < CELLS_LENGTH && i == freeCell) {
+                cell[i] = new Cell<>(key, value);
+                freeCell++;
+                break;
+            }
+            if (value != null && cell[i].getKey() != null) {
+                if (freeCell < CELLS_LENGTH && ((K) cell[i].getKey()).equals(key)) {
+                    cell[i].setValue(value);
                     break;
-                }
-                if (freeCell < CELLS_LENGTH && i == freeCell) {
-                    cell[i] = new Cell<>(key, value);
-                    freeCell++;
-                    break;
-                }
-                if (cell[i].getKey() != null) {
-                    if (freeCell < CELLS_LENGTH && ((K) cell[i].getKey()).equals(key)) {
-                        cell[i].setValue(value);
-                        break;
-                    }
                 }
             }
         }
@@ -39,5 +38,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return null;
+    }
+
+    private class Cell<K, V> {
+
+        private K key;
+        private V value;
+
+        public Cell(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
     }
 }
