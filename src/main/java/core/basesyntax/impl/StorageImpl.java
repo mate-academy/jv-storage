@@ -3,8 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K key;
-    private V value;
     private int indexCounter = 0;
     private static final int DEFAULT_ARRAY_LENGTH = 10;
     private Object[] keyArray = new Object[DEFAULT_ARRAY_LENGTH];
@@ -15,7 +13,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < indexCounter; i++) {
             if (key == null || key.equals(keyArray[i])) {
                 valueArray[i] = value;
-                //I was thinking it should be - valueArray[indexCounter] = value;. Please, help:)!
                 return;
             }
         }
