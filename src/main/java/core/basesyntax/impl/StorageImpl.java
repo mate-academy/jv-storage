@@ -11,12 +11,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i <= freeCell && value != null; i++) {
-            if (freeCell == 0) {
-                cell[i] = new Cell<>(key, value);
-                freeCell++;
-                break;
-            }
-            if (freeCell < CELLS_LENGTH && i == freeCell) {
+            if (freeCell == 0 || (freeCell < CELLS_LENGTH && i == freeCell)) {
                 cell[i] = new Cell<>(key, value);
                 freeCell++;
                 break;
