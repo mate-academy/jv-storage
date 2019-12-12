@@ -5,8 +5,6 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static int MAX_SIZE = 10;
     private int counter = 0;
-    private K key;
-    private V value;
     Object[] keyStorage = new Object[MAX_SIZE];
     Object[] valueStorage = new Object[MAX_SIZE];
 
@@ -26,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < counter; i++) {
-            if (key == null & key == keyStorage[i] || (key != null & keyStorage[i].equals(key))) {
+            if (key == null & key == keyStorage[i] || keyStorage[i].equals(key)) {
                 return (V) valueStorage[i];
             }
         }
