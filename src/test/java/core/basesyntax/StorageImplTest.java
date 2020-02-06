@@ -85,9 +85,12 @@ public class StorageImplTest {
     public void addElementWithKeyNull() {
         Storage<Integer, String> storage = new StorageImpl<>();
         String element = "Element";
+        String one = "one";
 
+        storage.put(1, one);
         storage.put(null, element);
 
+        Assert.assertEquals(one, storage.get(1));
         Assert.assertEquals(element, storage.get(null));
     }
 }
