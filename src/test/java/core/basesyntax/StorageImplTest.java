@@ -37,13 +37,27 @@ public class StorageImplTest {
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
+        String elementFour = "Element 4";
         storage.put(1, elementOne);
         storage.put(null, elementTwo);
         storage.put(3, elementTree);
+        storage.put(4, elementFour);
         Assert.assertEquals(
                 "Test failed! Method get(null) should return value",
                 elementTwo,
                 storage.get(null));
+        Assert.assertEquals(
+                "Test failed! Method get(key) should return value",
+                elementOne,
+                storage.get(1));
+        Assert.assertEquals(
+                "Test failed! Method get(key) should return value",
+                elementTree,
+                storage.get(3));
+        Assert.assertEquals(
+                "Test failed! Method get(key) should return value",
+                elementFour,
+                storage.get(4));
     }
 
     @Test
@@ -79,18 +93,5 @@ public class StorageImplTest {
                 "When elements were adding with the same key, should be rewritten",
                 elementTwo,
                 storage.get(key));
-    }
-
-    @Test
-    public void addElementWithKeyNull() {
-        Storage<Integer, String> storage = new StorageImpl<>();
-        String element = "Element";
-        String one = "one";
-
-        storage.put(1, one);
-        storage.put(null, element);
-
-        Assert.assertEquals(one, storage.get(1));
-        Assert.assertEquals(element, storage.get(null));
     }
 }
