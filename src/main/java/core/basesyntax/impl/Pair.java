@@ -6,13 +6,9 @@ class Pair<K, V> {
     private final K key;
     private final V value;
 
-    private Pair(K keyParam, V valueParam) {
+    public Pair(K keyParam, V valueParam) {
         key = keyParam;
         value = valueParam;
-    }
-
-    public static <K, V> Pair of(K firstValue, V secondValue) {
-        return new Pair<>(firstValue, secondValue);
     }
 
     @Override

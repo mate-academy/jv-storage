@@ -16,10 +16,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getKeyIndex(key);
         if (index == -1) {
-            array[size] = Pair.of(key, value);
+            array[size] = new Pair<K, V>(key, value);
             size++;
         } else {
-            array[index] = Pair.of(key, value);
+            array[index] = new Pair<K, V>(key, value);
         }
     }
 
@@ -28,14 +28,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = getKeyIndex(key);
         if (index == -1) {
             return null;
-        } else {
-            return array[index].getValue();
         }
+        return array[index].getValue();
     }
 
     private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && array[i].getKey() == null)
+            if ((key == array[i].getKey())
                     || (key != null && key.equals(array[i].getKey()))) {
                 return i;
             }
