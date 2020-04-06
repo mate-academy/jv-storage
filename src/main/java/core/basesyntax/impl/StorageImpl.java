@@ -13,44 +13,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key != null) {
-            if (checker == -1) {
+        if (checker == -1) {
+            checker++;
+            nodes[checker] = new Node<K, V>();
+            nodes[checker].key = key;
+            nodes[checker].value = value;
+        } else {
+            boolean notRewrited = true;
+            for (int i = 0; i < checker + 1; i++) {
+                if ((key == null && nodes[i].key == null)
+                        || (nodes[i].key != null && nodes[i].key.equals(key))) {
+                    nodes[i].value = value;
+                    notRewrited = false;
+                }
+            }
+            if (notRewrited) {
                 checker++;
                 nodes[checker] = new Node<K, V>();
                 nodes[checker].key = key;
-                nodes[checker].value = value;
-            } else {
-                boolean revrite = true;
-                for (int i = 0; i < checker + 1; i++) {
-                    if (nodes[i].key != null && nodes[i].key.equals(key)) {
-                        nodes[i].value = value;
-                        revrite = false;
-                    }
-                }
-                if (revrite) {
-                    checker++;
-                    nodes[checker] = new Node<K, V>();
-                    nodes[checker].key = key;
-                    nodes[checker].value = value;
-                }
-            }
-        } else if (checker == -1) {
-            checker++;
-            nodes[checker] = new Node<K, V>();
-            nodes[checker].key = null;
-            nodes[checker].value = value;
-        } else {
-            boolean revrite = true;
-            for (int i = 0; i < checker + 1; i++) {
-                if (nodes[i].key == null) {
-                    nodes[i].value = value;
-                    revrite = false;
-                }
-            }
-            if (revrite) {
-                checker++;
-                nodes[checker] = new Node<K, V>();
-                nodes[checker].key = null;
                 nodes[checker].value = value;
             }
         }
@@ -58,17 +38,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < checker + 1; i++) {
-                if (nodes[i].key == null) {
-                    return nodes[i].value;
-                }
-            }
-        } else {
-            for (int i = 0; i < checker + 1; i++) {
-                if (nodes[i].key != null && nodes[i].key.equals(key)) {
-                    return nodes[i].value;
-                }
+        for (int i = 0; i < checker + 1; i++) {
+            if ((key == null && nodes[i].key == null)
+                    || (nodes[i].key != null && nodes[i].key.equals(key))) {
+                return nodes[i].value;
             }
         }
         return null;
