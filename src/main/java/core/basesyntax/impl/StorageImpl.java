@@ -5,9 +5,15 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int LENGTH = 10;
-    private K[] keys = (K[]) new Object[LENGTH];
-    private V[] values = (V[]) new Object[LENGTH];
-    private int index = 0;
+    private K[] keys;
+    private V[] values;
+    private int index;
+
+    public StorageImpl() {
+        index = 0;
+        keys = (K[]) new Object[LENGTH];
+        values = (V[]) new Object[LENGTH];
+    }
 
     @Override
     public void put(K key, V value) {
