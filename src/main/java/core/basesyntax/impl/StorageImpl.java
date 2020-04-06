@@ -4,11 +4,12 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
+    private static final int SIZE = 10;
+
     private K key;
     private V value;
     private StorageImpl<K, V>[] storageArray;
     private int counter = 0;
-    private static final int SIZE = 10;
 
     private StorageImpl(K key, V value) {
         this.key = key;
