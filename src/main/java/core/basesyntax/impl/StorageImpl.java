@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    final private int SIZE = 10;
+    private static final int SIZE = 10;
     private K[] keys;
     private V[] values;
     private int count;
