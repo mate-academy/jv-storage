@@ -4,7 +4,6 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     static final int DEFAULT_INITIAL_CAPACITY = 10;
-    private final double MAX_LOAD_FACTOR = 0.75;
     Node<K, V>[] nodes;
     int size;
 
@@ -46,7 +45,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private class Node<K, V> {
-        private  K key;
+        private K key;
         private V value;
 
         public Node(K key, V value) {
