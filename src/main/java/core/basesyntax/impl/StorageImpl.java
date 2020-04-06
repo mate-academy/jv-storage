@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
@@ -36,14 +35,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-            Node node = (Node) o;
-            return Objects.equals(key, node.key)
-                    && Objects.equals(value, node.value);
+
+            Node<K, V> pair = (Node) o;
+
+            if (key != null ? !key.equals(pair.key) : pair.key != null) {
+                return false;
+            }
+            return value != null ? value.equals(pair.value) : pair.value == null;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(key, value);
+            int result = 17;
+            if (key != null) {
+                result = 19 * result + key.hashCode();
+            }
+            if (value != null) {
+                result = 23 * result + value.hashCode();
+            }
+            return result;
         }
     }
 
