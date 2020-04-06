@@ -9,7 +9,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
     private StorageImpl<K, V>[] storageArray;
-    private int counter = 0;
 
     private StorageImpl(K key, V value) {
         this.key = key;
@@ -33,20 +32,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         StorageImpl<K, V> storage = new StorageImpl<>(key, value);
-        storageArray[counter] = storage;
-        counter++;
+        for (int i = 0; i < storageArray.length; i++) {
+            if (storageArray[i] == null) {
+                storageArray[i] = storage;
+                break;
+            }
+        }
     }
 
     @Override
     public V get(K key) {
-        if (counter == 0) {
-            return null;
-        }
         for (StorageImpl<K, V> storage : storageArray) {
+            if (storage == null) {
+                break;
+            }
+            if (storage.getKey() == null && key == null) {
+                return storage.getValue();
+            }
             if (storage.getKey() == null) {
-                if (key == null) {
-                    return storage.getValue();
-                }
                 continue;
             }
             if (storage.getKey().equals(key)) {
