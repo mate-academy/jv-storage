@@ -11,7 +11,7 @@ class Pair<K, V> {
         value = valueParam;
     }
 
-    public static <K, V> Pair<K, V> of(K firstValue, V secondValue) {
+    public static <K, V> Pair of(K firstValue, V secondValue) {
         return new Pair<>(firstValue, secondValue);
     }
 
@@ -23,21 +23,21 @@ class Pair<K, V> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Pair<K, V> pair = (Pair<K, V>) o;
+        Pair<K, V> pair = (Pair) o;
         return Objects.equals(key, pair.key)
                 && Objects.equals(value, pair.value);
     }
 
     @Override
     public int hashCode() {
-        int value = 17;
+        int result = 17;
         if (key != null) {
-            value += 31 * key.hashCode();
+            result = 31 * result + key.hashCode();
         }
-        if (this.value != null) {
-            value += 31 * this.value.hashCode();
+        if (value != null) {
+            result = 31 * result + value.hashCode();
         }
-        return value;
+        return result;
     }
 
     public K getKey() {
