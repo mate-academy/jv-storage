@@ -4,24 +4,23 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_CAPACITY = 10;
-    private static final int STORAGE_PARAMETERS_COUNT = 2;
-    private static final int KEYS_INDEX = 0;
-    private static final int VALUES_INDEX = 1;
-    private Object[][] objects;
+    private Object[] keys;
+    private Object[] values;
 
     public StorageImpl() {
-        objects = new Object[MAX_STORAGE_CAPACITY][STORAGE_PARAMETERS_COUNT];
+        keys = new Object[MAX_STORAGE_CAPACITY];
+        values = new Object[MAX_STORAGE_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < objects.length; i++) {
-            if (objects[i][KEYS_INDEX] == null && objects[i][VALUES_INDEX] == null) {
-                objects[i][KEYS_INDEX] = key;
-                objects[i][VALUES_INDEX] = value;
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
                 break;
-            } else if (objects[i][KEYS_INDEX] != null && objects[i][KEYS_INDEX].equals(key)) {
-                objects[i][VALUES_INDEX] = value;
+            } else if (keys[i] != null && keys[i].equals(key)) {
+                values[i] = value;
                 break;
             }
         }
@@ -29,11 +28,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (Object[] object : objects) {
-            if ((object[KEYS_INDEX] != null
-                    && object[KEYS_INDEX].equals(key))
-                    || key == object[KEYS_INDEX]) {
-                return (V) object[VALUES_INDEX];
+        for (int i = 0; i < keys.length; i++) {
+            if ((keys[i] != null
+                    && keys[i].equals(key))
+                    || key == keys[i]) {
+                return (V) values[i];
             }
         }
         return null;
