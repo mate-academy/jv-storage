@@ -38,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    class Node<K, V> {
+    private class Node<K, V> {
         private K key;
         private V value;
 
