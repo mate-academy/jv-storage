@@ -8,6 +8,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private K[] keys;
     private V[] values;
+    private int count = 0;
 
     public StorageImpl() {
         keys = (K[]) new Object[SIZE];
@@ -16,18 +17,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < SIZE; i++) {
-            if (keys[i] == null && key == null) {
+        for (int i = 0; i <= count; i++) {
+            if (keys[i] == null && key == null
+                    || keys[i] != null && keys[i].equals(key)) {
                 values[i] = value;
-                return;
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
-                values[i] = value;
+                count++;
                 return;
             }
             if (keys[i] == null && values[i] == null && key != null) {
                 keys[i] = key;
                 values[i] = value;
+                count++;
                 return;
             }
         }
@@ -35,11 +35,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < SIZE; i++) {
-            if (keys[i] == null && key == null) {
-                return values[i];
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
+        for (int i = 0; i <= count; i++) {
+            if (keys[i] == null && key == null
+                    || keys[i] != null && keys[i].equals(key)) {
                 return values[i];
             }
         }
