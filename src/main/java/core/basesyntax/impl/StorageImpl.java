@@ -3,8 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    Node<K, V>[] nodes;
-    int checker;
+    private Node<K, V>[] nodes;
+    private int checker;
 
     public StorageImpl() {
         checker = -1;
