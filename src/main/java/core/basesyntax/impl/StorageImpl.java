@@ -13,29 +13,33 @@ storage.get(22) // вернёт коробку.
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int LENGTH = 10;
-    private Object[] masKeys = new Object[LENGTH];
-    private Object[] masValues = new Object[LENGTH];
-    private int indexForMas = 0;
-    private int indexForMasValue = 0;
+    private Object[] masKeys;
+    private Object[] masValues;
+    private int index;
+
+    public StorageImpl() {
+        masKeys = new Object[LENGTH];
+        masValues = new Object[LENGTH];
+        index = 0;
+    }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < indexForMas; i++) {
-            if (Objects.equals(key, masKeys[i])) {
+        for (int i = 0; i < index; i++) {
+            if (key == masKeys[i] || (key != null && key.equals(masKeys[i]))) {
                 masValues[i] = value;
                 return;
             }
         }
-        masKeys[indexForMas] = key;
-        masValues[indexForMasValue] = value;
-        indexForMasValue++;
-        indexForMas++;
+        masKeys[index] = key;
+        masValues[index] = value;
+        index++;
 
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < indexForMas; i++) {
+        for (int i = 0; i < index; i++) {
             if (key == masKeys[i] || (key != null && key.equals(masKeys[i]))) {
                 return (V) masValues[i];
             }
