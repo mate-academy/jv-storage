@@ -1,26 +1,51 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private List<K> keyList = new ArrayList<>();
-    private List<V> valueList = new ArrayList<>();
+    private static final int SIZE = 10;
+    private K[] keys;
+    private V[] values;
+    private int index;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[SIZE];
+        values = (V[]) new Object[SIZE];
+        index = 0;
+    }
 
     @Override
     public void put(K key, V value) {
-        if (keyList.contains(key)) {
-            valueList.add(keyList.indexOf(key), value);
+        if (isNewKey(key)) {
+            for (int i = 0; i < index; i++) {
+                if (key == keys[i] || key != null && key.equals(keys[i])) {
+                    values[i] = value;
+                }
+            }
         } else {
-            keyList.add(key);
-            valueList.add(value);
+            keys[index] = key;
+            values[index] = value;
+            index++;
         }
     }
 
     @Override
     public V get(K key) {
-        return keyList.contains(key) ? valueList.get(keyList.indexOf(key)) : null;
+        for (int i = 0; i < index; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return values[i];
+            }
+        }
+        return null;
+    }
+
+    public boolean isNewKey(K key) {
+        for (int i = 0; i < index; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
