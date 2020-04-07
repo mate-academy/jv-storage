@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < index; i++) {
             if (compareKeys(key, keys[i])) {
                 return values[i];
             }
@@ -40,8 +40,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean exists(K key) {
-        for (K k : keys) {
-            if (compareKeys(key, k)) {
+        for (int i = 0; i < index; i++) {
+            if (compareKeys(key, keys[i])) {
                 return true;
             }
         }
