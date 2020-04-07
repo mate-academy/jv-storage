@@ -4,14 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private static final int arraySize = 10;
+    private static final int ARRAY_SIZE = 10;
     private Object[] keys;
     private Object[] values;
     private int index = 0;
 
     public StorageImpl() {
-        keys = new Object[arraySize];
-        values = new Object[arraySize];
+        keys = new Object[ARRAY_SIZE];
+        values = new Object[ARRAY_SIZE];
     }
 
     @Override
