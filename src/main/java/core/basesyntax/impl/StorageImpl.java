@@ -73,10 +73,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
             Entry<K, V> entry = (Entry) o;
 
-            if (key != null ? !key.equals(entry.key) : entry.key != null) {
-                return false;
-            }
-            return value != null ? value.equals(entry.value) : entry.value == null;
+            return (entry.getKey() == this.key
+                    || (entry.getKey() != null && entry.getKey().equals(this.key)))
+                    && (entry.getValue() == this.value
+                    || (entry.getValue() != null && entry.getValue().equals(this.value)));
         }
 
         @Override
