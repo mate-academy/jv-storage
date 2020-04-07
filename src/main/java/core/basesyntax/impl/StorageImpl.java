@@ -21,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.values[limit] = value;
             this.limit++;
         } else {
-            for (int i = 0; i < LENGTH -1; i++) {
+            for (int i = 0; i < LENGTH - 1; i++) {
                 if (keys[i] == key) {
                     values[i] = value;
                 }
@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < LENGTH -1; i++) {
+        for (int i = 0; i < LENGTH - 1; i++) {
             if (key == keys[i]
                     || (key != null) && key.equals(keys[i])) {
                 return values[i];
