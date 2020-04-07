@@ -14,15 +14,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = (V[]) new Object[SIZE];
     }
 
-    private boolean ifExist(K key) {
-        for (K k : keys) {
-            if (key == k || (key != null && key.equals(k))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < count; i++) {
