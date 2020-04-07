@@ -3,9 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    static final int DEFAULT_INITIAL_CAPACITY = 10;
-    Node<K, V>[] nodes;
-    int size;
+    private static final int DEFAULT_INITIAL_CAPACITY = 10;
+    private Node<K, V>[] nodes;
+    private int size;
 
     public StorageImpl() {
         this.nodes = new Node[DEFAULT_INITIAL_CAPACITY];
@@ -14,34 +14,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean valueAdded = false;
 
         for (Node node : nodes) {
             if (node != null && node.getKey() != null && node.getKey().equals(key)) {
                 node.setValue(value);
-                valueAdded = true;
-                break;
+                return;
             }
         }
-
-        if (!valueAdded) {
-            nodes[size++] = new Node(key, value);
-        }
+        nodes[size++] = new Node(key, value);
     }
 
     @Override
     public V get(K key) {
-        V result = null;
 
         for (Node node : nodes) {
             if (node != null
                     && (node.getKey() == null && key == null
                     || node.getKey() != null && node.getKey().equals(key))) {
-                result = (V) node.getValue();
-                break;
+                return (V) node.getValue();
             }
         }
-        return result;
+        return null;
     }
 
     private class Node<K, V> {
@@ -66,38 +59,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
