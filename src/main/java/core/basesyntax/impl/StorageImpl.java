@@ -18,14 +18,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (checking(key) == null) {
-            for (int i = massiveLength; i < this.keyArray.length; i++) {
-                if (this.keyArray[i] == null && this.valuesArray[i] == null) {
-                    this.keyArray[i] = key;
-                    this.valuesArray[i] = value;
-                    this.massiveLength += 1;
-                    break;
-                }
-            }
+            this.keyArray[massiveLength] = key;
+            this.valuesArray[massiveLength] = value;
+            this.massiveLength += 1;
         } else {
             valuesArray[checking(key)] = value;
         }
@@ -35,9 +30,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         if (checking(key) != null) {
             return this.valuesArray[checking(key)];
-        } else {
-            return null;
         }
+        return null;
     }
 
     public Integer checking(K key) {
