@@ -6,11 +6,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
     private int size;
+    public static final int LENGTH_OF_ARRAY = 10;
 
     public StorageImpl() {
-        int length = 10;
-        this.keys = (K[]) new Object[length];
-        this.values = (V[]) new Object[length];
+        this.keys = (K[]) new Object[LENGTH_OF_ARRAY];
+        this.values = (V[]) new Object[LENGTH_OF_ARRAY];
         size = 0;
 
     }
