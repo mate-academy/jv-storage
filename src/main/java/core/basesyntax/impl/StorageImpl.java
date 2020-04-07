@@ -17,8 +17,9 @@ public class StorageImpl<K,V> implements Storage<K,V> {
     @Override
     public void put(K keyPut, V valuePut) {
         for (int i = 0; i < size; i++) {
-            if (keyPut == keys[i] || (keyPut != null && keyPut.equals(keys[i]))) {
+            if (keys[i] == null ? keyPut == null : keys[i].equals(keyPut)) {
                 values[i] = valuePut;
+                return;
             }
         }
         keys[size] = keyPut;
