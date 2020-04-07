@@ -18,16 +18,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         boolean isExist = false;
         for (int i = 0; i < index; i++) {
-            if (key == null && key == keys[i]) {
+            if ((key == null && key == keys[i]) || (key != null && key.equals(keys[i]))) {
                 keys[i] = key;
                 values[i] = value;
                 isExist = true;
-            } else {
-                if (key != null && key.equals(keys[i])) {
-                    keys[i] = key;
-                    values[i] = value;
-                    isExist = true;
-                }
             }
         }
         if (!isExist) {
@@ -40,12 +34,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < LENGTH; i++) {
-            if (key == null && key == keys[i]) {
+            if ((key == null && key == keys[i]) || (key != null && key.equals(keys[i]))) {
                 return (V) values[i];
-            } else {
-                if (key != null && key.equals(keys[i])) {
-                    return (V) values[i];
-                }
             }
         }
         return null;
