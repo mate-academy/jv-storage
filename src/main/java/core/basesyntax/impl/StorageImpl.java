@@ -6,9 +6,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public static final int LENGTH = 10;
 
-    K[] arrayKey;
-    V[] arrayValue;
-    int next;
+    private K[] arrayKey;
+    private V[] arrayValue;
+    private int next;
 
     public StorageImpl() {
         arrayKey = (K[]) new Object[LENGTH];
@@ -21,6 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < next; i++) {
             if ((arrayKey[i] == key) || (arrayKey[i] != null && arrayKey[i].equals(key))) {
                 arrayValue[i] = value;
+                return;
             }
         }
         arrayKey[next] = key;
