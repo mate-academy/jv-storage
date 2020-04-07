@@ -23,9 +23,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         } else {
             keyArray[indexOfElement] = key;
             valueArray[indexOfElement] = value;
-            if (key == null) {
-                index++;
-            }
         }
     }
 
