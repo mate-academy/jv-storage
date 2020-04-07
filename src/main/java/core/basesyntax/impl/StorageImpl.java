@@ -12,29 +12,30 @@ storage.get(22) // вернёт коробку.
 нашем Storage не превышает 10*/
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Object[] masKeys = new Object[10];
-    private Object[] masValues = new Object[10];
-    private int indexForMasKey = 0;
+    private static final int LENGTH = 10;
+    private Object[] masKeys = new Object[LENGTH];
+    private Object[] masValues = new Object[LENGTH];
+    private int indexForMas = 0;
     private int indexForMasValue = 0;
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < indexForMasKey; i++) {
+        for (int i = 0; i < indexForMas; i++) {
             if (Objects.equals(key, masKeys[i])) {
                 masValues[i] = value;
                 return;
             }
         }
-        masKeys[indexForMasKey] = key;
+        masKeys[indexForMas] = key;
         masValues[indexForMasValue] = value;
         indexForMasValue++;
-        indexForMasKey++;
+        indexForMas++;
 
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < indexForMasKey; i++) {
+        for (int i = 0; i < indexForMas; i++) {
             if (key == masKeys[i] || (key != null && key.equals(masKeys[i]))) {
                 return (V) masValues[i];
             }
