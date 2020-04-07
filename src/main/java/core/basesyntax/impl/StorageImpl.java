@@ -1,28 +1,23 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int LENGTH = 10;
-    private K[] keyStorage;
-    private V[] valueStorage;
+    private Object[] keyStorage;
+    private Object[] valueStorage;
     private int index;
 
     public StorageImpl() {
         index = 0;
-        keyStorage = (K[]) new Object[LENGTH];
-        valueStorage = (V[]) new Object[LENGTH];
+        keyStorage = new Object[LENGTH];
+        valueStorage = new Object[LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
         if (find(key) >= 0) {
-            for (int i = 0; i < keyStorage.length; i++) {
-                if (compare(keyStorage[i], key)) {
-                    valueStorage[i] = value;
-                }
-            }
+            valueStorage[find(key)] = value;
         } else {
             keyStorage[index] = key;
             valueStorage[index] = value;
@@ -32,8 +27,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyStorage.length; i++) {
-            if (compare(keyStorage[i], key)) {
+        for (int i = 0; i < index; i++) {
+            if (keyStorage[i] == key || (key != null && key.equals(keyStorage[i]))) {
                 return (V) valueStorage[i];
             }
         }
@@ -41,11 +36,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int find(K key) {
-        return Arrays.asList(keyStorage).indexOf(key);
-    }
-
-    private boolean compare(K firstKey, K secondKey) {
-        return firstKey == secondKey
-                || (firstKey != null && firstKey.equals(secondKey));
+        for (int i = 0; i < index; i++) {
+            if (keyStorage[i] == key) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
