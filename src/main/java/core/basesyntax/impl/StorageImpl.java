@@ -18,6 +18,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         storage = newArray;
     }
 
+    private void fillFirsElement(K key, V value) {
+        storage[0][currentSize] = key;
+        storage[1][currentSize] = value;
+        currentSize++;
+    }
+
     @Override
     public void put(K key, V value) {
         if (currentSize >= storage[0].length * 0.8) {
@@ -25,19 +31,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         if (currentSize == 0) {
-            storage[0][currentSize] = key;
-            storage[1][currentSize] = value;
-            currentSize++;
+            fillFirsElement(key, value);
         } else {
             for (int index = 0; index < currentSize; index++) {
-                if (key == null && storage[0][index] == null
+                if (key == storage[0][index]
                         || storage[0][index] != null && storage[0][index].equals(key)) {
                     storage[1][index] = value;
                 }
             }
-            storage[0][currentSize] = key;
-            storage[1][currentSize] = value;
-            currentSize++;
+            fillFirsElement(key, value);
         }
 
     }
