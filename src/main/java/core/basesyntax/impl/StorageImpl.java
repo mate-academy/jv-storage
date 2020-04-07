@@ -37,6 +37,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return number;
+        return -1;
     }
 }
