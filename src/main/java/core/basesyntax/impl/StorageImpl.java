@@ -6,11 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_MAX_LENGTH = 10;
     private Object[] keys;
     private Object[] values;
-    private int count = 0;
+    private int count;
 
     public StorageImpl() {
         this.keys = new Object[ARRAY_MAX_LENGTH];
         this.values = new Object[ARRAY_MAX_LENGTH];
+        count = 0;
     }
 
     @Override
