@@ -37,6 +37,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     //Don’t create repeating code
     private boolean isTheSameKey(Pair pair, Object key) {
         return pair.getFirst() == key
-                || (null != pair.getFirst() && pair.getFirst().equals(key));
+                || (pair.getFirst() != null && pair.getFirst().equals(key));
     }
 }
