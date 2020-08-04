@@ -3,8 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Object[][] box;
     private static final int MAX_CAPACITY = 10;
+    private Object[][] box;
 
     public StorageImpl() {
         box = new Object[2][MAX_CAPACITY];
