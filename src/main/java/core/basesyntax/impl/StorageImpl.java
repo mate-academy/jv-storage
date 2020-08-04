@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private int realSize;
+    private int realSize = 0;
     private MyPair<K, V>[] myStorage = new MyPair[MAX_STORAGE_SIZE];
 
     @Override
