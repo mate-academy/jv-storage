@@ -14,6 +14,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (size == NUMBEROFPAIRS) {
+         throw new RuntimeException("No more item can be added. Maximum 10 items");
+        }
         for (int i = 0; i < arrayOfPairs.length; i++) {
             if (i == size || arrayOfPairs[i].getFirst() == key
                     || arrayOfPairs[i].getFirst() != null
