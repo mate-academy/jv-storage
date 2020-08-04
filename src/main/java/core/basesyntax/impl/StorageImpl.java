@@ -52,14 +52,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return new Pair<>(first, second);
         }
 
-        public T getFirst() {
-            return first;
-        }
-
-        public U getSecond() {
-            return second;
-        }
-
         @Override
         public boolean equals(Object o) {
             if (this == o) {
