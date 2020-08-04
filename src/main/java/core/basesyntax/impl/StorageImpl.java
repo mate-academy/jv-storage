@@ -4,18 +4,18 @@ import core.basesyntax.Pair;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int NUMBEROFPAIRS = 10;
+    private static final int NUMBER_OF_PAIRS = 10;
     private Pair<K,V>[] arrayOfPairs;
     private int size = 0;
 
     public StorageImpl() {
-        arrayOfPairs = new Pair[NUMBEROFPAIRS];
+        arrayOfPairs = new Pair[NUMBER_OF_PAIRS];
     }
 
     @Override
     public void put(K key, V value) {
-        if (size == NUMBEROFPAIRS) {
-         throw new RuntimeException("No more item can be added. Maximum 10 items");
+        if (size == NUMBER_OF_PAIRS) {
+            throw new RuntimeException("No more item can be added. Maximum 10 items");
         }
         for (int i = 0; i < arrayOfPairs.length; i++) {
             if (i == size || arrayOfPairs[i].getFirst() == key
