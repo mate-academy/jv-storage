@@ -65,12 +65,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return false;
             }
             Pair<?, ?> pair = (Pair<?, ?>) o;
-            if (first == null && pair.first != null
-                    || first != null && !first.equals(pair.first)) {
-                return false;
-            }
-            return second == null && pair.second == null
-                   || second != null && second.equals(pair.second);
+            return (first == pair.first || (first != null && first.equals(pair.first)))
+                   && (second == pair.second || (second != null && second.equals(pair.second)));
         }
 
         @Override
