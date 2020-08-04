@@ -8,17 +8,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private final Pair<K, V>[] storageArray;
 
+    private int size;
+
     public StorageImpl() {
         storageArray = new Pair[MAXIMUM_CAPACITY];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = Pair.of(key, value);
         for (int i = 0; i < storageArray.length; i++) {
-            if (storageArray[i] == null || storageArray[i].first == key
-                    || storageArray[i].equals(key)) {
+            if (i == size || storageArray[i].first == key
+                    || storageArray[i] != null && storageArray[i].equals(key)) {
                 storageArray[i] = pair;
+                size = size == i ? size + 1 : size;
                 return;
             }
         }
