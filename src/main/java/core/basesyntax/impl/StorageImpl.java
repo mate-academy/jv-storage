@@ -66,8 +66,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         @Override
         public int hashCode() {
-            int hash = key == null ? 0 : key.hashCode();
-            hash = value == null ? hash : hash * 31 + value.hashCode();
+            int prime = 31;
+            int hash = key == null ? prime : prime * key.hashCode();
+            hash = value == null ? hash : prime * hash + value.hashCode();
             return hash;
         }
     }
