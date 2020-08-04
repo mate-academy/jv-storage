@@ -17,11 +17,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Pair<K, V> pair = Pair.of(key, value);
         for (int i = 0; i < storageArray.length; i++) {
-            if (i == size || storageArray[i].first == key
-                    || storageArray[i] != null && storageArray[i].equals(key)) {
-                storageArray[i] = pair;
+            if (i == size || storageArray[i] != null && (storageArray[i].key == key
+                    || storageArray[i].key != null && storageArray[i].key.equals(key))) {
+                storageArray[i] = Pair.of(key, value);
                 size = size == i ? size + 1 : size;
                 return;
             }
@@ -31,25 +30,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (Pair<K, V> pair : storageArray) {
-            if (pair != null && (pair.first == key
-                    || pair.first != null && pair.first.equals(key))) {
-                return pair.second;
+            if (pair != null && (pair.key == key
+                    || pair.key != null && pair.key.equals(key))) {
+                return pair.value;
             }
         }
         return null;
     }
 
     private static class Pair<T, U> {
-        private final T first;
-        private final U second;
+        private final T key;
+        private final U value;
 
-        private Pair(T first, U second) {
-            this.first = first;
-            this.second = second;
+        private Pair(T key, U value) {
+            this.key = key;
+            this.value = value;
         }
 
-        public static <T, U> Pair<T, U> of(T first, U second) {
-            return new Pair<>(first, second);
+        public static <T, U> Pair<T, U> of(T key, U value) {
+            return new Pair<>(key, value);
         }
 
         @Override
@@ -61,14 +60,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return false;
             }
             Pair<?, ?> pair = (Pair<?, ?>) o;
-            return (first == pair.first || (first != null && first.equals(pair.first)))
-                   && (second == pair.second || (second != null && second.equals(pair.second)));
+            return (key == pair.key || (key != null && key.equals(pair.key)))
+                   && (value == pair.value || (value != null && value.equals(pair.value)));
         }
 
         @Override
         public int hashCode() {
-            int hash = first == null ? 0 : first.hashCode();
-            hash = second == null ? hash : hash * 31 + second.hashCode();
+            int hash = key == null ? 0 : key.hashCode();
+            hash = value == null ? hash : hash * 31 + value.hashCode();
             return hash;
         }
     }
