@@ -59,7 +59,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (o == null || getClass() != o.getClass()) {
                 return false;
             }
-            Pair<?, ?> pair = (Pair<?, ?>) o;
+            Pair<T, U> pair = (Pair<T, U>) o;
             return (key == pair.key || (key != null && key.equals(pair.key)))
                    && (value == pair.value || (value != null && value.equals(pair.value)));
         }
