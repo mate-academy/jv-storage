@@ -9,8 +9,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int score;
 
     public StorageImpl() {
-        this.keys = new Object[10];
-        this.array = new Object[10];
+        keys = new Object[10];
+        array = new Object[10];
         score = 0;
     }
 
