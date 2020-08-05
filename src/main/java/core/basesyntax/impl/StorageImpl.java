@@ -5,60 +5,65 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int MAXIMUM_SIZE = 10;
-
-    private static final int PRIME = 97;
-
     private final Pair<K, V>[] pairsArray;
+    private int currentAmount;
 
     public StorageImpl() {
         pairsArray = new Pair[MAXIMUM_SIZE];
+    }
+
+    public int getCurrentAmount() {
+        return this.currentAmount;
     }
 
     @Override
     public void put(K key, V value) {
         Pair<K, V> input = Pair.of(key, value);
 
-        for (int i = 0; i < pairsArray.length; i++) {
-            if (pairsArray[i] == null
-                    || pairsArray[i].first == key
-                    || pairsArray[i].first == null && key == null) {
+        for (int i = 0; i < currentAmount; i++) {
+            if (pairsArray[i] != null
+                    && (pairsArray[i].first == key
+                    || key != null && key.equals(pairsArray[i].first))) {
                 pairsArray[i] = input;
                 return;
             }
         }
+        pairsArray[currentAmount] = input;
+        currentAmount++;
     }
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> pair : pairsArray) {
+        for (int i = 0; i < currentAmount; i++) {
+            Pair<K, V> pair = pairsArray[i];
             if (pair != null
-                    && (pair.first == key
-                    || pair.first != null
-                    && pair.first.equals(key))) {
+                    && ((pair.first == key)
+                    || (key != null && key.equals(pair.first)))) {
                 return pair.second;
             }
         }
         return null;
     }
 
-    private static class Pair<T, X> {
-        private final T first;
-        private final X second;
+    private static class Pair<K, V> {
+        private static final int PRIME = 97;
+        private final K first;
+        private final V second;
 
-        private Pair(T first, X second) {
+        private Pair(K first, V second) {
             this.first = first;
             this.second = second;
         }
 
-        public static <T, X> Pair<T, X> of(T first, X second) {
+        public static <K, V> Pair<K, V> of(K first, V second) {
             return new Pair<>(first, second);
         }
 
-        public T getFirst() {
+        public K getFirst() {
             return first;
         }
 
-        public X getSecond() {
+        public V getSecond() {
             return second;
         }
 
@@ -72,21 +77,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return false;
             }
 
-            Pair<?, ?> pair = (Pair<?, ?>) object;
+            Pair<K, V> pair = (Pair<K, V>) object;
             if (first == null && pair.first == null
                     || first != null && first.equals(pair.first)) {
                 return true;
             }
 
-            return second == null && pair.second == null
-                    || second != null && second.equals(pair.second);
+            return second.equals(pair.second);
         }
 
         @Override
         public int hashCode() {
-            int hashCode = first != null ? first.hashCode() : 0;
-            hashCode = second != null ? PRIME * hashCode + second.hashCode() : hashCode;
-            return hashCode;
+            int hashCode = first != null ? PRIME * first.hashCode() : 0;
+            return second != null ? second.hashCode() + hashCode : hashCode;
         }
     }
 }
