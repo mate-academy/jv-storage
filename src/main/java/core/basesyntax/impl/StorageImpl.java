@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     @Override
-    public V get(K key) { // такой код работает //
+    public V get(K key) {
         for (int i = 0; i < ARRAY_LENGTH; i++) {
             if (key == keyStorage[i]) {
                 return (V) valueStorage[i];
