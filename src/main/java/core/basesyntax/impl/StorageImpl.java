@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean isKeyExists(K key) {
         for (int i = 0; i < generalKey; i++) {
-            if (keys[i] != null && keys[i].equals(key)) {
+            if (keys[i] == key || key != null && key.equals(keys[i])) {
                 return true;
             }
         }
