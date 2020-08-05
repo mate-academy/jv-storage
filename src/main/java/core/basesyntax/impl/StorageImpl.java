@@ -6,34 +6,40 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NUMBER_OF_PAIRS = 10;
     private Pair<K,V>[] arrayOfPairs;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         arrayOfPairs = new Pair[NUMBER_OF_PAIRS];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
+        boolean flagKeyExists = false;
         if (size == NUMBER_OF_PAIRS) {
             throw new RuntimeException("No more item can be added. Maximum 10 items");
         }
-        for (int i = 0; i < arrayOfPairs.length; i++) {
-            if (i == size || arrayOfPairs[i].getFirst() == key
-                    || arrayOfPairs[i].getFirst() != null
-                    && arrayOfPairs[i].getFirst().equals(key)) {
-                arrayOfPairs[i] = Pair.of(key, value);
+        for (int i = 0; i < size; i++) {
+            if (arrayOfPairs[i].getKey() == key
+                    || arrayOfPairs[i].getKey() != null
+                    && arrayOfPairs[i].getKey().equals(key)) {
+                arrayOfPairs[i].setValue(value);
+                flagKeyExists = true;
                 break;
             }
         }
-        size++;
+        if (!flagKeyExists) {
+            arrayOfPairs[size] = Pair.of(key, value);
+            size++;
+        }
     }
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> pair : arrayOfPairs) {
-            if (pair != null && (pair.getFirst() == key
-                    || pair.getFirst() != null && pair.getFirst().equals(key))) {
-                return pair.getSecond();
+        for (int i = 0; i < size; i++) {
+            if (arrayOfPairs[i].getKey() == key
+                    || arrayOfPairs[i].getKey() != null && arrayOfPairs[i].getKey().equals(key)) {
+                return arrayOfPairs[i].getValue();
             }
         }
         return null;
