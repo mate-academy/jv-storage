@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int ARRAY_LENGTH = 10;
-    int generalKey = 0;
+    private int generalKey = 0;
     private K[] keys = (K[]) new Object[ARRAY_LENGTH];
     private V[] values = (V[]) new Object[ARRAY_LENGTH];
 
@@ -39,14 +39,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getCellNumber(K key) {
         for (int i = 0; i < generalKey; i++) {
-            if (keys[i] == null) {
-                if (keys[i] == key) {
-                    return i;
-                }
-            } else {
-                if (keys[i].equals(key)) {
-                    return i;
-                }
+            if ((keys[i] == null && key == null) || keys[i] != null && keys[i].equals(key)) {
+                return i;
             }
         }
         return -1;
