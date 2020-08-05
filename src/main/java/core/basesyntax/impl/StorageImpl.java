@@ -29,15 +29,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         return storageArray[0] == null ? null : Arrays.stream(storageArray)
-                .filter(x -> x.first == key
+               .filter(x -> x.first == key
                         || x.first != null && isKeysEqual(x.first, key))
                 .findFirst()
                 .get().second;
     }
 
     public boolean isKeysEqual(K key,K storageKey) {
-        return storageKey == null ?
-                storageKey == key : storageKey.equals(key);
+        return storageKey == null ? storageKey == key : storageKey.equals(key);
     }
 
     static class Pair<K, V> {
@@ -48,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.first = first;
             this.second = second;
         }
-        
+
         public static <K, V> Pair of(K first, V second) {
             return new Pair<>(first, second);
         }
