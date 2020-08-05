@@ -21,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 values[i] = value;
                 size++;
                 break;
-            } else if (keys[i] == null) {
+            } else {
                 keys[size] = key;
                 values[size] = value;
                 size++;
