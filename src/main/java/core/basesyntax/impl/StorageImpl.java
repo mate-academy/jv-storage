@@ -8,14 +8,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        this.arrNode = new Node[DEFAULT_INITIAL_CAPACITY];
+        arrNode = new Node[DEFAULT_INITIAL_CAPACITY];
         size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (Node node : arrNode) {
-            if (node != null && node.getKey() != null
+            if (node != null && node.getKey() == key
                     && node.getKey().equals(key)) {
                 node.setValue(value);
                 return;
@@ -28,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (Node node : arrNode) {
             if (node != null
-                    && (node.getKey() == null && key == null
+                    && (node.getKey() == key
                     || node.getKey() != null && node.getKey().equals(key))) {
                 return (V) node.getValue();
             }
