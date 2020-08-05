@@ -3,30 +3,27 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int STORAGESIZE = 10;
+    public static final int STORAGE_SIZE = 10;
     private K[] keys;
     private V[] values;
     private int counter = 0;
 
     public StorageImpl() {
-        keys = (K[]) new Object[STORAGESIZE];
-        values = (V[]) new Object[STORAGESIZE];
+        keys = (K[]) new Object[STORAGE_SIZE];
+        values = (V[]) new Object[STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        boolean isKeyUnique = true;
         for (int i = 0; i < counter; i++) {
             if (keys[i] == null ? keys[i] == key : keys[i].equals(key)) {
                 values[i] = value;
-                isKeyUnique = false;
+                return;
             }
         }
-        if (isKeyUnique) {
-            this.keys[counter] = key;
-            this.values[counter] = value;
-            counter++;
-        }
+        this.keys[counter] = key;
+        this.values[counter] = value;
+        counter++;
     }
 
     @Override
