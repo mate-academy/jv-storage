@@ -10,19 +10,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int iterator;
 
     public StorageImpl() {
-        this.key = (K[]) new Object[SIZE];
-        this.value = (V[]) new Object[SIZE];
+        key = (K[]) new Object[SIZE];
+        value = (V[]) new Object[SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (iterator > 0) {
-            for (int i = 0; i < iterator; i++) {
-                if (((this.key[i] != null) && this.key[i].equals(key))
-                        || (key == null && this.key[i] == null)) {
-                    this.value[i] = value;
-                    return;
-                }
+        for (int i = 0; i < iterator; i++) {
+            if (((this.key[i] != null) && this.key[i].equals(key))
+                    || (key == null && this.key[i] == null)) {
+                this.value[i] = value;
+                return;
             }
         }
         this.key[iterator] = key;
