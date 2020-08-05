@@ -18,6 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             if (key == arrKey[i] || key != null && key.equals(arrKey[i])) {
                 arrValue[i] = value;
+                return;
             }
         }
         arrKey[size] = key;
