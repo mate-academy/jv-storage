@@ -3,9 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
-    private Object[] keys = new Object[10];
-    private Object[] values = new Object[10];
+    public final static int MAXIMUM_SIZE = 10;
+    private Object[] keys = new Object[MAXIMUM_SIZE];
+    private Object[] values = new Object[MAXIMUM_SIZE];
     private int count = 0;
 
     @Override
