@@ -21,8 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         Pair<K, V> input = Pair.of(key, value);
 
         for (int i = 0; i < currentAmount; i++) {
-            if (pairsArray[i] != null
-                    && (pairsArray[i].first == key
+            if ((pairsArray[i].first == key
                     || key != null && key.equals(pairsArray[i].first))) {
                 pairsArray[i] = input;
                 return;
@@ -36,9 +35,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < currentAmount; i++) {
             Pair<K, V> pair = pairsArray[i];
-            if (pair != null
-                    && ((pair.first == key)
-                    || (key != null && key.equals(pair.first)))) {
+            if (pair.first == key
+                    || key != null && key.equals(pair.first)) {
                 return pair.second;
             }
         }
@@ -47,8 +45,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static class Pair<K, V> {
         private static final int PRIME = 97;
-        private final K first;
-        private final V second;
+        private K first;
+        private V second;
 
         private Pair(K first, V second) {
             this.first = first;
@@ -78,7 +76,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
 
             Pair<K, V> pair = (Pair<K, V>) object;
-            if (first == null && pair.first == null
+            if (first == pair.first
                     || first != null && first.equals(pair.first)) {
                 return true;
             }
