@@ -3,11 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAXIMUM_CAPACITY = 10;
-
     private final Pair<K, V>[] storageArray;
-
     private int size;
 
     public StorageImpl() {
@@ -17,7 +14,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < storageArray.length; i++) {
+        for (int i = 0; i <= size; i++) {
             if (i == size || storageArray[i] != null && (storageArray[i].key == key
                     || storageArray[i].key != null && storageArray[i].key.equals(key))) {
                 storageArray[i] = Pair.of(key, value);
@@ -29,9 +26,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> pair : storageArray) {
-            if (pair != null && (pair.key == key
-                    || pair.key != null && pair.key.equals(key))) {
+        for (int i = 0; i < size; i++) {
+            Pair<K, V> pair = storageArray[i];
+            if (pair.key == key || pair.key != null && pair.key.equals(key)) {
                 return pair.value;
             }
         }
@@ -39,8 +36,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private static class Pair<T, U> {
-        private final T key;
-        private final U value;
+        private T key;
+        private U value;
 
         private Pair(T key, U value) {
             this.key = key;
