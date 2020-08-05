@@ -3,7 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static int MAXIMUM_SIZE = 10;
+    public static final int MAXIMUM_SIZE = 10;
     private K[] keys;
     private V[] values;
     private int count;
@@ -38,10 +38,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean check(Object newKey, Object keyFromArray) {
-        if (newKey == null && newKey == keyFromArray) {
-            return true;
-        }
-        if (newKey != null && newKey.equals(keyFromArray)) {
+        if ((newKey == null && newKey == keyFromArray)
+                || (newKey != null && newKey.equals(keyFromArray))) {
             return true;
         }
         return false;
