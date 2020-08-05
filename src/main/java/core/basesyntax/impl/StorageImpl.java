@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     static final int SIZE = 10;
-    Pair<K, V>[] pairs;
+    private Pair<K, V>[] pairs;
 
     public StorageImpl() {
         this.pairs = new Pair[SIZE];
@@ -22,19 +22,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public Object get(Object key) {
-
         for (int i = 0; i < SIZE; i++) {
-            if (null == pairs[i]) {
-                break;
-            }
-            if (isTheSameKey(pairs[i], key)) {
+            if (pairs[i] != null && isTheSameKey(pairs[i], key)) {
                 return pairs[i].getSecond();
             }
         }
         return null;
     }
 
-    //Don’t create repeating code
     private boolean isTheSameKey(Pair pair, Object key) {
         return pair.getFirst() == key
                 || (pair.getFirst() != null && pair.getFirst().equals(key));

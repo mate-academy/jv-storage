@@ -1,10 +1,10 @@
 package core.basesyntax.impl;
 
-public class Pair<T, K> {
+class Pair<T, K> {
     static final int CONSTANT = 31;
 
-    T first;
-    K second;
+    private T first;
+    private K second;
 
     private Pair(T first, K second) {
         this.first = first;
@@ -25,7 +25,6 @@ public class Pair<T, K> {
 
     @Override
     public boolean equals(Object object) {
-
         if (null == object) {
             return false;
         }
