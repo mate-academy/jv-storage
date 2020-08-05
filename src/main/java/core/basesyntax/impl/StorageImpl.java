@@ -4,7 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final Pair<K, V>[] resultArray;
+    private Pair<K, V>[] resultArray;
+    private int size = 0;
 
     public StorageImpl() {
         resultArray = new Pair[MAX_SIZE];
@@ -13,11 +14,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         Pair<K, V> pairToStore = Pair.of(key, value);
-        for (int i = 0; i < MAX_SIZE; i++) {
+        for (int i = 0; i <= size; i++) {
             if (resultArray[i] == null) {
                 resultArray[i] = pairToStore;
+                size++;
                 return;
-            } else if ((resultArray[i].getKey() == null
+            }
+            if ((resultArray[i].getKey() == null
                     ? resultArray[i].getKey() == key : resultArray[i].getKey().equals(key))) {
                 resultArray[i].value = pairToStore.value;
                 return;
