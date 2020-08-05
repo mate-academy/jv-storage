@@ -1,9 +1,7 @@
 package core.basesyntax.impl;
 
-import core.basesyntax.Pair;
 import core.basesyntax.Storage;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
@@ -17,33 +15,42 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean isKeyExist = storageArray[0] != null && Arrays.stream(storageArray)
-                .filter(Objects::nonNull)
-                .noneMatch(x -> x.getFirst() != key);
-        if (!isKeyExist) {
-            for (int i = 0; i < storageArray.length; i++) {
-                if (i == size) {
-                    storageArray[i] = Pair.of(key, value);
-                    size++;
-                    return;
-                }
+        Pair pair = Pair.of(key, value);
+        for (int i = 0; i <= size; i++) {
+            if (i == size || storageArray[i].first == key
+                    || storageArray[i] != null && isKeysEqual(storageArray[i].first,key)) {
+                storageArray[i] = pair;
+                size++;
+                return;
             }
-        } else {
-            Arrays.stream(storageArray)
-                    .filter(x -> x.getFirst().equals(key))
-                    .findFirst()
-                    .ifPresent(x -> x.setSecond(value));
         }
     }
 
     @Override
     public V get(K key) {
         return storageArray[0] == null ? null : Arrays.stream(storageArray)
-                .filter(x -> x.getFirst() == key
-                        || x.getFirst() != null && x.getFirst().equals(key))
+                .filter(x -> x.first == key
+                        || x.first != null && isKeysEqual(x.first, key))
                 .findFirst()
-                .get()
-                .getSecond();
+                .get().second;
+    }
+
+    public boolean isKeysEqual(K key,K storageKey) {
+        return storageKey == null ?
+                storageKey == key : storageKey.equals(key);
+    }
+
+    static class Pair<K, V> {
+        private K first;
+        private V second;
+
+        private Pair(K first, V second) {
+            this.first = first;
+            this.second = second;
+        }
+        
+        public static <K, V> Pair of(K first, V second) {
+            return new Pair<>(first, second);
+        }
     }
 }
-
