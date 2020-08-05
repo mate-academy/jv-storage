@@ -21,8 +21,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        this.keys[counter] = key;
-        this.values[counter] = value;
+        keys[counter] = key;
+        values[counter] = value;
         counter++;
     }
 
