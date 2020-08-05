@@ -15,8 +15,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i <= size; i++) {
-            if (i == size || storageArray[i] != null && (storageArray[i].key == key
-                    || storageArray[i].key != null && storageArray[i].key.equals(key))) {
+            if (i == size || storageArray[i].key == key
+                    || storageArray[i].key != null && storageArray[i].key.equals(key)) {
                 storageArray[i] = Pair.of(key, value);
                 size = size == i ? size + 1 : size;
                 return;
