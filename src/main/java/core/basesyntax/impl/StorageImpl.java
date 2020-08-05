@@ -15,7 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean flagKeyExists = false;
         if (size == NUMBER_OF_PAIRS) {
             throw new RuntimeException("No more item can be added. Maximum 10 items");
         }
@@ -24,14 +23,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     || arrayOfPairs[i].getKey() != null
                     && arrayOfPairs[i].getKey().equals(key)) {
                 arrayOfPairs[i].setValue(value);
-                flagKeyExists = true;
-                break;
+                return;
             }
         }
-        if (!flagKeyExists) {
             arrayOfPairs[size] = Pair.of(key, value);
             size++;
-        }
     }
 
     @Override
