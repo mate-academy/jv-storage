@@ -21,8 +21,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         Pair<K, V> pair = findPairByKey(key);
 
         if (pair == null) {
-            capacity += 1;
             pairs[capacity] = Pair.of(key, value);
+            capacity += 1;
         } else {
             pair.setSecond(value);
         }
@@ -35,7 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private Pair<K, V> findPairByKey(K key) {
-        for (int i = 0; i < capacity + 1; i++) {
+        for (int i = 0; i < capacity; i++) {
             if (pairs[i] != null) {
                 K entryKey = pairs[i].getFirst();
                 if (entryKey != null && entryKey.equals(key) || entryKey == key) {
