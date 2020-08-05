@@ -14,8 +14,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MASS_LENGTH; i++) {
-            if (storage[i] != null && storage[i].equals(Pair.of(key, value))
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null && storage[i].equals(key)
                     || i == size || storage[i].key == key) {
                 storage[i] = Pair.of(key, value);
                 size = size == i ? size + 1 : size;
@@ -45,6 +45,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         public static <K, V> Pair<K, V> of(K first, V value) {
             return new Pair<>(first, value);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof Pair)) {
+                return false;
+            }
+            Pair<?, ?> pair = (Pair<?, ?>) o;
+            return key == null ? key == pair.key : key.equals(pair.key)
+                    && value == null ? value == pair.value : value.equals(pair.value);
+        }
+
+        @Override
+        public int hashCode() {
+            int primaryNumber = 17;
+            return ((primaryNumber * 7 + (key == null ? 0 : key.hashCode()))
+                    * 7 + (value == null ? 0 : value.hashCode()));
         }
     }
 }
