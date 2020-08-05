@@ -14,25 +14,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Pair<K, V> pair = Pair.of(key, value);
+
         for (int i = 0; i <= size; i++) {
-            if (i == size || storageArray[i].getFirst() == key
-                    || storageArray[i] != null && storageArray[i].equals(key)) {
-                storageArray[i] = pair;
-                if (size == i) {
-                    size++;
-                }
+            if (i == size) {
+                storageArray[i] = Pair.of(key, value);
+                size++;
                 return;
             }
+            if (storageArray[i].firstVariable == key
+                    || storageArray[i].equals(key)
+                    && storageArray[i].firstVariable != null) {
+                storageArray[i].secondVariable = value;
+                return;
+            }
+
         }
+
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             Pair<K,V> pair = storageArray[i];
-            if (pair != null && (pair.getFirst() == key
-                    || pair.getFirst() != null && pair.getFirst().equals(key))) {
+            if (pair.getFirst() == key
+                    || pair.getFirst() != null && pair.getFirst().equals(key)) {
                 return pair.getSecond();
             }
         }
