@@ -26,8 +26,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-            arrayOfPairs[size] = Pair.of(key, value);
-            size++;
+        arrayOfPairs[size] = Pair.of(key, value);
+        size++;
     }
 
     @Override
