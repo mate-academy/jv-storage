@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static int MAXIMUM_SIZE = 10;
+    private static final int MAXIMUM_SIZE = 10;
     private Pair<K, V>[] storageArray;
     private int size;
 
