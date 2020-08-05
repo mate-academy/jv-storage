@@ -34,4 +34,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return pair.getFirst() == key
                 || (pair.getFirst() != null && pair.getFirst().equals(key));
     }
+
+    static class Pair<T, K> {
+        static final int CONSTANT = 31;
+
+        private T first;
+        private K second;
+
+        private Pair(T first, K second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public static <T, K> Pair of(T data, K data2) {
+            return new Pair<T, K>(data, data2);
+        }
+
+        public T getFirst() {
+            return first;
+        }
+
+        public K getSecond() {
+            return second;
+        }
+    }
 }
