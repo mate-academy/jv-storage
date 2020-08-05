@@ -20,6 +20,7 @@ public class StorageImpl<K, V> implements Storage<K,V> {
             if (keyArr[i] == key
                     || keyArr[i] != null && keyArr[i].equals(key)) {
                 valueArr[i] = value;
+                return;
             }
         }
         keyArr[currElementsNumber] = key;
