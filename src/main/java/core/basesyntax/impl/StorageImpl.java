@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private final Pair<K, V>[] pairs;
+    private Pair<K, V>[] pairs;
     private int index;
 
     public StorageImpl() {
@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         Pair<K, V> pair = Pair.of(key, value);
         for (int i = 0; i < index; i++) {
-            if (comparisonKeys(key, pairs[i].getKey())) {
+            if (checkKeysEquality(key, pairs[i].getKey())) {
                 pairs[i] = pair;
                 return;
             }
@@ -27,14 +27,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < index; i++) {
-            if (comparisonKeys(key, pairs[i].getKey())) {
+            if (checkKeysEquality(key, pairs[i].getKey())) {
                 return pairs[i].getValue();
             }
         }
         return null;
     }
 
-    private boolean comparisonKeys(K firstKey, K secondKey) {
+    private boolean checkKeysEquality(K firstKey, K secondKey) {
         return firstKey != null ? firstKey.equals(secondKey) : secondKey == null;
     }
 
