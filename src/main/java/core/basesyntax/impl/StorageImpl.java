@@ -14,11 +14,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i <= size; i++) {
+        for (int i = 0; i <= size && i < storageArray.length; i++) {
             if (i == size || storageArray[i].key == key
                     || storageArray[i].key != null && storageArray[i].key.equals(key)) {
-                storageArray[i] = Pair.of(key, value);
-                size = size == i ? size + 1 : size;
+                if (storageArray[i] == null) {
+                    storageArray[i] = Pair.of(key, value);
+                    size++;
+                } else {
+                    storageArray[i].value = value;
+                }
                 return;
             }
         }
