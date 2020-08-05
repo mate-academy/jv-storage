@@ -27,9 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 storageArray[i].secondVariable = value;
                 return;
             }
-
         }
-
     }
 
     @Override
