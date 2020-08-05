@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_CAPACITY = 10;
-    private int storageSize = 0;
+    private int storageSize;
     private Object[] keyArray;
     private Object[] valueArray;
 
@@ -16,12 +16,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < storageSize; i++) {
-            if (keyArray[i] == null && valueArray[i] != null) {
-                continue;
-            }
-            if (keyArray[i].equals(key)) {
+            if (keyArray[i] != null && keyArray[i].equals(key)) {
                 valueArray[i] = value;
-                storageSize++;
                 return;
             }
         }
