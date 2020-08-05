@@ -4,9 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-
     private final Pair<K,V>[] storageArray;
-
     private int size;
 
     public StorageImpl() {
@@ -17,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = Pair.of(key, value);
-        for (int i = 0; i < MAX_SIZE; i++) {
+        for (int i = 0; i <= size; i++) {
             if (i == size || storageArray[i].getFirst() == key
                     || storageArray[i] != null && storageArray[i].equals(key)) {
                 storageArray[i] = pair;
@@ -31,7 +29,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> pair : storageArray) {
+        for (int i = 0; i < size; i++) {
+            Pair<K,V> pair = storageArray[i];
             if (pair != null && (pair.getFirst() == key
                     || pair.getFirst() != null && pair.getFirst().equals(key))) {
                 return pair.getSecond();
@@ -41,24 +40,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private static class Pair<T1, T2> {
-        private T1 t1;
-        private T2 t2;
+        private T1 firstVariable;
+        private T2 secondVariable;
 
-        private Pair(T1 t1, T2 t2) {
-            this.t1 = t1;
-            this.t2 = t2;
+        private Pair(T1 firstVariable, T2 secondVariable) {
+            this.firstVariable = firstVariable;
+            this.secondVariable = secondVariable;
         }
 
-        public static <T1, T2> Pair<T1, T2> of(T1 t1, T2 t2) {
-            return new Pair<>(t1, t2);
+        public static <T1, T2> Pair<T1, T2> of(T1 firstVariable, T2 secondVariable) {
+            return new Pair<>(firstVariable, secondVariable);
         }
 
         public T1 getFirst() {
-            return t1;
+            return firstVariable;
         }
 
         public T2 getSecond() {
-            return t2;
+            return secondVariable;
         }
 
         @Override
@@ -70,21 +69,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return false;
             }
 
-            Pair<?, ?> pair = (Pair<?, ?>) o;
-            return (this.getFirst() == null || pair.getFirst() == null)
-                    ? this.getFirst() == pair.getFirst()
-                    : this.getFirst().equals(pair.getFirst())
-                    && (this.getSecond() == null || pair.getSecond() == null)
-                    ? this.getSecond() == pair.getSecond()
-                    : this.getSecond().equals(pair.getSecond());
+            Pair<T1, T2> pair = (Pair<T1, T2>) o;
+            return (firstVariable == null || pair.firstVariable == null)
+                    ? firstVariable == pair.firstVariable
+                    : firstVariable.equals(pair.firstVariable)
+                    && (secondVariable == null || pair.secondVariable == null)
+                    ? secondVariable == pair.secondVariable
+                    : secondVariable.equals(pair.secondVariable);
         }
 
         @Override
         public int hashCode() {
             int prime = 31;
             int result = 1;
-            result += prime * result + (t1 == null ? 0 : t1.hashCode());
-            result += prime * result + (t2 == null ? 0 : t2.hashCode());
+            result += prime * result + (firstVariable == null ? 0 : firstVariable.hashCode());
+            result += prime * result + (secondVariable == null ? 0 : secondVariable.hashCode());
             return result;
         }
     }
