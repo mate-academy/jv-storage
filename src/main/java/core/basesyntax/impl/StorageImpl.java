@@ -23,7 +23,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if ((resultArray[i].getKey() == null
                     ? resultArray[i].getKey() == key : resultArray[i].getKey().equals(key))) {
                 resultArray[i].value = pairToStore.value;
-                return;
             }
         }
     }
@@ -58,28 +57,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         static <K, V> Pair of(K key, V value) {
             return new Pair(key, value);
-        }
-
-        @Override
-        public int hashCode() {
-            int prime = 31;
-            int result = 1;
-            result = prime * result + (key == null ? 0 : key.hashCode());
-            result = prime * result + (value == null ? 0 : value.hashCode());
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || !obj.getClass().equals(Pair.class)) {
-                return false;
-            }
-            Pair objCast = (Pair) obj;
-            return (key != null ? key.equals(objCast.key) : key == objCast.key)
-                    && (value != null ? value.equals(objCast.value) : value == objCast.value);
         }
     }
 }
