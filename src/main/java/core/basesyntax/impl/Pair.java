@@ -1,14 +1,12 @@
 package core.basesyntax.impl;
 
 public class Pair<K, T> {
-    private int index;
-    private final K first;
-    private final T second;
+    private K first;
+    private T second;
 
-    private Pair(K first, T second, int index) {
+    private Pair(K first, T second) {
         this.first = first;
         this.second = second;
-        this.index = index;
     }
 
     public K getFirst() {
@@ -19,8 +17,12 @@ public class Pair<K, T> {
         return second;
     }
 
-    public int getIndex() {
-        return index;
+    public void setFirst(K first) {
+        this.first = first;
+    }
+
+    public void setSecond(T second) {
+        this.second = second;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class Pair<K, T> {
             return false;
         }
 
-        Pair<?, ?> pair = (Pair<?, ?>) o;
+        Pair<K, T> pair = (Pair<K, T>) o;
         return (first == pair.first
                 || (first != null && first.equals(pair.first)))
                 && (second == pair.second
@@ -48,8 +50,8 @@ public class Pair<K, T> {
         return result;
     }
 
-    public static <K, T> Pair<K, T> of(K first, T second, int index) {
-        return new Pair<>(first, second, index);
+    public static <K, T> Pair<K, T> of(K first, T second) {
+        return new Pair<>(first, second);
     }
 }
 
