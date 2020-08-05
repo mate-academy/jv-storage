@@ -7,11 +7,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int STORAGE_CAPACITY = 10;
 
-    private int storageFullness = 0;
+    private int storageFullness;
     private final K[] keyArray;
     private final V[] valueArray;
 
     public StorageImpl() {
+        storageFullness = 0;
         keyArray = (K[]) new Object[STORAGE_CAPACITY];
         valueArray = (V[]) new Object[STORAGE_CAPACITY];
     }
@@ -19,8 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < storageFullness; i++) {
-            if (i < storageFullness && ((keyArray[i] == key)
-                    || (keyArray[i] != null && keyArray[i].equals(key)))) {
+            if (keyArray[i] == key || (keyArray[i] != null && keyArray[i].equals(key))) {
                 valueArray[i] = value;
                 return;
             }
