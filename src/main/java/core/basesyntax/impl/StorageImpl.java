@@ -17,7 +17,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getElementIndex(key);
         if (index != -1) {
-            keyStorage[index] = key;
             valueStorage[index] = value;
         } else {
             keyStorage[size] = key;
