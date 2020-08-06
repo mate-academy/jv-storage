@@ -78,7 +78,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             Pair<K, V> pair = (Pair<K, V>) object;
             boolean checkOfFirst = first == pair.first
                     || first != null && first.equals(pair.first);
-            boolean checkOfSecond = second.equals(pair.second);
+            boolean checkOfSecond = second == pair.second
+                    || second != null && second.equals(pair.second);
 
             return checkOfFirst && checkOfSecond;
         }
