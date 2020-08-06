@@ -22,8 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
             if (storageArray[i].firstVariable == key
-                    || storageArray[i].equals(key)
-                    && storageArray[i].firstVariable != null) {
+                    || storageArray[i].equals(key)) {
                 storageArray[i].secondVariable = value;
                 return;
             }
