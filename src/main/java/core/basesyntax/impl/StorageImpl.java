@@ -20,7 +20,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     || key != null && key.equals(keys[i])) {
                 values[i] = value;
                 size++;
-                break;
             } else {
                 keys[size] = key;
                 values[size] = value;
