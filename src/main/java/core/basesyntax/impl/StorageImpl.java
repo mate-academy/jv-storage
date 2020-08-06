@@ -5,11 +5,12 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_SIZE = 10;
-    private final Pair<K, V>[] storageArray;
-    private int size = 0;
+    private Pair<K, V>[] storageArray;
+    private int size;
 
     public StorageImpl() {
         storageArray = new Pair[MAXIMUM_SIZE];
+        size = 0;
     }
 
     @Override
@@ -28,8 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         return storageArray[0] == null ? null : Arrays.stream(storageArray)
-               .filter(x -> x.first == key
-                        || x.first != null && isKeysEqual(x.first, key))
+               .filter(x -> isKeysEqual(x.first, key))
                 .findFirst()
                 .get().second;
     }
