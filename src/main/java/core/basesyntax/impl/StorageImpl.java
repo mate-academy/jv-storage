@@ -17,8 +17,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         Pair pair = Pair.of(key, value);
         for (int i = 0; i <= size; i++) {
-            if (i == size || storageArray[i].first == key
-                    || storageArray[i] != null && isKeysEqual(storageArray[i].first,key)) {
+            if (i == size || storageArray[i] != null
+                    && isKeysEqual(storageArray[i].first, key)) {
                 storageArray[i] = pair;
                 size++;
                 return;
@@ -29,12 +29,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         return storageArray[0] == null ? null : Arrays.stream(storageArray)
-               .filter(x -> isKeysEqual(x.first, key))
+                .filter(x -> isKeysEqual(x.first, key))
                 .findFirst()
                 .get().second;
     }
 
-    public boolean isKeysEqual(K key,K storageKey) {
+    public boolean isKeysEqual(K key, K storageKey) {
         return storageKey == null ? storageKey == key : storageKey.equals(key);
     }
 
