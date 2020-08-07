@@ -20,13 +20,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     || key != null && key.equals(keys[i])) {
                 values[i] = value;
             }
-            if (keys[i] == null) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-                break;
-            }
         }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
