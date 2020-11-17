@@ -1,11 +1,14 @@
 # jv-storage
 
-Создайте хранилище типа КЛЮЧ - ЗНАЧЕНИЕ, которое параметризируется 2-умя 
-типами данных, и в этом хранилище можо класть значение по ключу и 
-доставать значение по ключу. 
-Пример: 
+Implement the `Storage` of `key-value` type that is parameterized with two types of data. 
+You should be able to put new key-value pair and to get value by key.
+
+Example:
+```java
 Storage<Integer, Box> storage = new Storage<>(); 
 storage.put(22, box); 
-storage.get(22) // вернёт коробку.
-
-Реализовать на основе двух массивов (или одного массива в зависимости от реализации). При реализации с помощью массива (массивов) ожидаем что количество елементов в нашем Storage не превышает 10
+storage.get(22) // returns the Box
+```
+You should solve this task using one or two arrays (this depends on your implementation). 
+If you use arrays for your solution, we assume that the maximum number of elements in our `Storage` is 10.
+#### [Try to avoid these common mistakes while solving task](https://mate-academy.github.io/jv-program-common-mistakes/java-core/generics/storage.html)
