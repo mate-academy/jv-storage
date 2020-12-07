@@ -54,6 +54,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int hashCode() {
-        return 71 * 31 + (this.key == null ? 0 : this.key.hashCode());
+        int hash = 0;
+        for (Object item : items) {
+            hash += 71 * 31 + (item == null ? 0 : item.hashCode());
+        }
+        return hash;
     }
 }
