@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int isExist = isExist(key);
-        int index = isExist == -1 ? isExist : getNextEmptyIndex();
+        int index = isExist == -1 ? getNextEmptyIndex() : isExist;
         storageKeys[index] = key;
         storageValues[index] = value;
     }
@@ -32,9 +32,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public boolean isEmpty() {
-        if (storageValues == null) {
-            return true;
-        }
         for (int i = 0; i < SIZE; i++) {
             if (storageValues[i] != null || storageKeys[i] != null) {
                 return false;
