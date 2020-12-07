@@ -47,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
      */
     public int getNextEmptyIndex() {
         for (int i = 0; i < SIZE; i++) {
-            if (storageValues[i] == null && storageKeys == null) {
+            if (storageKeys == null) {
                 return i;
             }
         }
@@ -56,6 +56,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public int isExist(K key) {
         for (int i = 0; i < SIZE; i++) {
+            if (storageValues[i])
             if (storageKeys[i].equals(key)) {
                 return i;
             }
