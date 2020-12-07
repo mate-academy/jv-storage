@@ -12,7 +12,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < items.length; i += 2) {
             this.key = (K) items[i];
-            if (this.key != null && this.key.equals(key)) {
+            if ((this.key == null && key == null)
+                    || (this.key != null && this.key.equals(key))) {
                 this.items[i + 1] = value;
                 break;
             }
@@ -26,24 +27,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < items.length; i += 2) {
             this.key = (K) items[i];
-            if (this.key != null && this.key.equals(key)) {
-                return (V) items[i + 1];
-            } else if (this.key == null && key == null) {
+            if ((this.key == null && key == null)
+                    || (this.key != null && this.key.equals(key))) {
                 return (V) items[i + 1];
             }
         }
-        throw new RuntimeException("ERROR: key not found");
+        return null;
     }
 
     @Override
     public boolean equals(Object obj) {
-        K object = (K) obj;
-        if (this.key == object) {
-            return true;
-        }
-        if (this.key == null || object == null) {
+        if (obj == null) {
             return false;
         }
+        if (this.key == obj) {
+            return true;
+        }
+        K object = (K) obj;
         if (this.key.getClass().equals(object.getClass())) {
             return this.key.equals(object);
         }
