@@ -37,17 +37,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
         if (this.key == obj) {
             return true;
         }
-        K object = (K) obj;
-        if (this.key.getClass().equals(object.getClass())) {
-            return this.key.equals(object);
+        if (obj == null || this.key.getClass() != getClass()) {
+            return false;
         }
-        return false;
+        K object = (K) obj;
+            return this.key.equals(object);
     }
 
     @Override
