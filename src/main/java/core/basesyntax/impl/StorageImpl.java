@@ -32,13 +32,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return (V) items[i + 1];
             }
         }
-        System.out.println("ERROR: KEY NOT FOUND");
-        return null;
+        throw new RuntimeException("ERROR: key not found");
     }
 
     @Override
     public boolean equals(Object obj) {
-        Storage<K, V> object = (Storage<K, V>) obj;
+        K object = (K) obj;
         if (this.key == object) {
             return true;
         }
