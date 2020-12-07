@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final Object[][] STORAGE = new Object[2][10];
@@ -18,7 +17,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         V value = null;
         for (int i = 0; i < index; i++) {
-            if (Objects.equals(STORAGE[KEY][i], key)) {
+            if (key != null && key.equals(STORAGE[KEY][i])
+                    || key == null && STORAGE[KEY][i] == null) {
                 value = (V) STORAGE[VALUE][i];
             }
         }
