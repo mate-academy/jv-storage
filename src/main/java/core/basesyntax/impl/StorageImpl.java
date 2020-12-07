@@ -44,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return false;
         }
         K object = (K) obj;
-            return this.key.equals(object);
+        return this.key.equals(object);
     }
 
     @Override
