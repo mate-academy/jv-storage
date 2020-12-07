@@ -46,8 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return false;
         }
         if (this.key.getClass().equals(object.getClass())) {
-            return (this.key.equals(object)
-                    && this.key.hashCode() == object.hashCode());
+            return this.key.equals(object);
         }
         return false;
     }
