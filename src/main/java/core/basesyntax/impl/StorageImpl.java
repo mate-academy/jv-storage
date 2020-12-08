@@ -14,11 +14,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (keys[i] == null && values[i] == null) {
                 keys[i] = key;
                 values[i] = value;
-                break;
+                return;
             }
-            if (keys[i] == key) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 values[i] = value;
-                break;
+                return;
             }
         }
     }
