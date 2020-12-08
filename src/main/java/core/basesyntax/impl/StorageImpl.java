@@ -20,7 +20,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 this.value[i] = value;
                 break;
             }
-            if (this.key[i] == key) {
+            if ((this.key[i] == key)
+                    || (this.key[i] != null && this.key[i].equals(key))) {
                 this.value[i] = value;
                 break;
             }
