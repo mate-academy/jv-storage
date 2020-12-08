@@ -4,11 +4,11 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static int STORAGE_CAPACITY = 10;
-    private static int ELEMENT_SIZE = 2;
-    private static int KEY = 0;
-    private static int VALUE = 1;
-    private Object[][] array = new Object[STORAGE_CAPACITY][ELEMENT_SIZE];
+    private static final int STORAGE_CAPACITY = 10;
+    private static final int ELEMENT_SIZE = 2;
+    private static final int KEY = 0;
+    private static final int VALUE = 1;
+    private final Object[][] array = new Object[STORAGE_CAPACITY][ELEMENT_SIZE];
 
     @Override
     public void put(K key, V value) {
