@@ -9,19 +9,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int index = 0;
 
     public void put(K key, V value) {
-        STORAGE[KEY][index] = key;
-        STORAGE[VALUE][index++] = value;
+        int existKey = isExist(key);
+        if (existKey < 0) {
+            STORAGE[KEY][index] = key;
+            STORAGE[VALUE][index++] = value;
+        } else {
+            STORAGE[VALUE][existKey] = value;
+        }
     }
 
     @Override
     public V get(K key) {
-        V value = null;
+        int existKey = isExist(key);
+        return existKey < 0 ? null : (V) STORAGE[VALUE][existKey];
+    }
+
+    private int isExist(K key) {
         for (int i = 0; i < index; i++) {
             if (key != null && key.equals(STORAGE[KEY][i])
                     || key == null && STORAGE[KEY][i] == null) {
-                value = (V) STORAGE[VALUE][i];
+                return i;
             }
         }
-        return value;
+        return -1;
     }
 }
