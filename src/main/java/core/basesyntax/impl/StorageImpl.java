@@ -26,13 +26,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (Pair<K, V> shelf : storage) {
-            if (shelf != null) {
-                if (key == null && shelf.getFirst() == null) {
-                    return shelf.getSecond();
-                }
-                if (shelf.getFirst() != null && shelf.getFirst().equals(key)) {
-                    return shelf.getSecond();
-                }
+            if (shelf != null
+                    && (key == null && shelf.getFirst() == null
+                        || shelf.getFirst() != null && shelf.getFirst().equals(key))) {
+                return shelf.getSecond();
             }
         }
         return null;
