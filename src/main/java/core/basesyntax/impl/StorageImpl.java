@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_CAPACITY = 10;
@@ -17,7 +16,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 array[i][KEY] = key;
                 array[i][VALUE] = value;
                 break;
-            } else if (Objects.equals(array[i][KEY], key)) {
+            } else if (array[i][KEY] == key
+                    || (array[i][KEY] != null && array[i][KEY].equals(key))) {
                 array[i][VALUE] = value;
                 break;
             }
@@ -28,7 +28,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < STORAGE_CAPACITY; i++) {
-            if (Objects.equals(array[i][KEY], key)) {
+            if ((array[i][KEY] == key
+                    || (array[i][KEY] != null && array[i][KEY].equals(key)))) {
                 return (V) array[i][VALUE];
             }
         }
