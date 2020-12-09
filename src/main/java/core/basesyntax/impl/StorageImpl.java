@@ -13,6 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < currentLength; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
                 values[i] = value;
+                return;
             }
         }
         keys[currentLength] = key;
@@ -22,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAXIMUM_NUMBERS_OF_ELEMENTS; i++) {
+        for (int i = 0; i < currentLength; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return values[i];
             }
