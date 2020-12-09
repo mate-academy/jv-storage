@@ -29,7 +29,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < keys.length; i++) {
             if ((key != null && key.equals(keys[i])) || key == keys[i]) {
                 return values[i];
-            } else if (key == null && keys[i] == null) {
+            }
+            if (key == null && keys[i] == null) {
                 return values[i];
             }
         }
