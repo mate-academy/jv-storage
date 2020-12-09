@@ -9,7 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int VALUE = 1;
     private final Object[][] array;
 
-    public StorageImpl(){
+    public StorageImpl() {
         array = new Object[STORAGE_CAPACITY][ELEMENT_SIZE];
     }
 
