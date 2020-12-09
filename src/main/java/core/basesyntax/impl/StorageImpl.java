@@ -11,7 +11,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (isDuplicate(key, value)) {
+        if (isDuplicate(key)) {
             for (int i = 0; i < keys.length; i++) {
                 if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                     values[i] = value;
@@ -39,7 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    private boolean isDuplicate(K key, V value) {
+    private boolean isDuplicate(K key) {
         for (int i = 0; i < keys.length; i++) {
             if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 return true;
