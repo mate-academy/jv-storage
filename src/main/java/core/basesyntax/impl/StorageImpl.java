@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < index; i++) {
             if (keyArray[i] != null && keyArray[i].equals(key) || keyArray[i] == key) {
                 valueArray[i] = value;
-                break;
+                return;
             }
         }
         keyArray[index] = key;
