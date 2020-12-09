@@ -25,7 +25,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public V get(K key) {
-        V resultValue = valueArray[0];
         for (int i = 0; i <= iterator; i++) {
             if (key == null && keyArray[i] == null) {
                 return valueArray[i];
@@ -33,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return valueArray[i];
             }
         }
-        return resultValue;
+        return null;
     }
 }
 
