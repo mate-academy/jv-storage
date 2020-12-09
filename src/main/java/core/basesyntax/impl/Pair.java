@@ -26,10 +26,10 @@ class Pair<T, Z> {
         if (this == obj) {
             return true;
         }
-        if (obj == null || this.getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        Pair newPair = (Pair) obj;
+        Pair<T, Z> newPair = (Pair<T, Z>) obj;
         return ((first == newPair.first)
                     || (first != null && first.equals(newPair.first)))
                 && ((second == newPair.second)
