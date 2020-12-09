@@ -7,6 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY_VALUES = 2;
     private static final int KEY_INDEX = 0;
     private static final int VALUE_INDEX = 1;
+    private int size = 0;
     private int incrementedIndex = 0;
     private Object[][] storage;
 
@@ -16,26 +17,29 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (indexOf(key) != -1) {
-            storage[indexOf(key)][VALUE_INDEX] = value;
+        int index = indexOf(key);
+        if (index != -1) {
+            storage[index][VALUE_INDEX] = value;
         } else {
             storage[incrementedIndex][KEY_INDEX] = key;
             storage[incrementedIndex][VALUE_INDEX] = value;
             incrementedIndex++;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        if (indexOf(key) == -1) {
+        int index = indexOf(key);
+        if (index == -1) {
             return null;
         }
-        return (V) storage[indexOf(key)][VALUE_INDEX];
+        return (V) storage[index][VALUE_INDEX];
     }
 
     private int indexOf(K key) {
         int index = -1;
-        for (int i = 0; i < storage.length; i++) {
+        for (int i = 0; i < size; i++) {
             if (key != null ? key.equals(storage[i][KEY_INDEX]) : storage[i][KEY_INDEX] == key) {
                 index = i;
             }
