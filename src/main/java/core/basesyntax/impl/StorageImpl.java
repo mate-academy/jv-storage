@@ -9,9 +9,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int index;
 
     public StorageImpl() {
-        this.keyArray = (K[]) new Object[ARRAY_LENGTH];
-        this.valueArray = (V[]) new Object[ARRAY_LENGTH];
-        this.index = 0;
+        keyArray = (K[]) new Object[ARRAY_LENGTH];
+        valueArray = (V[]) new Object[ARRAY_LENGTH];
+        index = 0;
     }
 
     @Override
@@ -19,12 +19,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < index; i++) {
             if (keyArray[i] != null && keyArray[i].equals(key) || keyArray[i] == key) {
                 valueArray[i] = value;
+                break;
             }
         }
-        if (keyArray[index] == null && valueArray[index] == null) {
-            keyArray[index] = key;
-            valueArray[index++] = value;
-        }
+        keyArray[index] = key;
+        valueArray[index++] = value;
     }
 
     @Override
