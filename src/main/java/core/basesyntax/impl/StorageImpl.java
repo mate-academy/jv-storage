@@ -1,31 +1,39 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
-public class StorageImpl<K, V> implements Storage {
+public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_LENGTH = 10;
-    K[] keys = (K[]) new Object[MAX_ARRAY_LENGTH];
-    V[] values = (V[]) new Object[MAX_ARRAY_LENGTH];
-    int length = 0;
+    private K[] keys;
+    private V[] values;
+    private int length = 0;
+
+    public StorageImpl() {
+        this.keys = (K[]) new Object[MAX_ARRAY_LENGTH];
+        this.values = (V[]) new Object[MAX_ARRAY_LENGTH];
+    }
 
     @Override
-    public void put(Object key, Object value) {
-        for (int i = 0;i < length;i++) {
-            if (key == keys[i]) {
-                keys[i] = (K) key;
-                values[i] = (V) value;
+    public void put(K key, V value) {
+        for (int i = 0;i < MAX_ARRAY_LENGTH;i++) {
+            if (key == null && keys[i] == null) {
+                values[i] = value;
+                break;
+            } else if (keys[i] != null && keys[i].equals(key)) {
+                values[i] = value;
+                break;
+            } else if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
+                break;
             }
         }
-        keys[length] = (K) key;
-        values[length] = (V) value;
-        length++;
     }
 
     @Override
     public V get(Object key) {
-        for (int i = 0;i < length;i++) {
-            if (Objects.equals(keys[i], key)) {
+        for (int i = 0;i < MAX_ARRAY_LENGTH;i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 return values[i];
             }
         }
