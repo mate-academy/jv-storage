@@ -27,8 +27,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         usedCapacity++;
     }
 
-
-
     @Override
     public V get(K key) {
         for (int i = 0; i < usedCapacity; i++) {
