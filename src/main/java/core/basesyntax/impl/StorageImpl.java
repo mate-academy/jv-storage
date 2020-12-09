@@ -8,7 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int KEY_INDEX = 0;
     private static final int VALUE_INDEX = 1;
     private int size = 0;
-    private int incrementedIndex = 0;
     private Object[][] storage;
 
     public StorageImpl() {
@@ -21,9 +20,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != -1) {
             storage[index][VALUE_INDEX] = value;
         } else {
-            storage[incrementedIndex][KEY_INDEX] = key;
-            storage[incrementedIndex][VALUE_INDEX] = value;
-            incrementedIndex++;
+            storage[size][KEY_INDEX] = key;
+            storage[size][VALUE_INDEX] = value;
             size++;
         }
     }
