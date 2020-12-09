@@ -16,23 +16,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (counter == 0) {
-            this.keyObject[counter] = key;
-            this.valueObject[counter] = value;
-            counter++;
-        }
+
         for (int i = 0; i < counter; i++) {
             if (this.keyObject[i] == key || key != null && key.equals(this.keyObject[i])) {
                 this.valueObject[i] = value;
-                break;
-            }
-            if ((i == counter - 1) && !(this.keyObject[i] == key || key != null
-                    && key.equals(this.keyObject[i]))) {
-                this.keyObject[counter] = key;
-                this.valueObject[counter] = value;
-                counter++;
+                return;
             }
         }
+        this.keyObject[counter] = key;
+        this.valueObject[counter] = value;
+        counter++;
     }
 
     @Override
