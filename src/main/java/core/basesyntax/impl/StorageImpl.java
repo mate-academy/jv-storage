@@ -4,36 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER_WITH_KEYS = 20;
-    private final Object[] items = new Object[MAX_ITEMS_NUMBER_WITH_KEYS];
+    private Object[] items;
     private int counter = 0;
-    private K key;
+
+    public StorageImpl() {
+        items = new Object[MAX_ITEMS_NUMBER_WITH_KEYS];
+    }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < items.length; i += 2) {
-            this.key = (K) items[i];
-            if ((this.key == null && key == null)
-                    || (this.key != null && this.key.equals(key))) {
-                if (this.key == null && items[i + 1] == null) {
-                    this.items[i + 1] = value;
-                    counter += 2;
-                } else {
-                    this.items[i + 1] = value;
-                }
+            K internalKey = (K) items[i];
+            if (internalKey != null && internalKey.equals(key)) {
+                this.items[i + 1] = value;
                 return;
             }
         }
-        this.items[counter] = key;
-        this.items[counter + 1] = value;
+        items[counter] = key;
+        items[counter + 1] = value;
         counter += 2;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < items.length; i += 2) {
-            this.key = (K) items[i];
-            if ((this.key == null && key == null)
-                    || (this.key != null && this.key.equals(key))) {
+        for (int i = 0; i < counter; i += 2) {
+            K internalKey = (K) items[i];
+            if ((internalKey == null && key == null)
+                    || (internalKey != null && internalKey.equals(key))) {
                 return (V) items[i + 1];
             }
         }
@@ -42,14 +39,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this.key == obj) {
+        if (this == obj) {
             return true;
         }
-        if (obj == null || this.key.getClass() != getClass()) {
+        if (obj == null || this.getClass() != getClass()) {
             return false;
         }
         K object = (K) obj;
-        return this.key.equals(object);
+        return this.equals(object);
     }
 
     @Override
