@@ -10,11 +10,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keys.length; i++) {
-            if ((key == keys[i] && key != null)) {
+            if ((keys[i] == null && values[i] == null)) {
+                keys[i] = key;
                 values[i] = value;
                 break;
-            } else if (keys[i] == null && values[i] == null) {
-                keys[i] = key;
+            } else if (key != null && key.equals(keys[i])) {
+                values[i] = value;
+                break;
+            } else if (key == null && keys[i] == null && value != null) {
                 values[i] = value;
                 break;
             }
