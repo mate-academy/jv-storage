@@ -9,19 +9,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int index = 0;
 
     public void put(K key, V value) {
-        int existKey = inedxOf(key);
-        if (existKey < 0) {
+        int indexOfKey = inedxOf(key);
+        if (indexOfKey < 0) {
             STORAGE[KEY][index] = key;
             STORAGE[VALUE][index++] = value;
         } else {
-            STORAGE[VALUE][existKey] = value;
+            STORAGE[VALUE][indexOfKey] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        int existKey = inedxOf(key);
-        return existKey < 0 ? null : (V) STORAGE[VALUE][existKey];
+        int indexOfKey = inedxOf(key);
+        return indexOfKey < 0 ? null : (V) STORAGE[VALUE][indexOfKey];
     }
 
     private int inedxOf(K key) {
