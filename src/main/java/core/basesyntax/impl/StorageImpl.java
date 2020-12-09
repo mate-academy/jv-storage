@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 storage[i] = Pair.of(key, value);
                 break;
             }
-            if (storage[i].getFirst() == key) {
+            if (storage[i].getFirst() != null && storage[i].getFirst().equals(key)) {
                 storage[i] = Pair.of(key, value);
                 break;
             }
