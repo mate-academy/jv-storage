@@ -6,50 +6,51 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int MAX_STORAGE_SIZE = 10;
 
-    K[] keyArr = (K[]) new Object[MAX_STORAGE_SIZE];
-    V[] valueArr = (V[]) new Object[MAX_STORAGE_SIZE];
+    private final K[] keyArr;
+    private final V[] valueArr;
+
+    public StorageImpl() {
+        keyArr = (K[]) new Object[MAX_STORAGE_SIZE];
+        valueArr = (V[]) new Object[MAX_STORAGE_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
-            if (keyArr[i] == null) {
-                if (keyArr[i] == key) {
-                    valueArr[i] = value;
-                }
-            } else {
-                if (keyArr[i].equals(key)) {
-                    valueArr[i] = value;
-                }
-            }
+        int findedKey = findKey(key);
+        if (findedKey != -1) {
+            valueArr[findedKey] = value;
         }
 
-        int i = findLastFilled(keyArr);
-        keyArr[i] = key;
-        valueArr[i] = value;
+        int fastFilled = findLastFilled(valueArr);
+        keyArr[fastFilled] = key;
+        valueArr[fastFilled] = value;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
-            if (keyArr[i] == null) {
-                if (keyArr[i] == key) {
-                    return valueArr[i];
-                }
-            } else {
-                if (keyArr[i].equals(key)) {
-                    return valueArr[i];
-                }
-            }
+        int findedKey = findKey(key);
+        if (findedKey == -1) {
+            return null;
         }
-        return null;
+
+        return valueArr[findedKey];
     }
 
-    private int findLastFilled(K[] arr) {
+    private int findLastFilled(V[] arr) {
         for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
             if (arr[i] == null) {
                 return i;
             }
         }
-        throw new RuntimeException("Array is full");
+        throw new RuntimeException("Storage is full");
+    }
+
+    private int findKey(K key) {
+        for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
+            if (key == null ? key == keyArr[i] : key.equals(keyArr[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
