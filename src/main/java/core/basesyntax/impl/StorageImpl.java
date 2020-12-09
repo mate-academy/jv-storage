@@ -14,7 +14,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.key = (K) items[i];
             if ((this.key == null && key == null)
                     || (this.key != null && this.key.equals(key))) {
-                this.items[i + 1] = value;
+                if (this.key == null && items[i + 1] == null) {
+                    this.items[i + 1] = value;
+                    counter += 2;
+                } else {
+                    this.items[i + 1] = value;
+                }
                 return;
             }
         }
