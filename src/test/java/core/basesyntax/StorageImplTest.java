@@ -70,12 +70,13 @@ public class StorageImplTest {
         String elementTree = "Element 3";
         Cat firstCat = new Cat("Myrchyk", "white");
         Cat secondCat = new Cat("Barsik", "black");
-        Cat sameSecondCat = new Cat("Barsik", "black");
         Cat thirdCat = new Cat("Musia", "grey");
 
         storage.put(firstCat, elementOne);
         storage.put(secondCat, elementTwo);
         storage.put(thirdCat, elementTree);
+        Cat sameSecondCat = new Cat("Barsik", "black");
+
         Assert.assertEquals(
                 "Test failed! Method get(key) should return correct value",
                 elementTwo, storage.get(sameSecondCat));
