@@ -7,7 +7,8 @@ Example:
 ```java
 Storage<Integer, Box> storage = new Storage<>(); 
 storage.put(22, box); 
-storage.get(22) // returns the Box
+Box value = storage.get(22); // returns the Box
+int size = storage.size(); // returns storage size
 ```
 You should solve this task using one or two arrays (this depends on your implementation). 
 If you use arrays for your solution, we assume that the maximum number of elements in our `Storage` is 10.
