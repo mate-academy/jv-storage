@@ -29,11 +29,15 @@ public class Cat {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Cat cat = (Cat) o;
-        return Objects.equals(name, cat.name) &&
-                Objects.equals(color, cat.color);
+        return Objects.equals(name, cat.name)
+                && Objects.equals(color, cat.color);
     }
 
     @Override
@@ -43,9 +47,9 @@ public class Cat {
 
     @Override
     public String toString() {
-        return "Cat{" +
-                "name='" + name + '\'' +
-                ", color='" + color + '\'' +
-                '}';
+        return "Cat{"
+                + "name='" + name + '\''
+                + ", color='" + color + '\''
+                + '}';
     }
 }
