@@ -1,63 +1,40 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int CAPACITY = 10;
+    private int size;
     private Object[]keys;
     private Object[]values;
 
     public StorageImpl() {
-        this.keys = new Object[10];
-        this.values = new Object[10];
+        size = 0;
+        this.keys = new Object[CAPACITY];
+        this.values = new Object[CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 1; i < keys.length; i++) {
-            if (key != null && keys[i] != null && key.equals(keys[i])) {
+        for (int i = 0; i < size + 1; i++) {
+            if (key == keys[i] && key != null && key.equals(keys[i])) {
                 values[i] = value;
                 return;
-            } else if (key != null && keys[i] == null) {
+            } else if (i == size && size < CAPACITY) {
                 keys[i] = key;
                 values[i] = value;
-                return;
-            } else if (key == null) {
-                values[0] = value;
-                return;
             }
         }
+        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if (key != null && keys[i] != null && keys[i].equals(key)) {
-                return (V)values[i];
-            } else if (key == null) {
-                return (V)values[0];
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
+                return (V) values[i];
             }
         }
         return null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        StorageImpl<?, ?> storage = (StorageImpl<?, ?>) o;
-        return Arrays.equals(keys, storage.keys)
-                && Arrays.equals(values, storage.values);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Arrays.hashCode(keys);
-        result = 31 * result + Arrays.hashCode(values);
-        return result;
     }
 }
