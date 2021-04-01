@@ -6,13 +6,13 @@ import java.util.Objects;
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int SIZE = 10;
 
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int count;
 
     public StorageImpl() {
-        keys = new Object[SIZE];
-        values = new Object[SIZE];
+        keys = (K[])new Object[SIZE];
+        values = (V[])new Object[SIZE];
         count = 0;
     }
 
@@ -33,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < count; i++) {
             if (Objects.equals(key, keys[i])) {
-                return (V) values[i];
+                return values[i];
             }
         }
         return null;
