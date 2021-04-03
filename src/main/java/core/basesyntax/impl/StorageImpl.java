@@ -5,9 +5,9 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     @SuppressWarnings("unchecked")
-    private final K[] keys = (K[]) new Storage[MAX_ITEMS_NUMBER];
+    private final K[] keys = (K[]) new Object[MAX_ITEMS_NUMBER];
     @SuppressWarnings("unchecked")
-    private final V[] values = (V[]) new Storage[MAX_ITEMS_NUMBER];
+    private final V[] values = (V[]) new Object[MAX_ITEMS_NUMBER];
     private int keyValueCounter = 0;
 
     @Override
