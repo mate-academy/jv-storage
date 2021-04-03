@@ -4,16 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private final K[] keys;
-    private final V[] values;
-    private int keyValueCounter;
-
     @SuppressWarnings("unchecked")
-    public StorageImpl() {
-        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
-        values = (V[]) new Object[MAX_ITEMS_NUMBER];
-        keyValueCounter = 0;
-    }
+    private final K[] keys = (K[]) new Storage[MAX_ITEMS_NUMBER];
+    @SuppressWarnings("unchecked")
+    private final V[] values = (V[]) new Storage[MAX_ITEMS_NUMBER];
+    private int keyValueCounter = 0;
 
     @Override
     public void put(K key, V value) {
@@ -25,15 +20,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[keyValueCounter] = value;
             keyValueCounter++;
         }
-    }
-
-    private int getKeyIndex(K key, K[] keys) {
-        for (int i = 0; i < keyValueCounter; i++) {
-            if (safeObjCompare(key, keys[i])) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     @Override
@@ -48,6 +34,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return keyValueCounter;
+    }
+
+    private int getKeyIndex(K key, K[] keys) {
+        for (int i = 0; i < keyValueCounter; i++) {
+            if (safeObjCompare(key, keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private boolean safeObjCompare(Object a, Object b) {
