@@ -27,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    public int checkIfUniqueKey(K key) {
+    private int checkIfUniqueKey(K key) {
         int indexOfSame = WRONG_RANGE;
 
         if (key == null) {
@@ -66,7 +66,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return valueOfKey;
     }
 
-    public boolean isPresentKey(K key) {
+    private boolean isPresentKey(K key) {
         boolean isPresentInArray = true;
         int count = 0;
 
