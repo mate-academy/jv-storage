@@ -8,7 +8,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keys = (K[]) new Object[MAX_ITEMS_NUMBER];
     @SuppressWarnings("unchecked")
     private final V[] values = (V[]) new Object[MAX_ITEMS_NUMBER];
-    private int keyValueCounter = 0;
+    private int keyValueCounter;
+
+    public StorageImpl() {
+        keyValueCounter = 0;
+    }
 
     @Override
     public void put(K key, V value) {
@@ -36,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return keyValueCounter;
     }
 
-    private int getKeyIndex(K key, K[] keys) {
+    private int getKeyIndex(K key, Object[] keys) {
         for (int i = 0; i < keyValueCounter; i++) {
             if (safeObjCompare(key, keys[i])) {
                 return i;
