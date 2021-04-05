@@ -40,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return keyValueCounter;
     }
 
-    private int getKeyIndex(K key, Object[] keys) {
+    private int getKeyIndex(K key, K[] keys) {
         for (int i = 0; i < keyValueCounter; i++) {
             if (safeObjCompare(key, keys[i])) {
                 return i;
