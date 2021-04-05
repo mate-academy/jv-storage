@@ -5,9 +5,15 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_LIMIT = 10;
 
-    private K[] keys = (K[]) new Object[ARRAY_LIMIT];
-    private V[] values = (V[]) new Object[ARRAY_LIMIT];
-    private int counterOfPairs = 0;
+    private K[] keys;
+    private V[] values;
+    private int counterOfPairs;
+
+    public StorageImpl() {
+        this.keys = (K[]) new Object[ARRAY_LIMIT];
+        this.values = (V[]) new Object[ARRAY_LIMIT];
+        counterOfPairs = 0;
+    }
 
     @Override
     public void put(K key, V value) {
