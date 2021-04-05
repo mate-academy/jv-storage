@@ -12,6 +12,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.values = (V[]) new Object[MAX_CAPACITY];
     }
 
+
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < MAX_CAPACITY; i++) {
