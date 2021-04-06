@@ -4,13 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private static final int FIRST_INDEX_OF_ARRAY = 0;
     private int indexOfEmptyElement;
     private K[] keys;
     private V[] values;
 
     public StorageImpl() {
-        indexOfEmptyElement = FIRST_INDEX_OF_ARRAY;
         keys = (K[]) new Object[MAX_ITEMS_NUMBER];
         values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
@@ -50,9 +48,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean equalsKeys(Object newKey, K keyInStorage) {
-        if (newKey == keyInStorage || newKey != null && newKey.equals(keyInStorage)) {
-            return true;
-        }
-        return false;
+        return (newKey == keyInStorage || newKey != null && newKey.equals(keyInStorage));
     }
 }
