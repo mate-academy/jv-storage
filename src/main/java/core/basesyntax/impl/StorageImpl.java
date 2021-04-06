@@ -9,22 +9,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[ARRAY_LENGTH];
-        this.values = (V[]) new Object[ARRAY_LENGTH];
-        this.size = 0;
+        keys = (K[]) new Object[ARRAY_LENGTH];
+        values = (V[]) new Object[ARRAY_LENGTH];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size + 1; i++) {
-            if (key == null) {
-                if (keys[i] == null && values[i] != null) {
-                    size--;
-                }
-                break;
-            }
-            if (key.equals(keys[i])) {
-                size--;
+            if (key == keys[i] && values[i] != null || key != null && key.equals(keys[i])) {
+                values[i] = value;
+                return;
             }
         }
         keys[size] = key;
