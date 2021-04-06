@@ -9,17 +9,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int sizeTracker;
 
     public StorageImpl() {
-        this.keys = new Object[ARRAY_SIZE];
-        this.values = new Object[ARRAY_SIZE];
+        keys = new Object[ARRAY_SIZE];
+        values = new Object[ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         if (getIndex(key) != -1) {
-            this.values[getIndex(key)] = value;
+            values[getIndex(key)] = value;
         } else {
-            this.keys[sizeTracker] = key;
-            this.values[sizeTracker] = value;
+            keys[sizeTracker] = key;
+            values[sizeTracker] = value;
             sizeTracker++;
         }
     }
@@ -41,7 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             } else if (key == null) {
                 continue;
             }
-            if (key.equals(this.keys[i])) {
+            if (key.equals(keys[i])) {
                 return i;
             }
         }
