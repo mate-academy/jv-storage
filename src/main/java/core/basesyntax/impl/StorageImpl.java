@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         keys = new Object[SIZE];
-        values =  new Object[SIZE];
+        values = new Object[SIZE];
     }
 
     @Override
