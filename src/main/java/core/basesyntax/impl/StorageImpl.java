@@ -49,7 +49,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    private boolean safeObjCompare(Object a, Object b) {
+    private boolean safeObjCompare(K a, K b) {
         return (a == null ? b == null : a.equals(b));
     }
 }
