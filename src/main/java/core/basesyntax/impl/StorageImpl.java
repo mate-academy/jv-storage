@@ -4,7 +4,6 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_LIMIT = 10;
-    private static final int COUNTER_AT_START = 0;
 
     private final K[] keys;
     private final V[] values;
@@ -13,7 +12,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         this.keys = (K[]) new Object[ARRAY_LIMIT];
         this.values = (V[]) new Object[ARRAY_LIMIT];
-        counterOfPairs = COUNTER_AT_START;
+        counterOfPairs = 0;
     }
 
     @Override
@@ -32,9 +31,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if ((keys[i] != null && keys[i].equals(key))
-                    || (keys[i] == null && key == keys[i])) {
+        for (int i = 0; i < counterOfPairs; i++) {
+            if (key == keys[i] || (keys[i] != null && keys[i].equals(key))) {
                 return values[i];
             }
         }
