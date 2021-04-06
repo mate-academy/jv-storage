@@ -5,31 +5,31 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
     private static final int NO_SUCH_INDEX = -1;
-    private final Object[] storageArray;
-    private final Object[] indexArray;
+    private final Object[] values;
+    private final Object[] keys;
     private int elementsCount;
 
     public StorageImpl() {
-        storageArray = new Object[ARRAY_SIZE];
-        indexArray = new Object[ARRAY_SIZE];
+        values = new Object[ARRAY_SIZE];
+        keys = new Object[ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         int index = getIndex(key);
         if (index == NO_SUCH_INDEX) {
-            indexArray[elementsCount] = key;
-            storageArray[elementsCount] = value;
+            keys[elementsCount] = key;
+            values[elementsCount] = value;
             elementsCount++;
         } else {
-            indexArray[index] = key;
-            storageArray[index] = value;
+            keys[index] = key;
+            values[index] = value;
         }
     }
 
     public int getIndex(K key) {
         for (int i = 0; i < elementsCount; i++) {
-            if (indexArray[i] != null && indexArray[i].equals(key) || indexArray[i] == key) {
+            if (keys[i] != null && keys[i].equals(key) || keys[i] == key) {
                 return i;
             }
         }
@@ -38,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return getIndex(key) == NO_SUCH_INDEX ? null : (V) storageArray[getIndex(key)];
+        return getIndex(key) == NO_SUCH_INDEX ? null : (V) values[getIndex(key)];
     }
 
     @Override
