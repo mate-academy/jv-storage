@@ -12,7 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         this.keys = (K[]) new Object[ARRAY_LIMIT];
         this.values = (V[]) new Object[ARRAY_LIMIT];
-        counterOfPairs = 0;
     }
 
     @Override
