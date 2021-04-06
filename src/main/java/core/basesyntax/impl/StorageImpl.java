@@ -10,21 +10,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         storage = new Box[MAX_STORAGE_SIZE];
     }
 
-    private boolean areBothKeysNullOrEqual(K firstKey, K secondKey) {
-        return (firstKey == null && secondKey == null)
-                || (secondKey != null && firstKey != null && secondKey.equals(firstKey));
-    }
-
     @Override
     public void put(K key, V value) {
-        Box<K, V> box = new Box<>(key, value);
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null) {
-                storage[i] = box;
+                storage[i] = new Box<>(key, value);
                 return;
             }
-            if (areBothKeysNullOrEqual(storage[i].getKey(), key)) {
-                storage[i] = box;
+            if (compareKeys(storage[i].getKey(), key)) {
+                storage[i].setValue(value);
                 return;
             }
         }
@@ -36,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (storage[i] == null) {
                 return null;
             }
-            if (areBothKeysNullOrEqual(storage[i].getKey(), key)) {
+            if (compareKeys(storage[i].getKey(), key)) {
                 return storage[i].getValue();
             }
         }
@@ -52,5 +46,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return count;
+    }
+
+    private boolean compareKeys(K firstKey, K secondKey) {
+        return (firstKey == secondKey)
+                || (secondKey != null && firstKey != null && secondKey.equals(firstKey));
     }
 }
