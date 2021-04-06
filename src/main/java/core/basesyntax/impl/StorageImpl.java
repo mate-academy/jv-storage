@@ -18,12 +18,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (indexOfEmptyElement == keys.length) {
-            return;
+            throw new RuntimeException("You cannot put the data. The storage is full.");
         }
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == null && values[i] == null) {
                 break;
-            } else if (equalsKeys(key, keys[i])) {
+            }
+            if (equalsKeys(key, keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -49,15 +50,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean equalsKeys(Object newKey, K keyInStorage) {
-        if (newKey == keyInStorage) {
+        if (newKey == keyInStorage || newKey != null && newKey.equals(keyInStorage)) {
             return true;
-        }
-        if (newKey == null || keyInStorage == null) {
-            return false;
-        }
-        if (newKey.getClass().equals(keyInStorage.getClass())) {
-            K current = (K) newKey;
-            return current.equals(keyInStorage);
         }
         return false;
     }
