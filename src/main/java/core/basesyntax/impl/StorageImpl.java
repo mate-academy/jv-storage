@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_RANGE_OF_ARRAY = 10;
-    private int sizeStorage = 0;
+    private int sizeStorage;
     private final K[] keysOfStorage;
     private final V[] valuesOfStorage;
 
