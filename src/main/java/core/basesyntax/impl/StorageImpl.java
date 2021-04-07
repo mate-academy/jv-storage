@@ -3,14 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private  int nowKey = 0;
-    private int  nowValue = 0;
     private static final int LENGTH_STORAGE = 10;
-    private K key;
-    private V value;
-
-    private K [] itemK;
-    private V [] itemV;
+    private K[] itemK;
+    private V[] itemV;
 
     public StorageImpl() {
         this.itemK = (K[]) new Object[LENGTH_STORAGE];
@@ -19,19 +14,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        this.key = key;
-        if (nowKey < LENGTH_STORAGE && key != null && value != null) {
-            itemK[nowKey] = key;
-            nowKey++;
-            itemV[nowValue] = value;
-            nowValue++;
+        for (int i = 0; i < LENGTH_STORAGE; i++) {
+            if (itemV[i] != null && check(itemK[i], key)) {
+                itemV[i] = value;
+                return;
+            }
+            if (itemK[i] == null && itemV[i] == null) {
+                itemK[i] = key;
+                itemV[i] = value;
+                return;
+
+            }
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < itemK.length; i++) {
-            if (itemK[i] != null && value != null && this.key == itemK[i] && this.value == itemK[i]) {
+            if (itemV[i] != null && check(itemK[i], key)) {
                 return itemV[i];
             }
         }
@@ -40,6 +40,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return 0;
+        int result = 0;
+        for (int i = 0; i < itemV.length; i++) {
+            if (itemV[i] != null) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    public boolean check(K itemK, K key) {
+        return ((key == itemK) || (itemK != null
+                && itemK.equals(key)));
     }
 }
