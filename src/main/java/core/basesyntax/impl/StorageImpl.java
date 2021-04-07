@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE_OF_ARRAY = 10;
     private K[] arrayOfKey;
     private V[] arrayOfValue;
-    private int indexCounter = 0;
+    private int indexCounter;
 
     public StorageImpl() {
         arrayOfKey = (K[]) new Object[SIZE_OF_ARRAY];
@@ -16,9 +16,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < arrayOfKey.length; i++) {
-            if (arrayOfKey[i] != null && arrayOfKey[i].equals(key) && arrayOfValue[i] != null
-                    || arrayOfKey[i] == null && arrayOfKey[i] == key
-                    && arrayOfValue[i] != null) {
+            if (key != null && key.equals(arrayOfKey[i])
+                    || key == arrayOfKey[i] && arrayOfValue[i] != null) {
                 arrayOfValue[i] = value;
                 return;
             }
@@ -32,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < arrayOfKey.length; i++) {
             if (arrayOfKey[i] != null && arrayOfKey[i].equals(key)
-                    || arrayOfKey[i] == null && arrayOfKey[i] == key) {
+                    || arrayOfKey[i] == key) {
                 return arrayOfValue[i];
             }
         }
