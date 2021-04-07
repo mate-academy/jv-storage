@@ -6,8 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_VALUE = 10;
     private Object[] keys;
     private Object[] values;
-    private int position = 0;
-    private int countForSize = 0;
+    private int countForSize;
 
     public StorageImpl() {
         keys = new Object[MAX_ITEMS_VALUE];
@@ -16,22 +15,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean addFlag = true;
-        for (int i = 0; i < MAX_ITEMS_VALUE; i++) {
+        for (int i = 0; i < countForSize; i++) {
             if (key == keys[i] || (key != null && key.equals(keys[i]))) {
                 values[i] = value;
-                position++;
                 countForSize = i + 1;
-                addFlag = false;
-                break;
+                return;
             }
         }
-        if (addFlag) {
-            keys[position] = key;
-            values[position] = value;
-            position++;
-            countForSize++;
-        }
+        keys[countForSize] = key;
+        values[countForSize] = value;
+        countForSize++;
     }
 
     @Override
