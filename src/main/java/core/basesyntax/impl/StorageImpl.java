@@ -10,15 +10,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+
+        if (key == null) {
+            key = (K) "null";
+        }
         for (int i = 0; i < keys.length; i++) {
-            if ((keys[i] != null && keys[i].equals(key))
-                    || (keys[i] == null && key == keys[i])) {
-                if (values[i] != null) {
-                    values[i] = value;
-                } else {
-                    values[i] = value;
-                    size++;
-                }
+            if ((keys[i] != null && keys[i].equals(key))) {
+                values[i] = value;
                 return;
             }
         }
@@ -30,51 +28,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         V valueOfKey = null;
-        int count = 0;
-        boolean isPresentKey = isPresentKey(key);
-
-        if (!isPresentKey) {
-            return null;
+        if (key == null) {
+            key = (K) "null";
         }
-
         for (int i = 0; i < keys.length; i++) {
-            if (count != 0) {
+            if (keys[i] == null) {
+                keys[i] = (K) "null";
+            }
+            if (keys[i].equals("null") && key.equals("null")) {
+                valueOfKey = values[i];
                 return valueOfKey;
             }
-            if (keys[i] == null && key == null) {
+            if (keys[i] != null && keys[i].equals(key)) {
                 valueOfKey = values[i];
-                count++;
-            } else if (key != null && keys[i] != null
-                    && keys[i].toString().equals(key.toString())) {
-                valueOfKey = values[i];
-                count++;
+                return valueOfKey;
             }
         }
         return valueOfKey;
-    }
-
-    private boolean isPresentKey(K key) {
-        boolean isPresentInArray = true;
-        int count = 0;
-
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && key == null) {
-                count++;
-                break;
-            } else if (key == null && keys[i] != null
-                    && keys[i].equals("null")) {
-                count++;
-                break;
-            } else if (key != null && keys[i] != null
-                    && keys[i].toString().equals(key.toString())) {
-                count++;
-                break;
-            }
-        }
-        if (count == 0) {
-            isPresentInArray = false;
-        }
-        return isPresentInArray;
     }
 
     @Override
