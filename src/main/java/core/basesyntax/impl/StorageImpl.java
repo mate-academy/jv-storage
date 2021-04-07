@@ -14,7 +14,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = new Object[ARRAY_LENGTH];
     }
 
-
     @Override
     public void put(K key, V value) {
         int oldIndex = getIndexOf(key);
@@ -44,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndexOf(K key) {
         for (int i = 0; i < count; i++) {
-            if (keys[i] == null && key == null || keys[i] != null && keys[i].equals(key)) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
