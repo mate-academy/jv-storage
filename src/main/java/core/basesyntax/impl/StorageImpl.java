@@ -2,13 +2,13 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-public class StorageImplement<K, V> implements Storage<K, V> {
+public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_ELEMENTS = 10;
     private K[] keys;
     private V[] values;
     private int size;
 
-    public StorageImplement() {
+    public StorageImpl() {
         keys = (K[]) new Object[MAXIMUM_ELEMENTS];
         values = (V[]) new Object[MAXIMUM_ELEMENTS];
     }

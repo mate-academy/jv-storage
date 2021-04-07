@@ -1,6 +1,6 @@
 package core.basesyntax;
 
-import core.basesyntax.impl.StorageImplement;
+import core.basesyntax.impl.StorageImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -8,7 +8,7 @@ public class StorageImplTest {
 
     @Test
     public void addElementsToStorage() {
-        Storage<Integer, String> storage = new StorageImplement<>();
+        Storage<Integer, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
@@ -26,7 +26,7 @@ public class StorageImplTest {
 
     @Test
     public void getElementWhenKeyDontExist() {
-        Storage<Integer, String> storage = new StorageImplement<>();
+        Storage<Integer, String> storage = new StorageImpl<>();
 
         Assert.assertNull(
                 "When element with this key doesn't exist, the method should return \"null\"",
@@ -35,7 +35,7 @@ public class StorageImplTest {
 
     @Test
     public void getElementWithKeyNull() {
-        Storage<Integer, String> storage = new StorageImplement<>();
+        Storage<Integer, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
@@ -64,7 +64,7 @@ public class StorageImplTest {
 
     @Test
     public void getElementWhenKeyIsObject() {
-        Storage<Cat, String> storage = new StorageImplement<>();
+        Storage<Cat, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
@@ -84,7 +84,7 @@ public class StorageImplTest {
 
     @Test
     public void addTwoElementsWithSameKey() {
-        Storage<Cat, String> storage = new StorageImplement<>();
+        Storage<Cat, String> storage = new StorageImpl<>();
         Cat cat = new Cat("Myrchyk", "white");
         Cat sameCat = new Cat("Myrchyk", "white");
         String elementOne = "One";
@@ -105,7 +105,7 @@ public class StorageImplTest {
 
     @Test
     public void addTwoElementsWithNullKey() {
-        Storage<Cat, String> storage = new StorageImplement<>();
+        Storage<Cat, String> storage = new StorageImpl<>();
         String elementOne = "One";
         String elementTwo = "Two";
 
