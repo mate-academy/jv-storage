@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_INITIAL_CAPACITY = 10;
+    private int currentSize = 0;
     private final DataUnit<K, V>[] storage;
 
     public StorageImpl() {
@@ -12,23 +13,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null && compareKeys(key, storage[i].getKey())) {
-                storage[i].setValue(value);
-                return;
+        for (DataUnit<K, V> kvDataUnit : storage) {
+            if (kvDataUnit != null && compareKeys(key, kvDataUnit.getKey())) {
+                kvDataUnit.setValue(value);
+                break;
             }
-            if (storage[i] == null) {
-                storage[i] = new DataUnit<>(key, value);
-                return;
+            if (kvDataUnit == null) {
+                storage[currentSize] = new DataUnit<>(key, value);
+                currentSize++;
+                break;
             }
         }
     }
 
     @Override
     public V get(K key) {
-        for (DataUnit<K, V> kvDataUnit : storage) {
-            if (kvDataUnit != null && compareKeys(key, kvDataUnit.getKey())) {
-                return kvDataUnit.getValue();
+        for (int i = 0; i < currentSize; i++) {
+            if (storage[i] != null && compareKeys(key, storage[i].getKey())) {
+                return storage[i].getValue();
             }
         }
         return null;
@@ -36,14 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int result = 0;
-        for (DataUnit<K, V> kvDataUnit : storage) {
-            if (kvDataUnit != null) {
-                result++;
-            }
-        }
-
-        return result;
+        return currentSize;
     }
 
     private boolean compareKeys(K firstKey, K secondKey) {
