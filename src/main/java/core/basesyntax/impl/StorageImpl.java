@@ -7,6 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_KEY_VALUE_SIZE = 2;
     private static final int STORAGE_KEY_INDEX = 0;
     private static final int STORAGE_VALUE_INDEX = 1;
+    private int size = 0;
     private Object[][] items;
 
     public StorageImpl() {
@@ -16,16 +17,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < STORAGE_SIZE; i++) {
-            if (key == null && (items[i][STORAGE_KEY_INDEX]) == null
-                    && (items[i][STORAGE_VALUE_INDEX] != null)) {
-                items[i][STORAGE_KEY_INDEX] = null;
-                items[i][STORAGE_VALUE_INDEX] = value;
-                break;
-            }
-            if (items[i][STORAGE_VALUE_INDEX] == null || items[i][STORAGE_KEY_INDEX]
-                    != null && items[i][STORAGE_KEY_INDEX].equals(key)) {
+            boolean addTwoElementsWithNullKey = key == null
+                    && (items[i][STORAGE_KEY_INDEX]) == null
+                    && (items[i][STORAGE_VALUE_INDEX] != null);
+            boolean addTwoElementsWithSameKey = items[i][STORAGE_KEY_INDEX] != null
+                    && items[i][STORAGE_KEY_INDEX].equals(key);
+            if (addTwoElementsWithNullKey
+                    || items[i][STORAGE_VALUE_INDEX] == null
+                    || addTwoElementsWithSameKey) {
                 items[i][STORAGE_KEY_INDEX] = key;
                 items[i][STORAGE_VALUE_INDEX] = value;
+                if (addTwoElementsWithNullKey || addTwoElementsWithSameKey) {
+                    size--;
+                }
+                size++;
                 break;
             }
         }
@@ -44,11 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < STORAGE_SIZE; i++) {
-            if (items[i][STORAGE_VALUE_INDEX] == null) {
-                return i;
-            }
-        }
-        return -1;
+        return size;
     }
 }
