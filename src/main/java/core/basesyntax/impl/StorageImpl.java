@@ -6,33 +6,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
     private final Object[] keyArray = new Object[ARRAY_SIZE];
     private final Object[] valuesArray = new Object[ARRAY_SIZE];
+    private int arraySize = 0;
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < ARRAY_SIZE; i++) {
-            if (this.keyArray[i] == null && this.valuesArray[i] == null) {
-                if (key == null && valuesArray[i] == null) {
-                    this.valuesArray[i] = value;
-                    break;
-                }
-                this.keyArray[i] = key;
-                this.valuesArray[i] = value;
-                break;
-            } else if (this.keyArray[i] != null && this.valuesArray[i] != null) {
-                if (keyArray[i].equals(key) && valuesArray[i] != null) {
-                    valuesArray[i] = value;
-                    break;
-                }
-                continue;
-            } else if (this.keyArray[i] == null && this.valuesArray[i] != null
-                    && this.keyArray[i] == key) {
-                this.valuesArray[i] = value;
-                break;
-            } else if (key == null) {
-                this.valuesArray[i] = value;
-                break;
+        for (int i = 0; i < arraySize; i++) {
+            if (key != null && key.equals(keyArray[i]) || key == keyArray[i]) {
+                valuesArray[i] = value;
+                return;
             }
         }
+        keyArray[arraySize] = key;
+        valuesArray[arraySize] = value;
+        arraySize++;
     }
 
     @Override
