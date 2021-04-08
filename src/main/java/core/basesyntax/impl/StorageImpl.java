@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_INITIAL_CAPACITY = 10;
-    private int currentSize = 0;
+    private int currentSize;
     private final DataUnit<K, V>[] storage;
 
     public StorageImpl() {
