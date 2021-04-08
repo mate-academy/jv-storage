@@ -13,38 +13,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.valuesStorage = (V[]) new Object[ARRAY_LENGTH_MAX];
     }
 
-    public K[] getKeysStorage() {
-        return keysStorage;
-    }
-
-    public void setKeysStorage(K[] keysStorage) {
-        this.keysStorage = keysStorage;
-    }
-
-    public V[] getValuesStorage() {
-        return valuesStorage;
-    }
-
-    public void setValuesStorage(V[] valuesStorage) {
-        this.valuesStorage = valuesStorage;
-    }
-
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < ARRAY_LENGTH_MAX; i++) {
-            if (key == keysStorage[i] && valuesStorage[i] != null
-                    || key != null
-                    && key.equals(keysStorage[i])) {
+        for (int i = 0; i < size; i++) {
+            if (key == keysStorage[i] || key != null && key.equals(keysStorage[i])) {
                 valuesStorage[i] = value;
                 return;
             }
         }
-
-        if (size < ARRAY_LENGTH_MAX) {
-            keysStorage[size] = key;
-            valuesStorage[size] = value;
-            size++;
-        }
+        keysStorage[size] = key;
+        valuesStorage[size] = value;
+        size++;
     }
 
     @Override
