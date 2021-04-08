@@ -11,10 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         storage = new DataAccess[MAX_ITEMS_NUMBER];
     }
 
-    public DataAccess<K, V>[] getStorage() {
-        return storage;
-    }
-
     public void setStorage(DataAccess<K, V>[] storage) {
         this.storage = storage;
     }
@@ -47,8 +43,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         int storageSize = 0;
-        for (DataAccess<K, V> storageItem : storage) {
-            if (storageItem != null) {
+        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+            if (storage[i] != null) {
                 storageSize++;
             }
         }
