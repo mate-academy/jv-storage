@@ -3,7 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int MAX_STORAGE_NUMBER = 10;
+    private static final int MAX_STORAGE_NUMBER = 10;
     private K[] keys;
     private V[] values;
     private int size;
@@ -15,8 +15,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_STORAGE_NUMBER; i++) {
-            if ((key == keys[i] || key != null && key.equals(keys[i])) && (values[i] != null)) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 values[i] = value;
                 return;
             }
