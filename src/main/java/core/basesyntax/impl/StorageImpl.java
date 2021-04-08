@@ -17,16 +17,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
+
+        keys[size] = key;
+        values[size] = value;
         size++;
-        keys[size - 1] = key;
-        values[size - 1] = value;
     }
 
     @Override
     public V get(K key) {
-        if (keys == null) {
-            return null;
-        }
         for (int i = 0; i < size; i++) {
             if ((key == keys[i] || key != null && key.equals(keys[i]))) {
                 return values[i];
