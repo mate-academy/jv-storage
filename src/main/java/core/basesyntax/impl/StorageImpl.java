@@ -3,38 +3,23 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] keys = (K[]) new Object[0];
-    private V[] values = (V[]) new Object[0];
+    private static final int MAX_SIZE = 10;
+    private K[] keys = (K[]) new Object[MAX_SIZE];
+    private V[] values = (V[]) new Object[MAX_SIZE];
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        K[] tempKeys = keys;
-        V[] tempValues = values;
-
-        if (keys != null) {
-            for (int i = 0; i < keys.length; i++) {
-                if (keys[i] == key) {
-                    keys[i] = key;
-                    values[i] = value;
-                    return;
-                } else if (key != null) {
-                    if (key.equals(keys[i])) {
-                        keys[i] = key;
-                        values[i] = value;
-                        return;
-                    }
-                }
+        for (int i = 0; i < size; i++) {
+            if ((key == keys[i] || key != null && key.equals(keys[i]))) {
+                keys[i] = key;
+                values[i] = value;
+                return;
             }
         }
-
-        keys = (K[]) new Object[keys.length + 1];
-        values = (V[]) new Object[values.length + 1];
-        for (int i = 0; i < keys.length - 1; i++) {
-            keys[i] = tempKeys[i];
-            values[i] = tempValues[i];
-        }
-        keys[keys.length - 1] = key;
-        values[values.length - 1] = value;
+        size++;
+        keys[size - 1] = key;
+        values[size - 1] = value;
     }
 
     @Override
@@ -56,9 +41,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        if (keys == null) {
-            return -1;
-        }
-        return keys.length;
+        return this.size;
     }
 }
