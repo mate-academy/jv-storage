@@ -16,29 +16,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < STORAGE_SIZE; i++) {
-            boolean addTwoElementsWithNullKey = key == null
-                    && (items[i][STORAGE_KEY_INDEX]) == null
-                    && (items[i][STORAGE_VALUE_INDEX] != null);
-            boolean addTwoElementsWithSameKey = items[i][STORAGE_KEY_INDEX] != null
-                    && items[i][STORAGE_KEY_INDEX].equals(key);
-            if (addTwoElementsWithNullKey
-                    || items[i][STORAGE_VALUE_INDEX] == null
-                    || addTwoElementsWithSameKey) {
-                items[i][STORAGE_KEY_INDEX] = key;
+        for (int i = 0; i < size; i++) {
+            if ((items[i][STORAGE_KEY_INDEX] != null && items[i][STORAGE_KEY_INDEX].equals(key))
+                    || (key == items[i][STORAGE_KEY_INDEX])) {
                 items[i][STORAGE_VALUE_INDEX] = value;
-                if (addTwoElementsWithNullKey || addTwoElementsWithSameKey) {
-                    size--;
-                }
-                size++;
-                break;
+                return;
             }
         }
+        items[size][STORAGE_KEY_INDEX] = key;
+        items[size][STORAGE_VALUE_INDEX] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < STORAGE_SIZE; i++) {
+        for (int i = 0; i < size; i++) {
             if (key != null && key.equals(items[i][STORAGE_KEY_INDEX])
                     || key == items[i][STORAGE_KEY_INDEX]) {
                 return (V) items[i][STORAGE_VALUE_INDEX];
