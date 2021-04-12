@@ -18,7 +18,7 @@ public class StorageImplTest {
 
         Storage<Integer, String> secondInstances = new StorageImpl<>();
 
-        Assert.assertEquals("After creating second empty storage instance its' size should 0",
+        Assert.assertEquals("After creating second empty storage instance its' size should be 0",
               0, secondInstances.size());
     }
 
