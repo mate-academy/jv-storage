@@ -28,13 +28,25 @@ public class StorageImplTest {
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
+        String elementFour = "Element 4";
+        String elementFive = "Element 5";
+        String elementSix = "Element 6";
+        String elementSeven = "Element 7";
+        String elementEight = "Element 8";
+        String elementNine = "Element 9";
 
         storage.put(1, elementOne);
         storage.put(2, elementTwo);
         storage.put(3, elementTree);
+        storage.put(4, elementFour);
+        storage.put(5, elementFive);
+        storage.put(6, elementSix);
+        storage.put(7, elementSeven);
+        storage.put(8, elementEight);
+        storage.put(9, elementNine);
 
         Assert.assertEquals("With three elements added to the storage, its size should be 3",
-                3, storage.size());
+                9, storage.size());
         Assert.assertEquals(elementOne, storage.get(1));
         Assert.assertEquals(elementTwo, storage.get(2));
         Assert.assertEquals(elementTree, storage.get(3));
@@ -84,13 +96,39 @@ public class StorageImplTest {
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
+        String elementFour = "Element 4";
+        String elementFive = "Element 5";
+        String elementSix = "Element 6";
+        String elementSeven = "Element 7";
+        String elementEight = "Element 8";
+        String elementNine = "Element 9";
         Cat firstCat = new Cat("Myrchyk", "white");
         Cat secondCat = new Cat("Barsik", "black");
-        Cat thirdCat = new Cat("Musia", "grey");
-
+        Cat thirdCat = new Cat("Barmaley", "red");
+        Cat foursCat = new Cat("Musia", "yellow");
+        Cat fivesCat = new Cat("Pusia", "orange");
+        Cat sixthCat = new Cat("Dusia", "green");
+        Cat sevensCat = new Cat("Zusia", "grey");
+        Cat eightsCat = new Cat("Crista", "transperent");
+        Cat ninthCat = new Cat("Selma", "hot");
         storage.put(firstCat, elementOne);
         storage.put(secondCat, elementTwo);
         storage.put(thirdCat, elementTree);
+        storage.put(foursCat, elementFour);
+        storage.put(fivesCat, elementFive);
+        storage.put(sixthCat, elementSix);
+        storage.put(sevensCat, elementSeven);
+        storage.put(eightsCat, elementEight);
+        storage.put(ninthCat, elementNine);
+        System.out.println(storage.get(firstCat));
+        System.out.println(storage.get(secondCat));
+        System.out.println(storage.get(thirdCat));
+        System.out.println(storage.get(foursCat));
+        System.out.println(storage.get(fivesCat));
+        System.out.println(storage.get(sixthCat));
+        System.out.println(storage.get(sevensCat));
+        System.out.println(storage.get(eightsCat));
+        System.out.println(storage.get(ninthCat));
         Cat sameSecondCat = new Cat("Barsik", "black");
 
         Assert.assertEquals(
