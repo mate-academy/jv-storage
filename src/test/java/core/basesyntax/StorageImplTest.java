@@ -14,12 +14,12 @@ public class StorageImplTest {
         firstInstance.put(3, "Element 3");
 
         Assert.assertEquals("With three elements added to the storage, its size should be 3",
-              3, firstInstance.size());
+                3, firstInstance.size());
 
         Storage<Integer, String> secondInstances = new StorageImpl<>();
 
         Assert.assertEquals("After creating second empty storage instance its' size should be 0",
-              0, secondInstances.size());
+                  0, secondInstances.size());
     }
 
     @Test
