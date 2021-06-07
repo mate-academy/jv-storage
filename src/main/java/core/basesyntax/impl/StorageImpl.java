@@ -17,19 +17,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = 0;
         for (Object currentKey : keys) {
-            if (key == currentKey || (key != null && key.equals(currentKey))) {
+            if (key == currentKey || (key != null && key.equals(currentKey)) 
+                    || (key != null && index == size)) {
                 values[index] = value;
                 if (size <= index) {
+                    keys[index] = key;
                     size++;
                 }
                 return;
             }
             index++;
-        }
-        if (size != CAPACITY) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
         }
     }
 
