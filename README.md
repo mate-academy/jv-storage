@@ -5,7 +5,7 @@ You should be able to put new key-value pair and to get value by key.
 
 Example:
 ```java
-Storage<Integer, Box> storage = new Storage<>(); 
+Storage<Integer, Box> storage = new StorageImpl<>(); 
 storage.put(22, box); 
 Box value = storage.get(22); // returns the Box
 int size = storage.size(); // returns storage size
