@@ -7,12 +7,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keysArray;
     private Object[] valuesArray;
 
+    public StorageImpl() {
+        keysArray = new Object[MAX_ITEMS_NUMBER];
+        valuesArray = new Object[MAX_ITEMS_NUMBER];
+    }
+
     @Override
     public void put(K key, V value) {
-        if (keysArray == null) {
-            keysArray = new Object[MAX_ITEMS_NUMBER];
-            valuesArray = new Object[MAX_ITEMS_NUMBER];
-        }
         for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
             if (valuesArray[i] == null || keysArray[i] == key
                     || (keysArray[i] != null && keysArray[i].equals(key))) {
@@ -25,10 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (keysArray == null) {
-            return null;
-        }
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+        for (int i = 0; i < size(); i++) {
             if (keysArray[i] == key || (keysArray[i] != null && keysArray[i].equals(key))) {
                 return (V) valuesArray[i];
             }
