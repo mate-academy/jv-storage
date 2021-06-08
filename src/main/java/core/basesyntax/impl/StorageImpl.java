@@ -32,16 +32,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int index = 0;
         for (int i = 0; i < keyStorage.length; i++) {
             if (Objects.equals(keyStorage[i], key)) {
-                index = i;
-                break;
-            } else if (keyStorage[i] == null && valueStorage[i] != null) {
-                index = i;
+                return valueStorage[i];
             }
         }
-        return valueStorage[index];
+        return null;
     }
 
     @Override
