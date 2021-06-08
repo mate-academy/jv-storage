@@ -4,13 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
+    private final K[] keys;
+    private final V[] values;
     private int currentCapacity;
-    private K[] keys;
-    private V[] values;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[DEFAULT_CAPACITY];
-        this.values = (V[]) new Object[DEFAULT_CAPACITY];
+        keys = (K[]) new Object[DEFAULT_CAPACITY];
+        values = (V[]) new Object[DEFAULT_CAPACITY];
     }
 
     @Override
@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < DEFAULT_CAPACITY; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
-                return (V) values[i];
+                return values[i];
             }
         }
         return null;
