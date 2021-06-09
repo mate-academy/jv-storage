@@ -38,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     @Override
-    public int getSize() {
+    public int size() {
         return countOfPairs;
     }
 }
