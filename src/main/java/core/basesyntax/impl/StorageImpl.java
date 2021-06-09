@@ -5,8 +5,15 @@ import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int LIST_LIMIT = 10;
-    private ArrayList<V> storage = new ArrayList<>(LIST_LIMIT);
-    private ArrayList<K> keys = new ArrayList<>(LIST_LIMIT);
+    private ArrayList<V> storage;
+    private ArrayList<K> keys;
+    private int size = 0;
+
+    public StorageImpl() {
+        storage = new ArrayList<>(LIST_LIMIT);
+        keys = new ArrayList<>(LIST_LIMIT);
+        size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
@@ -15,8 +22,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         if (keys.indexOf(key) >= 0) {
-            storage.remove(keys.indexOf(key));
-            keys.remove(keys.indexOf(key));
+            storage.set(keys.indexOf(key), value);
+            return;
         }
         storage.add(value);
         keys.add(key);
