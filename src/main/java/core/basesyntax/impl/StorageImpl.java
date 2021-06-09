@@ -20,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new StorageIsFullException("Storage is full!");
         }
         index = indexOfKey(key);
-        if (size != 0 && index >= 0) {
+        if (index >= 0) {
             values[index] = value;
             return;
         }
