@@ -13,12 +13,12 @@ public class StorageImplTest {
         firstInstance.put(3, "Element 3");
 
         Assert.assertEquals("With three elements added to the storage, its size should be 3",
-                3, firstInstance.size());
+                3, firstInstance.getSize());
 
         Storage<Integer, String> secondInstances = new StorageImpl<>();
 
         Assert.assertEquals("After creating second empty storage instance its' size should be 0",
-                0, secondInstances.size());
+                0, secondInstances.getSize());
     }
 
     @Test
@@ -33,7 +33,7 @@ public class StorageImplTest {
         storage.put(3, elementTree);
 
         Assert.assertEquals("With three elements added to the storage, its size should be 3",
-                3, storage.size());
+                3, storage.getSize());
         Assert.assertEquals(elementOne, storage.get(1));
         Assert.assertEquals(elementTwo, storage.get(2));
         Assert.assertEquals(elementTree, storage.get(3));
@@ -115,7 +115,7 @@ public class StorageImplTest {
                 storage.get(cat));
         Assert.assertEquals("With two elements added with the same key, "
                         + "the storage size should be 1",
-                1, storage.size());
+                1, storage.getSize());
     }
 
     @Test
@@ -134,6 +134,6 @@ public class StorageImplTest {
                 storage.get(null));
         Assert.assertEquals("With two elements added with the same \"null\" key, "
                         + "the storage size should be 1",
-                1, storage.size());
+                1, storage.getSize());
     }
 }
