@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         index = indexOfKey(key);
-        return (index == -1)? null : values[index];
+        return (index == -1) ? null : values[index];
     }
 
     @Override
@@ -42,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOfKey(K key) {
         for (int t = 0; t < size; t++) {
-            if ((key == null && keys[t] == null && values[t] !=  null)
+            if ((key == null && keys[t] == null && values[t] != null)
                     || (keys[t] != null && keys[t].equals(key))) {
                 return t;
             }
