@@ -4,14 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int LIST_LIMIT = 10;
-    private V[] storage;
+    private V[] values;
     private K[] keys;
     private int size;
+    private int index;
 
     public StorageImpl() {
-        storage = (V[]) new Object[LIST_LIMIT];
+        values = (V[]) new Object[LIST_LIMIT];
         keys = (K[]) new Object[LIST_LIMIT];
-        size = 0;
     }
 
     @Override
@@ -19,26 +19,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size == LIST_LIMIT) {
             throw new StorageIsFullException("Storage is full!");
         }
-        if (size != 0 && indexOf(key, keys) >= 0) {
-            storage[indexOf(key, keys)] = value;
+        index = indexOfKey(key);
+        if (size != 0 && index >= 0) {
+            values[index] = value;
             return;
         }
-        storage[size] = value;
+        values[size] = value;
         keys[size] = key;
         size++;
     }
 
     @Override
     public V get(K key) {
-        for (int t = 0; t < size; t++) {
-            if (key == null) {
-                return storage[indexOf(null, keys)];
-            }
-            if (key.equals(keys[t])) {
-                return storage[t];
-            }
-        }
-        return null;
+        index = indexOfKey(key);
+        return (index == -1)? null : values[index];
     }
 
     @Override
@@ -46,14 +40,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public int indexOf(Object object, Object[] objects) {
-        for (int t = 0; t < objects.length; t++) {
-            if (object == null && objects[t] == null) {
-                if (storage[t] != null) {
-                    return t;
-                }
-            }
-            if ((objects[t] != null && objects[t].equals(object))) {
+    private int indexOfKey(K key) {
+        for (int t = 0; t < size; t++) {
+            if ((key == null && keys[t] == null && values[t] !=  null)
+                    || (keys[t] != null && keys[t].equals(key))) {
                 return t;
             }
         }
