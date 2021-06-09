@@ -4,31 +4,31 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private int currentIndex = 0;
+    private int currentSize = 0;
     private K[] keys;
     private V[] values;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[ARRAY_SIZE];
-        this.values = (V[]) new Object[ARRAY_SIZE];
+        keys = (K[]) new Object[ARRAY_SIZE];
+        values = (V[]) new Object[ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < currentIndex; i++) {
+        for (int i = 0; i < currentSize; i++) {
             if (key != null && key.equals(keys[i]) || key == keys[i]) {
                 values[i] = value;
                 return;
             }
         }
-        keys[currentIndex] = key;
-        values[currentIndex] = value;
-        currentIndex++;
+        keys[currentSize] = key;
+        values[currentSize] = value;
+        currentSize++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < currentIndex; i++) {
+        for (int i = 0; i < currentSize; i++) {
             if (key != null && key.equals(keys[i]) || key == keys[i]) {
                 return values[i];
             }
@@ -38,6 +38,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return currentIndex;
+        return currentSize;
     }
 }
