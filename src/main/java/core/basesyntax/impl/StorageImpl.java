@@ -5,6 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_MAX_SIZE = 10;
     private Object[][] items = new Object[STORAGE_MAX_SIZE][2];
+    private int size = 0;
 
     public StorageImpl() {
     }
@@ -25,9 +26,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (existingKey == -1) {
             items[firstFreeSpot][0] = key;
             items[firstFreeSpot][1] = value;
+            size++;
         } else {
             items[existingKey][0] = key;
             items[existingKey][1] = value;
+            if (size == 0) {
+                size++;
+            }
         }
     }
 
@@ -43,13 +48,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int counter = 0;
-        for (int i = 0; i < STORAGE_MAX_SIZE; i++) {
-            if (!bothNulls(items[i][0], items[i][1])) {
-                counter++;
-            }
-        }
-        return counter;
+        return size;
     }
 
     private boolean bothNulls(Object value1, Object value2) {
