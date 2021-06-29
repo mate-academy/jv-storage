@@ -7,39 +7,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[][] items = new Object[STORAGE_MAX_SIZE][2];
     private int size = 0;
 
-    public StorageImpl() {
-    }
-
     @Override
     public void put(K key, V value) {
-        int existingKey = -1;
-        int firstFreeSpot = -1;
-        for (int i = 0; i < STORAGE_MAX_SIZE; i++) {
-            if (keyMatch(key, items[i][0]) || bothNulls(key, items[i][0])) {
-                existingKey = i;
-                break;
-            }
-            if (bothNulls(items[i][0], items[i][1]) && firstFreeSpot == -1) {
-                firstFreeSpot = i;
+        for (int i = 0; i < size; i++) {
+            if (key == items[i][0] || key != null && key.equals(items[i][0])) {
+                items[i][1] = value;
+                return;
             }
         }
-        if (existingKey == -1) {
-            items[firstFreeSpot][0] = key;
-            items[firstFreeSpot][1] = value;
-            size++;
-        } else {
-            items[existingKey][0] = key;
-            items[existingKey][1] = value;
-            if (size == 0) {
-                size++;
-            }
-        }
+        items[size][0] = key;
+        items[size][1] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < STORAGE_MAX_SIZE; i++) {
-            if (keyMatch(key, items[i][0]) || bothNulls(key, items[i][0])) {
+        for (int i = 0; i < size; i++) {
+            if (key == items[i][0] || key != null && key.equals(items[i][0])) {
                 return (V)items[i][1];
             }
         }
@@ -49,13 +33,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
-    }
-
-    private boolean bothNulls(Object value1, Object value2) {
-        return value1 == null && value2 == null;
-    }
-
-    private boolean keyMatch(Object key1, Object key2) {
-        return key1 != null && key1.equals(key2);
     }
 }
