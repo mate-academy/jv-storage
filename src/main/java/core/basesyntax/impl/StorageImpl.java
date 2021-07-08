@@ -51,7 +51,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean replacedValueByExistingKey(K key, V value) {
-        for (int i = 0; i < currentLength; i++){
+        for (int i = 0; i < currentLength; i++) {
             if (!(keys[i] == null && key != null)
                     && ((keys[i] == null && key == null) || keys[i].equals(key))) {
                 values[i] = value;
