@@ -16,9 +16,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (addedValueNoNullArray(value)) {
-            return;
-        }
         if (replacedValueByExistingKey(key, value)) {
             return;
         }
@@ -26,19 +23,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("Storage is full, can't add any more objects");
         }
         addNewRowToStorage(key, value);
-    }
-
-    private boolean addedValueNoNullArray(V value) {
-        //if keys aren't initialized yet but we need to add a value,
-        //we are writing or rewriting value to [0] cell
-        if (keys == null && values != null) {
-            values[0] = value;
-            if (currentLength == 0) {
-                currentLength++;
-            }
-            return true;
-        }
-        return false;
     }
 
     private boolean replacedValueByExistingKey(K key, V value) {
