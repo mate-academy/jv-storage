@@ -16,33 +16,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (replacedValueByExistingKey(key, value)) {
-            return;
-        }
-        if (currentLength == MAX_LENGTH) {
-            throw new RuntimeException("Storage is full, can't add any more objects");
-        }
-        addNewRowToStorage(key, value);
-    }
-
-    private boolean replacedValueByExistingKey(K key, V value) {
+        //try to replace value by existing key
         for (int i = 0; i < currentLength; i++) {
             if (!(keys[i] == null && key != null)
                     && ((keys[i] == null && key == null) || keys[i].equals(key))) {
                 values[i] = value;
-                return true;
+                return;
             }
         }
-        return false;
-    }
-
-    private void addNewRowToStorage(K key, V value) {
-        if (keys != null) {
-            keys[currentLength] = key;
+        //looking for length collisions
+        if (currentLength == MAX_LENGTH) {
+            throw new RuntimeException("Storage is full, can't add any more objects");
         }
-        if (values != null) {
-            values[currentLength] = value;
-        }
+        keys[currentLength] = key;
+        values[currentLength] = value;
         currentLength++;
     }
 
