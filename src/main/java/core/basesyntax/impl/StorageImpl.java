@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.lang.reflect.Array;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH = 10;
@@ -10,12 +9,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values;
 
     public StorageImpl() {
+        keys = (K[]) new Object[MAX_LENGTH];
+        values = (V[]) new Object[MAX_LENGTH];
         currentLength = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        initializeArraysIfNeeded(key, value);
         if (addedValueNoNullArray(value)) {
             return;
         }
@@ -26,15 +26,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("Storage is full, can't add any more objects");
         }
         addNewRowToStorage(key, value);
-    }
-
-    private void initializeArraysIfNeeded(K key, V value) {
-        if (keys == null && key != null) {
-            keys = (K[]) Array.newInstance(key.getClass(), MAX_LENGTH);
-        }
-        if (values == null && value != null) {
-            values = (V[]) Array.newInstance(value.getClass(), MAX_LENGTH);
-        }
     }
 
     private boolean addedValueNoNullArray(V value) {
