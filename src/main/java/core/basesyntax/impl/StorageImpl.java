@@ -35,12 +35,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (keys == null) {
-            return values == null ? null : values[0];
-        }
         for (int i = 0; i < currentLength; i++) {
-            if ((keys[i] == null) == (key == null)
-                    && (key == null || keys[i].equals(key))) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 return values[i];
             }
         }
