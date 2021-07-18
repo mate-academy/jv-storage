@@ -1,6 +1,6 @@
 package core.basesyntax.impl;
-import core.basesyntax.Storage;
 
+import core.basesyntax.Storage;
 import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -35,7 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int result = 0;
         for (int i = 0; i < valueArray.length; i++) {
             if ((valueArray[i] != null) || (keyArray[i] != null)) {
-                result ++;
+                result++;
             }
         }
         return result;
@@ -47,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return true;
         }
         if (!(storage.getClass().equals(StorageImpl.class))) {
-           return false;
+            return false;
         }
 
         @SuppressWarnings("unchecked") StorageImpl<K, V> current = (StorageImpl<K, V>)storage;
