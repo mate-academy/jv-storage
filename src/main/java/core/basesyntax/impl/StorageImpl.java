@@ -4,6 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
+    private static final int MAX_ITEMS_NUMBER = 10;
+
+    private Pair[] pairs = new Pair[MAX_ITEMS_NUMBER];
+    private int lengthOfStorage = 0;
+
     private class Pair<K, V> {
         private K key;
         private V value;
@@ -30,15 +35,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private static final int MAX_ITEMS_NUMBER = 10;
-    private Pair[] pairs = new Pair[MAX_ITEMS_NUMBER];
-
     private int getPairIndex(K key) {
         int index = -1;
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (pairs[i] == null) {
-                continue;
-            }
+        for (int i = 0; i < lengthOfStorage; i++) {
             if (pairs[i].getKey() == null && key == null) {
                 index = i;
                 break;
@@ -54,7 +53,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int pairIndex = getPairIndex(key);
         if (pairIndex == -1) {
-            int lengthOfStorage = size();
             if (lengthOfStorage >= MAX_ITEMS_NUMBER) {
                 System.out.println("You have reached the maximum of the storage! "
                         + "Adding elements is forbidden");
@@ -63,6 +61,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
             Pair newPair = new Pair(key, value);
             pairs[lengthOfStorage] = newPair;
+            lengthOfStorage++;
         } else {
             pairs[pairIndex].setValue(value);
         }
@@ -80,12 +79,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int result = 0;
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (pairs[i] != null) {
-                result++;
-            }
-        }
-        return result;
+        return lengthOfStorage;
     }
 }
