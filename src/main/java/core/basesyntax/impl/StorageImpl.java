@@ -51,12 +51,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         @SuppressWarnings("unchecked") StorageImpl<K, V> current = (StorageImpl<K, V>)storage;
+
         //noinspection ConstantConditions
         boolean keyEquals = (this.keyArray == null && current.keyArray == null)
-                || (Arrays.equals(this.keyArray, current.keyArray));
+                || (this.keyArray != null && Arrays.equals(this.keyArray, current.keyArray));
         //noinspection ConstantConditions
         boolean valueEquals = (this.valueArray == null && current.valueArray == null)
-                || (Arrays.equals(this.valueArray, current.valueArray));
+                || (this.valueArray != null && Arrays.equals(this.valueArray, current.valueArray));
 
         return keyEquals && valueEquals;
     }
