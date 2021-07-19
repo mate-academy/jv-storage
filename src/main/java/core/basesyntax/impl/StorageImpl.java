@@ -2,17 +2,24 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    @SuppressWarnings("unchecked") private final K[] keyArray = (K[]) new Object[10];
-    @SuppressWarnings("unchecked") private final V[] valueArray = (V[]) new Object[10];
+    int ARRAY = 10;
+    @SuppressWarnings("unchecked") private final K[] keyArray = (K[]) new Object[ARRAY];
+    @SuppressWarnings("unchecked") private final V[] valueArray = (V[]) new Object[ARRAY];
+    int arraySize = 0;
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i] == null && valueArray[i] == null) {
+            if (Objects.equals(keyArray[i], key)) {
+                valueArray[i] = value;
+                break;
+            } else if (keyArray[i] == null && valueArray[i] == null) {
                 keyArray[i] = key;
                 valueArray[i] = value;
+                arraySize++;
                 break;
             }
         }
@@ -32,13 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int result = 0;
-        for (int i = 0; i < valueArray.length; i++) {
-            if ((valueArray[i] != null) || (keyArray[i] != null)) {
-                result++;
-            }
-        }
-        return result;
+        return arraySize;
     }
 
     @Override
