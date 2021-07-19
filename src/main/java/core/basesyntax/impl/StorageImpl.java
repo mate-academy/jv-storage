@@ -38,12 +38,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int getPairIndex(K key) {
         int index = -1;
         for (int i = 0; i < lengthOfStorage; i++) {
-            if (pairs[i].getKey() == null && key == null) {
-                index = i;
-                break;
-            } else if (pairs[i].getKey() != null && pairs[i].getKey().equals(key)) {
-                index = i;
-                break;
+            if (pairs[i].getKey() == key || key != null && key.equals(pairs[i].getKey())) {
+                return i;
             }
         }
         return index;
@@ -54,9 +50,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int pairIndex = getPairIndex(key);
         if (pairIndex == -1) {
             if (lengthOfStorage >= MAX_ITEMS_NUMBER) {
-                System.out.println("You have reached the maximum of the storage! "
+                throw new RuntimeException("You have reached the maximum of the storage! "
                         + "Adding elements is forbidden");
-                return;
             }
 
             Pair newPair = new Pair(key, value);
