@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int ARRAY_LENGTH = 10;
-    @SuppressWarnings("unchecked") private final K[] keyArray = (K[]) new Object[ARRAY_LENGTH];
-    @SuppressWarnings("unchecked") private final V[] valueArray = (V[]) new Object[ARRAY_LENGTH];
-    public static int arraySize = 0;
+    private final int arrayLength = 10;
+    @SuppressWarnings("unchecked") private final K[] keyArray = (K[]) new Object[arrayLength];
+    @SuppressWarnings("unchecked") private final V[] valueArray = (V[]) new Object[arrayLength];
+    private int arraySize;
 
     @Override
     public void put(K key, V value) {
