@@ -13,7 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keyArray.length; i++) {
-            if (Objects.equals(keyArray[i], key)) {
+            if ((Objects.equals(keyArray[i], key)) && (valueArray[i] != null)) {
                 valueArray[i] = value;
                 break;
             } else if (keyArray[i] == null && valueArray[i] == null) {
@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         V result = null;
         for (int i = 0; i < valueArray.length; i++) {
-            if (keyArray[i] == key) {
+            if (Objects.equals(keyArray[i], key)) {
                 result = valueArray[i];
                 break;
             }
