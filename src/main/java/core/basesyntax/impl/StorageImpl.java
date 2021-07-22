@@ -2,23 +2,25 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final int arrayLength = 10;
-    @SuppressWarnings("unchecked") private final K[] keyArray = (K[]) new Object[arrayLength];
-    @SuppressWarnings("unchecked") private final V[] valueArray = (V[]) new Object[arrayLength];
+    private static final int MAX_LENGTH = 10;
+    @SuppressWarnings("unchecked") private final K[] keyArray = (K[]) new Object[MAX_LENGTH];
+    @SuppressWarnings("unchecked") private final V[] valueArray = (V[]) new Object[MAX_LENGTH];
     private int arraySize;
-
+    
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if ((Objects.equals(keyArray[i], key)) && (valueArray[i] != null)) {
+        for (int i = 0; i <= arraySize; i++) {
+            if ((keyArray[i] == key) && (valueArray[i] != null)) {
+                valueArray[i] = value;
+                break;
+            } else if (keyArray[i] != null && keyArray[i].equals(key)) {
                 valueArray[i] = value;
                 break;
             } else if (keyArray[i] == null && valueArray[i] == null) {
-                keyArray[i] = key;
-                valueArray[i] = value;
+                keyArray[arraySize] = key;
+                valueArray[arraySize] = value;
                 arraySize++;
                 break;
             }
@@ -27,14 +29,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        V result = null;
-        for (int i = 0; i < valueArray.length; i++) {
-            if (Objects.equals(keyArray[i], key)) {
-                result = valueArray[i];
-                break;
+        for (int i = 0; i <= arraySize; i++) {
+            if ((keyArray[i] == key) || (keyArray[i] != null && keyArray[i].equals(key))) {
+                return valueArray[i];
             }
         }
-        return result;
+        return null;
     }
 
     @Override
