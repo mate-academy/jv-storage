@@ -4,53 +4,46 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private static final int DEFAULT_CAPACITY = 10;
+    private static final int MAX_SIZE = 10;
+    private int size = 0;
 
-    private Pair[] data = new Pair[DEFAULT_CAPACITY];
+    private Pair[] data = new Pair[MAX_SIZE];
 
     @Override
     public void put(K key, V value) {
         Pair newPair = new Pair(key, value);
-        for (int i = 0; i < data.length; i++) {
-            if (data[i] == null) {
-                data[i] = newPair;
-                break;
+        if (size == 0) {
+            data[0] = newPair;
+            size++;
+        } else {
+            boolean isSimilar = false;
+            for (int j = 0; j < size(); j++) {
+                if (data[j] != null && data[j].getKey() != null
+                        && data[j].getKey().equals(newPair.getKey())
+                        || data[j] != null
+                        && (data[j].getKey() == null && newPair.getKey() == null)) {
+                    data[j] = newPair;
+                    isSimilar = true;
+                }
             }
 
-            if (data[i] != null) {
-                if (data[i].getKey() == null && newPair.getKey() == null) {
-                    data[i] = newPair;
-                    break;
-                }
-
-                if (data[i].getKey() != null && data[i].getKey().equals(newPair.getKey())) {
-                    data[i] = newPair;
-                    break;
-                }
+            if (!isSimilar) {
+                data[size] = newPair;
+                size++;
             }
         }
     }
 
     @Override
     public V get(K key) {
-        if (key != null) {
-            for (Pair pair : data) {
-                if (pair != null && pair.getKey() != null) {
-                    if (pair.getKey().equals(key)) {
-                        return (V) pair.getValue();
-                    }
-                }
-            }
-        }
+        for (int i = 0; i < size(); i++) {
 
-        if (key == null) {
-            for (Pair pair : data) {
-                if (pair != null) {
-                    if (pair.getKey() == null) {
-                        return (V) pair.getValue();
-                    }
+            if ((data[i] != null && key != null)
+                    && (data[i].getKey() != null)
+                    && (data[i].getKey().equals(key))
+                    || data[i] != null && (key == null && data[i].getKey() == null)) {
 
-                }
+                return (V) data[i].getValue();
             }
         }
         return null;
@@ -58,13 +51,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = 0;
-        for (int j = 0; j < data.length; j++) {
-            if (data[j] != null) {
-                size++;
-            }
-        }
-
         return size;
     }
 }
