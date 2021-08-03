@@ -11,38 +11,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Pair newPair = new Pair(key, value);
-        if (size == 0) {
-            data[0] = newPair;
-            size++;
-        } else {
-            boolean isSimilar = false;
-            for (int j = 0; j < size(); j++) {
-                if (data[j] != null && data[j].getKey() != null
-                        && data[j].getKey().equals(newPair.getKey())
-                        || data[j] != null
-                        && (data[j].getKey() == null && newPair.getKey() == null)) {
-                    data[j] = newPair;
-                    isSimilar = true;
-                }
-            }
+        for (int j = 0; j < size(); j++) {
+            if (data[j] != null && data[j].getKey() != null
+                    && data[j].getKey().equals(key)
+                    || data[j] != null
+                    && (data[j].getKey() == null && key == null)) {
+                data[j] = new Pair(key, value);
+                return;
 
-            if (!isSimilar) {
-                data[size] = newPair;
-                size++;
             }
         }
+
+        Pair newPair = new Pair(key, value);
+        data[size] = newPair;
+        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size(); i++) {
-
-            if ((data[i] != null && key != null)
-                    && (data[i].getKey() != null)
-                    && (data[i].getKey().equals(key))
-                    || data[i] != null && (key == null && data[i].getKey() == null)) {
-
+            if ((data[i].getKey() == key || key != null && key.equals(data[i].getKey()))) {
                 return (V) data[i].getValue();
             }
         }
