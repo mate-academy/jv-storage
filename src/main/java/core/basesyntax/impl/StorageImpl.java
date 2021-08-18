@@ -56,13 +56,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndex(K key) {
-        int index = -1;
-        int localSize = this.size == 0 ? 1 : this.size;
-        for (int i = 0; i < localSize; i++) {
+        if (size == 0) {
+            return -1;
+        }
+        for (int i = 0; i < size; i++) {
             if ((key == this.keys[i]) || key != null && key.equals(this.keys[i])) {
-                index = i;
+                return i;
             }
         }
-        return index;
+        return -1;
     }
 }
