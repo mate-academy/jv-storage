@@ -32,10 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = this.getIndex(key);
-        if (index == -1) {
-            return null;
-        }
-        return (V) this.values[index];
+        return index == -1 ? null : (V) this.values[index];
     }
 
     @Override
