@@ -16,15 +16,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = this.getIndex(key);
-        if (index != -1 && this.size != 0) {
-            this.values[index] = value;
+        int index = getIndex(key);
+        if (index != -1) {
+            values[index] = value;
         } else {
-            if (size == this.keys.length) {
-                this.addLength();
+            if (size == keys.length) {
+                addLength();
             }
-            this.keys[size] = key;
-            this.values[size] = value;
+            keys[size] = key;
+            values[size] = value;
             size++;
         }
     }
