@@ -31,33 +31,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int index = this.getIndex(key);
-        return index == -1 ? null : (V) this.values[index];
+        int index = getIndex(key);
+        return index == -1 ? null : (V) values[index];
     }
 
     @Override
     public int size() {
-        return this.size;
+        return size;
     }
 
     private void addLength() {
         Object[] newKeys = new Object[size + MAX_LENGTH];
         Object[] newValues = new Object[size + MAX_LENGTH];
 
-        for (int i = 0; i < this.size; i++) {
-            newKeys[i] = this.keys[i];
-            newValues[i] = this.values[i];
+        for (int i = 0; i < size; i++) {
+            newKeys[i] = keys[i];
+            newValues[i] = values[i];
         }
-        this.keys = newKeys;
-        this.values = newValues;
+        keys = newKeys;
+        values = newValues;
     }
 
     private int getIndex(K key) {
-        if (size == 0) {
-            return -1;
-        }
         for (int i = 0; i < size; i++) {
-            if ((key == this.keys[i]) || key != null && key.equals(this.keys[i])) {
+            if ((key == keys[i]) || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
