@@ -14,29 +14,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         size = 0;
     }
 
-    private void addLength() {
-        Object[] newKeys = new Object[size + MAX_LENGTH];
-        Object[] newValues = new Object[size + MAX_LENGTH];
-
-        for (int i = 0; i < this.size; i++) {
-            newKeys[i] = this.keys[i];
-            newValues[i] = this.values[i];
-        }
-        this.keys = newKeys;
-        this.values = newValues;
-    }
-
-    private int getIndex(K key) {
-        int index = -1;
-        int localSize = this.size == 0 ? 1 : this.size;
-        for (int i = 0; i < localSize; i++) {
-            if ((key == this.keys[i]) || key != null && key.equals(this.keys[i])) {
-                index = i;
-            }
-        }
-        return index;
-    }
-
     @Override
     public void put(K key, V value) {
         int index = this.getIndex(key);
@@ -64,5 +41,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return this.size;
+    }
+
+    private void addLength() {
+        Object[] newKeys = new Object[size + MAX_LENGTH];
+        Object[] newValues = new Object[size + MAX_LENGTH];
+
+        for (int i = 0; i < this.size; i++) {
+            newKeys[i] = this.keys[i];
+            newValues[i] = this.values[i];
+        }
+        this.keys = newKeys;
+        this.values = newValues;
+    }
+
+    private int getIndex(K key) {
+        int index = -1;
+        int localSize = this.size == 0 ? 1 : this.size;
+        for (int i = 0; i < localSize; i++) {
+            if ((key == this.keys[i]) || key != null && key.equals(this.keys[i])) {
+                index = i;
+            }
+        }
+        return index;
     }
 }
