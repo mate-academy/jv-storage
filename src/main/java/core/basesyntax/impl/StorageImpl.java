@@ -44,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void addNew(K key, V value) {
         for (int i = 0; i < array.length; i++) {
-            if (array[i][0] == null && array[i][1] == null ) {
+            if (array[i][0] == null && array[i][1] == null) {
                 array[i][0] = key;
                 array[i][1] = value;
                 this.size++;
@@ -56,7 +56,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private boolean check(K key, V value) {
         if (key == null) {
             for (int i = 0; i < array.length; i++) {
-                if (array[i][0] == null && array[i][1] != null ){
+                if (array[i][0] == null && array[i][1] != null) {
                     array[i][1] = value;
                     return false;
                 }
