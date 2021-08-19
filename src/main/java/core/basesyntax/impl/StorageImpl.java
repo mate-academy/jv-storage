@@ -21,13 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
-            if (key == keys[i]) {
-                return values[i];
-            }
-            if (key == null) {
-                break;
-            }
-            if (key.equals(keys[i])) {
+            if (equalsCheck(keys[i], values[i], key)) {
                 return values[i];
             }
         }
@@ -50,13 +44,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOfEmptySlot(K key) {
         for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
-            if (values[i] != null && ((key == null && keys[i] == null) || keys[i].equals(key))) {
-                return i;
-            }
-            if (values[i] == null) {
+            if (equalsCheck(keys[i], values[i], key) || values[i] == null) {
                 return i;
             }
         }
         return 0;
+    }
+
+    private boolean equalsCheck(K key, V value, K keyToCompare) {
+        return value != null
+                && ((keyToCompare == key) || (key != null && key.equals(keyToCompare)));
     }
 }
