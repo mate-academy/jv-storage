@@ -14,25 +14,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (searchKey(key) == NULL_ARRAY) {
+        if (searchIndexOfKey(key) == NULL_ARRAY) {
             count++;
             keys = (K[]) new Object[MAX_ITEMS_NUMBER];
             keys[count - LENGTH_TO_INDEX] = key;
             values = (V[]) new Object[MAX_ITEMS_NUMBER];
             values[count - LENGTH_TO_INDEX] = value;
-        } else if (searchKey(key) == NO_KEY_FOUND) {
+        } else if (searchIndexOfKey(key) == NO_KEY_FOUND) {
             count++;
             keys[count - LENGTH_TO_INDEX] = key;
             values[count - LENGTH_TO_INDEX] = value;
-        } else if (searchKey(key) >= KEY_FOUND) {
-            values[searchKey(key)] = value;
+        } else if (searchIndexOfKey(key) >= KEY_FOUND) {
+            values[searchIndexOfKey(key)] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        if (searchKey(key) >= KEY_FOUND) {
-            return values[searchKey(key)];
+        if (searchIndexOfKey(key) >= KEY_FOUND) {
+            return values[searchIndexOfKey(key)];
         } else {
             return null;
         }
@@ -43,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return count;
     }
 
-    private int searchKey(K key) {
+    private int searchIndexOfKey(K key) {
         if (keys == null) {
             return NULL_ARRAY;
         }
