@@ -1,47 +1,38 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.LinkedList;
+import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int SIZE_OF_ARR = 10;
-    private K[] keys;
-    private V[] values;
+    private final List<K> keysList = new LinkedList<>();
+    private final List<V> valuesList = new LinkedList<>();
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[SIZE_OF_ARR];
-        this.values = (V[]) new Object[SIZE_OF_ARR];
     }
 
     @Override
     public void put(K key, V value) {
         if (get(key) == null) {
-            keys[size()] = key;
-            values[size() - 1] = value;
+            keysList.add(key);
+            valuesList.add(value);
         } else {
-            for (int i = 0; i < size(); i++) {
-                if (keys[i].equals(key)) {
-                    values[i] = value;
-                }
-            }
+            int indexOfKey = keysList.indexOf(key);
+            valuesList.set(indexOfKey, value);
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size(); i++) {
-            if (keys[i] != null && keys[i].equals(key)) {
-                return values[i];
-            }
+        int indexOfKey = keysList.indexOf(key);
+        if (indexOfKey == -1) {
+            return null;
         }
-        return null;
+        return valuesList.get(indexOfKey);
     }
 
     @Override
     public int size() {
-        int iterator = 0;
-        while (keys[iterator] != null) {
-            iterator++;
-        }
-        return iterator;
+        return keysList.size();
     }
 }
