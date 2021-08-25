@@ -3,36 +3,27 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int maxArraysSize = 10;
+    public static final int MAX_ARRAYS_SIZE = 10;
     private K[] keyArray;
     private V[] valueArray;
     private int currentSize;
 
     public StorageImpl() {
-        keyArray = (K[]) new Object[maxArraysSize];
-        valueArray = (V[]) new Object[maxArraysSize];
+        keyArray = (K[]) new Object[MAX_ARRAYS_SIZE];
+        valueArray = (V[]) new Object[MAX_ARRAYS_SIZE];
         currentSize = 0;
-    }
-
-    private int getIndex(K key) {
-        for (int i = 0; i < currentSize; i++) {
-            if ((keyArray[i] != null && keyArray[i].equals(key))
-                    || (keyArray[i] == null && key == null)) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     @Override
     public void put(K key, V value) {
         int index = getIndex(key);
         if (index == -1) {
-            if (currentSize < maxArraysSize) {
-                keyArray[currentSize] = key;
-                valueArray[currentSize] = value;
-                currentSize++;
+            if (currentSize == MAX_ARRAYS_SIZE) {
+                throw new RuntimeException("The storage is full!");
             }
+            keyArray[currentSize] = key;
+            valueArray[currentSize] = value;
+            currentSize++;
         } else {
             valueArray[index] = value;
         }
@@ -47,5 +38,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return currentSize;
+    }
+
+    private int getIndex(K key) {
+        for (int i = 0; i < currentSize; i++) {
+            if (keyArray[i] == key || (keyArray[i] != null && keyArray[i].equals(key))) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
