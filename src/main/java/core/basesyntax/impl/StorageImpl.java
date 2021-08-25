@@ -33,12 +33,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int valueIndex = 0;
-        for (K k : keys) {
-            if (isKeysEqual(k, key)) {
-                return values[valueIndex];
+        for (int i = 0; i < size; i++) {
+            if (isKeysEqual(keys[i], key)) {
+                return values[i];
             }
-            valueIndex++;
         }
         return null;
     }
