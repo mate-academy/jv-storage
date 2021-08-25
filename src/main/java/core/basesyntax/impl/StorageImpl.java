@@ -3,21 +3,21 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_LENGTH = 10;
+    private static final int INITIAL_LENGTH = 10;
     private Object[] keys;
     private Object[] values;
     private int size;
 
     public StorageImpl() {
-        keys = new Object[MAX_LENGTH];
-        values = new Object[MAX_LENGTH];
+        keys = new Object[INITIAL_LENGTH];
+        values = new Object[INITIAL_LENGTH];
         size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         int index = getIndex(key);
-        if (checkIndex(index)) {
+        if (isValidIndex(index)) {
             values[index] = value;
         } else {
             if (size == keys.length) {
@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        return !checkIndex(index) ? null : (V) values[index];
+        return !isValidIndex(index) ? null : (V) values[index];
     }
 
     @Override
@@ -40,16 +40,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public boolean checkIndex(int index) {
-        if (index == -1) {
+    private boolean isValidIndex(int index) {
+        if (index < 0 || index > keys.length) {
             return false;
         }
         return true;
     }
 
     private void resize() {
-        Object[] newKeys = new Object[size + MAX_LENGTH];
-        Object[] newValues = new Object[size + MAX_LENGTH];
+        Object[] newKeys = new Object[size + INITIAL_LENGTH];
+        Object[] newValues = new Object[size + INITIAL_LENGTH];
 
         for (int i = 0; i < size; i++) {
             newKeys[i] = keys[i];
