@@ -43,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public boolean checkEquals(K key1, K key2) {
+    private boolean checkEquals(K key1, K key2) {
         return key1 == key2 || key1 != null && key1.equals(key2);
     }
 }
