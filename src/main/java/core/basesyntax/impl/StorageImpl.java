@@ -3,8 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int SIZE_FIRST_ARRAY = 10;
-    private static final int SIZE_SECOND_ARRAY = 2;
+    private static final int SIZE_EXTERNAL_ARRAY = 10;
+    private static final int SIZE_INTERNAL_ARRAY = 2;
     private static final int KEY_POSITION = 0;
     private static final int VALUE_POSITION = 1;
     private int size;
@@ -12,12 +12,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         arrayStorage =
-                new Object[SIZE_FIRST_ARRAY][SIZE_SECOND_ARRAY];
+                new Object[SIZE_EXTERNAL_ARRAY][SIZE_INTERNAL_ARRAY];
     }
 
     @Override
     public void put(K key, V value) {
-        if (size > SIZE_FIRST_ARRAY) {
+        if (size > SIZE_EXTERNAL_ARRAY) {
             throw new RuntimeException("Array is full");
         }
         for (int i = 0; i < size; i++) {
