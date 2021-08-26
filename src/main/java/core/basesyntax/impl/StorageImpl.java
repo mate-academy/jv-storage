@@ -5,8 +5,11 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int FIRST_PAIR = 0;
+    public static final int DEFAULT_CAPACITY = 10;
+    private Pair[] storageOfPairs = new Pair[DEFAULT_CAPACITY];
+    private int size;
 
-    protected class Pair<K, V> extends StorageImpl<K, V> implements Storage<K, V> {
+    protected class Pair<K, V> {
         private K indexKey;
         private V data;
 
@@ -32,19 +35,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private Pair[] storageOfPairs = new Pair[10];
-
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = new Pair<K, V>(key, value);
-        if (isStorageEmpty()) {
-            storageOfPairs[FIRST_PAIR] = pair;
-        } else if (existsDublicate(pair) != -1) {
-            storageOfPairs[existsDublicate(pair)] = pair;
-        } else if (checkEmptySlot() != -1) {
-            storageOfPairs[checkEmptySlot()] = pair;
-        } else {
-            System.out.println("Storage is full of its capacity");
+        for (int i = 0; i < storageOfPairs.length; i++) {
+            if (storageOfPairs[i] == null) {
+                storageOfPairs[i] = pair;
+                size++;
+                break;
+            } else if (isDublicate(pair, i)) {
+                storageOfPairs[i] = pair;
+                break;
+            }
         }
     }
 
@@ -60,10 +62,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        if (checkEmptySlot() != -1) {
-            return checkEmptySlot();
-        }
-        return -1;
+        return size;
     }
 
     private boolean isStorageEmpty() {
@@ -79,17 +78,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    private int existsDublicate(Pair pair) {
-        if (!isStorageEmpty()) {
-            for (int i = 0; i < storageOfPairs.length; i++) {
-                if (storageOfPairs[i] != null
-                        && (storageOfPairs[i].getIndexKey() == pair.getIndexKey()
-                        || (storageOfPairs[i].getIndexKey() != null
-                        && storageOfPairs[i].getIndexKey().equals(pair.getIndexKey())))) {
-                    return i;
-                }
-            }
+    private boolean isDublicate(Pair pair, int i) {
+        if (storageOfPairs[i] != null
+                && (storageOfPairs[i].getIndexKey() == pair.getIndexKey()
+                || (storageOfPairs[i].getIndexKey() != null
+                && storageOfPairs[i].getIndexKey().equals(pair.getIndexKey())))) {
+            storageOfPairs[i] = pair;
+            return true;
         }
-        return -1;
+
+        return false;
     }
 }
