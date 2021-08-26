@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size > SIZE_EXTERNAL_ARRAY) {
+        if (size >= SIZE_EXTERNAL_ARRAY) {
             throw new RuntimeException("Array is full");
         }
         for (int i = 0; i < size; i++) {
