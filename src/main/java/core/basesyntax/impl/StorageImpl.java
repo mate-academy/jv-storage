@@ -4,34 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE_OF_ARRAY = 10;
-    private int sizeOfArray;
-    private final K[] arrayOfKeys;
-    private final V[] arrayOfValues;
+    private int size;
+    private final K[] keys;
+    private final V[] values;
 
     public StorageImpl() {
-        arrayOfKeys = (K[]) new Object[MAX_SIZE_OF_ARRAY];
-        arrayOfValues = (V[]) new Object[MAX_SIZE_OF_ARRAY];
+        keys = (K[]) new Object[MAX_SIZE_OF_ARRAY];
+        values = (V[]) new Object[MAX_SIZE_OF_ARRAY];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < sizeOfArray; i++) {
-            if (isEquals(key, arrayOfKeys[i])) {
-                arrayOfKeys[i] = key;
-                arrayOfValues[i] = value;
+        for (int i = 0; i < size; i++) {
+            if (isEquals(key, keys[i])) {
+                values[i] = value;
                 return;
             }
         }
-        arrayOfKeys[sizeOfArray] = key;
-        arrayOfValues[sizeOfArray] = value;
-        sizeOfArray++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < sizeOfArray; i++) {
-            if (isEquals(key, arrayOfKeys[i])) {
-                return arrayOfValues[i];
+        for (int i = 0; i < size; i++) {
+            if (isEquals(key, keys[i])) {
+                return values[i];
             }
         }
         return null;
@@ -39,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return sizeOfArray;
+        return size;
     }
 
     private boolean isEquals(K inputKey, K keyInArray) {
