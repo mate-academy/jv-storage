@@ -26,6 +26,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 size--;
             }
         }
+        if (key == null && value == null) {
+            throw new RuntimeException("key and elements must not be empty");
+        }
         keys[size] = key;
         items[size] = value;
         size++;
