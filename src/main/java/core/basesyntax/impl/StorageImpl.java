@@ -22,6 +22,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
+        if (size == 10) {
+            throw new IndexOutOfBoundsException("Storage is full!");
+        }
         keys[size] = key;
         values[size] = value;
         size++;
