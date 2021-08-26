@@ -30,17 +30,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         public void setData(V data) {
             this.data = data;
         }
-
-  //      @Override
-  //      public boolean equals(Object pair) {
-  //          if (pair.getClass().equals(Pair.class)) {
-  //              Pair current = (Pair) pair;
-  //              return Objects.equals(this.indexKey, current.indexKey)
-  //                          && Objects.equals(this.data, current.data);
-  //          }
-   //         return false;
-  //      }
-
     }
 
     private Pair[] storageOfPairs = new Pair[10];
@@ -48,11 +37,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = new Pair<K, V>(key, value);
-        if (isStorageEmpty()){
-            storageOfPairs[0] = pair;
-        } else if (existsDublicate(pair) != -1)  {
+        if (isStorageEmpty()) {
+            storageOfPairs[FIRST_PAIR] = pair;
+        } else if (existsDublicate(pair) != -1) {
             storageOfPairs[existsDublicate(pair)] = pair;
-        } else if (checkEmptySlot() != -1){
+        } else if (checkEmptySlot() != -1) {
             storageOfPairs[checkEmptySlot()] = pair;
         } else {
             System.out.println("Storage is full of its capacity");
@@ -61,13 +50,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-            for (int i = 0; i < storageOfPairs.length; i++) {
-                if (!isStorageEmpty() && Objects.equals(storageOfPairs[i].getIndexKey(),key)) {
-                    return (V) storageOfPairs[i].getData();
-                }
+        for (int i = 0; i < storageOfPairs.length; i++) {
+            if (!isStorageEmpty() && Objects.equals(storageOfPairs[i].getIndexKey(),key)) {
+                return (V) storageOfPairs[i].getData();
             }
+        }
         return null;
     }
+
     @Override
     public int size() {
         if (checkEmptySlot() != -1) {
@@ -76,7 +66,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    private boolean isStorageEmpty(){
+    private boolean isStorageEmpty() {
         return storageOfPairs[FIRST_PAIR] == null;
     }
 
@@ -92,12 +82,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int existsDublicate(Pair pair) {
         if (!isStorageEmpty()) {
             for (int i = 0; i < storageOfPairs.length; i++) {
-                if ( storageOfPairs[i].getIndexKey() == pair.getIndexKey()
+                if (storageOfPairs[i] != null
+                        && (storageOfPairs[i].getIndexKey() == pair.getIndexKey()
                         || (storageOfPairs[i].getIndexKey() != null
-                && storageOfPairs[i].getIndexKey().equals(pair.getIndexKey()))
-                        //Objects.equals(storageOfPairs[i].getIndexKey(), pair.getIndexKey())
-                       // як що взяти закоментовану умову, то не працює тільки 2 тести
-                ) {
+                        && storageOfPairs[i].getIndexKey().equals(pair.getIndexKey())))) {
                     return i;
                 }
             }
