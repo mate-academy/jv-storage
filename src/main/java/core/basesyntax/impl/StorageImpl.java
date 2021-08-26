@@ -7,7 +7,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] items;
     private K[] keys;
     private int size = 0;
-    private boolean isEmpty = true;
 
     @SuppressWarnings({"unchecked"})
     public StorageImpl() {
@@ -17,28 +16,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (isEmpty) {
-            keys[size] = key;
-            items[size] = value;
-            size++;
-            isEmpty = false;
-        } else {
-            for (int i = 0; i < keys.length; i++) {
-                if (key.equals(keys[i])) {
-                    items[i] = value;
-                    size--;
-                }
+        for (int i = 0; i < size; i++) {
+            if (key == null && keys[i] == null && items[i] != null) {
+                items[i] = value;
+                size--;
             }
-            keys[size] = key;
-            items[size] = value;
-            size++;
+            if (key != null && key.equals(keys[i])) {
+                items[i] = value;
+                size--;
+            }
         }
+        keys[size] = key;
+        items[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if(key.equals(keys[i])) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keys[i] == null && items[i] != null) {
+                return items[i];
+            }
+            if (key != null && key.equals(keys[i])) {
                 return items[i];
             }
         }
