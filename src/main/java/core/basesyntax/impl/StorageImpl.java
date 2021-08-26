@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
+    private static final double GROW_COEFFICIENT = 1.5;
     private int size = 0;
     private Box<K, V>[] boxes;
 
@@ -14,36 +15,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (isEmpty()) {
-            putElementWithNotExistingKey(key, value);
-        } else {
-            if (containsKey(key)) {
-                putElementWithExistingKey(key, value);
-            } else {
-                putElementWithNotExistingKey(key, value);
-            }
-        }
-    }
-
-    private void putElementWithExistingKey(K key, V value) {
+        boolean isFound = false;
         for (int i = 0; i < size; i++) {
             if (Objects.equals(key, boxes[i].key)) {
                 boxes[i].setValue(value);
+                isFound = true;
+                break;
             }
         }
-    }
-
-    private void putElementWithNotExistingKey(K key, V value) {
-        boxes[size++] = new Box<>(key, value);
-    }
-
-    private boolean containsKey(K key) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(key, boxes[i].key)) {
-                return true;
-            }
+        if (!isFound) {
+            boxes[size++] = new Box<>(key, value);
         }
-        return false;
+        grow();
+    }
+
+    private void grow() {
+        if (size == boxes.length) {
+            Box<K, V>[] resizedBoxes = new Box[(int) (size * GROW_COEFFICIENT)];
+            System.arraycopy(boxes, 0, resizedBoxes, 0, boxes.length);
+            boxes = resizedBoxes;
+        }
     }
 
     @Override
@@ -59,10 +50,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     static class Box<K, V> {
