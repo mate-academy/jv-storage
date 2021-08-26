@@ -8,36 +8,41 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int KEY_POSITION = 0;
     private static final int VALUE_POSITION = 1;
     private int size;
-    private final Object[][] arrayStorage;
+    private final Object[][] items;
 
     public StorageImpl() {
-        arrayStorage =
+        items =
                 new Object[SIZE_EXTERNAL_ARRAY][SIZE_INTERNAL_ARRAY];
     }
 
     @Override
     public void put(K key, V value) {
+        for (int i = 0; i < size; i++) {
+            if (key != null && key.equals(items[i][KEY_POSITION])) {
+                items[i][VALUE_POSITION] = value;
+            }
+        }
         if (size >= SIZE_EXTERNAL_ARRAY) {
             throw new RuntimeException("Array is full");
         }
         for (int i = 0; i < size; i++) {
-            if ((arrayStorage[i][KEY_POSITION] == key)
-                    || (key != null && key.equals(arrayStorage[i][KEY_POSITION]))) {
-                arrayStorage[i][VALUE_POSITION] = value;
+            if ((items[i][KEY_POSITION] == key)
+                    || (key != null && key.equals(items[i][KEY_POSITION]))) {
+                items[i][VALUE_POSITION] = value;
                 return;
             }
         }
-        arrayStorage[size][KEY_POSITION] = key;
-        arrayStorage[size][VALUE_POSITION] = value;
+        items[size][KEY_POSITION] = key;
+        items[size][VALUE_POSITION] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == arrayStorage[i][KEY_POSITION]
-                    || (key != null && key.equals(arrayStorage[i][KEY_POSITION]))) {
-                return (V) arrayStorage[i][VALUE_POSITION];
+            if (key == items[i][KEY_POSITION]
+                    || (key != null && key.equals(items[i][KEY_POSITION]))) {
+                return (V) items[i][VALUE_POSITION];
             }
         }
         return null;
