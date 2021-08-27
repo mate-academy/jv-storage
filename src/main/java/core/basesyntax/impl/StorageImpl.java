@@ -37,8 +37,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return null;
-        // From tests:
-        // "When element with this key doesn't exist, the method should return \"null\""
     }
 
     @Override
