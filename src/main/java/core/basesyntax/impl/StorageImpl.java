@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private static final String INDEX_OF_BOUND_EXCEPTION_MESSAGE = "Storage is full and has " + MAX_ITEMS_NUMBER + " elements. You cant add more elements in it.";
+    private static final String INDEX_OF_BOUND_EXCEPTION_MESSAGE = "Storage is full and has " + MAX_ITEMS_NUMBER + " elements.You cant add more elements in it.";
     private int size = 0;
     private Box<K, V>[] boxes;
 
