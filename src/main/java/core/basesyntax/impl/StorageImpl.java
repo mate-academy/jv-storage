@@ -20,7 +20,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        boxes[size++] = new Box<>(key, value);
+        boxes[size] = new Box<>(key, value);
+        size++;
     }
 
     @Override
