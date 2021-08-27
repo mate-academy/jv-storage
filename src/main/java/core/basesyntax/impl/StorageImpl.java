@@ -16,11 +16,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (!keyValidator(key, value)) {
-            keys[size] = key;
-            items[size] = value;
-            size++;
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keys[i] == null)
+                    || key != null && key.equals(keys[i])) {
+                items[i] = value;
+                return;
+            }
         }
+        keys[size] = key;
+        items[size] = value;
+        size++;
     }
 
     @Override
@@ -34,21 +39,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    //i don't wanna use cycle for finding my storage length.
-    //So i just add counter to my put method.
     @Override
     public int size() {
         return size;
-    }
-
-    private boolean keyValidator(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null)
-                    || key != null && key.equals(keys[i])) {
-                items[i] = value;
-                return true;
-            }
-        }
-        return false;
     }
 }
