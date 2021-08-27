@@ -4,7 +4,8 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER = 100;
+    private static final int MAX_ITEMS_NUMBER = 10;
+    private static final String INDEX_OF_BOUND_EXCEPTION_MESSAGE = "Storage is full and has " + MAX_ITEMS_NUMBER + " elements. You cant add more elements in it.";
     private int size = 0;
     private Box<K, V>[] boxes;
 
@@ -14,6 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        sizeCheck();
         for (int i = 0; i < size; i++) {
             if (Objects.equals(key, boxes[i].key)) {
                 boxes[i].setValue(value);
@@ -22,6 +24,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         boxes[size] = new Box<>(key, value);
         size++;
+    }
+
+    private void sizeCheck() {
+        if (size == boxes.length) {
+            throw new IndexOutOfBoundsException(INDEX_OF_BOUND_EXCEPTION_MESSAGE);
+        }
     }
 
     @Override
@@ -48,7 +56,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value = value;
         }
 
-        public void setValue(V value) {
+        private void setValue(V value) {
             this.value = value;
         }
     }
