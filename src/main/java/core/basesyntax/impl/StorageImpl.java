@@ -11,8 +11,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Object[][] items;
 
     public StorageImpl() {
-        items =
-                new Object[SIZE_EXTERNAL_ARRAY][SIZE_INTERNAL_ARRAY];
+        items = new Object[SIZE_EXTERNAL_ARRAY][SIZE_INTERNAL_ARRAY];
     }
 
     @Override
@@ -21,11 +20,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (key != null && key.equals(items[i][KEY_POSITION])) {
                 items[i][VALUE_POSITION] = value;
             }
-        }
-        if (size >= SIZE_EXTERNAL_ARRAY) {
-            throw new RuntimeException("Array is full");
-        }
-        for (int i = 0; i < size; i++) {
             if ((items[i][KEY_POSITION] == key)
                     || (key != null && key.equals(items[i][KEY_POSITION]))) {
                 items[i][VALUE_POSITION] = value;
