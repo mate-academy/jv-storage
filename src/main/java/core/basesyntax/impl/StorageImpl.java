@@ -22,7 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        if (size == 10) {
+        if (size == MAXIMUM_SIZE) {
             throw new RuntimeException("Storage is full!");
         }
         keys[size] = key;
