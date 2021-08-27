@@ -15,17 +15,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (size > MAX_NUMBER_OF_ELEMENTS) {
+            throw new RuntimeException("Storage is full!");
+        }
         for (int i = 0; i < size; i++) {
             if (keysEquals(keys[i], key)) {
                 values[i] = value;
                 return;
             }
         }
-        if (size <= MAX_NUMBER_OF_ELEMENTS) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
@@ -35,6 +36,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return values[i];
             }
         }
+        System.out.println("Invalid key");
+        //throw new RuntimeException("Invalid key");
         return null;
     }
 
