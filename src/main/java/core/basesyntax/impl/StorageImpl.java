@@ -10,31 +10,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @SuppressWarnings({"unchecked"})
     public StorageImpl() {
-        items = (V[])new Object[MAX_STORAGE_SIZE];
-        keys = (K[])new Object[MAX_STORAGE_SIZE];
+        items = (V[]) new Object[MAX_STORAGE_SIZE];
+        keys = (K[]) new Object[MAX_STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null && items[i] != null)
-                    || key != null && key.equals(keys[i])) {
-                items[i] = value;
-                size--;
-            }
+        if (!keyValidator(key, value)) {
+            keys[size] = key;
+            items[size] = value;
+            size++;
         }
-        if (key == null && value == null) {
-            throw new RuntimeException("key and elements must not be empty");
-        }
-        keys[size] = key;
-        items[size] = value;
-        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null && items[i] != null)
+            if ((key == null && keys[i] == null)
                     || key != null && key.equals(keys[i])) {
                 return items[i];
             }
@@ -42,8 +34,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
+    //i don't wanna use cycle for finding my storage length.
+    //So i just add counter to my put method.
     @Override
     public int size() {
         return size;
+    }
+
+    public boolean keyValidator(K key, V value) {
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keys[i] == null)
+                    || key != null && key.equals(keys[i])) {
+                items[i] = value;
+                return true;
+            }
+        }
+        return false;
     }
 }
