@@ -13,8 +13,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = (V[]) new Object[MAX_VALUE];
     }
 
-    public boolean equalsKeys(K key, K keys) {
-        return keys == key || key != null && key.equals(keys);
+    private boolean keysEquals(K keyOne, K keyTwo) {
+        return keyTwo == keyOne || keyOne != null && keyOne.equals(keyTwo);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("Exceeded the limit");
         }
         for (int i = 0; i < size; i++) {
-            if (equalsKeys(key, keys[i])) {
+            if (keysEquals(key, keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -36,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (equalsKeys(key, keys[i])) {
+            if (keysEquals(key, keys[i])) {
                 return values[i];
             }
         }
