@@ -59,19 +59,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    public K getKey() {
+    private K getKey() {
         return key;
     }
 
-    public void setKey(K key) {
+    private void setKey(K key) {
         this.key = key;
     }
 
-    public V getValue() {
+    private V getValue() {
         return value;
     }
 
-    public void setValue(V value) {
+    private void setValue(V value) {
         this.value = value;
     }
 }
