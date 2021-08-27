@@ -12,22 +12,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size < MAX_ITEMS_NUMBER) {
-            if (counter == 0) {
-                fillInKyeValues(key, value);
+        if (counter == 0) {
+            fillInKyeValues(key, value);
+            return;
+        }
+        for (int i = 0; i < size; i++) {
+            if (key == null && key == kyeValues[i].getKey()) {
+                fillInKyeValues(key, value, i);
+                return;
+            } else if (key != null && key.equals(kyeValues[i].getKey())) {
+                fillInKyeValues(key, value, i);
                 return;
             }
-            for (int i = 0; i < kyeValues.length; i++) {
-                if (key == null && key == kyeValues[i].getKey()) {
-                    fillInKyeValues(key, value, i);
-                    return;
-                } else if (key != null && key.equals(kyeValues[i].getKey())) {
-                    fillInKyeValues(key, value, i);
-                    return;
-                }
-            }
-            fillInKyeValues(key, value);
         }
+        fillInKyeValues(key, value);
     }
 
     private void fillInKyeValues(K key, V value) {
@@ -46,9 +44,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (Entry en : kyeValues) {
-            if (!(en.getKey() == null) && (en.getKey().equals(key))) {
-                return (V) en.getValue();
-            } else if (en.getKey() == null && key == null) {
+            if ((en.getKey() == null && key == null)
+                    || ((key != null && en.getKey() != null)
+                    && en.getKey().equals(key))) {
                 return (V) en.getValue();
             }
         }
