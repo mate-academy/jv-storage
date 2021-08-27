@@ -17,18 +17,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key != null && key.equals(items[i][KEY_POSITION])) {
-                items[i][VALUE_POSITION] = value;
-            }
-            if ((items[i][KEY_POSITION] == key)
+            if (key != null && key.equals(items[i][KEY_POSITION])
+                    || (items[i][KEY_POSITION] == key)
                     || (key != null && key.equals(items[i][KEY_POSITION]))) {
                 items[i][VALUE_POSITION] = value;
                 return;
             }
         }
-        items[size][KEY_POSITION] = key;
-        items[size][VALUE_POSITION] = value;
-        size++;
+        if (size < SIZE_EXTERNAL_ARRAY) {
+            items[size][KEY_POSITION] = key;
+            items[size][VALUE_POSITION] = value;
+            size++;
+        }
     }
 
     @Override
