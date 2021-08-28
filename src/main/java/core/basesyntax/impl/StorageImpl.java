@@ -42,11 +42,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     || (key != null
                     && key.equals(data[i].key)))) {
                 data[i].value = value;
-                break;
+                return;
             }
             if (data[i] == null) {
                 data[i] = new StorageImpl<>(key, value);
-                break;
+                return;
             }
         }
         if (size() == -1) {
@@ -56,17 +56,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        V object = null;
         for (int i = 0; i < data.length; i++) {
             if (data[i] != null
                     && (key == data[i].key
                     || (key != null
                     && key.equals(data[i].key)))) {
-                object = data[i].value;
-                break;
+                return data[i].value;
             }
         }
-        return object;
+        return null;
     }
 
     @Override
