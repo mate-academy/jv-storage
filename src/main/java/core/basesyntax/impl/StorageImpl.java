@@ -64,17 +64,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean isStorageEmpty() {
-        return size == 0;
-    }
-
     private boolean isDublicate(Pair pair, int i) {
-        if (storageOfPairs[i] != null
-                && (storageOfPairs[i].getIndexKey() == pair.getIndexKey()
+        return ( (storageOfPairs[i].getIndexKey() == pair.getIndexKey()
                 || (storageOfPairs[i].getIndexKey() != null
-                && storageOfPairs[i].getIndexKey().equals(pair.getIndexKey())))) {
-            return true;
-        }
-        return false;
+                && storageOfPairs[i].getIndexKey().equals(pair.getIndexKey()))));
     }
 }
