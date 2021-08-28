@@ -33,6 +33,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return values[keyIndex];
     }
 
+    @Override
+    public int size() {
+        int lengthIterator = 0;
+        for (int i = 0; i < ARRAY_MAX_SIZE; i++, lengthIterator++) {
+            if (keys[i] == null && values[i] == null) {
+                break;
+            }
+        }
+        return lengthIterator;
+    }
     private int indexOfKey(K key) {
         int storageSize = size();
         for (int i = 0; i < storageSize; i++) {
@@ -44,14 +54,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    @Override
-    public int size() {
-        int lengthIterator = 0;
-        for (int i = 0; i < ARRAY_MAX_SIZE; i++, lengthIterator++) {
-            if (keys[i] == null && values[i] == null) {
-                break;
-            }
-        }
-        return lengthIterator;
-    }
 }
