@@ -65,7 +65,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isDublicate(Pair pair, int i) {
-        return ( (storageOfPairs[i].getIndexKey() == pair.getIndexKey()
+        return ((storageOfPairs[i].getIndexKey() == pair.getIndexKey()
                 || (storageOfPairs[i].getIndexKey() != null
                 && storageOfPairs[i].getIndexKey().equals(pair.getIndexKey()))));
     }
