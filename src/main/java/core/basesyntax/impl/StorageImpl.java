@@ -1,38 +1,57 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.LinkedList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final List<K> keysList = new LinkedList<>();
-    private final List<V> valuesList = new LinkedList<>();
+    private static final int ARRAY_MAX_SIZE = 10;
+    private final K[] keys;
+    private final V[] values;
 
     public StorageImpl() {
+        keys = (K[]) new Object[ARRAY_MAX_SIZE];
+        values = (V[]) new Object[ARRAY_MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         if (get(key) == null) {
-            keysList.add(key);
-            valuesList.add(value);
+            int storageSize = size();
+            values[storageSize] = value;
+            keys[storageSize] = key;
         } else {
-            int indexOfKey = keysList.indexOf(key);
-            valuesList.set(indexOfKey, value);
+            int indexOfKey = indexOfKey(key);
+            values[indexOfKey] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        int indexOfKey = keysList.indexOf(key);
-        if (indexOfKey == -1) {
+        int keyIndex = indexOfKey(key);
+        if (keyIndex == -1) {
             return null;
         }
-        return valuesList.get(indexOfKey);
+        return values[keyIndex];
+    }
+
+    private int indexOfKey(K key) {
+        int storageSize = size();
+        for (int i = 0; i < storageSize; i++) {
+            if (((keys[i] == null) && (key == null))
+                    || ((keys[i] != null) && keys[i].equals(key))) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public int size() {
-        return keysList.size();
+        int lengthIterator = 0;
+        for (int i = 0; i < ARRAY_MAX_SIZE; i++, lengthIterator++) {
+            if (keys[i] == null && values[i] == null) {
+                break;
+            }
+        }
+        return lengthIterator;
     }
 }
