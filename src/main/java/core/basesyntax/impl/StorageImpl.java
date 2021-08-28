@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = new Pair<K, V>(key, value);
-        for (int i = 0; i < storageOfPairs.length; i++) {
+        /*     for (int i = 0; i < storageOfPairs.length; i++) {
             if (storageOfPairs[i] == null) {
                 storageOfPairs[i] = pair;
                 size++;
@@ -46,7 +46,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 storageOfPairs[i] = pair;
                 break;
             }
+        }*/
+        for (int i = 0; i < size; i++) {
+            if (isDublicate(pair, i)) {
+                storageOfPairs[i] = pair;
+                return;
+            }
         }
+        storageOfPairs[size] = pair;
+        size++;
     }
 
     @Override
