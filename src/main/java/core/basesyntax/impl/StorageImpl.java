@@ -37,18 +37,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = new Pair<K, V>(key, value);
-        /*     for (int i = 0; i < storageOfPairs.length; i++) {
-            if (storageOfPairs[i] == null) {
-                storageOfPairs[i] = pair;
-                size++;
-                break;
-            } else if (isDublicate(pair, i)) {
-                storageOfPairs[i] = pair;
-                break;
-            }
-        }*/
         for (int i = 0; i < size; i++) {
-            if (isDublicate(pair, i)) {
+            if (isDublicate(pair, storageOfPairs[i])) {
                 storageOfPairs[i] = pair;
                 return;
             }
@@ -72,9 +62,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean isDublicate(Pair pair, int i) {
-        return ((storageOfPairs[i].getIndexKey() == pair.getIndexKey()
-                || (storageOfPairs[i].getIndexKey() != null
-                && storageOfPairs[i].getIndexKey().equals(pair.getIndexKey()))));
+    private boolean isDublicate(Pair pair, Pair storedPair) {
+        return ((storedPair.getIndexKey() == pair.getIndexKey()
+                || (storedPair.getIndexKey() != null
+                && storedPair.getIndexKey().equals(pair.getIndexKey()))));
     }
 }
