@@ -6,10 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEM_ELEMENTS = 10;
     private K key;
     private V value;
+    private int size;
     private StorageImpl<K,V>[] data;
 
     public StorageImpl() {
         data = new StorageImpl[MAX_ITEM_ELEMENTS];
+        size = 0;
     }
 
     public StorageImpl(K key, V value) {
@@ -37,19 +39,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < data.length; i++) {
-            if (data[i] != null
-                    && (key == data[i].key
-                    || (key != null
-                    && key.equals(data[i].key)))) {
+            if (isKeyConsist(key, i)) {
                 data[i].value = value;
                 return;
             }
             if (data[i] == null) {
                 data[i] = new StorageImpl<>(key, value);
+                size++;
                 return;
             }
         }
-        if (size() == -1) {
+        if (size() == MAX_ITEM_ELEMENTS) {
             System.out.println("There is't some space for record!");
         }
     }
@@ -57,10 +57,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < data.length; i++) {
-            if (data[i] != null
-                    && (key == data[i].key
-                    || (key != null
-                    && key.equals(data[i].key)))) {
+            if (isKeyConsist(key, i)) {
                 return data[i].value;
             }
         }
@@ -69,11 +66,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < data.length; i++) {
-            if (data[i] == null) {
-                return i;
-            }
-        }
-        return -1;
+        return size;
+    }
+
+    private boolean isKeyConsist(K key, int index) {
+        return data[index] != null
+                && (key == data[index].key
+                || (key != null
+                && key.equals(data[index].key)));
     }
 }
