@@ -1,28 +1,27 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int DEFAULT_CAPACITY = 10;
-    private Pair[] storageOfPairs = new Pair[DEFAULT_CAPACITY];
+    private Pair<K, V>[] storageOfPairs = new Pair[DEFAULT_CAPACITY];
     private int size;
 
     private class Pair<K, V> {
-        private K indexKey;
+        private K key;
         private V data;
 
-        private Pair(K indexKey, V data) {
-            this.indexKey = indexKey;
+        private Pair(K key, V data) {
+            this.key = key;
             this.data = data;
         }
 
-        private K getIndexKey() {
-            return indexKey;
+        private K getKey() {
+            return key;
         }
 
-        private void setIndexKey(K indexKey) {
-            this.indexKey = indexKey;
+        private void setKey(K key) {
+            this.key = key;
         }
 
         private V getData() {
@@ -50,8 +49,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(storageOfPairs[i].getIndexKey(),key)) {
-                return (V) storageOfPairs[i].getData();
+            if (storageOfPairs[i].getKey() == key
+                    || (storageOfPairs[i].getKey() != null
+                    && storageOfPairs[i].getKey().equals(key))) {
+                return storageOfPairs[i].getData();
             }
         }
         return null;
@@ -63,8 +64,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isDublicate(Pair pair, Pair storedPair) {
-        return ((storedPair.getIndexKey() == pair.getIndexKey()
-                || (storedPair.getIndexKey() != null
-                && storedPair.getIndexKey().equals(pair.getIndexKey()))));
+        return ((storedPair.getKey() == pair.getKey()
+                || (storedPair.getKey() != null
+                && storedPair.getKey().equals(pair.getKey()))));
     }
 }
