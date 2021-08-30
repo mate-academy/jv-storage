@@ -70,7 +70,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (Pair<K, V> cell : storage) {
-            if (cell != null && ((cell.getKey() == null && key == null)
+            if (cell != null && ((cell.getKey() == key)
                     || (cell.getKey() != null && cell.getKey().equals(key)))) {
                 return cell.getValue();
             }
