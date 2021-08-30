@@ -13,10 +13,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = (V[]) new Object[MAX_STORAGE_SIZE];
     }
 
-    private void increaseStorageSize() {
-        size++;
-    }
-
     public int getSize() {
         return size;
     }
@@ -35,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         values[getSize()] = value;
         keys[getSize()] = key;
-        increaseStorageSize();
+        size++;
     }
 
     @Override
@@ -50,6 +46,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return getSize();
+        return size;
     }
 }
