@@ -4,13 +4,15 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_MAX_SIZE = 10;
-    private static final int ZERO_LENGTH = 0;
+    private static final int INDEX_FOR_NOT_FOUND_ELEMENT = -1;
     private final K[] keys;
     private final V[] values;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[ARRAY_MAX_SIZE];
         values = (V[]) new Object[ARRAY_MAX_SIZE];
+        size = 0;
     }
 
     @Override
@@ -19,6 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             int storageSize = size();
             values[storageSize] = value;
             keys[storageSize] = key;
+            size++;
         } else {
             int indexOfKey = indexOfKey(key);
             values[indexOfKey] = value;
@@ -28,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int keyIndex = indexOfKey(key);
-        if (keyIndex == -1) {
+        if (keyIndex == INDEX_FOR_NOT_FOUND_ELEMENT) {
             return null;
         }
         return values[keyIndex];
@@ -36,13 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int lengthIterator = ZERO_LENGTH;
-        for (int i = 0; i < ARRAY_MAX_SIZE; i++, lengthIterator++) {
-            if (keys[i] == null && values[i] == null) {
-                break;
-            }
-        }
-        return lengthIterator;
+        return size;
     }
 
     private int indexOfKey(K key) {
@@ -53,7 +50,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return INDEX_FOR_NOT_FOUND_ELEMENT;
     }
 
 }
