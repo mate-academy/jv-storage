@@ -24,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (size >= MAX_ITEMS_NUMBER) {
-            return;
+            throw new IndexOutOfBoundsException("Storage reached it's max capacity");
         }
         for (int i = 0; i < size; i++) {
             if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
