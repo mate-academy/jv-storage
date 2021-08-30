@@ -42,6 +42,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isKeyTheSame(K arrayKey, K key) {
-        return (arrayKey == key || arrayKey != null && arrayKey.equals(key)) ? true : false;
+        return (arrayKey == key || arrayKey != null && arrayKey.equals(key));
     }
 }
