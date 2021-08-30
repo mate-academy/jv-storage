@@ -2,6 +2,8 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.util.Objects;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
     private static final int INDEX_FOR_NOT_FOUND_ELEMENT = -1;
@@ -45,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int indexOfKey(K key) {
         int storageSize = size();
         for (int i = 0; i < storageSize; i++) {
-            if (((keys[i] == null) && (key == null))
+            if ((Objects.equals(keys[i],key))
                     || ((keys[i] != null) && keys[i].equals(key))) {
                 return i;
             }
