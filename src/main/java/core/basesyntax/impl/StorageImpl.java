@@ -10,18 +10,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_NUMBER];
-        this.values = (V[]) new Object[MAX_NUMBER];
+        keys = (K[]) new Object[MAX_NUMBER];
+        values = (V[]) new Object[MAX_NUMBER];
     }
 
-    private boolean checkKeysEqual(K dbKey, K inputKey) {
-        return Objects.equals(dbKey, inputKey);
+    private boolean isKeysEqual(K arrayKeys, K inputKey) {
+        return Objects.equals(arrayKeys, inputKey);
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (checkKeysEqual(keys[i], key)) {
+            if (isKeysEqual(keys[i], key)) {
                 values[i] = value;
                 return;
             }
@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (checkKeysEqual(keys[i], key)) {
+            if (isKeysEqual(keys[i], key)) {
                 return values[i];
             }
         }
