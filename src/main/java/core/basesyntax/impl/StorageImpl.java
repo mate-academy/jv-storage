@@ -39,7 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return this.size;
+        return size;
     }
 
     private boolean keysEqual(K firstKey, K secondKey) {
