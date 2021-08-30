@@ -4,8 +4,6 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEM_ELEMENTS = 10;
-    private K key;
-    private V value;
     private K[] keyStorage;
     private V[] valueStorage;
     private int size;
@@ -13,9 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keyStorage = (K[]) new Object[MAX_ITEM_ELEMENTS];
         valueStorage = (V[]) new Object[MAX_ITEM_ELEMENTS];
-        key = null;
-        value = null;
-        size = 0;
     }
 
     public StorageImpl(K key, V value) {
@@ -31,13 +26,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        StorageImpl<?, ?> storage = (StorageImpl<?, ?>) o;
-        return (key == storage.key
-                || (storage.key != null
-                && storage.key.equals(key)))
-                && (value == storage.value
-                || (storage.value != null
-                && storage.value.equals(value)));
+        K newObject = (K) new Object();
+        return newObject.equals(this);
     }
 
     @Override
