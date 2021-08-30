@@ -17,14 +17,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean isKeyAlreadyPresentInStorage(K newKey, K currentKey) {
+    private boolean areKeysEqual(K newKey, K currentKey) {
         return (currentKey == newKey || (currentKey != null && currentKey.equals(newKey)));
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < getSize(); i++) {
-            if (isKeyAlreadyPresentInStorage(key, keys[i])) {
+            if (areKeysEqual(key, keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < getSize(); i++) {
-            if (isKeyAlreadyPresentInStorage(key,keys[i])) {
+            if (areKeysEqual(key,keys[i])) {
                 return values[i];
             }
         }
