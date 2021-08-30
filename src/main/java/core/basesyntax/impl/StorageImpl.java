@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_MAX_SIZE = 10;
+    private static final int ZERO_LENGTH = 0;
     private final K[] keys;
     private final V[] values;
 
@@ -35,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int lengthIterator = 0;
+        int lengthIterator = ZERO_LENGTH;
         for (int i = 0; i < ARRAY_MAX_SIZE; i++, lengthIterator++) {
             if (keys[i] == null && values[i] == null) {
                 break;
@@ -43,6 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         return lengthIterator;
     }
+
     private int indexOfKey(K key) {
         int storageSize = size();
         for (int i = 0; i < storageSize; i++) {
