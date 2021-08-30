@@ -4,8 +4,40 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int DEFAULT_CAPACITY = 10;
-    private Pair<K, V>[] storageOfPairs = new Pair[DEFAULT_CAPACITY];
+    private Pair<K, V>[] storageOfPairs;
     private int size;
+
+    public StorageImpl() {
+        storageOfPairs = new Pair[DEFAULT_CAPACITY];
+    }
+
+    @Override
+    public void put(K key, V value) {
+        Pair<K, V> pair = new Pair<K, V>(key, value);
+        for (int i = 0; i < size; i++) {
+            if (isDublicate(key, storageOfPairs[i].getKey())) {
+                storageOfPairs[i] = pair;
+                return;
+            }
+        }
+        storageOfPairs[size] = pair;
+        size++;
+    }
+
+    @Override
+    public V get(K key) {
+        for (int i = 0; i < size; i++) {
+            if (isDublicate(key, storageOfPairs[i].getKey())) {
+                return storageOfPairs[i].getData();
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
 
     private class Pair<K, V> {
         private K key;
@@ -33,39 +65,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    @Override
-    public void put(K key, V value) {
-        Pair<K, V> pair = new Pair<K, V>(key, value);
-        for (int i = 0; i < size; i++) {
-            if (isDublicate(pair, storageOfPairs[i])) {
-                storageOfPairs[i] = pair;
-                return;
-            }
-        }
-        storageOfPairs[size] = pair;
-        size++;
-    }
-
-    @Override
-    public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (storageOfPairs[i].getKey() == key
-                    || (storageOfPairs[i].getKey() != null
-                    && storageOfPairs[i].getKey().equals(key))) {
-                return storageOfPairs[i].getData();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    private boolean isDublicate(Pair pair, Pair storedPair) {
-        return ((storedPair.getKey() == pair.getKey()
-                || (storedPair.getKey() != null
-                && storedPair.getKey().equals(pair.getKey()))));
+    private boolean isDublicate(K key, K storedKey) {
+        return ((storedKey == key) || (storedKey != null && storedKey.equals(key)));
     }
 }
