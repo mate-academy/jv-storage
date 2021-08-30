@@ -3,27 +3,27 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int LENGTH = 10;
-    private Pair<K, V>[] storageArray = new Pair[LENGTH];
+    private static final int MAX_ARRAY_LENGTH = 10;
+    private Pair<K, V>[] storageArray;
     private int size;
+
+    public StorageImpl() {
+        storageArray = new Pair[MAX_ARRAY_LENGTH];
+    }
 
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = new Pair<>(key, value);
-        size++;
         for (int i = 0; i < size; i++) {
-            if (storageArray[i] != null && (storageArray[i].getKey() == key
+            if (storageArray[i].getKey() == key
                     || (storageArray[i].getKey() != null
-                    && storageArray[i].getKey().equals(pair.getKey())))) {
+                    && storageArray[i].getKey().equals(key))) {
                 storageArray[i].setValue(pair.getValue());
-                size--;
-                break;
-            }
-            if (storageArray[i] == null) {
-                storageArray[i] = pair;
-                break;
+                return;
             }
         }
+        storageArray[size] = pair;
+        size++;
     }
 
     @Override
