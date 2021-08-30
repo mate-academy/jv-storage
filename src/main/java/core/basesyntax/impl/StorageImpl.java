@@ -11,17 +11,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
         values = (V[]) new Object[MAX_SIZE];
-        size = 0;
 
     }
 
     @Override
     public void put(K key, V value) {
+        if (size == MAX_SIZE) {
+            throw new RuntimeException("Your storage is full!");
+        }
         if (size < MAX_SIZE) {
             for (int i = 0; i < size; i++) {
                 if (key == keys[i] || (key != null && key.equals(keys[i]))) {
                     values[i] = value;
-                    size--;
+                    return;
                 }
             }
             keys[size] = key;
@@ -42,12 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if (values[i] == null) {
-                return i;
-            }
-        }
-        return 0;
+        return size;
     }
 }
 
