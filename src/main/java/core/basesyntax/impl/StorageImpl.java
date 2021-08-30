@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (sizeOfStorage >= MAX_ARRAY_SIZE) {
+        if (sizeOfStorage == MAX_ARRAY_SIZE) {
             throw new RuntimeException("Sorry, but the storage is full.");
         }
         for (int i = 0; i < sizeOfStorage; i++) {
