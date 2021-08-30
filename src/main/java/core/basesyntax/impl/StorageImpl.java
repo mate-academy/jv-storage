@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 9;
     private K[] keys;
     private V[] values;
-    private int currentStorageSize = 0;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_STORAGE_SIZE];
@@ -14,11 +14,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void increaseStorageSize() {
-        currentStorageSize++;
+        size++;
     }
 
-    public int getCurrentStorageSize() {
-        return currentStorageSize;
+    public int getSize() {
+        return size;
     }
 
     private boolean isKeyAlreadyPresentInStorage(K newKey, K currentKey) {
@@ -27,20 +27,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < getCurrentStorageSize(); i++) {
+        for (int i = 0; i < getSize(); i++) {
             if (isKeyAlreadyPresentInStorage(key, keys[i])) {
                 values[i] = value;
                 return;
             }
         }
-        values[getCurrentStorageSize()] = value;
-        keys[getCurrentStorageSize()] = key;
+        values[getSize()] = value;
+        keys[getSize()] = key;
         increaseStorageSize();
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < getCurrentStorageSize(); i++) {
+        for (int i = 0; i < getSize(); i++) {
             if (isKeyAlreadyPresentInStorage(key,keys[i])) {
                 return values[i];
             }
@@ -50,6 +50,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return getCurrentStorageSize();
+        return getSize();
     }
 }
