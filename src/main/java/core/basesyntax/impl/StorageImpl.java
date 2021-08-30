@@ -13,26 +13,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = (V[]) new Object[MAX_STORAGE_SIZE];
     }
 
-    public int getSize() {
-        return size;
-    }
-
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < getSize(); i++) {
+        for (int i = 0; i < size(); i++) {
             if (areKeysEqual(key, keys[i])) {
                 values[i] = value;
                 return;
             }
         }
-        values[getSize()] = value;
-        keys[getSize()] = key;
+        values[size] = value;
+        keys[size] = key;
         size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < getSize(); i++) {
+        for (int i = 0; i < size; i++) {
             if (areKeysEqual(key,keys[i])) {
                 return values[i];
             }
