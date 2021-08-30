@@ -3,15 +3,15 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int ARRAY_MAX_SIZE = 10;
+    private static final int DEFAULT_CAPACITY = 10;
     private static final int INDEX_FOR_NOT_FOUND_ELEMENT = -1;
     private final K[] keys;
     private final V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[ARRAY_MAX_SIZE];
-        values = (V[]) new Object[ARRAY_MAX_SIZE];
+        keys = (K[]) new Object[DEFAULT_CAPACITY];
+        values = (V[]) new Object[DEFAULT_CAPACITY];
         size = 0;
     }
 
