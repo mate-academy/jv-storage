@@ -17,13 +17,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (get(key) == null) {
+        int indexOfKey = indexOfKey(key);
+        if (indexOfKey == INDEX_FOR_NOT_FOUND_ELEMENT) {
             int storageSize = size();
             values[storageSize] = value;
             keys[storageSize] = key;
             size++;
         } else {
-            int indexOfKey = indexOfKey(key);
             values[indexOfKey] = value;
         }
     }
