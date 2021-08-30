@@ -1,39 +1,38 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_NUMBER_OF_ELEMENTS = 10;
-    private static int actualNumberOfElements;
+    private static final int MAX_SIZE = 10;
+    private static int actualSize;
     private final K[] arrayKeys;
     private final V[] arrayValues;
 
     public StorageImpl() {
         //noinspection unchecked
-        arrayKeys = (K[]) new Object[MAX_NUMBER_OF_ELEMENTS];
+        arrayKeys = (K[]) new Object[MAX_SIZE];
         //noinspection unchecked
-        arrayValues = (V[]) new Object[MAX_NUMBER_OF_ELEMENTS];
-        actualNumberOfElements = 0;
+        arrayValues = (V[]) new Object[MAX_SIZE];
+        actualSize = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < actualNumberOfElements; i++) {
-            if (Objects.equals(key, arrayKeys[i])) {
+        for (int i = 0; i < actualSize; i++) {
+            if (actualSize < 10 && key.equals(arrayKeys[i]) && arrayKeys[i].equals(key) || arrayKeys[i] == null) {
                 arrayValues[i] = value;
                 return;
             }
         }
-        arrayKeys[actualNumberOfElements] = key;
-        arrayValues[actualNumberOfElements] = value;
-        actualNumberOfElements++;
+        arrayKeys[actualSize] = key;
+        arrayValues[actualSize] = value;
+        actualSize++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < actualNumberOfElements; i++) {
-            if (Objects.equals(key, arrayKeys[i])) {
+        for (int i = 0; i < actualSize; i++) {
+            if (key.equals(arrayKeys[i]) && arrayKeys[i].equals(key) || arrayKeys[i] == null) {
                 return arrayValues[i];
             }
         }
@@ -42,6 +41,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return actualNumberOfElements;
+        return actualSize;
     }
 }
