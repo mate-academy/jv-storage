@@ -18,17 +18,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size == MAX_SIZE) {
             throw new RuntimeException("Your storage is full!");
         }
-        if (size < MAX_SIZE) {
-            for (int i = 0; i < size; i++) {
-                if (key == keys[i] || (key != null && key.equals(keys[i]))) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
+                values[i] = value;
+                return;
             }
-            keys[size] = key;
-            values[size] = value;
-            size++;
         }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
