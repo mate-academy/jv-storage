@@ -3,30 +3,24 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Pair<K, V>[] storageArray = new Pair[10];
-    private int size = 0;
+    private static final int LENGTH = 10;
+    private Pair<K, V>[] storageArray = new Pair[LENGTH];
+    private int size;
 
     @Override
     public void put(K key, V value) {
-
-        Pair<K, V> hub = new Pair<>(key, value);
-        for (int i = 0; i <= size; i++) {
-            if (storageArray[i] != null) {
-                if (storageArray[i].getKey() == null && storageArray[i].getValue() != null
-                        && hub.getKey() == null) {
-                    storageArray[i].setValue(hub.getValue());
-                    break;
-                }
-                if (storageArray[i].getKey() != null) {
-                    if (storageArray[i].getKey().equals(hub.getKey())) {
-                        storageArray[i].setValue(hub.getValue());
-                        break;
-                    }
-                }
+        Pair<K, V> pair = new Pair<>(key, value);
+        size++;
+        for (int i = 0; i < size; i++) {
+            if (storageArray[i] != null && (storageArray[i].getKey() == key
+                    || (storageArray[i].getKey() != null
+                    && storageArray[i].getKey().equals(pair.getKey())))) {
+                storageArray[i].setValue(pair.getValue());
+                size--;
+                break;
             }
             if (storageArray[i] == null) {
-                storageArray[i] = hub;
-                size++;
+                storageArray[i] = pair;
                 break;
             }
         }
@@ -37,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             if (storageArray[i].getKey() == key
                     || (storageArray[i].getKey() != null
-                    ? storageArray[i].getKey().equals(key) : false)) {
+                    && storageArray[i].getKey().equals(key))) {
                 return storageArray[i].getValue();
             }
         }
