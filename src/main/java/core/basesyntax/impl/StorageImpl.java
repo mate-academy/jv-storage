@@ -3,29 +3,27 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int MAX_ELEMENTS = 10;
+    public static final int MAX_SIZE = 10;
     private K[] keys;
     private V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_ELEMENTS];
-        values = (V[]) new Object[MAX_ELEMENTS];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
+        if (size >= MAX_SIZE) {
+            throw new RuntimeException("No free space in Storage");
+        }
         for (int i = 0; i < size; i++) {
             if (keyEquals(keys[i],key)) {
                 values[i] = value;
                 return;
             }
         }
-
-        if (size >= MAX_ELEMENTS) {
-            throw new RuntimeException("No free space in Storage");
-        }
-
         keys[size] = key;
         values[size] = value;
         size++;
