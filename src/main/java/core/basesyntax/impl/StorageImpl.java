@@ -6,17 +6,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEM_ELEMENTS = 10;
     private K key;
     private V value;
+    private K[] keyStorage;
+    private V[] valueStorage;
     private int size;
-    private StorageImpl<K,V>[] data;
 
     public StorageImpl() {
-        data = new StorageImpl[MAX_ITEM_ELEMENTS];
+        keyStorage = (K[]) new Object[MAX_ITEM_ELEMENTS];
+        valueStorage = (V[]) new Object[MAX_ITEM_ELEMENTS];
+        key = null;
+        value = null;
         size = 0;
     }
 
     public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
+        keyStorage[size] = key;
+        valueStorage[size] = value;
     }
 
     @Override
@@ -38,13 +42,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < MAX_ITEM_ELEMENTS; i++) {
             if (isKeyConsist(key, i)) {
-                data[i].value = value;
+                valueStorage[i] = value;
                 return;
             }
-            if (data[i] == null) {
-                data[i] = new StorageImpl<>(key, value);
+            if (valueStorage[i] == null) {
+                keyStorage[i] = key;
+                valueStorage[i] = value;
                 size++;
                 return;
             }
@@ -56,9 +61,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < data.length; i++) {
+        for (int i = 0; i < MAX_ITEM_ELEMENTS; i++) {
             if (isKeyConsist(key, i)) {
-                return data[i].value;
+                return valueStorage[i];
             }
         }
         return null;
@@ -70,9 +75,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isKeyConsist(K key, int index) {
-        return data[index] != null
-                && (key == data[index].key
+        return valueStorage[index] != null
+                && (key == keyStorage[index]
                 || (key != null
-                && key.equals(data[index].key)));
+                && key.equals(keyStorage[index])));
     }
 }
