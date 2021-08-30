@@ -15,6 +15,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (size == MAX_ARRAY_SIZE) {
+            throw new RuntimeException("should be less than 10, else "
+                    + "ArrayIndexOutOfBoundsException at line 28 ");
+        }
         for (int i = 0; i < size; i++) {
             if (keyEquals(key, keys[i])) {
                 values[i] = value;
