@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
@@ -17,35 +16,36 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (sizeOfArray < MAX_ITEMS_NUMBER) {
-            for (int i = 0; i < sizeOfArray; i++) {
-                if (Objects.equals(key, keysArray[i])) {
-                    valuesArray[i] = value;
-                    return;
-                }
-            }
-            keysArray[sizeOfArray] = key;
-            valuesArray[sizeOfArray] = value;
-            sizeOfArray++;
-        } else {
-            System.out.println("Your storage is full!");
+        if (sizeOfArray >= MAX_ITEMS_NUMBER) {
+            throw new RuntimeException("Storage capacity exeeded");
         }
+        for (int i = 0; i < sizeOfArray; i++) {
+            if (equal(key, keysArray[i])) {
+                valuesArray[i] = value;
+                return;
+            }
+        }
+        keysArray[sizeOfArray] = key;
+        valuesArray[sizeOfArray] = value;
+        sizeOfArray++;
     }
 
     @Override
     public V get(K key) {
-        V result = null;
         for (int i = 0; i < sizeOfArray; i++) {
-            if (Objects.equals(key, keysArray[i])) {
-                result = valuesArray[i];
-                break;
+            if (equal(key, keysArray[i])) {
+                return valuesArray[i];
             }
         }
-        return result;
+        return null;
     }
 
     @Override
     public int size() {
         return sizeOfArray;
+    }
+
+    public boolean equal(K key, K keyFromArray) {
+        return key == keyFromArray || (key != null && key.equals(keyFromArray));
     }
 }
