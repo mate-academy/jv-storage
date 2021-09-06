@@ -4,22 +4,23 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS_NUMBER = 10;
-    private K[] elementsK;
-    private V[] elementsV;
+    private K[] keys;
+    private V[] values;
+    private int size = 0;
 
     public StorageImpl() {
-        elementsK = (K[]) new Object[MAX_ELEMENTS_NUMBER];
-        elementsV = (V[]) new Object[MAX_ELEMENTS_NUMBER];
+        keys = (K[]) new Object[MAX_ELEMENTS_NUMBER];
+        values = (V[]) new Object[MAX_ELEMENTS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < MAX_ELEMENTS_NUMBER; i++) {
-            if (key == null && elementsK[i] == null
-                    || key != null && key.equals(elementsK[i])
-                    || elementsK[i] == null && elementsV[i] == null) {
-                elementsK[i] = key;
-                elementsV[i] = value;
+            if (keys[i] == null && (key == null || values[i] == null)
+                    || key != null && key.equals(keys[i])) {
+                keys[i] = key;
+                values[i] = value;
+                size = i + 1;
                 break;
             }
         }
@@ -28,9 +29,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < MAX_ELEMENTS_NUMBER; i++) {
-            if (key == null && elementsK[i] == null
-                    || key != null && key.equals(elementsK[i])) {
-                return elementsV[i];
+            if (key == null && keys[i] == null
+                    || key != null && key.equals(keys[i])) {
+                return values[i];
             }
         }
         return null;
@@ -38,12 +39,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = 0;
-        for (int i = 0; i < MAX_ELEMENTS_NUMBER; i++) {
-            if (elementsV[i] != null) {
-                size++;
-            }
-        }
         return size;
     }
 }
