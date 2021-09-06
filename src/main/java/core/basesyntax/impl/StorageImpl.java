@@ -4,37 +4,36 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private K[] keysArray;
-    private V[] valuesArray;
-    private int sizeOfArray;
+    private K[] keys;
+    private V[] values;
+    private int size;
 
     public StorageImpl() {
-        keysArray = (K[])(new Object[MAX_ITEMS_NUMBER]);
-        valuesArray = (V[])(new Object[MAX_ITEMS_NUMBER]);
-        sizeOfArray = 0;
+        keys = (K[])(new Object[MAX_ITEMS_NUMBER]);
+        values = (V[])(new Object[MAX_ITEMS_NUMBER]);
     }
 
     @Override
     public void put(K key, V value) {
-        if (sizeOfArray >= MAX_ITEMS_NUMBER) {
+        if (size >= MAX_ITEMS_NUMBER) {
             throw new RuntimeException("Storage capacity exeeded");
         }
-        for (int i = 0; i < sizeOfArray; i++) {
-            if (equal(key, keysArray[i])) {
-                valuesArray[i] = value;
+        for (int i = 0; i < size; i++) {
+            if (equal(key, keys[i])) {
+                values[i] = value;
                 return;
             }
         }
-        keysArray[sizeOfArray] = key;
-        valuesArray[sizeOfArray] = value;
-        sizeOfArray++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < sizeOfArray; i++) {
-            if (equal(key, keysArray[i])) {
-                return valuesArray[i];
+        for (int i = 0; i < size; i++) {
+            if (equal(key, keys[i])) {
+                return values[i];
             }
         }
         return null;
@@ -42,7 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return sizeOfArray;
+        return size;
     }
 
     public boolean equal(K key, K keyFromArray) {
