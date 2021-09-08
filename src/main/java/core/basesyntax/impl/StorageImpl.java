@@ -1,42 +1,35 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
-    private int counter = 0;
-    private int size = 1;
-    private Entry<K, V>[] kyeValues = new Entry[10];
+    private static final int MAX_CAPACITY = 10;
+    private int size = 0;
+    private final Entry<K, V>[] kyeValues = new Entry[MAX_CAPACITY];
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if ((kyeValues[i] == null)
+        for (int i = 0; i < MAX_CAPACITY; i++) {
+            if ((kyeValues[i] == null && i == 0)
+                    || (i > 0 && kyeValues[i] == null)
                     || (key == null && kyeValues[i].getKey() == null)
                     || (key != null && kyeValues[i].getKey() != null
                     && kyeValues[i].getKey().equals(key))) {
-                if (kyeValues[i] == null) {
-                    counter++;
-                }
                 kyeValues[i] = new Entry<>(key, value);
                 return;
             }
         }
-        size++;
-        kyeValues[counter] = new Entry<>(key, value);
-        counter++;
     }
 
     @Override
     public V get(K key) {
-        for (Entry en : kyeValues) {
-            if (en == null) {
-                return null;
-            }
-            if ((en.getKey() == null && key == null)
-                    || ((key != null && en.getKey() != null)
-                    && en.getKey().equals(key))) {
-                return (V) en.getValue();
+        for (Entry<K, V> en : kyeValues) {
+            if (en != null) {
+                if (en.getKey() == null && key == null
+                        || Objects.equals(en.getKey(), key)) {
+                    return en.getValue();
+                }
             }
         }
         return null;
@@ -44,6 +37,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return counter;
+        for (Entry<K, V> en : kyeValues) {
+            if (en != null) {
+                size++;
+            }
+        }
+        return size;
     }
 }
