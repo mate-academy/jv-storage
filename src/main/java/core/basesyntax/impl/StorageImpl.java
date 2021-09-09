@@ -1,35 +1,32 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private int size = 0;
+    private int size;
     private final Entry<K, V>[] kyeValues = new Entry[MAX_CAPACITY];
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_CAPACITY; i++) {
-            if ((kyeValues[i] == null && i == 0)
-                    || (i > 0 && kyeValues[i] == null)
-                    || (key == null && kyeValues[i].getKey() == null)
-                    || (key != null && kyeValues[i].getKey() != null
-                    && kyeValues[i].getKey().equals(key))) {
-                kyeValues[i] = new Entry<>(key, value);
+        for (int i = 0; i < size; i++) {
+            if (kyeValues[i].getKey() == key
+                    || (kyeValues[i].getKey() != null && kyeValues[i].getKey().equals(key))) {
+                kyeValues[i].setValue(value);
                 return;
             }
         }
+        kyeValues[size] = new Entry<>(key, value);
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (Entry<K, V> en : kyeValues) {
-            if (en != null) {
-                if (en.getKey() == null && key == null
-                        || Objects.equals(en.getKey(), key)) {
-                    return en.getValue();
-                }
+        for (int i = 0; i < size; i++) {
+            if (kyeValues[i].getKey() == key
+                    || (kyeValues[i].getKey() != null
+                    && kyeValues[i].getKey().equals(key))) {
+                return kyeValues[i].getValue();
             }
         }
         return null;
@@ -37,11 +34,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (Entry<K, V> en : kyeValues) {
-            if (en != null) {
-                size++;
-            }
-        }
         return size;
     }
 }
