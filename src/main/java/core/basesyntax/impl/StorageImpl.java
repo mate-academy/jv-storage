@@ -13,7 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("No more place in storage");
         }
         for (int i = 0; i < currentSize; i++) {
-            if (isEqual(key, storage[i].getKey())) {
+            if (storage[i] != null && isEqual(key, storage[i].getKey())) {
                 storage[i].setValue(value);
                 return;
             }
@@ -25,7 +25,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < storage.length; i++) {
-            if (isEqual(key, storage[i].getKey())) {
+            if (storage[i] != null && isEqual(key, storage[i].getKey())) {
                 return storage[i].getValue();
             }
         }
