@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static int MAX_ITEMS_NUMBER = 10;
@@ -16,33 +15,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.key = key;
             this.value = value;
         }
-
-        private K getKey() {
-            return key;
-        }
-
-        private V getValue() {
-            return value;
-        }
-
-        private void setKey(K key) {
-            this.key = key;
-        }
-
-        private void setValue(V value) {
-            this.value = value;
-        }
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < currSize; i++) {
-            if (Objects.isNull(storage[i].getKey()) && key == null) {
-                storage[i] = new KeyValue<>(key, value);
-                return;
-            }
-            if (!Objects.isNull(storage[i].getKey()) && storage[i].getKey().equals(key)) {
-                storage[i].setValue(value);
+            if (storage[i].key == key || (storage[i].key != null && storage[i].key.equals(key))) {
+                storage[i].value = value;
                 return;
             }
         }
@@ -52,17 +31,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storage.length; i++) {
-            if (key == null) {
-                for (int j = 0; j < storage.length; j++) {
-                    if (storage[j].getKey() == null) {
-                        return storage[j].getValue();
-                    }
-                }
-            }
-
-            if (storage[i] != null && key.equals(storage[i].getKey())) {
-                return storage[i].getValue();
+        for (int i = 0; i < currSize; i++) {
+            if (storage[i].key == key || (storage[i].key != null && storage[i].key.equals(key))) {
+                return storage[i].value;
             }
         }
         return null;
