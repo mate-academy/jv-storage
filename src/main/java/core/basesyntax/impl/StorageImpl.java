@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private KayValePair<K, V>[] storage = new KayValePair[MAX_STORAGE_SIZE];
+    private KeyValuePair<K, V>[] storage = new KeyValuePair[MAX_STORAGE_SIZE];
     private int currentSize = 0;
 
     @Override
@@ -13,20 +13,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("No more place in storage");
         }
         for (int i = 0; i < currentSize; i++) {
-            if (storage[i] != null && isEqual(key, storage[i].getKey())) {
-                storage[i].setValue(value);
+            if (isEqual(key, storage[i].key)) {
+                storage[i].value = value;
                 return;
             }
         }
-        storage[currentSize] = new KayValePair<>(key, value);
+        storage[currentSize] = new KeyValuePair<>(key, value);
         currentSize++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null && isEqual(key, storage[i].getKey())) {
-                return storage[i].getValue();
+        for (int i = 0; i < currentSize; i++) {
+            if (isEqual(key, storage[i].key)) {
+                return storage[i].value;
             }
         }
         return null;
@@ -38,35 +38,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isEqual(Object firstObject, Object secondObject) {
-        if (firstObject == secondObject
-                || firstObject != null && firstObject.equals(secondObject)) {
-            return true;
-        }
-        return false;
+        return firstObject == secondObject
+                || firstObject != null && firstObject.equals(secondObject);
     }
 
-    private static class KayValePair<K, V> {
+    private static class KeyValuePair<K, V> {
         private K key;
         private V value;
 
-        private KayValePair(K key, V value) {
+        private KeyValuePair(K key, V value) {
             this.key = key;
-            this.value = value;
-        }
-
-        private K getKey() {
-            return key;
-        }
-
-        private V getValue() {
-            return value;
-        }
-
-        private void setKey(K key) {
-            this.key = key;
-        }
-
-        private void setValue(V value) {
             this.value = value;
         }
     }
