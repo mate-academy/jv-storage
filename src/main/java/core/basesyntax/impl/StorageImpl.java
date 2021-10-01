@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private final Integer storageSize = 10;
-    private final KeyValue<K,V>[] storage = new KeyValue[storageSize];
+    private final KeyValue<K, V>[] storage = new KeyValue[storageSize];
 
     @Override
     public void put(K key, V value) {
@@ -14,8 +14,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 KeyValue<K, V> newKeyValue = new KeyValue<>(key, value);
                 storage[ind] = newKeyValue;
                 break;
-            } else if (storage[ind].getKey() == key ||
-                    (storage[ind].getKey() != null && storage[ind].getKey().equals(key))) {
+            } else if (storage[ind].getKey() == key
+                    || (storage[ind].getKey() != null && storage[ind].getKey().equals(key))) {
                 storage[ind].setValue(value);
                 break;
             }
