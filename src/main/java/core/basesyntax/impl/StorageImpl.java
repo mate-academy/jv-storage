@@ -4,15 +4,17 @@ import core.basesyntax.KeyValue;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final Integer storageSize = 10;
-    private final KeyValue<K, V>[] storage = new KeyValue[storageSize];
+    private static final int MAX_SIZE = 10;
+    private int size = 0;
+    private final KeyValue<K, V>[] storage = new KeyValue[MAX_SIZE];
 
     @Override
     public void put(K key, V value) {
-        for (int ind = 0; ind < storageSize; ind++) {
+        for (int ind = 0; ind < MAX_SIZE; ind++) {
             if (storage[ind] == null) {
                 KeyValue<K, V> newKeyValue = new KeyValue<>(key, value);
                 storage[ind] = newKeyValue;
+                size++;
                 break;
             } else if (storage[ind].getKey() == key
                     || (storage[ind].getKey() != null && storage[ind].getKey().equals(key))) {
@@ -41,12 +43,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = 0;
-        for (KeyValue<K, V> kv : storage) {
-            if (kv != null) {
-                size++;
-            }
-        }
         return size;
     }
 }
