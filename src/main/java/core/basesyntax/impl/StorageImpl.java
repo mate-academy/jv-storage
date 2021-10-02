@@ -10,31 +10,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int ind = 0; ind < MAX_SIZE; ind++) {
-            if (storage[ind] == null) {
-                KeyValue<K, V> newKeyValue = new KeyValue<>(key, value);
-                storage[ind] = newKeyValue;
-                size++;
-                break;
-            } else if (storage[ind].getKey() == key
+        boolean keyIsInArray = false;
+        for (int ind = 0; ind < size; ind++) {
+            if (storage[ind].getKey() == key
                     || (storage[ind].getKey() != null && storage[ind].getKey().equals(key))) {
                 storage[ind].setValue(value);
+                keyIsInArray = true;
                 break;
             }
         }
-
+        if (!keyIsInArray) {
+            KeyValue<K, V> newKeyValue = new KeyValue<>(key, value);
+            storage[size] = newKeyValue;
+            size++;
+        }
     }
 
     @Override
     public V get(K key) {
-        for (KeyValue<K, V> kv : storage) {
-            if (kv == null) {
-                continue;
-            }
-            if (kv.getKey() == key) {
-                return kv.getValue();
-            }
-            if (kv.getKey() != null && kv.getKey().equals(key)) {
+        for (int i = 0; i < size; i++) {
+            KeyValue<K, V> kv = storage[i];
+            if (kv.getKey() == key || (kv.getKey() != null && kv.getKey().equals(key))) {
                 return kv.getValue();
             }
         }
