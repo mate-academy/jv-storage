@@ -17,11 +17,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < length; i++) {
             if ((items[i].getKey() == null && key == null)
                     || (items[i].getKey() != null && items[i].getKey().equals(key))) {
-                items[i] = entry;
+                items[i] = entry; // если одинаковые объекты - обновляем(перезаписываем)
                 return;
             }
         }
-        items[length] = entry;
+        items[length] = entry; // если разные объекты записываем
         length++;
     }
 
