@@ -21,8 +21,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null && isEqual(key, storage[i].getKey())) {
+        for (int i = 0; i < size; i++) {
+            if (isEqual(key, storage[i].getKey())) {
                 return storage[i].getValue();
             }
         }
@@ -35,10 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public boolean isEqual(Object first, Object second) {
-        if (first == second || first != null && first.equals(second)) {
-            return true;
-        }
-        return false;
+        return first == second || first != null && first.equals(second);
     }
 
     private static class Pair<K, V> {
