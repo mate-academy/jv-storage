@@ -1,7 +1,7 @@
 package core.basesyntax;
 
 public class Box {
-    String name;
+    private String name;
 
     public Box() {
     }

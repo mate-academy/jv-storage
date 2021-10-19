@@ -1,13 +1,16 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    List<Element<K, V>> list = new ArrayList<>();
+    private final List<Element<K, V>> elementList = new ArrayList<>();
+
+    public List<Element<K, V>> getElementList() {
+        return elementList;
+    }
 
     @Override
     public void put(K key, V value) {
@@ -15,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (element != null) {
             element.setValue(value);
         } else {
-            list.add(new Element<>(key, value));
+            elementList.add(new Element<>(key, value));
         }
     }
 
@@ -29,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
      * Help method to find element
      */
     private Element<K, V> findElement(K key) {
-        for (Element<K, V> element : list) {
+        for (Element<K, V> element : elementList) {
             if (key == null && element.getKey() == null) {
                 return element;
             } else if (element.getKey() != null && element.getKey().equals(key)) {
@@ -41,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return list.size();
+        return elementList.size();
     }
 
     static class Element<K, V> {
