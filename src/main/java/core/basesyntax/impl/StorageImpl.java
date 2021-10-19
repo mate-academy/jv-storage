@@ -25,6 +25,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return element != null ? element.getValue() : null;
     }
 
+    /**
+     * Help method to find element
+     */
     private Element<K, V> findElement(K key) {
         for (Element<K, V> element : list) {
             if (key == null && element.getKey() == null) {
