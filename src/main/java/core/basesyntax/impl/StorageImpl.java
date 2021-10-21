@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NUMBER_OF_ELEMENTS = 10;
     private Object[][] storage;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         storage = new Object[NUMBER_OF_ELEMENTS][2];
@@ -13,30 +13,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-            if (key == null) {
-                if (storage[i][0] == null) {
-                    storage[i][0] = key;
-                    storage[i][1] = value;
-                    break;
-                }
-            } else if (key.equals(storage[i][0]) || storage[i][0] == null
-                    && storage[i][1] == null) {
-                storage[i][0] = key;
+        for (int i = 0; i < size; i++) {
+            if (key == storage[i][0] || key != null && key.equals(storage[i][0])) {
                 storage[i][1] = value;
-                break;
+                return;
             }
         }
+        storage[size][0] = key;
+        storage[size][1] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-            if (key == null) {
-                if (storage[i][0] == null) {
-                    return (V) storage[i][1];
-                }
-            } else if (key.equals(storage[i][0])) {
+            if (key == storage[i][0] || key != null && key.equals(storage[i][0])) {
                 return (V) storage[i][1];
             }
         }
@@ -45,12 +36,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-            if (storage[i][1] == null) {
-                break;
-            }
-            size++;
-        }
         return size;
     }
 }
