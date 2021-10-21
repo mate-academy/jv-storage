@@ -5,10 +5,11 @@ You should be able to put new key-value pair and to get value by key.
 
 Example:
 ```java
-Storage<Integer, Box> storage = new StorageImpl<>(); 
+Storage<Integer, String> storage = new StorageImpl<>(); 
 Box box = new Box();
-storage.put(22, box); 
-Box value = storage.get(22); // returns the Box
+storage.put(22, "my text");
+storage.put(23, "second text");
+Box value = storage.get(22); // returns my text
 int size = storage.size(); // returns storage size
 ```
 You should solve this task using one or two arrays (this depends on your implementation). 
