@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private final List<Element<K, V>> elementList = new ArrayList<>();
 
     public List<Element<K, V>> getElementList() {
@@ -33,9 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
      */
     private Element<K, V> findElement(K key) {
         for (Element<K, V> element : elementList) {
-            if (key == null && element.getKey() == null) {
-                return element;
-            } else if (element.getKey() != null && element.getKey().equals(key)) {
+            if ((key == null && element.getKey() == null) ||
+               (element.getKey() != null && element.getKey().equals(key))) {
                 return element;
             }
         }
@@ -47,7 +45,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return elementList.size();
     }
 
-    static class Element<K, V> {
+    private static class Element<K, V> {
         private final K key;
         private V value;
 
