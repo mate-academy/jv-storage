@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Element<K, V> findElement(K key) {
         for (Element<K, V> element : elementList) {
             if ((key == null && element.getKey() == null)
-                || (element.getKey() != null && element.getKey().equals(key))) {
+                    || (element.getKey() != null && element.getKey().equals(key))) {
                 return element;
             }
         }
