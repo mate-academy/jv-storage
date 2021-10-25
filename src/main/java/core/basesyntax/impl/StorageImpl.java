@@ -33,6 +33,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size != INITIAL_ARRAY_LENGTH - 1) {
             storage[size] = box;
             size++;
+        } else {
+            throw new IndexOutOfBoundsException("Unable to put element, storage is full");
         }
     }
 
