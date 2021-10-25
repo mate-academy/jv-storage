@@ -5,12 +5,8 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static int INITIAL_ARRAY_LENGTH = 10;
     private Box<K, V>[] storage;
-    private int size;
+    private int size = 0;
     private int keyNullPosition = -1;
-
-    {
-        size = 0;
-    }
 
     public StorageImpl() {
         storage = new Box[INITIAL_ARRAY_LENGTH];
@@ -18,7 +14,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private Box<K, V> getBoxByKey(K key) {
         if (key == null) {
-            if (keyNullPosition != -1){
+            if (keyNullPosition != -1) {
                 return storage[keyNullPosition];
             }
             return null;
@@ -41,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         box = new Box<>(key, value);
         if (size != INITIAL_ARRAY_LENGTH - 1) {
             storage[size] = box;
-            if (key == null){
+            if (key == null) {
                 keyNullPosition = size;
             }
             size++;

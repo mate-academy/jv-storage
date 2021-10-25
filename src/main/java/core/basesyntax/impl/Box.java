@@ -4,7 +4,7 @@ public class Box<K, V> {
     private K key;
     private V value;
 
-    public Box(K key, V value){
+    public Box(K key, V value) {
         this.key = key;
         this.value = value;
     }
