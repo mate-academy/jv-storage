@@ -6,7 +6,7 @@ import java.util.Objects;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private K[] keys = (K[]) new Object[MAX_SIZE];
+    private final K[] keys = (K[]) new Object[MAX_SIZE];
     private final V[] values = (V[]) new Object[MAX_SIZE];
     private int size;
 
