@@ -1,14 +1,18 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final K[] keys = (K[]) new Object[MAX_SIZE];
-    private final V[] values = (V[]) new Object[MAX_SIZE];
+    private final K[] keys;
+    private final V[] values;
     private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -36,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getNumberIfExists(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 return i;
             }
         }
