@@ -40,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return capacity;
     }
 
-    public int getIndex(K key) {
+    private int getIndex(K key) {
         for (int i = 0; i < capacity; i++) {
             if (key == keys[i]) {
                 return i;
