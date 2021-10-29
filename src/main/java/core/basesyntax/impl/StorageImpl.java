@@ -4,8 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int COUNT_OF_ELEMENT = 10;
-    private int size = 0;
-    private Value<K, V>[] products = new Value[COUNT_OF_ELEMENT];
+    private int size;
+    private Value<K, V>[] products;
+
+    {
+        products = new Value[COUNT_OF_ELEMENT];
+        size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
