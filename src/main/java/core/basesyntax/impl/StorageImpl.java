@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static int NUMBER_OF_OBJECT = 10;
     private K[] keys;
