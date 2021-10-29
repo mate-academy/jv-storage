@@ -3,25 +3,26 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    Object[] keys;
-    Object[] values;
+    private static final int MAX_ITEMS_NUMBER = 10;
+    private final Object[] keys;
+    private final Object[] values;
 
     public StorageImpl() {
-        keys = new Object[10];
-        values = new Object[10];
+        keys = new Object[MAX_ITEMS_NUMBER];
+        values = new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
         if (key == null) {
-            for (int i = 0; i < keys.length; i++) {
+            for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
                 if (keys[i] == null && values[i] != null) {
                     values[i] = value;
                     return;
                 }
             }
         }
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
             if (keys[i] != null) {
                 if (keys[i].equals(key)) {
                     values[i] = value;
@@ -38,7 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
             if (keys[i] == null && keys[i] == key && values[i] != null) {
                 return (V) values[i];
             }
@@ -53,12 +54,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int length = 0;
+        int countSize = 0;
         for (Object value : values) {
             if (value != null) {
-                length += 1;
+                countSize += 1;
             }
         }
-        return length;
+        return countSize;
     }
 }
