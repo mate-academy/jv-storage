@@ -9,7 +9,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         elements = new Element[MAX_ELEMENTS_NUMBER];
-        size = 0;
     }
 
     @Override

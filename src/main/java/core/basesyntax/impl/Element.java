@@ -1,6 +1,6 @@
 package core.basesyntax.impl;
 
-class Element<K, V> {
+public class Element<K, V> {
     private K key;
     private V value;
 
