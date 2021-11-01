@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private Object[] keys;
     private Object[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         keys = new Object[MAX_ITEMS_NUMBER];
@@ -15,10 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size == MAX_ITEMS_NUMBER) {
-            System.out.println("Storage is full");
-            return;
-        }
         if (key == null) {
             for (int i = 0; i < size; i++) {
                 if (keys[i] == null) {
@@ -26,8 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     return;
                 }
             }
-        }
-        if (key != null) {
+        } else {
             for (int i = 0; i < size; i++) {
                 if (key.equals(keys[i])) {
                     values[i] = value;
@@ -37,31 +32,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         keys[size] = key;
         values[size] = value;
-        this.size++;
+        size++;
     }
 
     @Override
     public V get(K key) {
         if (key == null) {
-            return getWhenKeyIsNull();
-        } else {
-            return getWhenKeyIsNotNull(key);
-        }
-    }
-
-    private V getWhenKeyIsNull() {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
-                return (V) values[i];
+            for (int i = 0; i < size; i++) {
+                if (keys[i] == key) {
+                    return (V) values[i];
+                }
             }
-        }
-        return null;
-    }
-
-    private V getWhenKeyIsNotNull(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
-                return (V) values[i];
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (keys[i] == null) {
+                    continue;
+                }
+                if (keys[i].equals(key)) {
+                    return (V) values[i];
+                }
             }
         }
         return null;
@@ -69,7 +58,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return this.size;
+        return size;
     }
-
 }
