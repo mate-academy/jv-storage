@@ -2,8 +2,11 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.util.Objects;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
+    private int size = 0;
     private final Object[] keys;
     private final Object[] values;
 
@@ -14,24 +17,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-                if (keys[i] == null && values[i] != null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-        }
         for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (keys[i] != null) {
-                if (keys[i].equals(key)) {
-                    values[i] = value;
-                    return;
-                }
-            }
-            if (keys[i] == null && values[i] == null) {
-                values[i] = value;
+            if (keys[i] == values[i]) {
                 keys[i] = key;
+                values[i] = value;
+                size++;
+                return;
+            }
+            if (key == keys[i] && values[i] != key) {
+                values[i] = value;
+                return;
+            }
+            if (Objects.equals(key, keys[i])) {
+                values[i] = value;
                 return;
             }
         }
@@ -40,13 +38,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (keys[i] == null && keys[i] == key && values[i] != null) {
+            if (key == keys[i] && values[i] != key) {
                 return (V) values[i];
             }
-            if (keys[i] != null && values[i] != null) {
-                if (keys[i].equals(key)) {
-                    return (V) values[i];
-                }
+            if (keys[i] != values[i] && Objects.equals(key, keys[i])) {
+                return (V) values[i];
             }
         }
         return null;
@@ -54,12 +50,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int countSize = 0;
-        for (Object value : values) {
-            if (value != null) {
-                countSize += 1;
-            }
-        }
-        return countSize;
+        return size;
     }
 }
