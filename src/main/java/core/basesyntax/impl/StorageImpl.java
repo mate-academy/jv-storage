@@ -4,9 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int FULL_SIZE_ARRAY = 10;
-    private Object[] keys = new Object[FULL_SIZE_ARRAY];
-    private Object[] values = new Object[FULL_SIZE_ARRAY];
-    private int size = 0;
+    private Object[] keys;
+    private Object[] values;
+    private int size;
+
+    public StorageImpl() {
+        this.keys = new Object[FULL_SIZE_ARRAY];
+        this.values = new Object[FULL_SIZE_ARRAY];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -16,9 +21,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        size++;
         keys[size] = key;
         values[size] = value;
+        size++;
     }
 
     @Override
