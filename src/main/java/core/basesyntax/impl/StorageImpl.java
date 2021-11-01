@@ -35,7 +35,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int getCounterByKey(K key) {
         int index = 0;
         for (; index < storageLength; index++) {
-            ////(keys[i] == null && values[i] != null && key == null)
             if (keys[index] == key || (keys[index] != null && keys[index].equals(key))) {
                 return index;
             }
