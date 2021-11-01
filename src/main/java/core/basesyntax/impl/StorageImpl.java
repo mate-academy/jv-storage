@@ -5,24 +5,24 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
     private final Object[] keys;
-    private final Object[] value;
+    private final Object[] values;
     private int size;
 
     {
         keys = new Object[STORAGE_SIZE];
-        value = new Object[STORAGE_SIZE];
+        values = new Object[STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
-                this.value[i] = value;
+                values[i] = value;
                 return;
             }
         }
-        this.keys[size] = key;
-        this.value[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
-                return (V) value[i];
+                return (V) values[i];
             }
         }
         return null;
