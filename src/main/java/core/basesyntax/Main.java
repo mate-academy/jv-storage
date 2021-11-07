@@ -13,5 +13,10 @@ public class Main {
         System.out.println("storage.size()=" + size);
         String value = storage.get(3);
         System.out.println("value with key equals 3 is \"" + value + "\"");
+
+        String elementOne = "One";
+        String elementTwo = "Two";
+        storage.put(null, elementOne);
+        storage.put(null, elementTwo);
     }
 }

@@ -16,26 +16,46 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = this.getKeyIndex(key);
-        if (index == -1) {
-            this.keys[this.size] = key;
-            this.values[this.size] = value;
-            this.size++;
+        if (key == null && value != null) {
+            int firstKeyNullIndex = this.getFirstKeyNullIndex();//find first index with key == null
+            if (firstKeyNullIndex == -1 && size == 10) {
+                //нет ни одного key==null, значит все key уже заполнены
+                throw new RuntimeException("There are not empty elements in the storage");
+            } else {
+                if (values[firstKeyNullIndex] == null) {
+                    this.values[firstKeyNullIndex] = value;//add value to this index
+                    this.size++;
+                } else {
+                    this.values[firstKeyNullIndex] = value;//rewrite value at this index
+                }
+            }
         } else {
-            this.values[index] = value;
+            int index = this.getKeyIndex(key);
+            if (index == -1) {
+                this.keys[this.size] = key;
+                this.values[this.size] = value;
+                this.size++;
+            } else {
+                this.values[index] = value;
+            }
         }
     }
 
     @Override
     public V get(K key) {
-        int i = -1;
-        for (K element : keys) {
-            i++;
-            if (element != null && element.equals(key)) {
-                return values[i];
+        if (key == null) {
+            int firstKeyNullIndex = this.getFirstKeyNullIndex();
+            return values[firstKeyNullIndex];
+        } else {
+            int i = -1;
+            for (K element : keys) {
+                i++;
+                if (element != null && element.equals(key)) {
+                    return values[i];
+                }
             }
+            return null;//прийдется вернуть null хоть это и bad practice но так требуют тесты
         }
-        return null;//прийдется вернуть null хоть это и bad practice но так требуют тесты
     }
 
     @Override
@@ -51,6 +71,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 if (element != null && element.equals(key)) {
                     return i;
                 }
+            }
+        }
+        return -1;
+    }
+
+    private int getFirstKeyNullIndex() {
+        int i = -1;
+        for (K element : keys) {
+            i++;
+            if (element == null) {
+                return i;
             }
         }
         return -1;
