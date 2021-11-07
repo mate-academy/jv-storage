@@ -3,17 +3,57 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    @Override
-    public void put(K key, V value) {
+    private static final int MAX_ITEMS_NUMBER = 10;
+    private int size;
+    private K[] keys;
+    private V[] values;
+
+    public StorageImpl() {
+        this.size = 0;
+        this.keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        this.values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
-    public V get(K key) {
-        return null;
+    public void put(K key, V value) {
+        int index = this.getKeyIndex(key);
+        if (index == -1) {
+            this.keys[this.size] = key;
+            this.values[this.size] = value;
+            this.size++;
+        } else {
+            this.values[index] = value;
+        }
+    }
+
+    @Override
+    public V get(K key) throws RuntimeException {
+        int i = -1;
+        for (K element : keys) {
+            i++;
+            if (element != null && element.equals(key)) {
+                return values[i];
+            }
+        }
+        throw new RuntimeException("There is not key " + key.toString() + " in the storage!");
     }
 
     @Override
     public int size() {
+        return this.size;
+    }
+
+    private int getKeyIndex(K key) {
+        if (this.size != 0) {
+            int i = -1;
+            for (K element : keys) {
+                i++;
+                if (element != null && element.equals(key)) {
+                    return i;
+                }
+            }
+        }
         return -1;
     }
+
 }
