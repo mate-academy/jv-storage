@@ -27,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     @Override
-    public V get(K key) throws RuntimeException {
+    public V get(K key) {
         int i = -1;
         for (K element : keys) {
             i++;
@@ -35,7 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return values[i];
             }
         }
-        throw new RuntimeException("There is not key " + key.toString() + " in the storage!");
+        return null;//прийдется вернуть null хоть это и bad practice но так требуют тесты
     }
 
     @Override
