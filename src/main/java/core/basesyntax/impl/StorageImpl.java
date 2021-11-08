@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
@@ -15,30 +16,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key == null && value != null) {
-            int firstKeyNullIndex = this.getFirstKeyNullIndex();//find first index with key == null
-            if (firstKeyNullIndex == -1 && size == 10) {
-                //нет ни одного key==null, значит все key уже заполнены
-                throw new RuntimeException("There are not empty elements in the storage");
-            } else {
-                if (values[firstKeyNullIndex] == null) {
-                    this.values[firstKeyNullIndex] = value;//add value to this index
-                    this.size++;
-                } else {
-                    this.values[firstKeyNullIndex] = value;//rewrite value at this index
-                }
-            }
-        } else {
-            int index = this.getKeyIndex(key);
-            if (index == -1) {
-                this.keys[this.size] = key;
-                this.values[this.size] = value;
+        int index = Arrays.asList(keys).indexOf(key);
+        if (index != -1) { //если такой key есть в массиве keys
+            this.values[index] = value; //то перезаписываем его value
+            if (size == 0) {
                 this.size++;
-            } else {
-                this.values[index] = value;
             }
+        } else { //если нет
+            this.keys[this.size] = key; //то добавляем новую запись key & value
+            this.values[this.size] = value;
+            this.size++;
         }
-    }
+   }
 
     @Override
     public V get(K key) {
@@ -67,7 +56,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             int i = -1;
             for (K element : keys) {
                 i++;
-                if (element != null && element.equals(key)) {
+                if ((element != null && element.equals(key)) || (element == null && key == null)) {
                     return i;
                 }
             }
