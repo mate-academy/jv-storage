@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int i = -1;
         for (K element : keys) {
             i++;
-            if (key == element || element != null && element.equals(key)) {
+            if (element == key || element != null && element.equals(key)) {
                 return values[i];
             }
         } //если перебрали весь массив keys и ни один из его элементов не совпал с key
