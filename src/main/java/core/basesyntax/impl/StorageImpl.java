@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = Arrays.asList(keys).indexOf(key);
         if (index != -1) { //если такой key есть в массиве keys
             this.values[index] = value; //то перезаписываем его value
-            if (size == 0) {
+            if (index >= size) {
                 this.size++;
             }
         } else { //если нет
@@ -27,23 +27,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.values[this.size] = value;
             this.size++;
         }
-   }
+    }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            int firstKeyNullIndex = this.getFirstKeyNullIndex();
-            return values[firstKeyNullIndex];
-        } else {
-            int i = -1;
-            for (K element : keys) {
-                i++;
-                if (element != null && element.equals(key)) {
-                    return values[i];
-                }
+        int i = -1;
+        for (K element : keys) {
+            i++;
+            if (key == element || element != null && element.equals(key)) {
+                return values[i];
             }
-            return null;//прийдется вернуть null хоть это и bad practice но так требуют тесты
-        }
+        } //если перебрали весь массив keys и ни один из его элементов не совпал с key
+        return null;//прийдется вернуть null хоть это и bad practice но так требуют тесты
     }
 
     @Override
