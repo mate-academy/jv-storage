@@ -9,8 +9,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_ITEMS_NUMBER];
-        this.values = (V[]) new Object[MAX_ITEMS_NUMBER];
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
