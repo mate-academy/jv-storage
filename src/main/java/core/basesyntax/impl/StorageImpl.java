@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
@@ -16,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = Arrays.asList(keys).indexOf(key);
+        int index = getKeyIndex(key);
         if (index != -1) { //если такой key есть в массиве keys
             this.values[index] = value; //то перезаписываем его value
             if (index >= size) {
@@ -44,6 +43,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private int getKeyIndex(K key) {
+        if (this.size != 0) {
+            int i = -1;
+            for (K element : keys) {
+                i++;
+                if ((element != null && element.equals(key)) || (element == null && key == null)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
 }
