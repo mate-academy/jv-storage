@@ -17,14 +17,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getKeyIndex(key);
         if (index != -1) { //если такой key есть в массиве keys
-            this.values[index] = value; //то перезаписываем его value
+            values[index] = value; //то перезаписываем его value
             if (index >= size) {
-                this.size++;
+                size++;
             }
         } else { //если нет
-            this.keys[this.size] = key; //то добавляем новую запись key & value
-            this.values[this.size] = value;
-            this.size++;
+            keys[size] = key; //то добавляем новую запись key & value
+            values[size] = value;
+            size++;
         }
     }
 
@@ -46,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getKeyIndex(K key) {
-        if (this.size != 0) {
+        if (size != 0) {
             int i = -1;
             for (K element : keys) {
                 i++;
