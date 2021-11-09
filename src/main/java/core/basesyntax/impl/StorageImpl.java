@@ -18,9 +18,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = getKeyIndex(key);
         if (index != -1) { //если такой key есть в массиве keys
             values[index] = value; //то перезаписываем его value
-            if (index >= size) {
-                size++;
-            }
         } else { //если нет
             keys[size] = key; //то добавляем новую запись key & value
             values[size] = value;
@@ -44,10 +41,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getKeyIndex(K key) {
         if (size != 0) {
-            int i = -1;
-            for (K element : keys) {
-                i++;
-                if ((element != null && element.equals(key)) || (element == null && key == null)) {
+            for (int i = 0; i < size; i++) {
+                if (keys[i] != null && keys[i].equals(key) || key == null && keys[i] == null) {
                     return i;
                 }
             }
