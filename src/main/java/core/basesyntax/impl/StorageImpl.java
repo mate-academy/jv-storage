@@ -30,13 +30,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int i = -1;
-        for (K element : keys) {
-            i++;
-            if (element == key || element != null && element.equals(key)) {
-                return values[i];
-            }
-        } //если перебрали весь массив keys и ни один из его элементов не совпал с key
+        int i = getKeyIndex(key);
+        if (i != -1) {
+            return values[i];
+        }
         return null;//прийдется вернуть null хоть это и bad practice но так требуют тесты
     }
 
