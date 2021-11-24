@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_LENGTH = 10;
-    private StorageInner<K, V>[] storageImpl = new StorageInner[MAX_STORAGE_LENGTH];
+    private StorageInner<K, V>[] storage = new StorageInner[MAX_STORAGE_LENGTH];
     private int size = 0;
 
     private class StorageInner<K, V> {
@@ -61,30 +61,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (issetKey(key)) {
             setValueByKey(key, value);
         } else {
-            storageImpl[size] = new StorageInner<K, V>(key, value);
+            storage[size] = new StorageInner<K, V>(key, value);
             size++;
         }
     }
 
     private void setValueByKey(K key, V value) {
-        for (int i = 0; i < storageImpl.length; i++) {
-            if (storageImpl[i] == null) {
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] == null) {
                 continue;
             }
-            if (equals(storageImpl[i].getKey(), key)) {
-                storageImpl[i].setValue(value);
+            if (equals(storage[i].getKey(), key)) {
+                storage[i].setValue(value);
             }
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storageImpl.length; i++) {
-            if (storageImpl[i] == null) {
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] == null) {
                 continue;
             }
-            if (equals(storageImpl[i].getKey(), key)) {
-                return storageImpl[i].getValue();
+            if (equals(storage[i].getKey(), key)) {
+                return storage[i].getValue();
             }
         }
         return null;
@@ -96,11 +96,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean issetKey(K key) {
-        for (int i = 0; i < storageImpl.length; i++) {
-            if (storageImpl[i] == null) {
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] == null) {
                 continue;
             }
-            if (equals(storageImpl[i].getKey(), key)) {
+            if (equals(storage[i].getKey(), key)) {
                 return true;
             }
         }
