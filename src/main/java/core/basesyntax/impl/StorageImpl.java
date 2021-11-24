@@ -4,14 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_LENGTH = 10;
-    private StorageInner<K, V>[] storage = new StorageInner[MAX_STORAGE_LENGTH];
+    private Pair<K, V>[] pairs = new Pair[MAX_STORAGE_LENGTH];
     private int size = 0;
 
-    private class StorageInner<K, V> {
+    private class Pair<K, V> {
         private K key;
         private V value;
 
-        public StorageInner(K key, V value) {
+        public Pair(K key, V value) {
             this.key = key;
             this.value = value;
         }
@@ -27,33 +27,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         public void setValue(V value) {
             this.value = value;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == this) {
-                return true;
-            }
-
-            if (o == null) {
-                return false;
-            }
-
-            if (getClass() != o.getClass()) {
-                return false;
-            }
-
-            StorageInner current = (StorageInner) o;
-            return (key == current.key || key != null && key.equals(current.key))
-                    && (value == current.value || value != null && value.equals(current.value));
-        }
-
-        @Override
-        public int hashCode() {
-            int result = 17;
-            result = 31 * result + (key == null ? 0 : key.hashCode());
-            result = 31 * result + (value == null ? 0 : value.hashCode());
-            return result;
-        }
     }
 
     @Override
@@ -61,30 +34,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (issetKey(key)) {
             setValueByKey(key, value);
         } else {
-            storage[size] = new StorageInner<K, V>(key, value);
+            pairs[size] = new Pair<K, V>(key, value);
             size++;
-        }
-    }
-
-    private void setValueByKey(K key, V value) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                continue;
-            }
-            if (equals(storage[i].getKey(), key)) {
-                storage[i].setValue(value);
-            }
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                continue;
-            }
-            if (equals(storage[i].getKey(), key)) {
-                return storage[i].getValue();
+        for (int i = 0; i < size; i++) {
+            if (equals(pairs[i].getKey(), key)) {
+                return pairs[i].getValue();
             }
         }
         return null;
@@ -95,12 +54,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean issetKey(K key) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                continue;
+    private void setValueByKey(K key, V value) {
+        for (int i = 0; i < size; i++) {
+            if (equals(pairs[i].getKey(), key)) {
+                pairs[i].setValue(value);
             }
-            if (equals(storage[i].getKey(), key)) {
+        }
+    }
+
+    private boolean issetKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (equals(pairs[i].getKey(), key)) {
                 return true;
             }
         }
