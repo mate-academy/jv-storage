@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_LENGTH = 10;
     private Pair<K, V>[] pairs = new Pair[MAX_STORAGE_LENGTH];
-    private int size = 0;
+    private int size;
 
     private class Pair<K, V> {
         private K key;
@@ -72,15 +72,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean equals(K firstValue, K secondValue) {
-        if (firstValue == secondValue) {
-            return true;
-        }
-
-        if (firstValue == null || secondValue == null) {
-            return false;
-        }
-
-        if (firstValue.equals(secondValue)) {
+        if (firstValue == secondValue || (firstValue != null && firstValue.equals(secondValue))) {
             return true;
         }
 
