@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         indexOfElement++;
 
         if (indexOfElement > MAX_ARRAY_NUMBER - 1) {
-            System.out.println("Arrays are full");
+            System.out.println("Arrays are full!");
         } else {
             this.values[indexOfElement] = value;
             this.keys[indexOfElement] = key;
