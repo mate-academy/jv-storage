@@ -20,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             K current = (K) this.keys[i];
             if (Objects.equals(key, current)) {
                 values[i] = value;
-                size++;
+                size = i + 1;
                 return;
             }
         }
@@ -46,11 +46,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < MAX_ARRAY_NUMBER; i++) {
-            if (this.values[i] == null && this.keys[i] == null) {
-                return i;
-            }
-        }
         return size;
     }
 }
