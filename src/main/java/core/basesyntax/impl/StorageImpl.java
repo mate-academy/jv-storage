@@ -7,7 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_NUMBER = 10;
     private final Object[] keys;
     private final Object[] values;
-    private int indexOfElement = -1;
+    private int size = 0;
 
     public StorageImpl() {
         this.keys = new Object[MAX_ARRAY_NUMBER];
@@ -16,28 +16,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < indexOfElement + 1; i++) {
+        for (int i = 0; i < size + 1; i++) {
             K current = (K) this.keys[i];
             if (Objects.equals(key, current)) {
                 values[i] = value;
+                size++;
                 return;
             }
         }
-        indexOfElement++;
 
-        if (indexOfElement > MAX_ARRAY_NUMBER - 1) {
-            System.out.println("Arrays are full!");
+        if (size > MAX_ARRAY_NUMBER - 1) {
+            throw new RuntimeException("Arrays are full");
         } else {
-            this.values[indexOfElement] = value;
-            this.keys[indexOfElement] = key;
+            this.values[size] = value;
+            this.keys[size] = key;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < indexOfElement + 1; i++) {
-            System.out.println(this.keys[i]);
-            System.out.println(this.values[i]);
+        for (int i = 0; i < size + 1; i++) {
             if (Objects.equals(key, this.keys[i])) {
                 return (V) this.values[i];
             }
@@ -52,6 +51,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return MAX_ARRAY_NUMBER;
+        return size;
     }
 }
