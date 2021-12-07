@@ -1,6 +1,6 @@
 package core.basesyntax.impl;
 
-public class Pair <K, V> {
+public class Pair<K, V> {
     private K key;
     private V value;
 
@@ -26,14 +26,5 @@ public class Pair <K, V> {
 
     public void setValue(V value) {
         this.value = value;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Pair{" +
-                "key=" + key +
-                ", value=" + value +
-                '}';
     }
 }
