@@ -6,17 +6,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ITEMS_NUMBER];
         values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
+    private boolean isEquals(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key != null && key.equals(keys[i]) || key == keys[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key != null && key.equals(keys[i]) || key == keys[i]) {
+            if (isEquals(key)) {
                 values[i] = value;
                 return;
             }
