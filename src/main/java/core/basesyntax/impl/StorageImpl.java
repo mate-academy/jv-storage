@@ -25,7 +25,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             K current = (K) keys[i];
             if (Objects.equals(key, current)) {
                 values[i] = value;
-                size = i + 1;
                 return;
             }
         }
