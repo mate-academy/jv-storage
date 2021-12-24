@@ -3,17 +3,15 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    int size = 10;
+    private int size = 10;
     private Object[][] objectArray = new Object[2][size];
-
-
 
     @Override
     public void put(K key, V value) {
 
         for (int i = 0; i < size; i++) {
             if ((objectArray[0][i] == null && objectArray[1][i] == null)
-                || (get(key) != null)){
+                    || (get(key) != null)) {
                 objectArray[0][i] = key;
                 objectArray[1][i] = value;
                 return;
@@ -24,7 +22,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if ((objectArray[0][i] != null && objectArray[0][i].equals(key)) || (key == null && objectArray[0][i] == null && objectArray[1][i] != null)) {
+            if ((objectArray[0][i] != null && objectArray[0][i].equals(key))
+                    || (key == null && objectArray[0][i] == null && objectArray[1][i] != null)) {
                 return (V) objectArray[1][i];
             }
         }
