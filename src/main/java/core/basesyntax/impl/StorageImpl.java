@@ -4,67 +4,43 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private Pair<K, V>[] pairs;
+    private static final int MAX_SIZE = 10;
 
     public StorageImpl() {
-        pairs = new Pair[0];
+        pairs = new Pair[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            putKeyNull(value);
-            return;
-        }
-        for (int i = 0; i < pairs.length; i++) {
-            if (pairs[i].getKey() != null && pairs[i].getKey().equals(key)) {
-                pairs[i].setValue(value);
-                return;
+        for (int i = 0; i < size(); i++) {
+            if (key == null && pairs[i].getKey() == null
+                    || pairs[i].getKey() != null && pairs[i].getKey().equals(key)) {
+                 pairs[i].setValue(value);
+                 return;
             }
         }
-        Pair<K, V>[] newPairs = new Pair[pairs.length + 1];
-        for (int i = 0; i < pairs.length; i++) {
-            newPairs[i] = pairs[i];
-        }
-        newPairs[pairs.length] = new Pair<>(key, value);
-        pairs = newPairs;
-    }
-
-    private void putKeyNull(V value) {
-        for (int i = 0; i < pairs.length; i++) {
-            if (pairs[i].getKey() == null) {
-                pairs[i].setValue(value);
-                return;
-            }
-        }
-        Pair<K, V>[] newPairs = new Pair[pairs.length + 1];
-        for (int i = 0; i < pairs.length; i++) {
-            newPairs[i] = pairs[i];
-        }
-        newPairs[pairs.length] = new Pair<>(null, value);
-        pairs = newPairs;
+        pairs[size()] = new Pair<>(key, value);
     }
 
     @Override
     public V get(K key) {
-        V value = null;
-        if (key == null) {
-            for (int i = 0; i < pairs.length; i++) {
-                if (pairs[i].getKey() == null) {
-                    value = pairs[i].getValue();
-                }
-            }
-        } else {
-            for (int i = 0; i < pairs.length; i++) {
-                if (pairs[i].getKey() != null && pairs[i].getKey().equals(key)) {
-                    value = pairs[i].getValue();
-                }
+        for (int i = 0; i < size(); i++) {
+            if (key == null && pairs[i].getKey() == null
+                    || pairs[i].getKey() != null && pairs[i].getKey().equals(key)) {
+                return pairs[i].getValue();
             }
         }
-        return value;
+        return null;
     }
 
     @Override
     public int size() {
-        return pairs.length;
+        int counter = 0;
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (pairs[i] != null) {
+                counter++;
+            }
+        }
+        return counter;
     }
 }
