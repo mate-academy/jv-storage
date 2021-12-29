@@ -23,8 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        pairs[actualSize] = new Pair<>(key, value);
-        actualSize++;
+        pairs[actualSize++] = new Pair<>(key, value);
     }
 
     @Override
