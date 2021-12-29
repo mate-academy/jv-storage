@@ -4,8 +4,10 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    @SuppressWarnings("FieldMayBeFinal")
     private Pair<K, V>[] pairs;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
         pairs = new Pair[MAX_SIZE];
     }
