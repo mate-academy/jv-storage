@@ -6,10 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     @SuppressWarnings("FieldMayBeFinal")
     private Pair<K, V>[] pairs;
+    private int actualSize;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
         pairs = new Pair[MAX_SIZE];
+        actualSize = 0;
     }
 
     @Override
@@ -21,7 +23,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        pairs[size()] = new Pair<>(key, value);
+        pairs[actualSize] = new Pair<>(key, value);
+        actualSize++;
     }
 
     @Override
@@ -37,12 +40,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int counter = 0;
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if (pairs[i] != null) {
-                counter++;
-            }
-        }
-        return counter;
+        return actualSize;
     }
 }
