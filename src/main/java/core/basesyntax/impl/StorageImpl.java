@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
@@ -61,11 +60,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 continue;
             }
             Element element = (Element) bufObj;
-            if (Objects.equals(element.getKey(), key)) {
+            if (keyEquals(element, key)) {
                 return element;
             }
         }
         return null;
+    }
+
+    private boolean keyEquals(Element element, K key) {
+        K thisKey = element.getKey();
+        return thisKey == null ? key == null : thisKey.equals(key);
     }
 
     @Override
