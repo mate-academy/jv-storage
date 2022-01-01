@@ -5,36 +5,36 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static int CAPACITY = 10;
+    private static final int CAPACITY = 10;
     private int size = 0;
-    private Object[] array = new Object[CAPACITY]; //
+    private final Object[] array = new Object[CAPACITY];
 
-    private class Element<K1,V1> {
-        private K1 key;
-        private V1 value;
-        Element(K1 key, V1 value) {
+    private class Element {
+        private final K key;
+        private V value;
+        Element(K key, V value) {
             this.key = key;
             this.value = value;
         }
 
-        public K1 getKey() {
+        public K getKey() {
             return key;
         }
 
-        public V1 getValue() {
+        public V getValue() {
             return value;
         }
 
-        public void setValue(V1 value) {
+        public void setValue(V value) {
             this.value = value;
         }
     }
 
     @Override
     public void put(K key, V value) {
-        Element <K,V> element = getElement(key);
+        Element element = getElement(key);
         if (element == null) {
-            element = new Element<>(key, value);
+            element = new Element(key, value);
             array[size] = element;
             size++;
             return;
@@ -44,20 +44,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        Element <K,V> element = getElement(key);
+        Element element = getElement(key);
         if (element != null) {
             return element.getValue();
         }
         return null;
     }
 
-    private Element<K,V> getElement(K key) {
+    private Element getElement(K key) {
         for (int i = 0; i < size; i++) {
             Object bufObj = array[i];
             if (bufObj == null) {
                 continue;
             }
-            Element<K,V> element = (Element<K,V>) bufObj;
+            Element element = (Element) bufObj;
             if (Objects.equals(element.getKey(), key)) {
                 return element;
             }
