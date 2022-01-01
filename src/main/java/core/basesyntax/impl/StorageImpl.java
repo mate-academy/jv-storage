@@ -34,6 +34,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         Element element = getElement(key);
         if (element == null) {
+            if(size >= CAPACITY) {
+                throw new RuntimeException("Couldn't add new elements to storage");
+            }
             element = new Element(key, value);
             array[size] = element;
             size++;
