@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -12,6 +11,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private class Element {
         private final K key;
         private V value;
+
         Element(K key, V value) {
             this.key = key;
             this.value = value;
@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         Element element = getElement(key);
         if (element == null) {
-            if(size >= CAPACITY) {
+            if (size >= CAPACITY) {
                 throw new RuntimeException("Couldn't add new elements to storage");
             }
             element = new Element(key, value);
