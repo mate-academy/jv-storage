@@ -3,9 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int CAPACITY = 10;
-    private int size = 0;
-    private final Object[] array = new Object[CAPACITY];
+    private static final int DEFAULT_CAPACITY = 10;
+    private int size;
+    private final Object[] array = new Object[DEFAULT_CAPACITY];
 
     private class Element {
         private final K key;
@@ -33,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         Element element = getElement(key);
         if (element == null) {
-            if (size >= CAPACITY) {
+            if (size >= DEFAULT_CAPACITY) {
                 throw new RuntimeException("Couldn't add new elements to storage");
             }
             element = new Element(key, value);
@@ -53,13 +53,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
+    @Override
+    public int size() {
+        return size;
+    }
+
     private Element getElement(K key) {
         for (int i = 0; i < size; i++) {
-            Object bufObj = array[i];
-            if (bufObj == null) {
-                continue;
-            }
-            Element element = (Element) bufObj;
+            Element element = (Element) array[i];
             if (keyEquals(element, key)) {
                 return element;
             }
@@ -70,10 +71,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private boolean keyEquals(Element element, K key) {
         K thisKey = element.getKey();
         return thisKey == null ? key == null : thisKey.equals(key);
-    }
-
-    @Override
-    public int size() {
-        return size;
     }
 }
