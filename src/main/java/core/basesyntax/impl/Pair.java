@@ -5,6 +5,7 @@ public class Pair<K, V> {
     private V value;
 
     public Pair() {
+
     }
 
     public Pair(K key, V value) {
