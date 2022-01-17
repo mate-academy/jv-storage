@@ -1,29 +1,30 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private Object[] keys = new Object[MAX_ITEMS_NUMBER];
     private Object[] values = new Object[MAX_ITEMS_NUMBER];
+    private int size;
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if ((keys[i] == null && values[i] == null)
-                    || (keys[i] == key) || Objects.equals(key, keys[i])) {
-                keys[i] = key;
+        for (int i = 0; i < size; i++) {
+            if (key != null && key.equals(keys[i]) || key == keys[i]) {
                 values[i] = value;
                 return;
             }
         }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
+        for (int i = 0; i < size; i++) {
+            if (key != null && key.equals(keys[i]) || key == keys[i]) {
                 return (V)values[i];
             }
         }
@@ -32,12 +33,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int counter = 0;
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (values[i] != null) {
-                counter++;
-            }
-        }
-        return counter;
+        return size;
     }
 }
