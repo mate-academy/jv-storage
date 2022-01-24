@@ -4,9 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private final K[] keys = (K[]) new Object[MAX_STORAGE_SIZE];
-    private final V[] items = (V[]) new Object[MAX_STORAGE_SIZE];
+    private final K[] keys;
+    private final V[] items;
     private int itemsCode;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_STORAGE_SIZE];
+        items = (V[]) new Object[MAX_STORAGE_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
