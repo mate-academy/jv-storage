@@ -17,19 +17,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (get(key) != null) {
-                this.values[i] = value;
+                values[i] = value;
                 return;
             }
         }
-        this.keys[size] = key;
-        this.values[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (this.keys[i] == key || this.keys[i] != null && this.keys[i].equals(key)) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 return values[i];
             }
         }
