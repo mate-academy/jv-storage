@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private final K[] keysArray;
     private final V[] valuesArray;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         keysArray = (K[]) new Object[MAX_SIZE];
@@ -14,50 +14,32 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getKeyIndex(K key) {
-        if (key != null) {
-            for (int i = 0; i < MAX_SIZE; i++) {
-                if (key.equals(keysArray[i])) {
-                    return i;
-                }
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (keysArray[i] == key || (key != null && key.equals(keysArray[i]))) {
+                return i;
             }
-            return -1;
-        } else {
-            for (int i = 0; i < MAX_SIZE; i++) {
-                if (keysArray[i] == null) {
-                    return i;
-                }
-            }
-            return -1;
         }
+        return -1;
     }
 
     @Override
     public void put(K key, V value) {
         int indexOfKey = getKeyIndex(key);
-        if (key != null) {
-            if (indexOfKey < 0) {
-                if (size() <= MAX_SIZE) {
-                    keysArray[size] = key;
-                    valuesArray[size] = value;
-                    size++;
-                } else {
-                    throw new RuntimeException("This storage is full!");
-                }
-            } else {
-                valuesArray[indexOfKey] = value;
-            }
+        if (key != null && indexOfKey < 0 && size() <= MAX_SIZE) {
+            keysArray[size] = key;
+            valuesArray[size] = value;
+            size++;
         } else {
-            if (storageWithNullKeyExist(indexOfKey)) {
-                valuesArray[indexOfKey] = value;
-            } else {
-                valuesArray[indexOfKey] = value;
-                size++;
-            }
+            size += storageWithKeyExist(indexOfKey) ? 0 : 1;
+            valuesArray[indexOfKey] = value;
         }
     }
 
-    private boolean storageWithNullKeyExist(int indexOfKey) {
-        return valuesArray[indexOfKey] != null ? true : false;
+    private boolean storageWithKeyExist(int indexOfKey) {
+        if (indexOfKey >= 0) {
+            return valuesArray[indexOfKey] != null ? true : false;
+        }
+        return false;
     }
 
     @Override
