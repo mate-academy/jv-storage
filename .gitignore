@@ -1,4 +1,4 @@
 .idea/*
 *.iml
 target/*
-./src/main/java/core/basesyntax/impl/storage/*
+./src/main/java/core/basesyntax/impl/storage/
