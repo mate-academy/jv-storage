@@ -6,23 +6,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_NUM_OF_ELEMENTS = 10;
     private K[] keyArr;
     private V[] valueArr;
+    private int size;
 
     public StorageImpl() {
         this.keyArr = (K[]) new Object[MAX_NUM_OF_ELEMENTS];
         this.valueArr = (V[]) new Object[MAX_NUM_OF_ELEMENTS];
+        this.size = size;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keyArr.length; i++) {
-            if (isEgual(keyArr[i], key)) {
-                valueArr[i] = value;
-                break;
-            } else if (keyArr[i] == null && valueArr[i] == null) {
-                keyArr[i] = key;
-                valueArr[i] = value;
-                break;
-            }
+        if ((size == 0) || (contains(keyArr, key) == -1)) {
+            keyArr[size] = key;
+            valueArr[size] = value;
+            size++;
+        } else if (size != 0 && (contains(keyArr, key) != -1)) {
+            valueArr[contains(keyArr, key)] = value;
         }
 
     }
@@ -39,17 +38,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 1; i < keyArr.length; i++) {
-            if ((keyArr[i] == null && valueArr[i] == null)
-                    && (keyArr[i - 1] != null || valueArr[i - 1] != null)) {
-                return i;
+        return this.size;
+    }
+
+    public int contains(Object[] objArr, Object obj) {
+        int index = -1;
+        for (int i = 0; i < size; i++) {
+            if (isEgual(objArr[i], obj)) {
+                index = i;
+                break;
             }
         }
-        return 0;
+        return index;
     }
 
     public <K> boolean isEgual(K first, K second) {
         return first == second || (first != null && first.equals(second));
     }
-
 }
