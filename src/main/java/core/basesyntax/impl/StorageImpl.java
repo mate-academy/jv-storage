@@ -6,6 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_INDEX = 10;
     private final K[] keyArr;
     private final V[] valueArr;
+    private int size;
 
     public StorageImpl() {
         this.keyArr = (K[]) new Object[MAX_INDEX];
@@ -18,11 +19,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if ((keyArr[i] == key) || (key != null && key.equals(keyArr[i]))) {
                 keyArr[i] = key;
                 valueArr[i] = value;
+                size = i + 1 ;
                 break;
             }
             if (keyArr[i] == null & valueArr[i] == null) {
                 keyArr[i] = key;
                 valueArr[i] = value;
+                size = i + 1;
                 break;
             }
         }
@@ -34,17 +37,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if ((keyArr[i] == key) || (key != null && key.equals(keyArr[i]))) {
                 return valueArr[i];
             }
+            size();
         }
         return null;
     }
 
     @Override
     public int size() {
-        for (int i = 0;i < valueArr.length;i++) {
-            if (valueArr[i] == null) {
-                return i;
-            }
-        }
-        return -1;
+        return size;
     }
 }
