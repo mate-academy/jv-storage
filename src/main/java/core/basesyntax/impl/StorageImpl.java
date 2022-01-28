@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_NUMBER = 10;
-    private final core.basesyntax.impl.Node[] nodeArray;
+    private final Node[] nodeArray;
     private int size;
 
     public StorageImpl() {
@@ -42,6 +42,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
-
 }
 
