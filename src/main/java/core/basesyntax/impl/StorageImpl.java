@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < ARRAY_LENGTH; i++) {
-            if (keyBox[i] == null && key == null
+            if (key == keyBox[i]
                     || keyBox[i] != null && keyBox[i].equals(key)) {
                 valueBox[i] = value;
                 break;
@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < ARRAY_LENGTH; i++) {
-            if (key == null && keyBox[i] == null
+            if (key == keyBox[i]
                     || key != null && key.equals(keyBox[i])) {
                 return valueBox[i];
             }
