@@ -37,7 +37,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if ((keyArr[i] == key) || (key != null && key.equals(keyArr[i]))) {
                 return valueArr[i];
             }
-            size();
         }
         return null;
     }
