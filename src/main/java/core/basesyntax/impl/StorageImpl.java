@@ -11,8 +11,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Object[][] arrayOfPairs;
 
     public StorageImpl() {
-        this.arrayOfPairs = new Object[MAX_ELEMENTS][PAIR_LIMIT];
-        dynamicStorageSize = 0;
+        arrayOfPairs = new Object[MAX_ELEMENTS][PAIR_LIMIT];
     }
 
     @Override
