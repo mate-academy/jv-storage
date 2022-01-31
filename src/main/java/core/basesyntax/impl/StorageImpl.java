@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean storageWithKeyExist(int indexOfKey) {
         if (indexOfKey >= 0) {
-            return valuesArray[indexOfKey] != null ? true : false;
+            return valuesArray[indexOfKey] != null;
         }
         return false;
     }
