@@ -37,13 +37,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndex(K key) {
-        int index = -1;
         for (int i = 0; i < size; i++) {
             if (keyStorage[i] == key || keyStorage[i] != null && keyStorage[i].equals(key)) {
-                index = i;
-                break;
+                return i;
             }
         }
-        return index;
+        return -1;
     }
 }
