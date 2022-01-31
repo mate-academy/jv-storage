@@ -9,8 +9,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        this.arrayKey = (K[]) new Object[MAX_CAPACITY];
-        this.arrayValue = (V[]) new Object[MAX_CAPACITY];
+        arrayKey = (K[]) new Object[MAX_CAPACITY];
+        arrayValue = (V[]) new Object[MAX_CAPACITY];
     }
 
     @Override
@@ -20,11 +20,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 arrayKey[i] = key;
                 arrayValue[i] = value;
                 size++;
-                return;
+                break;
             }
             if ((key != null && key.equals(arrayKey[i])) || key == arrayKey[i]) {
                 arrayValue[i] = value;
-                return;
+                break;
             }
         }
     }
