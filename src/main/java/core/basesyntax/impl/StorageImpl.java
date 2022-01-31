@@ -18,8 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int pos;
         for (int i = 0; i < arrayOfKeys.length; i++) {
             if (pointer != 0 && (pos = getKeyPos(key)) >= 0) {
-                arrayOfKeys[pos] = key;
-                arrayOfValues[pos] = value;
+                putPairOnPosition(key,value,pos);
             } else {
                 putPairOnPosition(key, value, pointer);
                 pointer++;
