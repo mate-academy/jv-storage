@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
     private K[] arrayOfKeys;
     private V[] arrayOfValues;
-    private int pointer = 0;
+    private int pointer;
 
     public StorageImpl() {
         this.arrayOfValues = (V[]) new Object[ARRAY_SIZE];
@@ -42,10 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isEquals(K key, K key1) {
-        if (key == null) {
-            return key1 == null;
-        }
-        return key.equals(key1);
+        return key == key1 || (key != null && key.equals(key1));
     }
 
     @Override
