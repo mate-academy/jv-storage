@@ -14,6 +14,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         arrayOfValues = (V[]) new Object[MAX_NUMBER_OF_ELEMENTS];
     }
 
+    /* This code is to distinguish two cases when key in storage is null.
+
+        1. If key in array and its value == null ==> this is not an element, but an empty cell,
+          so we must write new value there and increase number of elements.
+          For this case is condition in line 34.
+        2. If keys are equal and null, but value in array is not null ==>
+          we should re-write value and not to increase number of elements.
+     */
+
     @Override
     public void put(K key, V value) {
         int counter = FIRST_INDEX;
@@ -39,9 +48,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int counter = FIRST_INDEX;
         for (Object k : arrayOfKeys) {
-            if (k != null && k.equals(key)) {
-                return arrayOfValues[counter];
-            } else if (k == null && key == null) {
+            if (key == k || k != null && k.equals(key)) {
                 return arrayOfValues[counter];
             }
             counter++;
