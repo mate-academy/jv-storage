@@ -8,7 +8,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final V[] value;
     private int size;
 
-    public @SuppressWarnings("unchecked") StorageImpl() {
+    public StorageImpl() {
         key = (K[]) new Object[MAXIMUM_SIZE];
         value = (V[]) new Object[MAXIMUM_SIZE];
     }
@@ -19,7 +19,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value[size - 1] = value;
         } else {
             this.key[size] = key;
-            this.value[size++] = value;
+            this.value[size] = value;
+            size++;
         }
     }
 
