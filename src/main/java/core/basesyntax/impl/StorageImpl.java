@@ -10,7 +10,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final V[] arrayOfValues;
 
     public StorageImpl() {
-        numberOfElements = 0;
         arrayOfKeys = (K[]) new Object[MAX_NUMBER_OF_ELEMENTS];
         arrayOfValues = (V[]) new Object[MAX_NUMBER_OF_ELEMENTS];
     }
