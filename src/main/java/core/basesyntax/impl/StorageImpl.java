@@ -4,12 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_NUMBER = 10;
-    private final Node[] nodeArray;
+    private final Node<K, V>[] nodeArray;
     private int size;
 
     public StorageImpl() {
-        nodeArray = new core.basesyntax.impl.Node[MAX_ARRAY_NUMBER];
-        size = 0;
+        nodeArray = new Node[MAX_ARRAY_NUMBER];
     }
 
     @Override
@@ -21,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-        core.basesyntax.impl.Node<K, V> pair = new core.basesyntax.impl.Node<>();
+        Node<K, V> pair = new Node<>();
         pair.setKey(key);
         pair.setValue(value);
         nodeArray[size] = pair;
