@@ -6,46 +6,33 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private K key;
     private V value;
+    private int size;
     private Object[] keyStorage;
     private Object[] valueStorage;
 
     public StorageImpl() {
         keyStorage = new Object[MAX_ITEMS_NUMBER];
         valueStorage = new Object[MAX_ITEMS_NUMBER];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keyStorage.length; i++) {
-            if (key == null && keyStorage[i] == null) {
+        for (int i = 0; i < size; i++) {
+            if ((keyStorage[i] != null && keyStorage[i].equals(key)) || keyStorage[i] == key) {
                 valueStorage[i] = value;
-                break;
-            }
-            if (keyStorage[i] == key) {
-                valueStorage[i] = value;
-                break;
-            }
-            if ((keyStorage[i] != null && keyStorage[i].equals(key))) {
-                valueStorage[i] = value;
-                break;
-            }
-            if (keyStorage[i] != key) {
-                if (keyStorage[i] == null && valueStorage[i] == null) {
-                    keyStorage[i] = key;
-                    valueStorage[i] = value;
-                    break;
-                }
+                return;
             }
         }
+        keyStorage[size] = key;
+        valueStorage[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyStorage.length; i++) {
-            if (keyStorage[i] == key) {
-                return (V)valueStorage[i];
-            }
-            if ((keyStorage[i] != null && keyStorage[i].equals(key))) {
+        for (int i = 0; i < size; i++) {
+            if ((keyStorage[i] != null && keyStorage[i].equals(key)) || keyStorage[i] == key) {
                 return (V)valueStorage[i];
             }
         }
@@ -54,30 +41,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < valueStorage.length; i++) {
-            if (valueStorage[i] == null) {
-                return i;
-            }
-        }
-        return 10;
-    }
-
-    @Override
-    public boolean equals(Object key) {
-        if (this == key) {
-            return true;
-        }
-        if (!(key instanceof StorageImpl)) {
-            return false;
-        }
-        StorageImpl<?, ?> storage = (StorageImpl<?, ?>) key;
-        return (key == storage.key) || (key.equals(storage.key));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + (key == null ? 0 : key.hashCode());
-        return result;
+        return size;
     }
 }
