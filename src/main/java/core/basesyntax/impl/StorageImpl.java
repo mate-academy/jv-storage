@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
@@ -72,11 +71,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return false;
         }
         StorageImpl<?, ?> storage = (StorageImpl<?, ?>) key;
-        return Objects.equals(key, storage.key);
+        return (key == storage.key) || (key.equals(storage.key));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(key);
+        int result = 17;
+        result = 31 * result + (key == null ? 0 : key.hashCode());
+        return result;
     }
 }
