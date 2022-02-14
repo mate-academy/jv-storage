@@ -6,4 +6,7 @@ public interface Storage<K, V> {
     V get(K key);
 
     int size();
+
+    K[] keyArray = new K[10];
+    V[] valueArray = new V[10];
 }
