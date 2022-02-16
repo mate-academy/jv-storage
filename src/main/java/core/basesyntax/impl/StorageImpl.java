@@ -10,6 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keyArray = (K[]) new Object[MAX_ARRAY_VALUE];
     private V[] valueArray = (V[]) new Object[MAX_ARRAY_VALUE];
     private int storageValue = 0;
+    // Next try
 
     public StorageImpl(K key, V value) {
         this.key = key;
