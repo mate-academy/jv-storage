@@ -1,22 +1,23 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private K[] arrayOfKeys;
-    private V[] arrayOfValues;
+    private K[] keys;
+    private V[] values;
     private int pointer;
 
     public StorageImpl() {
-        this.arrayOfValues = (V[]) new Object[ARRAY_SIZE];
-        this.arrayOfKeys = (K[]) new Object[ARRAY_SIZE];
+        this.values = (V[]) new Object[ARRAY_SIZE];
+        this.keys = (K[]) new Object[ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         int pos;
-        for (int i = 0; i < arrayOfKeys.length; i++) {
+        for (int i = 0; i < keys.length; i++) {
             if (pointer != 0 && (pos = getKeyPos(key)) >= 0) {
                 putPairOnPosition(key,value,pos);
             } else {
@@ -27,13 +28,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public void putPairOnPosition(K key, V value, int pos) {
-        arrayOfKeys[pos] = key;
-        arrayOfValues[pos] = value;
+        keys[pos] = key;
+        values[pos] = value;
     }
 
     private int getKeyPos(K key) {
         for (int i = 0; i < pointer; i++) {
-            if (isEquals(key, arrayOfKeys[i])) {
+            if (isEquals(key, keys[i])) {
                 return i;
             }
         }
@@ -41,14 +42,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isEquals(K key, K key1) {
-        return key == key1 || (key != null && key.equals(key1));
+        return Objects.equals(key, key1);
     }
 
     @Override
     public V get(K key) {
         int pos;
         if (pointer > 0 && (pos = getKeyPos(key)) >= 0) {
-            return arrayOfValues[pos];
+            return values[pos];
         }
         return null;
     }
