@@ -21,8 +21,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         }
-        keys[size - 1] = key;
-        values[size - 1] = value;
+        for (int i = 0; i < keys.length; i++) {
+            if (Objects.equals(keys[i], key)) {
+                keys[i] = key;
+                values[i] = value;
+            }
+        }
     }
 
     @Override
