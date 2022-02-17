@@ -5,19 +5,11 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static int MAX_ARRAY_VALUE = 10;
-    private K key;
-    private V value;
     private K[] keys = (K[]) new Object[MAX_ARRAY_VALUE];
     private V[] values = (V[]) new Object[MAX_ARRAY_VALUE];
     private int storageValue = 0;
 
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
     public StorageImpl() {
-
     }
 
     private void storageAdd(int currentCell, K key, V value) {
@@ -28,19 +20,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (storageValue == 0) {
-            storageAdd(0, key, value);
-        } else {
-            for (int i = 0; i < MAX_ARRAY_VALUE - 1; i++) {
-                if (Objects.equals(key, keys[i])) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i < storageValue; i++) {
+            if (Objects.equals(key, keys[i])) {
+                values[i] = value;
+                return;
             }
-                        storageAdd(storageValue, key, value);
         }
+        storageAdd(storageValue, key, value);
     }
-
 
     @Override
     public V get(K key) {
@@ -56,5 +43,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return storageValue;
     }
-
 }
