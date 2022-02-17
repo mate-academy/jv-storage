@@ -5,57 +5,50 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private K[] keys;
-    private V[] values;
-    private int pointer;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        this.values = (V[]) new Object[ARRAY_SIZE];
         this.keys = (K[]) new Object[ARRAY_SIZE];
+        this.values = (V[]) new Object[ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        int pos;
-        for (int i = 0; i < keys.length; i++) {
-            if (pointer != 0 && (pos = getKeyPos(key)) >= 0) {
-                putPairOnPosition(key,value,pos);
+        if (size < ARRAY_SIZE) {
+            if (getIndex(key) >= 0) {
+                values[getIndex(key)] = value;
             } else {
-                putPairOnPosition(key, value, pointer);
-                pointer++;
+                keys[size] = key;
+                values[size] = value;
+                size++;
             }
+        } else {
+            System.out.println("Storage don't have free places");
         }
     }
 
-    public void putPairOnPosition(K key, V value, int pos) {
-        keys[pos] = key;
-        values[pos] = value;
+    @Override
+    public V get(K key) {
+        if (getIndex(key) >= 0) {
+            return values[getIndex(key)];
+        } else {
+            return null;
+        }
     }
 
-    private int getKeyPos(K key) {
-        for (int i = 0; i < pointer; i++) {
-            if (isEquals(key, keys[i])) {
+    private int getIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(key, keys[i])) {
                 return i;
             }
         }
         return -1;
     }
 
-    private boolean isEquals(K key, K key1) {
-        return Objects.equals(key, key1);
-    }
-
-    @Override
-    public V get(K key) {
-        int pos;
-        if (pointer > 0 && (pos = getKeyPos(key)) >= 0) {
-            return values[pos];
-        }
-        return null;
-    }
-
     @Override
     public int size() {
-        return pointer;
+        return size;
     }
 }
