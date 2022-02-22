@@ -6,33 +6,37 @@ import java.util.Objects;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private final K[] itemsKey;
-    private final V[] itemsValye;
-    private int lengthPair;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        itemsKey = (K[]) new Object[MAX_ITEMS_NUMBER];
-        itemsValye = (V[]) new Object[MAX_ITEMS_NUMBER];
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < itemsKey.length; i++) {
-            if (Objects.equals(itemsKey[i], key) && get(key) != null) {
-                itemsValye[i] = value;
+        for (int i = 0; i < keys.length; i++) {
+            if (values.equals(keys[i]) && get(key) != null) {
+                values[i] = value;
                 return;
             }
         }
-        itemsKey[lengthPair] = key;
-        itemsValye[lengthPair] = value;
-        lengthPair++;
+        if (get(key) == null) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
+        keys[size - 1] = key;
+        values[size - 1] = value;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < itemsKey.length; i++) {
-            if (Objects.equals(itemsKey[i], key)) {
-                return itemsValye[i];
+        for (int i = 0; i < keys.length; i++) {
+            if (Objects.equals(keys[i], key)) {
+                return values[i];
             }
         }
         return null;
@@ -40,6 +44,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return lengthPair;
+        return size;
     }
 }
