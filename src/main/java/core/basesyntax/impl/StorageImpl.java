@@ -4,20 +4,20 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static int MAX_ARRAY_VALUE = 10;
     private K[] keys;
     private V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[10];
-        values = (V[]) new Object[10];
-        size = 0;
+        keys = (K[]) new Object[MAX_ARRAY_VALUE];
+        values = (V[]) new Object[MAX_ARRAY_VALUE];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
                 values[i] = value;
                 return;
             }
@@ -42,4 +42,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 }
-
