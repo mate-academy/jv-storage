@@ -12,13 +12,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[length];
         values = (V[]) new Object[length];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if ((keys[i] == key) || (key != null && key.equals(keys[i]))) {
                 values[i] = value;
                 return;
             }
