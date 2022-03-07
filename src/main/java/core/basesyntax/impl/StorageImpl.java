@@ -11,7 +11,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(Object key, Object value) {
-        if (checkIfAlreadyExists(key, (V) value)){
+        if (checkIfAlreadyExists(key, (V) value)) {
             return;
         }
         keyArray[size] = (K) key;
