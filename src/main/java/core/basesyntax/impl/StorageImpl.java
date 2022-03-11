@@ -19,14 +19,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         size++;
     }
 
-    private boolean checkIfAlreadyExists(Object key, V value) {
+    private int getIndex(K key) {
         for (int i = 0; i < size; i++) {
             if (keyArray[i] == key || key != null && key.equals(keyArray[i])) {
-                valueArray[i] = value;
-                return true;
+                return i;
             }
+            return -1;
         }
-        return false;
     }
 
     @Override
