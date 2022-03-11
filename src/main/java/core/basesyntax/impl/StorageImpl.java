@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     @Override
-    public void put(Object key, Object value) {
+    public void put(K key, V value) {
         if (checkIfAlreadyExists(key, (V) value)) {
             return;
         }
