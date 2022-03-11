@@ -11,12 +11,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (checkIfAlreadyExists(key, (V) value)) {
+        int index = getIndex(key);
+        if (index != -1) {
+            valueArray[index] = (V) value;
             return;
         }
         keyArray[size] = (K) key;
         valueArray[size] = (V) value;
         size++;
+        return;
     }
 
     private int getIndex(K key) {
@@ -24,16 +27,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (keyArray[i] == key || key != null && key.equals(keyArray[i])) {
                 return i;
             }
-            return -1;
         }
+        return -1;
     }
 
     @Override
-    public Object get(Object key) {
-        for (int i = 0; i < size; i++) {
-            if (keyArray[i] == key || key != null && key.equals(keyArray[i])) {
-                return valueArray[i];
-            }
+    public V get(K key) {
+        int index = getIndex(key);
+        if (index != -1) {
+            return valueArray[index];
         }
         return null;
     }
