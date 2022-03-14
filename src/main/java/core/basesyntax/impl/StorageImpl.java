@@ -19,8 +19,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             storage[index] = new Pair(key, value);
             index++;
         } else {
-            for (int i = 0; i < storage.length; i++) {
-                if (storage[i].getKey().equals(key)) {
+            for (int i = 0; i < index; i++) {
+                if (storage[i].getKey() == key
+                        || storage[i].getKey() != null
+                        && storage[i].getKey().equals(key)) {
                     storage[i] = new Pair(key, value);
                 }
             }
@@ -29,8 +31,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i].getKey().equals(key) && key != null) {
+        for (int i = 0; i < index; i++) {
+            if (storage[i].getKey() == key
+                     || storage[i].getKey() != null
+                     && storage[i].getKey().equals(key)) {
                 return (V) storage[i].getValue();
             }
         }

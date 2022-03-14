@@ -25,7 +25,8 @@ public class Pair<K, V> {
         this.value = value;
     }
 
-    @Override public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -41,7 +42,8 @@ public class Pair<K, V> {
         return value != null ? value.equals(pair.value) : pair.value == null;
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         int result = key != null ? key.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
