@@ -27,25 +27,29 @@ public class Pair<K, V> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
+        if (o == this) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Pair)) {
             return false;
         }
-
         Pair<?, ?> pair = (Pair<?, ?>) o;
-
-        if (key != null ? !key.equals(pair.key) : pair.key != null) {
-            return false;
-        }
-        return value != null ? value.equals(pair.value) : pair.value == null;
+        boolean keyEquals = (this.key == null && pair.key == null)
+                              || (this.key != null && this.key.equals(pair.value));
+        boolean valueEquals = (this.value == null && pair.value == null)
+                              || (this.value != null && this.value.equals(pair.value));
+        return keyEquals && valueEquals;
     }
 
     @Override
     public int hashCode() {
-        int result = key != null ? key.hashCode() : 0;
-        result = 31 * result + (value != null ? value.hashCode() : 0);
+        int result = 17;
+        if (key != null) {
+            result = 31 * result + key.hashCode();
+        }
+        if (value != null) {
+            result = 31 * result + value.hashCode();
+        }
         return result;
     }
 }
