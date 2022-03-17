@@ -15,25 +15,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        int indexArray = getIndexArray(key);
         if (get(key) == null) {
             storage[index] = new Pair(key, value);
             index++;
         } else {
-            storage[getIndexArray(key)] = new Pair(key, value);
+            storage[indexArray] = new Pair(key, value);
         }
     }
 
     @Override
     public V get(K key) {
-        if (getIndexArray(key) == -1) {
+        int indexArray = getIndexArray(key);
+        if (indexArray == -1) {
             return null;
-        } else {
-            return (V) storage[getIndexArray(key)].getValue();
-
         }
+        return (V) storage[indexArray].getValue();
     }
 
-    public int getIndexArray(K key) {
+    private int getIndexArray(K key) {
         for (int i = 0; i < index; i++) {
             if (storage[i].getKey() == key
                     || storage[i].getKey() != null
