@@ -34,9 +34,9 @@ public class Pair<K, V> {
             return false;
         }
         Pair<?, ?> pair = (Pair<?, ?>) o;
-        boolean keyEquals = (this.key == null && pair.key == null)
-                              || (this.key != null && this.key.equals(pair.value));
-        boolean valueEquals = (this.value == null && pair.value == null)
+        boolean keyEquals = (this.key == pair.key)
+                              || (this.key != null && this.key.equals(pair.key));
+        boolean valueEquals = (this.value == pair.value)
                               || (this.value != null && this.value.equals(pair.value));
         return keyEquals && valueEquals;
     }
