@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int indexArray = getIndexArray(key);
-        if (get(key) == null) {
+        if (indexArray == -1) {
             storage[index] = new Pair(key, value);
             index++;
         } else {
