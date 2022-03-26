@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 
@@ -30,7 +29,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(key, items[i].getKey())) {
+            if ((items[i].getKey() == key)
+                    || (items[i].getKey() != null && items[i].getKey().equals(key))) {
                 return i;
             }
         }
