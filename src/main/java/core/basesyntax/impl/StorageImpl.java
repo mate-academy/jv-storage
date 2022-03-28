@@ -3,6 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    int b = 0;
     @Override
     public void put(K key, V value) {
     }
