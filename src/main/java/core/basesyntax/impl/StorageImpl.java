@@ -8,7 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keys;
     private final V[] values;
     private int index = 0;
-    private int sizeOfStorage;
 
     public StorageImpl() {
         keys = (K[]) new Object[DEFAULT_STORAGE_SIZE];
@@ -17,11 +16,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < index; i++) {
-            if (Objects.equals(key, keys[i])) {
-                values[i] = value;
-                return;
-            }
+        if(existingKeySearch(key) >= 0){
+            values[existingKeySearch(key)] = value;
+            return;
         }
         keys[index] = key;
         values[index] = value;
@@ -47,12 +44,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < DEFAULT_STORAGE_SIZE - 1; i++) {
-            if (values[i] == null) {
-                return sizeOfStorage;
-            }
-            sizeOfStorage++;
-        }
-        return sizeOfStorage;
+        return index;
     }
 }
