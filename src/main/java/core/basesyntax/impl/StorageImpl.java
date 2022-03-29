@@ -5,18 +5,23 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_STORAGE_SIZE = 10;
-    private final K[] keys;
-    private final V[] values;
+    private K[] keys;
+    private V[] values;
     private int index = 0;
 
     public StorageImpl() {
-        keys = (K[]) new Object[DEFAULT_STORAGE_SIZE];
-        values = (V[]) new Object[DEFAULT_STORAGE_SIZE];
+        try {
+            keys = (K[]) new Object[DEFAULT_STORAGE_SIZE];
+            values = (V[]) new Object[DEFAULT_STORAGE_SIZE];
+        } catch (Exception e) {
+            throw new RuntimeException("Something went wrong...", e);
+        }
+
     }
 
     @Override
     public void put(K key, V value) {
-        if(existingKeySearch(key) >= 0){
+        if (existingKeySearch(key) >= 0) {
             values[existingKeySearch(key)] = value;
             return;
         }
