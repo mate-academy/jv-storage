@@ -1,13 +1,11 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_MAX_SIZE = 10;
-    private K[] keys;
-    private V[] values;
-    private int currentMaxSize;
+    private final K[] keys;
+    private final V[] values;
     private int currentSize;
 
     public StorageImpl() {
@@ -15,20 +13,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.keys = (K[]) new Object[INITIAL_MAX_SIZE];
         this.values = (V[]) new Object[INITIAL_MAX_SIZE];
         currentSize = 0;
-        currentMaxSize = INITIAL_MAX_SIZE;
-    }
-
-    private void increaseSize() {
-        this.keys = Arrays.copyOf(this.keys, (int) (currentMaxSize * 1.5));
-        this.values = Arrays.copyOf(this.values, (int) (currentMaxSize * 1.5));
-        currentMaxSize *= 1.5;
     }
 
     @Override
     public void put(K key, V value) {
-        if (currentSize == currentMaxSize - 1) {
-            increaseSize();
-        }
         if (currentSize == 0) {
             keys[0] = key;
             values[0] = value;
