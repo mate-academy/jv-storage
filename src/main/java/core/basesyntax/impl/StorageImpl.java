@@ -5,28 +5,37 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_CAPACITY = 10;
 
-    private K[] keyData = (K[]) new Object[STORAGE_CAPACITY];
-    private V[] valueData = (V[]) new Object[STORAGE_CAPACITY];
-    private int size = 0;
+    private K[] keyData;
+    private V[] valueData;
+    private int size;
+
+    public StorageImpl() {
+        keyData = (K[]) new Object[STORAGE_CAPACITY];
+        valueData = (V[]) new Object[STORAGE_CAPACITY];
+    }
+
+    private boolean isLegit(int index, K key) {
+        return key != null && key.equals(keyData[index]) || key == keyData[index];
+    }
 
     @Override
     public void put(K key, V value) {
-        keyData[size] = key;
-        valueData[size] = value;
         for (int i = 0; i < size; i++) {
-            if (key != null && key.equals(keyData[i]) || key == keyData[i]) {
-                size--;
+            if (isLegit(i,key)) {
                 keyData[i] = key;
                 valueData[i] = value;
+                return;
             }
         }
+        keyData[size] = key;
+        valueData[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key != null && key.equals(keyData[i]) || key == keyData[i]) {
+            if (isLegit(i,key)) {
                 return valueData[i];
             }
         }
