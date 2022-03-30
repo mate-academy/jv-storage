@@ -7,22 +7,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_STORAGE_SIZE = 10;
     private K[] keys;
     private V[] values;
-    private int index = 0;
+    private int index;
 
     public StorageImpl() {
-        try {
-            keys = (K[]) new Object[DEFAULT_STORAGE_SIZE];
-            values = (V[]) new Object[DEFAULT_STORAGE_SIZE];
-        } catch (Exception e) {
-            throw new RuntimeException("Something went wrong...", e);
-        }
-
+        keys = (K[]) new Object[DEFAULT_STORAGE_SIZE];
+        values = (V[]) new Object[DEFAULT_STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (existingKeySearch(key) >= 0) {
-            values[existingKeySearch(key)] = value;
+        int existingIndex = searchKey(key);
+        if (existingIndex >= 0) {
+            values[existingIndex] = value;
             return;
         }
         keys[index] = key;
@@ -30,9 +26,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         index++;
     }
 
-    private int existingKeySearch(K key) {
+    public int searchKey(K key) {
         for (int i = 0; i < index; i++) {
-            if (Objects.equals(key, keys[i])) {
+            if (key == keys[i] || (key != null && keys[i] != null && (key.equals(keys[i])))) {
                 return i;
             }
         }
@@ -41,8 +37,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (existingKeySearch(key) >= 0) {
-            return values[existingKeySearch(key)];
+        int existingIndex = searchKey(key);
+        if (existingIndex >= 0) {
+            return values[existingIndex];
         }
         return null;
     }
