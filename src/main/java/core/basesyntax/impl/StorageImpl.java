@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = new Object[MAX_ARRAY_SIZE];
         values = new Object[MAX_ARRAY_SIZE];
-        size = 0;
     }
 
     @Override
