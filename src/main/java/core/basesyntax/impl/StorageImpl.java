@@ -14,10 +14,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         valueData = (V[]) new Object[STORAGE_CAPACITY];
     }
 
-    private boolean isLegit(int index, K key) {
-        return key != null && key.equals(keyData[index]) || key == keyData[index];
-    }
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
@@ -45,5 +41,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isLegit(int index, K key) {
+        return key != null && key.equals(keyData[index]) || key == keyData[index];
     }
 }
