@@ -23,11 +23,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        Object result = new Object();
-        Object cast = (Object) key;
-        for (int j = 0; j < size; j++) {
-            if ((key == objectsK[j]) || (key != null && key.equals(objectsK[j]))) {
-                return (V)objectsV[j];
+        for (int i = 0; i < size; i++) {
+            if ((key == objectsK[i]) || (key != null && key.equals(objectsK[i]))) {
+                return (V)objectsV[i];
             }
         }
         return null;
