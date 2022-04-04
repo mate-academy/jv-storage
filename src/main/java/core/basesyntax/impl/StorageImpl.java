@@ -15,21 +15,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int keySize = getSize(key);
-        if (keySize == -1) {
+        int size = getSize(key);
+        if (size == -1) {
             keys[size] = key;
             values[size] = value;
             size++;
         } else {
-            values[keySize] = value;
+            values[size] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        int keySize = getSize(key);
-        if (keySize != -1) {
-            return values[keySize];
+        int size = getSize(key);
+        if (size != -1) {
+            return values[size];
         }
         return null;
     }
