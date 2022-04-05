@@ -17,7 +17,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < iterator; i++) {
             if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
-                keys[i] = key;
                 values[i] = value;
                 return;
             }
