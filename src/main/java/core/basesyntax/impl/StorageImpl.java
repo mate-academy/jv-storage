@@ -4,15 +4,15 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private static final int ARRAY_LENGTH = 10;
+    private static final int MAX_SIZE = 10;
 
     private K[] keyArray;
     private V[] valueArray;
     private int size = 0;
 
     public StorageImpl() {
-        this.keyArray = (K[]) new Object[ARRAY_LENGTH];
-        this.valueArray = ( V[]) new Object[ARRAY_LENGTH];
+        this.keyArray = (K[]) new Object[MAX_SIZE];
+        this.valueArray = (V[]) new Object[MAX_SIZE];
     }
 
     private int getIndex(K key) {
