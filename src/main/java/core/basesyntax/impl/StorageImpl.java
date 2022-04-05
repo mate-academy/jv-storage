@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
-                return (V) values[i];
+                return values[i];
             }
         }
         return null;
