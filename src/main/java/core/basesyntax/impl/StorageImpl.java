@@ -6,8 +6,12 @@ import java.util.Objects;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
     private static final int KEYS_AND_VALUES_SPACE = 2;
-    private Object[][] data = new Object[MAX_CAPACITY][KEYS_AND_VALUES_SPACE];
+    private Object[][] data;
     private int size;
+
+    public StorageImpl() {
+        data = new Object[MAX_CAPACITY][KEYS_AND_VALUES_SPACE];
+    }
 
     @Override
     public void put(K key, V value) {
