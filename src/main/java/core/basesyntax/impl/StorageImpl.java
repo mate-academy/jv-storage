@@ -24,29 +24,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     break;
                 } else if (key == null) {
                     values[i] = value;
-                } else {
-                    continue;
+                    break;
                 }
             } else if (keys[i] == key || keys[i].equals(key)) {
                 values[i] = value;
                 break;
             }
-
-
-//            if (keys[i] != null && values[i] != null) {
-//                if (keys[i].equals(key)) {
-//                    values[i] = value;
-//                    break;
-//                }
-//            } else if (keys[i] == null && values[i] != null) {
-//                values[i] = value;
-//                break;
-//            } else {
-//                keys[i] = key;
-//                values[i] = value;
-//                size++;
-//                break;
-//            }
         }
     }
 
