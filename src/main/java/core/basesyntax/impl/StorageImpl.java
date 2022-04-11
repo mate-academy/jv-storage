@@ -3,46 +3,44 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int h = 10;
+    private static final int STORAGE_SIZE = 10;
     private int size;
-    private final K[] storageK = (K[]) new Object[h];
-    private final V[] storageV = (V[]) new Object[h];
+    private final K[] keys = (K[]) new Object[STORAGE_SIZE];
+    private final V[] values = (V[]) new Object[STORAGE_SIZE];
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i <= size(); i++) {
-            if (storageK[i] != null && storageK[i].equals(key)) {
-                storageV[i] = value;
+            if (keys[i] != null && keys[i].equals(key)) {
+                values[i] = value;
                 break;
             }
-            if (storageK[i] == null && storageV[i] == null) {
-                storageK[i] = key;
-                storageV[i] = value;
+            if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
                 size++;
                 break;
             }
             if (key == null && value != null
-                    && storageK[i] == null && storageV[i] != null
-                    && !storageV[i].equals(value)) {
-                storageK[i] = key;
-                storageV[i] = value;
+                    && keys[i] == null && values[i] != null
+                    && !values[i].equals(value)) {
+                keys[i] = key;
+                values[i] = value;
                 break;
             }
-            if (key == null && value != null && storageK[i] == null && storageV[i] == null) {
-                storageV[i] = value;
+            if (key == null && value != null && keys[i] == null && values[i] == null) {
+                values[i] = value;
                 size++;
                 break;
             }
-
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i <= size(); i++) {
-            if ((storageK[i] != null && storageK[i].equals(key))
-                    || (key == null && storageK[i] == null && storageV[i] != null)) {
-                return storageV[i];
+            if (keys[i] == key || (key != null && key.equals(keys[i]))) {
+                return values[i];
             }
         }
         return null;
