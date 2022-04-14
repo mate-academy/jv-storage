@@ -2,77 +2,44 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private Pair<K, V>[] pairs;
-    private int capacity;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        pairs = new Pair[MAX_CAPACITY];
+        keys = new K(MAX_CAPACITY);
+        values = new V[MAX_CAPACITY];
     }
-
-    public void addPair(K key, V value) {
-        for (int i = 0; i < pairs.length; i++) {
-            if (pairs[i] == null) {
-                pairs[i] = new Pair<>(key, value);
-                return;
-            }
-        }
-    }
-
     @Override
     public void put(K key, V value) {
-//        for (int i = 0; i < pairs.length; i++) {
-//            if (pairs[i] != null) {
-//                if (pairs[i].hasKey(key)) {
-//                    pairs[i].setValue(value);
-//                    return;
-//                }
-//            }
-//        }
-//        this.addPair(key, value);
-
-//        for (int i = 0; i < pairs.length; i++) {
-//            if (pairs[i] == null) {
-//                Pair<K, V> pair = new Pair<>(key, value);
-//                pairs[i] = pair;
-//                ++capacity;
-//                return;
-//            }
-//        }
-        for (int i = 0; i < pairs.length; i++) {
-            if (pairs[i] != null) {
-                if ((pairs[i].getKey() == null) && key == null) {
-                    pairs[i].setValue(value);
-                    return;
-                }
-                if (pairs[i].getKey() != null) {
-                    if (pairs[i].getKey().equals(key)) {
-                        pairs[i].setValue(value);
-                        return;
-                    }
-                }
-            }
-            if (pairs[i] == null) {
-                Pair<K, V> pair = new Pair<>(key, value);
-                pairs[i] = pair;
-                ++capacity;
-                return;
+        for (int i = 0; i < 10; i++) {
+            if (keys[i] == null & values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
             }
         }
     }
     @Override
     public V get(K key) {
-        Pair<K, V> pair = new Pair<>(key, null);
-        for (Pair<K, V> pr : pairs) {
-            if (pr != null && pr.equals(pair)) {
-                return pr.getValue();
+        for (int i = 0; i < 10; i++) {
+            if (keys[i] == key) {
+                return values[i];
             }
         }
         return null;
     }
     @Override
     public int size() {
-        return capacity;
+        int counter = 0;
+        for (int i = 0; i < MAX_CAPACITY; i++) {
+            if (keys[i] != null & values[i] != null) {
+                counter++;
+            }
+        }
+        return counter;
     }
 }
