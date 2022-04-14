@@ -15,6 +15,10 @@ public class Pair<K, V> {
         this.key = key;
     }
 
+    public boolean hasKey(K key) {
+        return this.getKey() == key;
+    }
+
     public void setValue(V value) {
         this.value = value;
     }

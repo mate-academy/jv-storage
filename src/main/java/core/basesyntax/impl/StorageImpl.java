@@ -11,14 +11,36 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         pairs = new Pair[MAX_CAPACITY];
     }
 
+    public void addPair(K key, V value) {
+        for (int i = 0; i < pairs.length; i++) {
+            if (pairs[i] == null) {
+                pairs[i] = new Pair<>(key, value);
+                return;
+            }
+        }
+    }
+
     @Override
     public void put(K key, V value) {
-        if (capacity >= 10) {
-            throw new RuntimeException("Storage is full");
-        }
+//        for (int i = 0; i < pairs.length; i++) {
+//            if (pairs[i] != null) {
+//                if (pairs[i].hasKey(key)) {
+//                    pairs[i].setValue(value);
+//                    return;
+//                }
+//            }
+//        }
+//        this.addPair(key, value);
 
+//        for (int i = 0; i < pairs.length; i++) {
+//            if (pairs[i] == null) {
+//                Pair<K, V> pair = new Pair<>(key, value);
+//                pairs[i] = pair;
+//                ++capacity;
+//                return;
+//            }
+//        }
         for (int i = 0; i < pairs.length; i++) {
-
             if (pairs[i] != null) {
                 if ((pairs[i].getKey() == null) && key == null) {
                     pairs[i].setValue(value);
@@ -31,7 +53,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     }
                 }
             }
-
             if (pairs[i] == null) {
                 Pair<K, V> pair = new Pair<>(key, value);
                 pairs[i] = pair;
@@ -40,12 +61,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
     }
-
     @Override
     public V get(K key) {
-
-        Pair<K, Object> pair = new Pair<>(key, null);
-
+        Pair<K, V> pair = new Pair<>(key, null);
         for (Pair<K, V> pr : pairs) {
             if (pr != null && pr.equals(pair)) {
                 return pr.getValue();
@@ -53,7 +71,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         return null;
     }
-
     @Override
     public int size() {
         return capacity;
