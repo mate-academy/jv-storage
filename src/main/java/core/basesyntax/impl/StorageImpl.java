@@ -15,23 +15,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < this.keys.length; i++) {
-            if ((this.keys[i] != null && this.keys[i].equals(key))
-                    || (this.keys[i] == key && this.values[i] != null)) {
+        for (int i = 0; i < keys.length; i++) {
+            if ((keys[i] != null && keys[i].equals(key))
+                    || (keys[i] == key && values[i] != null)) {
                 this.values[i] = value;
-                size--;
+                return;
             }
         }
-        this.keys[size] = key;
-        this.values[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < this.keys.length; i++) {
-            if ((this.keys[i] != null && this.keys[i].equals(key))
-                    || this.keys[i] == key) {
+        for (int i = 0; i < keys.length; i++) {
+            if ((keys[i] != null && keys[i].equals(key))
+                    || keys[i] == key) {
                 return values[i];
             }
         }
