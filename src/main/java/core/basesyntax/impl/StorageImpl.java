@@ -3,57 +3,46 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Object[] keys;
-    private Object[] values;
+    private final Object[] keys;
+    private final Object[] values;
+    private int size;
 
     public StorageImpl() {
         keys = new Object[MAX_ITEMS_NUMBER];
         values = new Object[MAX_ITEMS_NUMBER];
     }
 
+    private boolean isKeyExist(int i, K key) {
+        return keys[i] != null && keys[i].equals(key)
+                || key == null && keys[i] == null && values[i] != null;
+    }
+
     @Override
     public void put(K key, V value) {
-        int i = 0;
-        while (i < MAX_ITEMS_NUMBER) {
-            if (keys[i] == null && values[i] == null
-                    || keys[i] == null && key == null
-                    || keys[i] != null && keys[i].equals(key)) {
-                keys[i] = key;
+        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+            if (isKeyExist(i, key)) {
                 values[i] = value;
-                break;
-            } else {
-                i++;
+                return;
             }
         }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        int j = 0;
-        while (j < MAX_ITEMS_NUMBER) {
-            if (keys[j] != null && keys[j].equals(key)) {
-                break;
-            } else if (keys[j] == null && key == null) {
-                break;
-            } else {
-                j++;
+        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+            if (isKeyExist(i, key)) {
+                return (V) values[i];
             }
         }
-        return j == MAX_ITEMS_NUMBER ? null : (V) values[j];
+        return null;
     }
 
     @Override
     public int size() {
-        int i = 0;
-        while (i < MAX_ITEMS_NUMBER) {
-            if (keys[i] != null || values[i] != null) {
-                i++;
-            } else {
-                break;
-            }
-        }
-        return i;
+        return size;
     }
 }
