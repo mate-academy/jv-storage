@@ -54,29 +54,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int flagKey = 0;
         for (Pair<K, V> pair : pairs) {
             if (pair != null
                     && (pair.key != null && pair.key.equals(key)
                     || (pair.key == null && key == null))) {
-                flagKey = 1;
                 pair.value = value;
-                break;
+                return;
             }
         }
-        if (flagKey == 0) {
-            int flagPair = 0;
-            for (int j = 0; j < pairs.length; j++) {
-                if (pairs[j] == null) {
-                    flagPair = 1;
-                    pairs[j] = new Pair<>(key, value);
-                    break;
-                }
-            }
-            if (flagPair == 0) {
-                System.out.println("The Storage is full");
+        for (int j = 0; j < pairs.length; j++) {
+            if (pairs[j] == null) {
+                pairs[j] = new Pair<>(key, value);
+                return;
             }
         }
+        System.out.println("The Storage is full");
     }
 
     @Override
