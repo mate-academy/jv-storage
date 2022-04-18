@@ -5,7 +5,11 @@ import core.basesyntax.Storage;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private final Pair<K, V>[] pairs = new Pair[MAX_ITEMS_NUMBER];
+    private final Pair<K, V>[] pairs;
+
+    public StorageImpl() {
+        this.pairs = new Pair[MAX_ITEMS_NUMBER];
+    }
 
     public static class Pair<K, V> {
         private final K key;
