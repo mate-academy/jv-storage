@@ -13,11 +13,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = new Object[MAX_ITEMS_NUMBER];
     }
 
-    private boolean isKeyExist(int i, K key) {
-        return keys[i] != null && keys[i].equals(key)
-                || key == null && keys[i] == null && values[i] != null;
-    }
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
@@ -44,5 +39,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isKeyExist(int index, K key) {
+        return keys[index] != null && keys[index].equals(key)
+                || key == null && keys[index] == null && values[index] != null;
     }
 }
