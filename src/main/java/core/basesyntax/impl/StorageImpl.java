@@ -7,43 +7,40 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_CAPACITY = 10;
     private final K[] keys = (K[]) new Object[ARRAY_CAPACITY];
     private final V[] values = (V[]) new Object[ARRAY_CAPACITY];
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        int existingKeyIndex = findKey(key);
-        int size = size();
-        if (existingKeyIndex != -1) {
-            this.values[existingKeyIndex] = value;
-        } else if (size < ARRAY_CAPACITY) {
-            this.keys[size] = key;
-            this.values[size] = value;
-        } else {
+        if (size == ARRAY_CAPACITY) {
             throw new RuntimeException("Storage is full!");
         }
+        int existingKeyIndex = findKeyIndex(key);
+        if (existingKeyIndex != -1) {
+            this.values[existingKeyIndex] = value;
+            return;
+        }
+        this.keys[size] = key;
+        this.values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        return findKey(key) != -1 ? values[findKey(key)] : null;
+        int keyIndex = findKeyIndex(key);
+        return keyIndex != -1 ? values[keyIndex] : null;
     }
 
     @Override
     public int size() {
-        for (int i = 0; i < ARRAY_CAPACITY; i++) {
-            if (values[i] == null) {
-                return i;
-            }
-        }
-        return ARRAY_CAPACITY;
+        return size;
     }
 
-    private int findKey(K key) {
+    private int findKeyIndex(K key) {
         for (int i = 0; i < ARRAY_CAPACITY; i++) {
-            if (key == null) {
-                if (keys[i] == null && values[i] != null) {
-                    return i;
-                }
-            } else if (key.equals(keys[i])) {
+            if (key == null && keys[i] == null && values[i] != null) {
+                return i;
+            }
+            if (key != null && key.equals(keys[i])) {
                 return i;
             }
         }
