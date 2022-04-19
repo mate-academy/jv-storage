@@ -16,16 +16,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         private final K key;
         private V value;
 
-        public Pair(K key, V value) {
+        private Pair(K key, V value) {
             this.key = key;
             this.value = value;
         }
 
-        public K getKey() {
+        private K getKey() {
             return key;
         }
 
-        public V getValue() {
+        private V getValue() {
             return value;
         }
 
@@ -55,33 +55,29 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (Pair<K, V> pair : pairs) {
-            if (pair != null
-                    && (pair.key != null && pair.key.equals(key)
-                    || pair.key == key)) {
-                pair.value = value;
-                return;
-            }
-        }
-        for (int j = 0; j < pairs.length; j++) {
-            if (pairs[j] == null) {
-                pairs[j] = new Pair<>(key, value);
-                size++;
+        for (int i = 0; i < size; i++) {
+            if (pairs[i] != null
+                    && (pairs[i].key != null && pairs[i].key.equals(key)
+                    || pairs[i].key == key)) {
+                pairs[i].value = value;
                 return;
             }
         }
         if (size == MAX_ITEMS_NUMBER) {
             throw new RuntimeException("The Storage is full");
+        } else {
+            pairs[size] = new Pair<>(key, value);
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> pair : pairs) {
-            if (pair != null
-                    && (pair.key != null && pair.key.equals(key)
-                    || pair.key == key)) {
-                return pair.value;
+        for (int j = 0; j < size; j++) {
+            if (pairs[j] != null
+                    && (pairs[j].key != null && pairs[j].key.equals(key)
+                    || pairs[j].key == key)) {
+                return pairs[j].value;
             }
         }
         return null;
