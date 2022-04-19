@@ -6,12 +6,13 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private final Pair<K, V>[] pairs;
+    private int size;
 
     public StorageImpl() {
-       pairs = new Pair[MAX_ITEMS_NUMBER];
+        pairs = new Pair[MAX_ITEMS_NUMBER];
     }
 
-   private static class Pair<K, V> {
+    private static class Pair<K, V> {
         private final K key;
         private V value;
 
@@ -57,7 +58,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (Pair<K, V> pair : pairs) {
             if (pair != null
                     && (pair.key != null && pair.key.equals(key)
-                    || (pair.key == null && key == null))) {
+                    || pair.key == key)) {
                 pair.value = value;
                 return;
             }
@@ -65,18 +66,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int j = 0; j < pairs.length; j++) {
             if (pairs[j] == null) {
                 pairs[j] = new Pair<>(key, value);
+                size++;
                 return;
             }
         }
-        System.out.println("The Storage is full");
+        if (size == MAX_ITEMS_NUMBER) {
+            throw new RuntimeException("The Storage is full");
+        }
     }
 
     @Override
     public V get(K key) {
         for (Pair<K, V> pair : pairs) {
-            if ((pair != null)
+            if (pair != null
                     && (pair.key != null && pair.key.equals(key)
-                    || pair.key == null && key == null)) {
+                    || pair.key == key)) {
                 return pair.value;
             }
         }
@@ -85,12 +89,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int count = 0;
-        for (Pair<K, V> pair : pairs) {
-            if (pair != null) {
-                count++;
-            }
-        }
-        return count;
+        return size;
     }
 }
