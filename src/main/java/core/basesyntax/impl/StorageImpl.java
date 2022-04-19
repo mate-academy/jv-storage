@@ -7,7 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_CAPACITY = 10;
     private final K[] keys = (K[]) new Object[ARRAY_CAPACITY];
     private final V[] values = (V[]) new Object[ARRAY_CAPACITY];
-    private int size = 0;
+    private int size;
 
     @Override
     public void put(K key, V value) {
@@ -37,10 +37,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKeyIndex(K key) {
         for (int i = 0; i < ARRAY_CAPACITY; i++) {
-            if (key == null && keys[i] == null && values[i] != null) {
-                return i;
-            }
-            if (key != null && key.equals(keys[i])) {
+            if ((key == null && keys[i] == null && values[i] != null)
+                || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
