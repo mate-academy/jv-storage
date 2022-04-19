@@ -11,7 +11,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
        pairs = new Pair[MAX_ITEMS_NUMBER];
     }
 
-    public static class Pair<K, V> {
+   private static class Pair<K, V> {
         private final K key;
         private V value;
 
