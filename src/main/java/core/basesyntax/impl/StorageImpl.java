@@ -20,37 +20,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.key = key;
             this.value = value;
         }
-
-        private K getKey() {
-            return key;
-        }
-
-        private V getValue() {
-            return value;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (!(o instanceof Pair)) {
-                return false;
-            }
-            Pair<?, ?> pair = (Pair<?, ?>) o;
-            return ((getKey() == pair.getKey())
-                    || (!(getKey() == null) && getKey().equals(pair.getKey())))
-                    && ((getValue() == pair.getValue())
-                    || (!(getValue() == null) && getValue().equals(pair.getValue())));
-        }
-
-        @Override
-        public int hashCode() {
-            int result = 17;
-            result = 31 * result + (getKey() == null ? 0 : getKey().hashCode());
-            result = 31 * result + (getValue() == null ? 0 : getValue().hashCode());
-            return result;
-        }
     }
 
     @Override
@@ -64,10 +33,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         if (size == MAX_ITEMS_NUMBER) {
             throw new RuntimeException("The Storage is full");
-        } else {
-            pairs[size] = new Pair<>(key, value);
-            size++;
         }
+        pairs[size] = new Pair<>(key, value);
+        size++;
     }
 
     @Override
