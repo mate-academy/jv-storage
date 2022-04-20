@@ -10,6 +10,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         equalsPutGet(key, value);
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
@@ -26,16 +29,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             if (key == keys[i] || (keys[i] != null && keys[i].equals(key))) {
                 if (value == null) {
-                    return values[i];
+                    return values[i]; // для get
                 } else {
-                    values[i] = value;
+                    values[i] = value; // замена value при равных key
+                    size--;
                     return null;
                 }
             }
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
         return null;
     }
 }
