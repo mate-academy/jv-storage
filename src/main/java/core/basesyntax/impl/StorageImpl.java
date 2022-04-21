@@ -40,19 +40,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         return -1;
     }
-    /*
-    private V equalsPutGet(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] || (keys[i] != null && keys[i].equals(key))) {
-                if (value == null) {
-                    return values[i]; // для get
-                } else {
-                    values[i] = value; // замена value при равных key
-                    size--;
-                    return null;
-                }
-            }
-        }
-        return null;
-    }*/
 }
