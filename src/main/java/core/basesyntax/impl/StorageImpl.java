@@ -4,36 +4,34 @@ import core.basesyntax.Storage;
 import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int SIZE_BOX = 10;
-    private final K[] keyBox;
-    private final V[] valueBox;
-    private int size = 0;
+    private static final int STORAGE_SIZE = 10;
+    private final K[] key;
+    private final V[] value;
+    private int size;
 
     public StorageImpl() {
-        this.keyBox = (K[]) new Object[SIZE_BOX];
-        this.valueBox = (V[]) new Object[SIZE_BOX];
+        this.key = (K[]) new Object[STORAGE_SIZE];
+        this.value = (V[]) new Object[STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && key == keyBox[i]) || (key != null && key.equals(keyBox[i]))) {
-                valueBox[i] = value;
+            if ((key == null && key == this.key[i]) || (key != null && key.equals(this.key[i]))) {
+                this.value[i] = value;
                 return;
             }
         }
-        keyBox[size] = key;
-        valueBox[size] = value;
+        this.key[size] = key;
+        this.value[size] = value;
         size++;
-        System.out.println(Arrays.toString(keyBox));
-        System.out.println(Arrays.toString(valueBox));
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyBox.length; i++) {
-            if (key == keyBox[i] || (keyBox[i] != null && keyBox[i].equals(key))) {
-                return valueBox[i];
+        for (int i = 0; i < this.key.length; i++) {
+            if (key == this.key[i] || (this.key[i] != null && this.key[i].equals(key))) {
+                return this.value[i];
             }
         }
         return null;
