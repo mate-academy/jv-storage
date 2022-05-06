@@ -4,21 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private final int maxArraySize = 10;
+    private int size = 0;
     private K[] keys = (K[]) new Object[maxArraySize];
     private V[] values = (V[]) new Object[maxArraySize];
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && values[i] == null) {
+        if (size == 0) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+            return;
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i]) {
                 keys[i] = key;
                 values[i] = value;
-                break;
-            } else if (keys[i] == key || (key != null && keys[i] != null && keys[i].equals(key))) {
+                return;
+            } else if ((key != null && keys[i] != null) && keys[i].equals(key)) {
+                keys[i] = key;
                 values[i] = value;
-                break;
-            } else if (i == maxArraySize) {
-                System.out.println("You can't place a new key, dictionary is full");
+                return;
+            } else {
+                keys[size] = key;
+                values[size] = value;
+                size++;
+                return;
             }
         }
     }
@@ -35,11 +47,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < keys.length; i++) {
-            if (values[i] == null) {
-                return i;
-            }
-        }
-        return maxArraySize;
+        return size;
     }
 }
