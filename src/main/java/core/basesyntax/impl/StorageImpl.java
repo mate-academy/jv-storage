@@ -12,10 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         objects = new Object[DOUBLE_CAPACITY];
     }
 
-    private boolean checkEqualObjects(Object first, Object second) {
-        return first == second || first != null && first.equals(second);
-    }
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
@@ -43,5 +39,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size / 2;
+    }
+
+    private boolean checkEqualObjects(Object first, Object second) {
+        return first == second || first != null && first.equals(second);
     }
 }
