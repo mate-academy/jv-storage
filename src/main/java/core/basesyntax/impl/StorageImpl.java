@@ -1,37 +1,40 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int DOUBLE_CAPACITY = 20;
-    private final Object[] allObjects;
-    private int lastAdded;
+    private final Object[] objects;
+    private int size;
 
     public StorageImpl() {
-        this.allObjects = new Object[DOUBLE_CAPACITY];
+        objects = new Object[DOUBLE_CAPACITY];
+    }
+
+    private boolean checkEqualObjects(Object first, Object second) {
+        return first == second || first != null && first.equals(second);
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < lastAdded; i++) {
-            if (Objects.equals(key, allObjects[i])) {
-                allObjects[i + 1] = value;
+        for (int i = 0; i < size; i++) {
+            if (checkEqualObjects(key, objects[i])) {
+                objects[i + 1] = value;
                 return;
             }
         }
-        allObjects[lastAdded] = key;
-        lastAdded++;
-        allObjects[lastAdded] = value;
-        lastAdded++;
+        objects[size] = key;
+        size++;
+        objects[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < lastAdded; i++) {
-            if (Objects.equals(key, allObjects[i])) {
-                return (V) allObjects[i + 1];
+        for (int i = 0; i < size; i++) {
+            if (checkEqualObjects(key, objects[i])) {
+                return (V) objects[i + 1];
             }
         }
         return null;
@@ -39,6 +42,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return lastAdded / 2;
+        return size / 2;
     }
 }
