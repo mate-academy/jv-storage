@@ -13,7 +13,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         pairs = new Pair[MAX_LENGTH];
     }
 
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
