@@ -9,19 +9,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Pair<K, V>[] pairs;
     private int size;
 
-    private static class Pair<K, V> {
-        private final K key;
-        private V value;
-
-        private Pair(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
-
     public StorageImpl() {
         pairs = new Pair[MAX_LENGTH];
     }
+
 
     @Override
     public void put(K key, V value) {
@@ -51,4 +42,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
+    private static class Pair<K, V> {
+        private final K key;
+        private V value;
+
+        private Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
 }
