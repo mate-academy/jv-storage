@@ -4,8 +4,9 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private final Pair<K, V>[] storage = new Pair[10];
-    private int count = 0;
+    private static final int DEFAULT_CAPACITY = 10;
+    private final Pair<K, V>[] storage = new Pair[DEFAULT_CAPACITY];
+    private int size;
 
     @Override
     public void put(K key, V value) {
@@ -25,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         Pair<K, V> pair = new Pair<>(key, value);
-        storage[count++] = pair;
+        storage[size++] = pair;
     }
 
     @Override
@@ -47,7 +48,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return count;
+        return size;
     }
 
     private class Pair<K, V> {
