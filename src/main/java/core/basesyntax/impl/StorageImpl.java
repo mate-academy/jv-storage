@@ -23,7 +23,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-
         Pair<K, V> pair = new Pair<>(key, value);
         storage[size++] = pair;
     }
