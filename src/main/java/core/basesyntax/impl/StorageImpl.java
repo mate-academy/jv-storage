@@ -1,34 +1,64 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private ArrayList<K> keyList = new ArrayList<>();
-    private ArrayList<V> valueList = new ArrayList<>();
+
+    private K[] keyArray = (K[]) new Object[10];
+    private V[] valueArray = (V[]) new Object[10];
+    private int count = 0;
 
     @Override
     public void put(K key, V value) {
-        if (keyList.contains(key)) {
-            valueList.set(keyList.indexOf(key),value);
+        keyArray[count] = key;
+        valueArray[count] = value;
+        if (key != null) {
+            for (int i = 0; i < count; i++) {
+                if (keyArray[i] != null && keyArray[i].equals(keyArray[count])) {
+                    keyArray[i] = key;
+                    valueArray[i] = value;
+                    valueArray[count] = null;
+                    keyArray[count] = null;
+                    count--;
+                    break;
+                }
+            }
         } else {
-            keyList.add(key);
-            valueList.add(value);
+            for (int i = 0; i < count; i++) {
+                if (keyArray[i] == keyArray[count]) {
+                    keyArray[i] = key;
+                    valueArray[i] = value;
+                    valueArray[count] = null;
+                    keyArray[count] = null;
+                    count--;
+                    break;
+                }
+            }
         }
+        count++;
     }
 
     @Override
     public V get(K key) {
-        if (keyList.contains(key)) {
-            return valueList.get(keyList.indexOf(key));
+        int find = 0;
+        if (key != null) {
+            for (; find < size(); find++) {
+                if (keyArray[find] != null && keyArray[find].equals(key)) {
+                    break;
+                }
+            }
         } else {
-            return null;
+            for (; find < size(); find++) {
+                if (keyArray[find] == null) {
+                    break;
+                }
+            }
         }
-
+        return valueArray[find];
     }
 
     @Override
     public int size() {
-        return keyList.size();
+        return this.count;
     }
 }
