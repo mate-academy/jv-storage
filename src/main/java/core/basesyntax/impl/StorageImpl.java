@@ -31,11 +31,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
 
         for (int i = 0; i < size; i++) {
-            if (storage[i].getKey() == null && key == null) {
-                return storage[i].getValue();
-            } else if (storage[i].getKey() == null) {
-                continue;
-            } else if (storage[i].getKey().equals(key)) {
+            if (storage[i].getKey() == key
+                    || (storage[i].getKey() != null
+                    && storage[i].getKey().equals(key))) {
                 return storage[i].getValue();
             }
         }
@@ -58,10 +56,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         public K getKey() {
             return key;
-        }
-
-        public void setKey(K key) {
-            this.key = key;
         }
 
         public V getValue() {
