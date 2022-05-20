@@ -18,8 +18,8 @@ public class Pair<K, V> {
     }
 
     public boolean isEqualKeys(K key) {
-        return (this.key == null ? 0 : this.key.hashCode()) ==
-                (key == null ? 0 : key.hashCode());
+        return (this.key == null ? 0 : this.key.hashCode())
+                == (key == null ? 0 : key.hashCode());
     }
 }
 
