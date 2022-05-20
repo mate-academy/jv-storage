@@ -4,8 +4,8 @@ import core.basesyntax.Pair;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private int size = 0;
     private final Pair<K, V>[] pair = new Pair[10];
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (Pair<K, V> e : this.pair) {
-            if (e != null && e.isEqualKeys(key) ) {
+            if (e != null && e.isEqualKeys(key)) {
                 return e.getValue();
             }
         }
