@@ -4,8 +4,13 @@ import core.basesyntax.Pair;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final Pair<K, V>[] pair = new Pair[10];
+    private static final int MAX_ITEMS_NUMBER = 10;
+    private final Pair<K, V>[] pair;
     private int size = 0;
+
+    public StorageImpl() {
+        pair = new Pair[MAX_ITEMS_NUMBER];
+    }
 
     @Override
     public void put(K key, V value) {
