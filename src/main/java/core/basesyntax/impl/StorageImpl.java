@@ -14,6 +14,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         index = 0;
     }
 
+    private int getIndexForKey(K key) {
+        for (int i = 0; i < index; i++) {
+            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private void setData(K key, V value, int index) {
         keys[index] = key;
         values[index] = value;
@@ -26,11 +35,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             index++;
             return;
         }
-        for (int i = 0; i < index; i++) {
-            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
-                setData(key, value, i);
-                return;
-            }
+        if (getIndexForKey(key) >= 0) {
+            setData(key, value, getIndexForKey(key));
+            return;
         }
         setData(key, value, index);
         index++;
@@ -38,10 +45,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < index; i++) {
-            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
-                return (V) values[i];
-            }
+        if (getIndexForKey(key) >= 0) {
+            return (V) values[getIndexForKey(key)];
         }
         return null;
     }
