@@ -4,6 +4,8 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int STORAGE_CAPACITY = 10;
+    private static final int INDEX_ABSENT = -1;
     private K[] keys;
     private V[] values;
 
@@ -14,20 +16,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        int index;
         if (key == null) {
-            int index = getIndexWithNullKey();
-            if (index != -1) {
+            index = getIndexWithNullKey();
+            if (index != INDEX_ABSENT) {
                 values[index] = value;
                 return;
             }
         }
-        int index = getIndexByKey(key);
-        if (index != -1) {
+        index = getIndexByKey(key);
+        if (index != INDEX_ABSENT) {
             keys[index] = key;
             values[index] = value;
             return;
         }
-        if (size() == 10) {
+        if (size() == STORAGE_CAPACITY) {
             System.out.println("storage overloaded");
             return;
         }
@@ -42,15 +45,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
+        int index;
         if (key == null) {
-            int index = getIndexWithNullKey();
-            if (index != -1) {
+            index = getIndexWithNullKey();
+            if (index != INDEX_ABSENT) {
                 return values[index];
             }
             return null;
         }
-        int index = getIndexByKey(key);
-        if (index != -1) {
+        index = getIndexByKey(key);
+        if (index != INDEX_ABSENT) {
             return values[index];
         }
         return null;
@@ -60,7 +64,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         int count = 0;
         int index = getIndexWithNullKey();
-        if (index != -1) {
+        if (index != INDEX_ABSENT) {
             count++;
         }
         for (K key : keys) {
@@ -77,7 +81,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return INDEX_ABSENT;
     }
 
     private int getIndexByKey(K key) {
@@ -86,6 +90,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return INDEX_ABSENT;
     }
 }
