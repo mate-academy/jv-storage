@@ -1,31 +1,25 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    public static final int MAX_SIZE_VALUE = 6;
     private K[] keys;
     private V[] values;
     private int size;
 
-    private void increaseArrays() {
-        size++;
-        if (size == 1) {
-            keys = (K[]) new Object[size];
-            values = (V[]) new Object[size];
-        }
-        keys = (K[]) Arrays.copyOf(keys, size);
-        values = (V[]) Arrays.copyOf(values, size);;
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE_VALUE];
+        values = (V[]) new Object[MAX_SIZE_VALUE];
     }
 
     @Override
     public void put(K key, V value) {
         int index = getIndex(key);
         if (index == -1) {
-            increaseArrays();
-            keys[size - 1] = key;
-            values[size - 1] = value;
+            keys[size] = key;
+            values[size] = value;
+            size++;
         } else {
             values[index] = value;
         }
@@ -45,9 +39,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int getIndex(K findKey) {
+    private int getIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], findKey)) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
