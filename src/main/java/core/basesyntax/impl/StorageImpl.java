@@ -10,8 +10,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values;
 
     public StorageImpl() {
-        keys = (K[]) (new Object[10]);
-        values = (V[]) (new Object[10]);
+        keys = (K[]) (new Object[STORAGE_CAPACITY]);
+        values = (V[]) (new Object[STORAGE_CAPACITY]);
     }
 
     @Override
