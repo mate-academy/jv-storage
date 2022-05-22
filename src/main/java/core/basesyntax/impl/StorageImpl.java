@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -16,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (key == null) {
-            int index = getIndexWithNullKey(null);
+            int index = getIndexWithNullKey();
             if (index != -1) {
                 values[index] = value;
                 return;
@@ -28,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[index] = value;
             return;
         }
-        if (size() == 10) { // max quantity elements in our storage
+        if (size() == 10) {
             System.out.println("storage overloaded");
             return;
         }
@@ -44,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         if (key == null) {
-            int index = getIndexWithNullKey(null);
+            int index = getIndexWithNullKey();
             if (index != -1) {
                 return values[index];
             }
@@ -60,7 +59,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         int count = 0;
-        int index = getIndexWithNullKey(null);
+        int index = getIndexWithNullKey();
         if (index != -1) {
             count++;
         }
@@ -72,7 +71,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return count;
     }
 
-    private int getIndexWithNullKey(K key) {
+    private int getIndexWithNullKey() {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == null && values[i] != null) {
                 return i;
@@ -81,7 +80,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    private int getIndexByKey(K key) {  //clause: keys were reviewed for null
+    private int getIndexByKey(K key) {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] != null && Objects.equals(keys[i], key)) {
                 return i;
