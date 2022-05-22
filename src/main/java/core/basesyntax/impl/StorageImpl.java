@@ -5,39 +5,39 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] key;
-    private V[] value;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     private void increaseArrays() {
         size++;
         if (size == 1) {
-            key = (K[]) new Object[size];
-            value = (V[]) new Object[size];
+            keys = (K[]) new Object[size];
+            values = (V[]) new Object[size];
         }
-        key = (K[]) Arrays.copyOf(key, size);
-        value = (V[]) Arrays.copyOf(value, size);;
+        keys = (K[]) Arrays.copyOf(keys, size);
+        values = (V[]) Arrays.copyOf(values, size);;
     }
 
     @Override
     public void put(K key, V value) {
-        int index = keyIndex(key);
+        int index = getIndex(key);
         if (index == -1) {
             increaseArrays();
-            this.key[size - 1] = key;
-            this.value[size - 1] = value;
+            keys[size - 1] = key;
+            values[size - 1] = value;
         } else {
-            this.value[index] = value;
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        int index = keyIndex(key);
+        int index = getIndex(key);
         if (index == -1) {
             return null;
         }
-        return value[index];
+        return values[index];
     }
 
     @Override
@@ -45,9 +45,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int keyIndex(K findKey) {
+    private int getIndex(K findKey) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(key[i], findKey)) {
+            if (Objects.equals(keys[i], findKey)) {
                 return i;
             }
         }
