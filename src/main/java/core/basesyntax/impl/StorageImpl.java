@@ -13,12 +13,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size == 10) {
+        if (size == MAX_ITEMS_NUMBER) {
             throw new RuntimeException("Can't put new pair. Too many elements in storage");
         }
-        System.out.println();
         for (int i = 0; i < size; i++) {
-            if (pairs[i].isEqualKeys(key)) {
+            if (pairs[i].isKeysEqual(key)) {
                 pairs[i].setValue(value);
                 return;
             }
@@ -30,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (Pair<K, V> e : pairs) {
-            if (e != null && e.isEqualKeys(key)) {
+            if (e != null && e.isKeysEqual(key)) {
                 return e.getValue();
             }
         }
@@ -59,7 +58,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value = value;
         }
 
-        public boolean isEqualKeys(K key) {
+        public boolean isKeysEqual(K key) {
             int thisHash = (this.key == null) ? 0 : this.key.hashCode();
             int currentHash = (key == null) ? 0 : key.hashCode();
             return thisHash == currentHash;
