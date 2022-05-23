@@ -1,36 +1,35 @@
 package core.basesyntax.impl;
 
-import core.basesyntax.Pair;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private final Pair<K, V>[] pair;
-    private int size = 0;
+    private final Pair<K, V>[] pairs;
+    private int size;
 
     public StorageImpl() {
-        pair = new Pair[MAX_ITEMS_NUMBER];
+        pairs = new Pair[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
-        if (this.size == 10) {
-            System.out.println("Can't put new pair. Array is overloaded");
-            return;
+        if (size == 10) {
+            throw new RuntimeException("Can't put new pair. Too many elements in storage");
         }
-        for (int i = 0; i < this.size; i++) {
-            if (pair[i].isEqualKeys(key)) {
-                pair[i].setValue(value);
+        System.out.println();
+        for (int i = 0; i < size; i++) {
+            if (pairs[i].isEqualKeys(key)) {
+                pairs[i].setValue(value);
                 return;
             }
         }
-        this.pair[this.size] = new Pair<>(key, value);
-        this.size++;
+        pairs[size] = new Pair<>(key, value);
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> e : this.pair) {
+        for (Pair<K, V> e : pairs) {
             if (e != null && e.isEqualKeys(key)) {
                 return e.getValue();
             }
@@ -40,6 +39,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return this.size;
+        return size;
+    }
+
+    private static class Pair<K, V> {
+        private final K key;
+        private V value;
+
+        public Pair(K number, V value) {
+            this.key = number;
+            this.value = value;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        public boolean isEqualKeys(K key) {
+            int thisHash = (this.key == null) ? 0 : this.key.hashCode();
+            int currentHash = (key == null) ? 0 : key.hashCode();
+            return thisHash == currentHash;
+        }
     }
 }
