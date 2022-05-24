@@ -5,9 +5,14 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_SIZE = 10;
-    private final K[] keyBox = (K[]) new Object[MAX_SIZE];
-    private final V[] valueBox = (V[]) new Object[MAX_SIZE];
+    private final K[] keyBox;
+    private final V[] valueBox;
     private int size = 0;
+
+    public StorageImpl() {
+        keyBox = (K[]) new Object[MAX_SIZE];
+        valueBox = (V[]) new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
