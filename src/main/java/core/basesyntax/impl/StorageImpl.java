@@ -21,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index;
         if (key == null) {
-            index = getIndexValueWithNullKey();
+            index = getIndexIfKeyIsNull();
             if (index != INDEX_ABSENT) {
                 values[index] = value;
                 return;
@@ -50,7 +50,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index;
         if (key == null) {
-            index = getIndexValueWithNullKey();
+            index = getIndexIfKeyIsNull();
             return (index != INDEX_ABSENT) ? values[index] : null;
         }
         index = getIndexByKey(key);
@@ -62,7 +62,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return counter;
     }
 
-    private int getIndexValueWithNullKey() {
+    private int getIndexIfKeyIsNull() {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == null && values[i] != null) {
                 return i;
