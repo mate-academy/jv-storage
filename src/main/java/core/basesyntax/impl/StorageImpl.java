@@ -7,7 +7,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keyArray;
     private final V[] valArray;
     private byte size = 0;
-    private boolean isNullInArray = false;
 
     public StorageImpl() {
         this.keyArray = (K[])new Object[NUMBER_OF_ELEMENTS];
@@ -16,15 +15,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key == null && !isNullInArray) {
-            isNullInArray = true;
-        } else {
-            int index = findIndexByKey(key);
-            if (index != -1) {
-                valArray[index] = value;
-                return;
-            }
+        int index = findIndexByKey(key);
+        if (index != -1) {
+            valArray[index] = value;
+            return;
         }
+
         keyArray[size] = key;
         valArray[size++] = value;
     }
@@ -42,7 +38,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndexByKey(K key) {
         for (int i = 0; i < NUMBER_OF_ELEMENTS; i++) {
-            if (key == null ? keyArray[i] == null : key.equals(keyArray[i])) {
+            if ((key == null ? keyArray[i] == null : key.equals(keyArray[i]))
+                    && valArray[i] != null) {
                 return i;
             }
         }
