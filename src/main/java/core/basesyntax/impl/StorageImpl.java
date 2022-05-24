@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NUMBER_OF_ELEMENTS = 10;
     private final K[] keyArray;
     private final V[] valArray;
-    private byte index = 0;
+    private byte size = 0;
     private boolean isNullInArray = false;
 
     public StorageImpl() {
@@ -25,8 +25,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        keyArray[index] = key;
-        valArray[index++] = value;
+        keyArray[size] = key;
+        valArray[size++] = value;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return index;
+        return size;
     }
 
     private int findIndexByKey(K key) {
