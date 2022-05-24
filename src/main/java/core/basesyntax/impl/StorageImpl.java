@@ -4,21 +4,24 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final String MESSAGE = "the storage is overloaded";
     private static final int STORAGE_CAPACITY = 10;
     private static final int INDEX_ABSENT = -1;
-    private K[] keys;
-    private V[] values;
+
+    private int counter = 0;
+    private final K[] keys;
+    private final V[] values;
 
     public StorageImpl() {
-        keys = (K[]) (new Object[STORAGE_CAPACITY]);
-        values = (V[]) (new Object[STORAGE_CAPACITY]);
+        keys = (K[]) new Object[STORAGE_CAPACITY];
+        values = (V[]) new Object[STORAGE_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
         int index;
         if (key == null) {
-            index = getIndexWithNullKey();
+            index = getIndexValueWithNullKey();
             if (index != INDEX_ABSENT) {
                 values[index] = value;
                 return;
@@ -31,13 +34,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return;
         }
         if (size() == STORAGE_CAPACITY) {
-            System.out.println("storage overloaded");
-            return;
+            throw new RuntimeException(MESSAGE);
         }
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == null && values[i] == null) {
                 keys[i] = key;
                 values[i] = value;
+                counter++;
                 break;
             }
         }
@@ -47,35 +50,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index;
         if (key == null) {
-            index = getIndexWithNullKey();
-            if (index != INDEX_ABSENT) {
-                return values[index];
-            }
-            return null;
+            index = getIndexValueWithNullKey();
+            return (index != INDEX_ABSENT) ? values[index] : null;
         }
         index = getIndexByKey(key);
-        if (index != INDEX_ABSENT) {
-            return values[index];
-        }
-        return null;
+        return (index != INDEX_ABSENT) ? values[index] : null;
     }
 
     @Override
     public int size() {
-        int count = 0;
-        int index = getIndexWithNullKey();
-        if (index != INDEX_ABSENT) {
-            count++;
-        }
-        for (K key : keys) {
-            if (key != null) {
-                count++;
-            }
-        }
-        return count;
+        return counter;
     }
 
-    private int getIndexWithNullKey() {
+    private int getIndexValueWithNullKey() {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == null && values[i] != null) {
                 return i;
