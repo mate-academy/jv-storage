@@ -1,12 +1,10 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_CAPACITY = 10;
     private static final int INDEX_ABSENT = -1;
-
     private int counter = 0;
     private final K[] keys;
     private final V[] values;
@@ -20,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index;
         if (key == null) {
-            index = getIndexIfKeyIsNull();
+            index = getIndexByKey(key);
             if (index != INDEX_ABSENT) {
                 values[index] = value;
                 return;
@@ -46,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index;
         if (key == null) {
-            index = getIndexIfKeyIsNull();
+            index = getIndexByKey(key);
             return (index != INDEX_ABSENT) ? values[index] : null;
         }
         index = getIndexByKey(key);
@@ -58,19 +56,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return counter;
     }
 
-    private int getIndexIfKeyIsNull() {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && values[i] != null) {
-                return i;
-            }
-        }
-        return INDEX_ABSENT;
-    }
-
     private int getIndexByKey(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] != null && Objects.equals(keys[i], key)) {
-                return i;
+        if (key == null) {
+            for (int i = 0; i < keys.length; i++) {
+                if (keys[i] == null && values[i] != null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < keys.length; i++) {
+                if (keys[i] != null && keys[i].equals(key)) {
+                    return i;
+                }
             }
         }
         return INDEX_ABSENT;
