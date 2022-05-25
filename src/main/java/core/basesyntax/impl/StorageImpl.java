@@ -4,7 +4,6 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final String MESSAGE = "the storage is overloaded";
     private static final int STORAGE_CAPACITY = 10;
     private static final int INDEX_ABSENT = -1;
 
@@ -32,9 +31,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keys[index] = key;
             values[index] = value;
             return;
-        }
-        if (size() == STORAGE_CAPACITY) {
-            throw new RuntimeException(MESSAGE);
         }
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == null && values[i] == null) {
