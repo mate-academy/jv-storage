@@ -4,8 +4,6 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private K key;
-    private V value;
     private int currentPositionInArray;
     private Object[] keysArray;
     private Object[] valuesArray;
@@ -23,12 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             valuesArray[currentPositionInArray] = value;
             currentPositionInArray++;
         } else {
-            for (int i = 0; i < currentPositionInArray; i++) {
-                if (key != null && key.equals(keysArray[i])
-                        || key == keysArray[i]) {
-                    valuesArray[i] = value;
-                }
-            }
+            valuesArray[currentPositionInArray - 1] = value;
         }
     }
 
