@@ -20,7 +20,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             valArray[index] = value;
             return;
         }
-
         keyArray[size] = key;
         valArray[size++] = value;
     }
