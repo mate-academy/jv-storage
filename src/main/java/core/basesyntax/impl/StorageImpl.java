@@ -19,23 +19,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
 
         if (get(key) == null) {
-            objKey[realLengthStorage] = (K) key;
-            objValue[realLengthStorage] = (V) value;
+            objKey[realLengthStorage] = key;
+            objValue[realLengthStorage] = value;
             realLengthStorage++;
-            return;
+        } else {
+            objValue[realLengthStorage - 1] = value;
         }
-
-        int numFindKey = NOT_FIND;
-        for (int i = 0; i < realLengthStorage; i++) {
-            if ((objKey[i] != null && objKey[i].equals(key))
-                    || (key == null && objKey[i] == null)) {
-                if (objValue[i] != null) {
-                    numFindKey = i;
-                    break;
-                }
-            }
-        }
-        objValue[numFindKey] = (V) value;
     }
 
     @Override
