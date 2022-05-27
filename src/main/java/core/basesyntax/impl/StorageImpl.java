@@ -17,39 +17,38 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+
+        if (get(key) == null) {
+            objKey[realLengthStorage] = (K) key;
+            objValue[realLengthStorage] = (V) value;
+            realLengthStorage++;
+            return;
+        }
+
         int numFindKey = NOT_FIND;
-        boolean findElement = false;
         for (int i = 0; i < realLengthStorage; i++) {
-            if ((this.objKey[i] != null && this.objKey[i].equals(key))
-                    || (key == null && this.objKey[i] == null)) {
-                if (this.objValue[i] != null) {
-                    findElement = true;
+            if ((objKey[i] != null && objKey[i].equals(key))
+                    || (key == null && objKey[i] == null)) {
+                if (objValue[i] != null) {
                     numFindKey = i;
                     break;
                 }
             }
         }
-        if (findElement) {
-            this.objValue[numFindKey] = (V) value;
-        }
-        if (!findElement) {
-            this.objKey[realLengthStorage] = (K) key;
-            this.objValue[realLengthStorage] = (V) value;
-            realLengthStorage++;
-        }
+        objValue[numFindKey] = (V) value;
     }
 
     @Override
     public V get(K key) {
         int searchKey = NOT_FIND;
         for (int i = 0; i < realLengthStorage; i++) {
-            if ((key == null && this.objKey[i] == null)
-                    || ((this.objKey[i] != null) && (this.objKey[i].equals(key)))) {
+            if ((key == null && objKey[i] == null)
+                    || ((objKey[i] != null) && (objKey[i].equals(key)))) {
                 searchKey = i;
                 break;
             }
         }
-        return (searchKey == NOT_FIND ? null : (V) this.objValue[searchKey]);
+        return (searchKey == NOT_FIND ? null : (V) objValue[searchKey]);
     }
 
     @Override
