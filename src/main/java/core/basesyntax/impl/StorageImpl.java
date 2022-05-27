@@ -4,33 +4,23 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final byte MAX_ELEMENTS = 10;
-    private final K[] keyValues;
-    private final V[] storedInfo;
-    private int elements = 0;
+    private final Object[] keyValues;
+    private final Object[] storedInfo;
+    private int elements;
 
     public StorageImpl() {
-        keyValues = (K[]) new Object[MAX_ELEMENTS];
-        storedInfo = (V[]) new Object[MAX_ELEMENTS];
-    }
-
-    private boolean obEqual(Object o1, Object o2) {
-        return o1 == o2 || o1 != null && o1.equals(o2);
+        keyValues = new Object[MAX_ELEMENTS];
+        storedInfo = new Object[MAX_ELEMENTS];
+        elements = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        elements++;
-        boolean newObject = true;
-        for (int i = 0; i < elements - 1; i++) {
-            if (obEqual(key, keyValues[i])) {
-                storedInfo[i] = value;
-                newObject = false;
-                elements--;
-                break;
-            }
-        }
-        if (newObject) {
-            keyValues[elements - 1] = key;
+        if (get(key) == null) {
+            keyValues[elements] = key;
+            storedInfo[elements] = value;
+            elements++;
+        } else {
             storedInfo[elements - 1] = value;
         }
     }
@@ -39,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < elements; i++) {
             if (obEqual(key, keyValues[i])) {
-                return storedInfo[i];
+                return (V) storedInfo[i];
             }
         }
         return null;
@@ -48,5 +38,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return elements;
+    }
+
+    private boolean obEqual(Object o1, Object o2) {
+        return o1 == o2 || o1 != null && o1.equals(o2);
     }
 }
