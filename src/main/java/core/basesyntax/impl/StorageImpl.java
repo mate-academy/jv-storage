@@ -8,15 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Object[] valueBox;
     private int size = 0;
 
-    private int getIndexKey(K key) {
-        for (int i = 0; i < size; i++) {
-            if ((key != null && key.equals(keyBox[i])) || key == keyBox[i]) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     public StorageImpl() {
         keyBox = new Object[MAX_SIZE];
         valueBox = new Object[MAX_SIZE];
@@ -46,4 +37,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
+    private int getIndexKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if ((key != null && key.equals(keyBox[i])) || key == keyBox[i]) {
+                return i;
+            }
+        }
+        return -1;
+    }
 }
+
