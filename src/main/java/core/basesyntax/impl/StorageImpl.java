@@ -3,60 +3,52 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int EMPTY = 0;
-    private static final int ROOM = 1;
+    private static final int CAPACITY = 10;
     private Object[] keys;
     private Object[] values;
+    private int sizeOfArray = 0;
 
     public StorageImpl() {
-        keys = new Object[EMPTY];
-        values = new Object[EMPTY];
+        keys = new Object[CAPACITY];
+        values = new Object[CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        if (keys.length == EMPTY && values.length == EMPTY) {
-            add(key, value);
+        int index = getIndex(key);
+        if (index != -1) {
+            values[index] = value;
         } else {
-            boolean exist = false;
-            for (int i = 0; i < keys.length; i++) {
-                if (key == null ? keys[i] == null : key.equals((K) keys[i])) {
-                    values[i] = value;
-                    exist = true;
-                    break;
-                }
-            }
-            if (!exist) {
-                add(key, value);
-            }
+            add(key, value);
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (key == null ? keys[i] == null : key.equals((K) keys[i])) {
-                return (V) values[i];
-            }
+        int index = getIndex(key);
+        if (index != -1) {
+            return (V) values[index];
         }
         return null;
     }
 
     @Override
     public int size() {
-        return keys.length;
+        return sizeOfArray;
     }
 
     private void add(K key, V value) {
-        Object[] newKeys = new Object[keys.length + ROOM];
-        Object[] newValues = new Object[values.length + ROOM];
-        for (int i = 0; i < keys.length; i++) {
-            newKeys[i] = keys[i];
-            newValues[i] = values[i];
+        keys[sizeOfArray] = key;
+        values[sizeOfArray] = value;
+        sizeOfArray++;
+    }
+
+    private int getIndex(K key) {
+        for (int i = 0; i < sizeOfArray; i++) {
+            if (key == null ? keys[i] == null : key.equals((K) keys[i])) {
+                return i;
+            }
         }
-        newKeys[keys.length] = key;
-        newValues[values.length] = value;
-        keys = newKeys;
-        values = newValues;
+        return -1;
     }
 }
