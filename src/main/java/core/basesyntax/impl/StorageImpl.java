@@ -4,14 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int AMOUNT_OF_STORAGE = 10;
-    private static final int NOT_FIND = -1;
-    private Object[] objKey;
-    private Object[] objValue;
+    private Object[] keys;
+    private Object[] values;
     private int realLengthStorage;
 
     public StorageImpl() {
-        objKey = new Object[AMOUNT_OF_STORAGE];
-        objValue = new Object[AMOUNT_OF_STORAGE];
+        keys = new Object[AMOUNT_OF_STORAGE];
+        values = new Object[AMOUNT_OF_STORAGE];
         realLengthStorage = 0;
     }
 
@@ -19,25 +18,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
 
         if (get(key) == null) {
-            objKey[realLengthStorage] = key;
-            objValue[realLengthStorage] = value;
+            keys[realLengthStorage] = key;
+            values[realLengthStorage] = value;
             realLengthStorage++;
         } else {
-            objValue[realLengthStorage - 1] = value;
+            values[realLengthStorage - 1] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        int searchKey = NOT_FIND;
         for (int i = 0; i < realLengthStorage; i++) {
-            if ((key == null && objKey[i] == null)
-                    || ((objKey[i] != null) && (objKey[i].equals(key)))) {
-                searchKey = i;
-                break;
+            if (isEqual((K) keys[i], key)) {
+                return (V) values[i];
             }
         }
-        return (searchKey == NOT_FIND ? null : (V) objValue[searchKey]);
+        return null;
+    }
+
+    public boolean isEqual(K keyFirst, K keySecond) {
+        return ((keyFirst == null && keySecond == null)
+                || (keySecond != null && keySecond.equals(keyFirst)));
     }
 
     @Override
