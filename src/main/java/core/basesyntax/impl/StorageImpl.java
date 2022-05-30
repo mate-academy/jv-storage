@@ -1,11 +1,12 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
-    private final Object [] keys;
-    private final Object [] values;
+    private final Object[] keys;
+    private final Object[] values;
     private int numberOfElements;
 
     public StorageImpl() {
@@ -23,8 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 numberOfElements++;
                 return;
             }
-            if (key == null && keys[i] == null || keys[i] != null && key != null
-                    && key.equals(keys[i])) {
+            if (equal(key, (K) keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < numberOfElements; i++) {
-            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
+            if (equal(key, (K) keys[i])) {
                 return (V) values[i];
             }
         }
@@ -46,4 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return numberOfElements;
     }
 
+    private boolean equal(K firstKey, K secondKey) {
+        return Objects.equals(firstKey,secondKey);
+    }
 }
