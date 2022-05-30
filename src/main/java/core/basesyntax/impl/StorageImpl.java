@@ -16,10 +16,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int getIndex(K key) {
         int i = 0;
         for (; i < values.length; i++) {
-            if ((values[i] == null
-                    || keys[i] == key || key != null && key.equals(keys[i]))
-                    || (values[i] != null
-                    && (keys[i] == key || key != null && key.equals(keys[i])))) {
+            boolean a = values[i] == null;
+            boolean b = keys[i] == key || key != null && key.equals(keys[i]);
+            if ((a || b) // condition for put
+                    || (!a && b)) { // condition for get
                 break;
             }
         }
