@@ -19,12 +19,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int index = 0;
-        for (Object obj : values) {
-            if (obj != null) {
-                index++;
-            }
-        }
-        return index;
+        return new GetSize(this.values).size();
     }
 }
