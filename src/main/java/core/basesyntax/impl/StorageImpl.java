@@ -4,28 +4,27 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Object[] keyArray;
-    private Object[] valueArray;
-    private int arraySize;
+    private Object[] keys;
+    private Object[] values;
+    private int size;
 
     public StorageImpl() {
-        keyArray = new Object[MAX_ITEMS_NUMBER];
-        valueArray = new Object[MAX_ITEMS_NUMBER];
-        arraySize = 0;
+        keys = new Object[MAX_ITEMS_NUMBER];
+        values = new Object[MAX_ITEMS_NUMBER];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (valueArray[i] == null) {
-                keyArray[i] = key;
-                valueArray[i] = value;
-                arraySize++;
+            if (values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
+                size++;
                 return;
             }
-            if (key == null && (K)keyArray[i] == null
-                    || (K)keyArray[i] != null && keyArray[i].equals(key)) {
-                valueArray[i] = value;
+            if (isEqual(key, (K)keys[i])) {
+                values[i] = value;
                 return;
             }
         }
@@ -33,10 +32,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < arraySize; i++) {
-            if (key == null && (K)keyArray[i] == null
-                    || (K)keyArray[i] != null && keyArray[i].equals(key)) {
-                return (V)valueArray[i];
+        for (int i = 0; i < size; i++) {
+            if (isEqual(key, (K)keys[i])) {
+                return (V)values[i];
             }
         }
         return null;
@@ -44,6 +42,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return arraySize;
+        return size;
+    }
+
+    private boolean isEqual(K firstKey, K secondKey) {
+        return firstKey == null && secondKey == null
+            || secondKey != null && secondKey.equals(firstKey);
     }
 }
