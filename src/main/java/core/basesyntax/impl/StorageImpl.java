@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = new Object[MAX_ITEMS_NUMBER];
         values = new Object[MAX_ITEMS_NUMBER];
-        size = 0;
     }
 
     @Override
@@ -46,7 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isEqual(K firstKey, K secondKey) {
-        return firstKey == null && secondKey == null
-            || secondKey != null && secondKey.equals(firstKey);
+        return firstKey == secondKey ||  secondKey != null && secondKey.equals(firstKey);
     }
 }
