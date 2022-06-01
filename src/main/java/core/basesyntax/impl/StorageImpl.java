@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
-    private int storageSize = 0;
+    private int size;
     private StorageImpl<K, V>[] storageBefore = new StorageImpl[1];
 
     public StorageImpl(K key, V value) {
@@ -26,16 +26,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        storageSize++;
-        StorageImpl<K, V>[] newStorage = new StorageImpl[storageSize];
-        newStorage[storageSize - 1] = new StorageImpl<>(key, value);
-        if (storageSize == 1) {
+        size++;
+        StorageImpl<K, V>[] newStorage = new StorageImpl[size];
+        newStorage[size - 1] = new StorageImpl<>(key, value);
+        if (size == 1) {
             storageBefore[0] = newStorage[0];
         } else {
             for (StorageImpl<K, V> element : storageBefore) {
                 if (element.keyEquals(key)) {
                     element.value = value;
-                    storageSize--;
+                    size--;
                     return;
                 }
             }
@@ -61,7 +61,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return storageSize;
+        return size;
     }
 
     private boolean keyEquals(K key) {
