@@ -3,10 +3,18 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K key;
-    private V value;
     private int size;
-    private StorageImpl<K, V>[] storageBefore = new StorageImpl[1];
+    private Pair<K, V>[] pairs = new Pair[10];
+
+    private static class Pair<K, V> {
+        private K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
 
     public StorageImpl(K key, V value) {
         this.key = key;
