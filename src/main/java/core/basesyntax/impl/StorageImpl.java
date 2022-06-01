@@ -4,10 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
-    private Pair<K, V>[] pairs = new Pair[10];
+    @SuppressWarnings("unchecked")
+    private final Pair<K, V>[] pairs = new Pair[10];
 
     private static class Pair<K, V> {
-        private K key;
+        private final K key;
         private V value;
 
         public Pair(K key, V value) {
@@ -15,53 +16,39 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value = value;
         }
 
-
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public StorageImpl() {
-    }
-
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    @Override
-    public void put(K key, V value) {
-        size++;
-        StorageImpl<K, V>[] newStorage = new StorageImpl[size];
-        newStorage[size - 1] = new StorageImpl<>(key, value);
-        if (size == 1) {
-            storageBefore[0] = newStorage[0];
-        } else {
-            for (StorageImpl<K, V> element : storageBefore) {
-                if (element.keyEquals(key)) {
-                    element.value = value;
-                    size--;
-                    return;
-                }
+        private boolean keyEquals(K key) {
+            if (this == key) {
+                return true;
             }
-            for (int i = 0; i < storageBefore.length; i++) {
-                newStorage[i] = storageBefore[i];
-            }
-            storageBefore = newStorage;
+            return (this.key == null && key == null) || (this.key != null && this.key.equals(key));
         }
     }
 
     @Override
+    public void put(K key, V value) {
+        if (size == 0) {
+            pairs[size] = new Pair<>(key, value);
+            size++;
+            return;
+        }
+        for (int i = 0; i < size; i++) {
+            if (pairs[i].keyEquals(key)) {
+                pairs[i].value = value;
+                return;
+            }
+        }
+        pairs[size] = new Pair<>(key, value);
+        size++;
+    }
+
+    @Override
     public V get(K key) {
-        for (StorageImpl<K, V> element : storageBefore) {
-            if (element == null) {
+        for (int i = 0; i < size; i++) {
+            if (pairs[i] == null) {
                 return null;
             }
-            if (element.keyEquals(key)) {
-                return element.value;
+            if (pairs[i].keyEquals(key)) {
+                return pairs[i].value;
             }
         }
         return null;
@@ -72,11 +59,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean keyEquals(K key) {
-        if (this == key) {
-            return true;
-        }
-        return (this.key == null && key == null) || (this.key != null && this.key.equals(key));
-    }
 }
 
