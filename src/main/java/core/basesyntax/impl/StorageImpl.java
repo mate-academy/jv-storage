@@ -19,13 +19,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private boolean compareKeys(K key, K otherKey) {
-        if (this == otherKey) {
-            return true;
-        }
-        return (key == null && otherKey == null) || (key != null && key.equals(otherKey));
-    }
-
     @Override
     public void put(K key, V value) {
         if (get(key) != null) {
@@ -52,6 +45,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean compareKeys(K key, K otherKey) {
+        return (key == null && otherKey == null) || (key != null && key.equals(otherKey));
     }
 }
 
