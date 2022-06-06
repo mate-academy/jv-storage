@@ -8,16 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     private final Pair<K, V>[] pairs = new Pair[MAX_STORAGE_SIZE];
 
-    private static class Pair<K, V> {
-        private final K key;
-        private V value;
-
-        public Pair(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
-
     @Override
     public void put(K key, V value) {
         if (getIndex(key) != -1) {
@@ -41,14 +31,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
+    private static class Pair<K, V> {
+        private final K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
     private boolean compareKeys(K key, K otherKey) {
         return (key == null && otherKey == null) || (key != null && key.equals(otherKey));
     }
 
     private int getIndex(K key) {
-        StorageImpl<K, V> storage = new StorageImpl<>();
         for (int i = 0; i < size; i++) {
-            if (storage.compareKeys(pairs[i].key, key)) {
+            if (compareKeys(pairs[i].key, key)) {
                 return i;
             }
         }
