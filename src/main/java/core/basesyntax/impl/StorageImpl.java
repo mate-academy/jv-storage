@@ -3,16 +3,18 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
+
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH = 10;
     //private StorageImpl[] arrayPair = new StorageImpl[MAX_LENGTH];
-    private K[] ArrayKeys;
-    private V[] ArrayValues;
     private int nextIndex;
     private K key;
     private V value;
+
+
+    GenericArray <K> storageArrayKeys = new GenericArray(MAX_LENGTH);
+
 
     public StorageImpl(K key, V value) {
         this.key = key;
@@ -22,26 +24,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
 
     }
+    class GenericArray <T> {
+        private Object[] arrayT;
 
-    public StorageImpl(Class<K> kClass, Class<V> vClass, int size) {
-       ArrayKeys = (K[]) Array.newInstance(kClass,size);
-        ArrayValues = (V[]) Array.newInstance(vClass,size);
-    }
+        public GenericArray(int size) {
+            arrayT = new Object[size];
+        }
 
-    public K getKey(int index) {
-        return ArrayKeys[index];
-    }
+        public T get(int index) {
+            return (T) arrayT[index];
+        }
 
-    public void setKey(int index, K element) {
-        ArrayKeys[index] = element;
-    }
-
-    public V getValue(int index) {
-        return ArrayValues[index];
-    }
-
-    public void setValue(int index, V element) {
-        ArrayValues[index] = element;
+        public void set(int index, T element) {
+            arrayT[index] = element;
+        }
     }
 
     public int getKeyHashCode(K key) {
@@ -50,9 +46,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return result;
     }
 
-    public boolean testArray(StorageImpl[] array) {
+    public boolean testArray(K[] array) {
         boolean result = false;
-        for (StorageImpl element : array) {
+        for (K element : array) {
             if (element != null) {
                 result = true;
             }
