@@ -2,19 +2,14 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.lang.reflect.Array;
-
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH = 10;
-    //private StorageImpl[] arrayPair = new StorageImpl[MAX_LENGTH];
-    private int nextIndex;
+    private int size;
     private K key;
     private V value;
-
-
-    GenericArray <K> storageArrayKeys = new GenericArray(MAX_LENGTH);
-
+    GenericArray <K> arrayKeys = new GenericArray(MAX_LENGTH);
+    GenericArray <V> ArrayValues = new GenericArray(MAX_LENGTH);
 
     public StorageImpl(K key, V value) {
         this.key = key;
@@ -59,7 +54,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public boolean[] searchedKey(K key) {
         boolean[] comparisonTable = new boolean[MAX_LENGTH];
         if (testArray(arrayPair)) {
-            for (int index = 0; index < nextIndex; index++) {
+            for (int index = 0; index < size; index++) {
                 int arrayKeyHash = getKeyHashCode((K) arrayPair[index].key);
                 int keyHash = getKeyHashCode(key);
                 if (arrayKeyHash == keyHash) {
@@ -78,20 +73,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         boolean checkPresent = false;
         if (!testArray(arrayPair)) {
             currentIndex = 0;
-            nextIndex = 0;
+            size = 0;
             arrayPair[currentIndex] = new StorageImpl(key, value);
-            nextIndex++;
+            size++;
         } else {
             boolean[] comparisonTable = searchedKey(key);
-            for (currentIndex = 0; currentIndex < nextIndex; currentIndex++) {
+            for (currentIndex = 0; currentIndex < size; currentIndex++) {
                 if (comparisonTable[currentIndex]) {
                     arrayPair[currentIndex].value = value;
                     checkPresent = true;
                 }
             }
-            if (!checkPresent && (nextIndex < MAX_LENGTH)) {
+            if (!checkPresent && (size < MAX_LENGTH)) {
                 arrayPair[currentIndex] = new StorageImpl(key, value);
-                nextIndex++;
+                size++;
             }
         }
     }
@@ -101,7 +96,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (testArray(arrayPair)) {
             boolean[] comparisonTable = searchedKey(key);
             int index;
-            for (index = 0; index < nextIndex; index++) {
+            for (index = 0; index < size; index++) {
                 if (comparisonTable[index]) {
                     return (V) arrayPair[index].value;
                 }
@@ -112,6 +107,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return nextIndex;
+        return size;
     }
 }
