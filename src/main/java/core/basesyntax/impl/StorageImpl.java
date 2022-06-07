@@ -3,12 +3,13 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH = 10;
     //private StorageImpl[] arrayPair = new StorageImpl[MAX_LENGTH];
-    private K[] genericArrayKeys;
-    private V[] genericArrayValues;
+    private K[] ArrayKeys;
+    private V[] ArrayValues;
     private int nextIndex;
     private K key;
     private V value;
@@ -22,28 +23,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     }
 
-    public StorageImpl(Class<K> classType, int size ) {
-       genericArrayKeys = (K[]) Array.newInstance(classType,size);
+    public StorageImpl(Class<K> kClass, Class<V> vClass, int size) {
+       ArrayKeys = (K[]) Array.newInstance(kClass,size);
+        ArrayValues = (V[]) Array.newInstance(vClass,size);
     }
 
-    public K[] getKey(int index) {
-        return (K[]) genericArrayKeys[index];
+    public K getKey(int index) {
+        return ArrayKeys[index];
     }
 
     public void setKey(int index, K element) {
-        genericArrayKeys[index] = element;
+        ArrayKeys[index] = element;
     }
 
-    public StorageImpl(Class<V> classType, int size ) {
-        genericArrayValues = (V[]) Array.newInstance(classType,size);
-    }
-
-    public V[] getValue(int index) {
-        return (V[]) genericArrayValues[index];
+    public V getValue(int index) {
+        return ArrayValues[index];
     }
 
     public void setValue(int index, V element) {
-        genericArrayValues[index] = element;
+        ArrayValues[index] = element;
     }
 
     public int getKeyHashCode(K key) {
