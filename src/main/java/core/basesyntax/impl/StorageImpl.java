@@ -7,8 +7,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
     private K key;
     private V value;
-    //private GenericArray<K> arrayKeys = new GenericArray(MAX_LENGTH);
-    //private GenericArray<V> arrayValues = new GenericArray(MAX_LENGTH);
     private K[] keys = (K[]) new Object[MAX_LENGTH];
     private V[] values = (V[]) new Object[MAX_LENGTH];
 
@@ -21,28 +19,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     }
 
-    //private class GenericArray<T> {
-        //private Object[] arrayT;
-
-        //public GenericArray(int size) {
-            //arrayT = new Object[size];
-        //}
-
-        //public T getElement(int index) {
-            //return (T) arrayT[index];
-        //}
-
-        //public void setElement(int index, T element) {
-            //arrayT[index] = element;
-        //}
-    //}
-
     public Integer searchedKey(K key) {
         Integer result = null;
         for (int index = 0; index < size; index++) {
-            if ((keys[index] == null || key == null)
-                    && keys[index] == key) {
-                result = index;
+            if (keys[index] == null || key == null) {
+                if (keys[index] == key) {
+                    result = index;
+                }
             } else if (keys[index].equals(key)) {
                 result = index;
             }
