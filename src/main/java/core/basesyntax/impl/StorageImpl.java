@@ -1,4 +1,5 @@
 package core.basesyntax.impl;
+
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -6,8 +7,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
     private K key;
     private V value;
-    GenericArray <K> arrayKeys = new GenericArray(MAX_LENGTH);
-    GenericArray <V> arrayValues = new GenericArray(MAX_LENGTH);
+    private GenericArray<K> arrayKeys = new GenericArray(MAX_LENGTH);
+    private GenericArray<V> arrayValues = new GenericArray(MAX_LENGTH);
 
     public StorageImpl(K key, V value) {
         this.key = key;
@@ -18,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     }
 
-    class GenericArray <T> {
+    private class GenericArray<T> {
         private Object[] arrayT;
 
         public GenericArray(int size) {
@@ -34,10 +35,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    public boolean testArray(GenericArray <K> arrayK) {
+    public boolean testArray(GenericArray<V> arrayV) {
         boolean result = false;
         for (int index = 0; index < MAX_LENGTH; index++) {
-            if (arrayK.getElement(index) != null) {
+            if (arrayV.getElement(index) != null) {
                 result = true;
             }
         }
@@ -47,18 +48,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public boolean[] searchedKey(K key) {
         boolean[] comparisonTable = new boolean[MAX_LENGTH];
         boolean condition;
-        if (testArray(arrayKeys)) {
+        if (testArray(arrayValues)) {
             for (int index = 0; index < size; index++) {
                 if (arrayKeys.getElement(index) == null || key == null) {
                     condition = arrayKeys.getElement(index) == key;
                 } else {
                     condition = arrayKeys.getElement(index).equals(key);
                 }
-                if (condition) {
-                    comparisonTable[index] = true;
-                } else {
-                    comparisonTable[index] = false;
-                }
+                comparisonTable[index] = condition;
             }
         }
         return comparisonTable;
@@ -68,7 +65,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int currentIndex;
         boolean checkPresent = false;
-        if (!testArray(arrayKeys)) {
+        if (!testArray(arrayValues)) {
             currentIndex = 0;
             size = 0;
             arrayKeys.setElement(currentIndex, key);
@@ -92,12 +89,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (testArray(arrayKeys)) {
+        if (testArray(arrayValues)) {
             boolean[] comparisonTable = searchedKey(key);
             int index;
             for (index = 0; index < size; index++) {
                 if (comparisonTable[index]) {
-                    return (V) arrayValues.getElement(index);
+                    V result = arrayValues.getElement(index);
+                    return result;
                 }
             }
         }
@@ -109,4 +107,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 }
-
