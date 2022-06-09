@@ -11,11 +11,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Integer getIndex(K key) {
         Integer result = null;
         for (int index = 0; index < size; index++) {
-            if (keys[index] == null || key == null) {
-                if (keys[index] == key) {
-                    result = index;
-                }
-            } else if (keys[index].equals(key)) {
+            if (keys[index] == key && keys[index] == null
+                    || (keys[index] != null && keys[index].equals(key))) {
                 result = index;
             }
         }
