@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         Integer searchedIndex = searchedKey(key);
         if (searchedIndex != null) {
             values[searchedIndex] = value;
-        } else if (size < MAX_LENGTH) {
+        } else {
             keys[size] = key;
             values[size] = value;
             size++;
