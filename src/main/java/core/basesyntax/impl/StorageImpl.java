@@ -26,9 +26,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Integer searchedIndex = searchedKey(key);
-        if (searchedIndex != null) {
-            values[searchedIndex] = value;
+        Integer index = searchedKey(key);
+        if (index != null) {
+            values[index] = value;
         } else {
             keys[size] = key;
             values[size] = value;
