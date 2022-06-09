@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys = (K[]) new Object[MAX_LENGTH];
     private V[] values = (V[]) new Object[MAX_LENGTH];
 
-    private Integer searchedKey(K key) {
+    private Integer getIndex(K key) {
         Integer result = null;
         for (int index = 0; index < size; index++) {
             if (keys[index] == null || key == null) {
@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Integer index = searchedKey(key);
+        Integer index = getIndex(key);
         if (index != null) {
             values[index] = value;
         } else {
@@ -38,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        Integer index = searchedKey(key);
+        Integer index = getIndex(key);
         if (index != null) {
             return (V) values[index];
         }
