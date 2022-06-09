@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys = (K[]) new Object[MAX_LENGTH];
     private V[] values = (V[]) new Object[MAX_LENGTH];
 
-    public Integer searchedKey(K key) {
+    private Integer searchedKey(K key) {
         Integer result = null;
         for (int index = 0; index < size; index++) {
             if (keys[index] == null || key == null) {
