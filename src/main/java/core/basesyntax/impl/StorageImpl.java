@@ -38,9 +38,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        Integer searchedIndex = searchedKey(key);
-        if (searchedIndex != null) {
-            return (V) values[searchedIndex];
+        Integer index = searchedKey(key);
+        if (index != null) {
+            return (V) values[index];
         }
         return null;
     }
