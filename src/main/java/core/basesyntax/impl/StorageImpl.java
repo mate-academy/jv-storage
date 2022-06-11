@@ -18,7 +18,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         if (get(key) != null) {
             values[size - 1] = value;
-        } else {
+            return;
+        } 
             keys[size] = key;
             values[size] = value;
             size++;
