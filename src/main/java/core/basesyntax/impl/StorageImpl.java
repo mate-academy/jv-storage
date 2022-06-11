@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (get(key) != null) {
             values[size - 1] = value;
             return;
-        } 
+        } else {
             keys[size] = key;
             values[size] = value;
             size++;
