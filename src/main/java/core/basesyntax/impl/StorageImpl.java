@@ -1,31 +1,44 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.HashMap;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private HashMap<K, V> storage = new HashMap<K, V>();
+    private static final int MAX_SIZE_ARRAY = 10;
+    private int sizeOfArray = 0;
+    private K[] keysForValueInArray = (K[]) new Object[MAX_SIZE_ARRAY];
+    private V[] values = (V[]) new Object[MAX_SIZE_ARRAY];
 
-    public HashMap<K, V> getStorage() {
-        return storage;
-    }
-
-    public void setStorage(HashMap<K, V> storage) {
-        this.storage = storage;
+    private Integer getIndex(K key) {
+        Integer result = null;
+        for (int i = 0; i < sizeOfArray; i++) {
+            if ((keysForValueInArray[i] != null && keysForValueInArray[i].equals(key))
+                    || (keysForValueInArray[i] == key && keysForValueInArray[i] == null)) {
+                result = i;
+            }
+        }
+        return result;
     }
 
     @Override
     public void put(K key, V value) {
-        storage.put(key, value);
+        Integer index = getIndex(key);
+        if (index != null) {
+            values[index] = value;
+        } else {
+            keysForValueInArray[sizeOfArray] = key;
+            values[sizeOfArray] = value;
+            sizeOfArray++;
+        }
     }
 
     @Override
     public V get(K key) {
-        return getStorage().get(key);
+        Integer index = getIndex(key);
+        return index != null ? (V) values[index] : null;
     }
 
     @Override
     public int size() {
-        return storage.size();
+        return sizeOfArray;
     }
 }
