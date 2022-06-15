@@ -4,20 +4,9 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE_ARRAY = 10;
-    private int sizeOfArray = 0;
-    private K[] keysForValueInArray = (K[]) new Object[MAX_SIZE_ARRAY];
+    private int size;
+    private K[] keys = (K[]) new Object[MAX_SIZE_ARRAY];
     private V[] values = (V[]) new Object[MAX_SIZE_ARRAY];
-
-    private Integer getIndex(K key) {
-        Integer result = null;
-        for (int i = 0; i < sizeOfArray; i++) {
-            if ((keysForValueInArray[i] != null && keysForValueInArray[i].equals(key))
-                    || (keysForValueInArray[i] == key && keysForValueInArray[i] == null)) {
-                result = i;
-            }
-        }
-        return result;
-    }
 
     @Override
     public void put(K key, V value) {
@@ -25,9 +14,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != null) {
             values[index] = value;
         } else {
-            keysForValueInArray[sizeOfArray] = key;
-            values[sizeOfArray] = value;
-            sizeOfArray++;
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
@@ -39,6 +28,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return sizeOfArray;
+        return size;
+    }
+
+    private Integer getIndex(K key) {
+        Integer result = null;
+        for (int i = 0; i < size; i++) {
+            if ((keys[i] != null && keys[i].equals(key))
+                    || (keys[i] == key && keys[i] == null)) {
+                result = i;
+            }
+        }
+        return result;
     }
 }
