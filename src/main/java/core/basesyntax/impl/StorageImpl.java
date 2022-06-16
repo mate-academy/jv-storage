@@ -17,8 +17,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getIndex(key);
         if (get(key) == null) {
-            keys[size] = key;
-            values[size] = value;
+            keys[index] = key;
+            values[index] = value;
             size++;
         } else {
             values[index] = value;
