@@ -1,34 +1,32 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.ArrayList;
 
-
 public class StorageImpl<K, V> implements Storage<K, V> {
-    ArrayList<K> kArray = new ArrayList<>();
-    ArrayList<V> vArray = new ArrayList<>();
+    private ArrayList<K> keysArray = new ArrayList<>();
+    private ArrayList<V> valuesArray = new ArrayList<>();
 
     @Override
     public void put(K key, V value) {
-        if (!kArray.contains(key)) {
-            kArray.add(key);
-            vArray.add(value);
+        if (!keysArray.contains(key)) {
+            keysArray.add(key);
+            valuesArray.add(value);
         } else {
-            vArray.set(kArray.indexOf(key), value);
+            valuesArray.set(keysArray.indexOf(key), value);
         }
     }
 
     @Override
     public V get(K key) {
-        if (!kArray.contains(key)) {
+        if (!keysArray.contains(key)) {
             return null;
         }
-        return vArray.get(kArray.indexOf(key));
+        return valuesArray.get(keysArray.indexOf(key));
     }
 
     @Override
     public int size() {
-        return kArray.size();
+        return keysArray.size();
     }
 }
