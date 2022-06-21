@@ -121,7 +121,7 @@ public class StorageImplTest {
 
     @Test
     public void addTwoElementsWithNullKey() {
-        Storage<Cat, String> storage = new StorageImpl<>( );
+        Storage<Cat, String> storage = new StorageImpl<>();
         String elementOne = "One";
         String elementTwo = "Two";
 
