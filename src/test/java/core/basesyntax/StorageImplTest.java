@@ -7,6 +7,7 @@ import org.junit.Test;
 public class StorageImplTest {
     @Test
     public void checkSizeIsNonStatic() {
+
         Storage<Integer, String> firstInstance = new StorageImpl<>();
         firstInstance.put(1, "Element 1");
         firstInstance.put(2, "Element 2");
@@ -120,7 +121,7 @@ public class StorageImplTest {
 
     @Test
     public void addTwoElementsWithNullKey() {
-        Storage<Cat, String> storage = new StorageImpl<>();
+        Storage<Cat, String> storage = new StorageImpl<>( );
         String elementOne = "One";
         String elementTwo = "Two";
 
