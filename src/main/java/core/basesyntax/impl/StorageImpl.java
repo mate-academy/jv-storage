@@ -1,60 +1,62 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int ARRAYS_LENGTH = 10;
-    private final K[] keysArray;
-    private final V[] valuesArray;
-    private int keyValuePlace = 0;
+    private static final int MAX_STORAGE_SIZE = 10;
+    private final K[] keys;
+    private final V[] values;
+    private int size = 0;
 
     public StorageImpl() {
-        this.keysArray = (K[]) new Object[ARRAYS_LENGTH];
-        this.valuesArray = (V[]) new Object[ARRAYS_LENGTH];
+        this.keys = (K[]) new Object[MAX_STORAGE_SIZE];
+        this.values = (V[]) new Object[MAX_STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null && value != null) {
-            for (int i = 0; i < keysArray.length; i++) {
-                if (keysArray[i] == null && valuesArray[i] != null) {
-                    valuesArray[i] = value;
+        int keyWasAdded = 0;
+        for (int i = 0; i < keys.length; i++) {
+            if (key == null && value != null) {
+                if (keys[i] == null && values[i] != null) {
+                    values[i] = value;
+                    keyWasAdded = 1;
                     break;
-                } else if (keysArray[i] == null && valuesArray[i] == null) {
-                    valuesArray[keyValuePlace] = value;
-                    keyValuePlace++;
+                } else if (keys[i] == null && values[i] == null) {
+                    values[size] = value;
+                    size++;
+                    keyWasAdded = 1;
                     break;
                 }
+            } else if (key.equals(keys[i])) {
+                values[i] = value;
+                keyWasAdded = 1;
+                break;
             }
-        }
-        if (!Arrays.asList(keysArray).contains(key)) {
-            keysArray[keyValuePlace] = key;
-            valuesArray[keyValuePlace] = value;
-            keyValuePlace++;
 
         }
-        valuesArray[Arrays.asList(keysArray).indexOf(key)] = value;
+        if (keyWasAdded == 0) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
     }
 
     @Override
     public V get(K key) {
-        if (!Arrays.asList(keysArray).contains(key)) {
-            return null;
+        for (int i = 0; i < size; i++) {
+            if (key == null && keys[i] == null && values[i] != null) {
+                return values[i];
+            }
+            if (key != null && key.equals(keys[i])) {
+                return values[i];
+            }
         }
-        return valuesArray[Arrays.asList(keysArray).indexOf(key)];
+        return null;
     }
 
     @Override
     public int size() {
-        int res = 0;
-        for (int i = 0; i < valuesArray.length; i++) {
-            if (keysArray[i] == null && valuesArray[i] != null
-                    || keysArray[i] != null && valuesArray[i] == null
-                    || keysArray[i] != null && valuesArray[i] != null) {
-                res++;
-            }
-        }
-        return res;
+        return size;
     }
 }
