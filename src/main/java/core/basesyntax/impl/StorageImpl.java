@@ -33,7 +33,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 keyWasAdded = 1;
                 break;
             }
-
         }
         if (keyWasAdded == 0) {
             keys[size] = key;
