@@ -7,7 +7,6 @@ import org.junit.Test;
 public class StorageImplTest {
     @Test
     public void checkSizeIsNonStatic() {
-
         Storage<Integer, String> firstInstance = new StorageImpl<>();
         firstInstance.put(1, "Element 1");
         firstInstance.put(2, "Element 2");

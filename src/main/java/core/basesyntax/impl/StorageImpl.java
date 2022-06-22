@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_STORAGE_SIZE];
@@ -15,39 +15,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int keyWasAdded = 0;
-        for (int i = 0; i < keys.length; i++) {
-            if (key == null && value != null) {
-                if (keys[i] == null && values[i] != null) {
-                    values[i] = value;
-                    keyWasAdded = 1;
-                    break;
-                } else if (keys[i] == null && values[i] == null) {
-                    values[size] = value;
-                    size++;
-                    keyWasAdded = 1;
-                    break;
-                }
-            } else if (key.equals(keys[i])) {
+        for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
+            if (key == null && keys[i] == null && values[i] != null
+                    || key != null && key.equals(keys[i])) {
                 values[i] = value;
-                keyWasAdded = 1;
-                break;
+                return;
             }
         }
-        if (keyWasAdded == 0) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null && keys[i] == null && values[i] != null) {
-                return values[i];
-            }
-            if (key != null && key.equals(keys[i])) {
+            if (key == null && keys[i] == null && values[i] != null
+                    || key != null && key.equals(keys[i])) {
                 return values[i];
             }
         }
@@ -58,4 +42,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
 }
