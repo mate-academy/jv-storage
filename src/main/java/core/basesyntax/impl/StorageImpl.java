@@ -15,13 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        // check if array is empty, true -> add element and exit
-        if (currentSize == 0) {
-            keysArray[currentSize] = key;
-            valuesArray[currentSize] = value;
-            currentSize++;
-            return;
-        }
         // if element exists -> replace it with new value
         for (int i = 0; i < currentSize; i++) {
             if (keysArray[i] == key || keysArray[i] != null && keysArray[i].equals(key)) {
@@ -30,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         // if element does not exist -> add it into array
-        if (currentSize < 10) {
+        if (currentSize < MAX_NUMBER_OF_ELEMENTS) {
             keysArray[currentSize] = key;
             valuesArray[currentSize] = value;
             currentSize++;
