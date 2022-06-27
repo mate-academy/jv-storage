@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -18,9 +17,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
@@ -35,6 +34,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return -1;
+        return size;
     }
 }
