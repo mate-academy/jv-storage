@@ -3,33 +3,26 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int DEFAULT_CAPACITY = 10;
     private final Pair<K, V>[] storage = new Pair[DEFAULT_CAPACITY];
     private int size;
 
     @Override
     public void put(K key, V value) {
-
         for (int i = 0; i < size; i++) {
-            if (key == null) {
-                if (storage[i].getKey() == key) {
-                    storage[i].setValue(value);
-                    return;
-                }
-            } else if (key.equals(storage[i].key)) {
+            if (storage[i].getKey() == key
+                    || (storage[i].getKey() != null
+                    && storage[i].getKey().equals(key))) {
                 storage[i].setValue(value);
                 return;
             }
         }
-
         Pair<K, V> pair = new Pair<>(key, value);
         storage[size++] = pair;
     }
 
     @Override
     public V get(K key) {
-
         for (int i = 0; i < size; i++) {
             if (storage[i].getKey() == key
                     || (storage[i].getKey() != null
@@ -64,30 +57,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         public void setValue(V value) {
             this.value = value;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            Pair<?, ?> pair = (Pair<?, ?>) o;
-
-            if (key != null ? !key.equals(pair.key) : pair.key != null) {
-                return false;
-            }
-            return value != null ? value.equals(pair.value) : pair.value == null;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = key != null ? key.hashCode() : 0;
-            result = 31 * result + (value != null ? value.hashCode() : 0);
-            return result;
         }
     }
 }
