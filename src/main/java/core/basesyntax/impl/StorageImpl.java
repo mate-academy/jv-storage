@@ -14,14 +14,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size < MAX_ITEMS_NUMBER) {
-            int index = find(key);
-            if (index == -1) {
-                keys[size][0] = key;
-                keys[size++][1] = value;
-            } else {
-                keys[index][1] = value;
-            }
+        int index = find(key);
+        if (index == -1) {
+            keys[size][0] = key;
+            keys[size++][1] = value;
+        } else {
+            keys[index][1] = value;
         }
     }
 
