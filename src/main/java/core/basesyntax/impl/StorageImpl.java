@@ -7,12 +7,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
     private byte size = 0;
+
     private StorageImpl(K key, V value) {
         this.key = key;
         this.value = value;
     }
+
     public StorageImpl() {
     }
+
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < storage.length; i++) {
