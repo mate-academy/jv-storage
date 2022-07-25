@@ -50,7 +50,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (Pair<K, V>  currentItem : pairs) {
+        for (Pair<K, V> currentItem : pairs) {
             if (currentItem != null
                     && (currentItem.getKey() == key
                     || currentItem.getKey() != null && currentItem.getKey().equals(key))) {
