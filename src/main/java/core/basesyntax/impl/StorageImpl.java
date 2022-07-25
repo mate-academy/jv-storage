@@ -3,7 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final Pair<K, V>[] pairs = new Pair<>[10];
+    private final Pair<K, V>[] pairs = new Pair[10];
     private byte size;
 
     private static class Pair<K, V> {
