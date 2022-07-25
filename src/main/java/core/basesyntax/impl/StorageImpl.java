@@ -12,7 +12,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         pairs = new StorageImpl[MAX_PAIRS_NUMBER];
     }
 
-    public StorageImpl(K key, V value) {
+    private StorageImpl(K key, V value) {
         this.key = key;
         this.value = value;
     }
@@ -55,6 +55,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 }
-
-
-
