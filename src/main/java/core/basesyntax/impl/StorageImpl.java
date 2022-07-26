@@ -4,29 +4,28 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_PAIRS_NUMBER = 10;
+    private static int sizeCounter;
     private Object[] keys;
     private Object[] values;
 
     public StorageImpl() {
         keys = new Object[MAX_PAIRS_NUMBER];
         values = new Object[MAX_PAIRS_NUMBER];
-        Size.sizeCounter = 0;
+        sizeCounter = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int index = 0; index < MAX_PAIRS_NUMBER; index++) {
-            if (values[index] != null && (keys[index] == key)
-                    || (keys[index] != null && keys[index].equals(key))) {
+        for (int index = 0; index < sizeCounter; index++) {
+            if ((keys[index] == key) || (keys[index] != null
+                    && keys[index].equals(key))) {
                 values[index] = value;
-                break;
-            } else if (keys[index] == null && values[index] == null) {
-                keys[index] = key;
-                values[index] = value;
-                Size.sizeCounter++;
-                break;
+                return;
             }
         }
+        keys[sizeCounter] = key;
+        values[sizeCounter] = value;
+        sizeCounter++;
     }
 
     @Override
@@ -42,6 +41,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return Size.sizeCounter;
+        return sizeCounter;
     }
 }
