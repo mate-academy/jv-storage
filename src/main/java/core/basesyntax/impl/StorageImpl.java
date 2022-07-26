@@ -3,7 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final Pair<K, V>[] pairs = new Pair[10];
+    static final byte STORAGE_VOLUME = 10;
+    private final Pair<K, V>[] pairs = new Pair[STORAGE_VOLUME];
     private byte size;
 
     private static class Pair<K, V> {
@@ -28,12 +29,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    public StorageImpl() {
-    }
-
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < pairs.length; i++) {
+        for (int i = 0; i <= size; i++) {
             if (pairs[i] != null
                     && ((key == null && pairs[i].getKey() == null)
                     || (pairs[i].getKey() != null && pairs[i].getKey().equals(key)))) {
