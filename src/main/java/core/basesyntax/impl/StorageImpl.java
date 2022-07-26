@@ -31,19 +31,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i <= size; i++) {
-            if (pairs[i] != null
-                    && ((key == null && pairs[i].getKey() == null)
-                    || (pairs[i].getKey() != null && pairs[i].getKey().equals(key)))) {
+        for (int i = 0; i < size; i++) {
+            if ((key == pairs[i].getKey() )
+                    || (pairs[i].getKey() != null && pairs[i].getKey().equals(key))) {
                 pairs[i].setValue(value);
-                break;
-            }
-            if (pairs[i] == null) {
-                pairs[i] = new Pair<>(key, value);
-                size++;
-                break;
+                return;
             }
         }
+        pairs[size] = new Pair<>(key, value);
+        size++;
     }
 
     @Override
