@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Object[] items = new Object[MAX_ITEMS_NUMBER];
+    private final Object[] items = new Object[MAX_ITEMS_NUMBER];
     private K key;
     private V value;
     private int size;
@@ -21,33 +21,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        findByKey(key);
+        get(key);
         if (findKey >= 0) {
-            items[findKey] = new Object[]{key, value};
             size--;
-        }
+        } 
         items[size] = new Object[]{key,value};
         size++;
     }
 
-    public Object findByKey(K key) {
-        for (int i = 0; i < size; i++) {
-            Object[] tmp = (Object[]) items[i];
-            if (key != null && key.equals(tmp[0])) {
-                findKey = i;
-                return tmp[1];
-            }
-            if (key == null && key == tmp[0]) {
-                findKey = i;
-                return tmp[1];
+    @Override
+    public V get(K key) {
+        for (Object item: items) {
+            if (item != null) {
+                Object[] tmp = (Object[]) item;
+                if (key != null && key.equals(tmp[0])) {
+                    findKey++;
+                    return (V) tmp[1];
+                }
+                if (key == tmp[0]) {
+                    findKey++;
+                    return (V) tmp[1];
+                }
             }
         }
         return null;
-    }
-
-    @Override
-    public V get(K key) {
-        return (V) findByKey(key);
     }
 
     @Override
