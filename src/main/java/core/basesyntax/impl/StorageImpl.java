@@ -41,6 +41,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return SIZE;
+        int counter = 0;
+        for (Storage element : storage) {
+            if (element == null) {
+                break;
+            }
+            counter++;
+        }
+        return counter;
     }
 }
