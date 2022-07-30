@@ -34,11 +34,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (Object item: items) {
             if (item != null) {
                 Object[] tmp = (Object[]) item;
-                if (key != null && key.equals(tmp[0])) {
-                    findKey++;
-                    return (V) tmp[1];
-                }
-                if (key == tmp[0]) {
+                if (key == tmp[0]
+                        || key != null
+                        && key.equals(tmp[0])) {
                     findKey++;
                     return (V) tmp[1];
                 }
