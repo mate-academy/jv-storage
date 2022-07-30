@@ -18,10 +18,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        boolean rewritten = false;
         for (int i = 0; i < SIZE; i++) {
-            if (this.storage[i] == null) {
-                this.storage[i] = new StorageImpl<>(key, value);
-                break;
+            if (storage[i] != null) {
+                if (storage[i].getKey() != null && storage[i].getKey().equals(key)
+                        || storage[i].getKey() == key) {
+                    storage[i] = new StorageImpl<>(key, value);
+                    rewritten = true;
+                    break;
+                }
+            }
+        }
+        if (!rewritten) {
+            for (int i = 0; i < SIZE; i++) {
+                if (storage[i] == null) {
+                    storage[i] = new StorageImpl<>(key, value);
+                    break;
+                }
             }
         }
     }
@@ -29,10 +42,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < SIZE; i++) {
-            if (this.storage[i] != null) {
-                StorageImpl<K, V> temp = (StorageImpl<K, V>) this.storage[i];
-                if (temp.key.equals(key)) {
-                    return temp.value;
+            if (storage[i] != null) {
+                if (storage[i].getKey() != null && storage[i].getKey().equals(key)
+                        || storage[i].getKey() == key) {
+                    return (V) storage[i].getValue();
                 }
             }
         }
@@ -49,5 +62,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             counter++;
         }
         return counter;
+    }
+
+    @Override
+    public K getKey() {
+        return key;
+    }
+
+    @Override
+    public V getValue() {
+        return value;
     }
 }
