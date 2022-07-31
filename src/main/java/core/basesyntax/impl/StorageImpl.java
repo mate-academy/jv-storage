@@ -3,12 +3,12 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int KEY_CELLS = 0;
-    private static final int VALUE_CELLS = 1;
+    private static final int keyCells = 0;
+    private static final int valueCells = 1;
     private static final int GENERICS_TYPE_COUNT = 2;
     private static final int MAX_ELEMENTS_COUNT = 10;
-    private final Object[][] storage;
     private int size;
+    private final Object[][] storage;
 
     public StorageImpl() {
         storage = new Object[GENERICS_TYPE_COUNT][MAX_ELEMENTS_COUNT];
@@ -16,24 +16,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = checkArrayForExistKey(key);
-        if (index != -1) {
-            storage[VALUE_CELLS][index] = value;
+        if (checkArrayForExistKey(key, value)) {
             return;
         }
-        storage[KEY_CELLS][size] = key;
-        storage[VALUE_CELLS][size] = value;
+        storage[keyCells][size] = key;
+        storage[valueCells][size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
-        int index = checkArrayForExistKey(key);
-        if (index == -1) {
-            return null;
+        for (int i = 0; i < size; i++) {
+            if ((key != null && key.equals(storage[keyCells][i]))
+                    || (storage[keyCells][i] == key)) {
+                @SuppressWarnings("unchecked") V value = (V) storage[valueCells][i];
+                return value;
+            }
         }
-        @SuppressWarnings("unchecked") V value = (V) storage[VALUE_CELLS][index];
-        return value;
+        return null;
     }
 
     @Override
@@ -41,14 +41,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int checkArrayForExistKey(K key) {
+    private boolean checkArrayForExistKey(K key, V value) {
         for (int index = 0; index < size; index++) {
-            if (key == storage[KEY_CELLS][index]
-                    || storage[KEY_CELLS][index] != null
-                    && storage[KEY_CELLS][index].equals(key)) {
-                return index;
+            if ((key != null && key.equals(storage[keyCells][index]))
+                    || (storage[keyCells][index] == key)) {
+                replaceValue(value, index);
+                return true;
             }
         }
-        return -1;
+        return false;
+    }
+
+    private void replaceValue(V value, int index) {
+        storage[valueCells][index] = value;
     }
 }
