@@ -62,7 +62,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int positionInArray(K key) {
         for (int i = 0; i < size(); i++) {
-            //if ((items[i].getKey() == key) || items[i].getKey().equals(key)) {
             if ((items[i].getKey() == key) || Objects.equals(items[i].getKey(), key)) {
                 return i;
             }
