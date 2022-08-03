@@ -5,10 +5,8 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE = 10;
     private StorageNode[] storage;
-    //private K key;
-    //private V value;
 
-    private class StorageNode <K, V> {
+    private class StorageNode<K, V> {
         private K key;
         private V value;
 
@@ -16,20 +14,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.key = key;
             this.value = value;
         }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
     }
 
     public StorageImpl() {
         storage = new StorageNode[SIZE];
-        //key = null;
-        //value = null;
     }
-
-    /*
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-     */
 
     @Override
     public void put(K key, V value) {
@@ -38,7 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (storage[i] != null) {
                 if (storage[i].getKey() != null && storage[i].getKey().equals(key)
                         || storage[i].getKey() == key) {
-                    storage[i] = new StorageImpl<>(key, value);
+                    storage[i] = new StorageNode<>(key, value);
                     rewritten = true;
                     break;
                 }
@@ -47,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (!rewritten) {
             for (int i = 0; i < SIZE; i++) {
                 if (storage[i] == null) {
-                    storage[i] = new StorageImpl<>(key, value);
+                    storage[i] = new StorageNode<>(key, value);
                     break;
                 }
             }
@@ -70,7 +67,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         int counter = 0;
-        for (Storage element : storage) {
+        for (StorageNode element : storage) {
             if (element == null) {
                 break;
             }
@@ -81,11 +78,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public K getKey() {
-        return key;
+        return (K) storage[size() - 1].key;
     }
 
     @Override
     public V getValue() {
-        return value;
+        return (V) storage[size() - 1].value;
     }
 }
