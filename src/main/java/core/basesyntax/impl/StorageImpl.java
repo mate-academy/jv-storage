@@ -4,44 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_VALUE_ARRAY = 10;
-    private K key;
-    private V value;
     private Object[] items = new Object[MAX_VALUE_ARRAY];
     private int countOfElements = 0;
 
-    private class StorageNode {
-        private K key;
-        private V value;
-
-        public StorageNode(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
-        }
-    }
-
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
     public StorageImpl() {
 
-    }
-
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
     }
 
     @Override
@@ -87,4 +54,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 || (castedElement.getKey() == key)
                 || (castedElement.getKey() != null) && castedElement.getKey().equals(key);
     }
+
+    private class StorageNode {
+        private K key;
+        private V value;
+
+        public StorageNode(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+    }
+
 }

@@ -6,8 +6,4 @@ public interface Storage<K, V> {
     V get(K key);
 
     int size();
-
-    K getKey();
-
-    V getValue();
 }
