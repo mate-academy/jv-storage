@@ -7,7 +7,7 @@ import org.junit.Test;
 public class StorageImplTest {
     @Test
     public void checkSizeIsNonStatic() {
-        Storage<Integer, String> firstInstance = new StorageImpl<>(key);
+        Storage<Integer, String> firstInstance = new StorageImpl<>();
         firstInstance.put(1, "Element 1");
         firstInstance.put(2, "Element 2");
         firstInstance.put(3, "Element 3");
@@ -15,7 +15,7 @@ public class StorageImplTest {
         Assert.assertEquals("With three elements added to the storage, its size should be 3",
                 3, firstInstance.size());
 
-        Storage<Integer, String> secondInstances = new StorageImpl<>(key);
+        Storage<Integer, String> secondInstances = new StorageImpl<>();
 
         Assert.assertEquals("After creating second empty storage instance its' size should be 0",
                 0, secondInstances.size());
@@ -23,7 +23,7 @@ public class StorageImplTest {
 
     @Test
     public void addElementsToStorage() {
-        Storage<Integer, String> storage = new StorageImpl<>(key);
+        Storage<Integer, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
@@ -41,7 +41,7 @@ public class StorageImplTest {
 
     @Test
     public void getElementWhenKeyDontExist() {
-        Storage<Integer, String> storage = new StorageImpl<>(key);
+        Storage<Integer, String> storage = new StorageImpl<>();
 
         Assert.assertNull(
                 "When element with this key doesn't exist, the method should return \"null\"",
@@ -50,7 +50,7 @@ public class StorageImplTest {
 
     @Test
     public void getElementWithKeyNull() {
-        Storage<Integer, String> storage = new StorageImpl<>(key);
+        Storage<Integer, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
@@ -79,7 +79,7 @@ public class StorageImplTest {
 
     @Test
     public void getElementWhenKeyIsObject() {
-        Storage<Cat, String> storage = new StorageImpl<>(key);
+        Storage<Cat, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
@@ -99,7 +99,7 @@ public class StorageImplTest {
 
     @Test
     public void addTwoElementsWithSameKey() {
-        Storage<Cat, String> storage = new StorageImpl<>(key);
+        Storage<Cat, String> storage = new StorageImpl<>();
         Cat cat = new Cat("Myrchyk", "white");
         Cat sameCat = new Cat("Myrchyk", "white");
         String elementOne = "One";
@@ -120,7 +120,7 @@ public class StorageImplTest {
 
     @Test
     public void addTwoElementsWithNullKey() {
-        Storage<Cat, String> storage = new StorageImpl<>(key);
+        Storage<Cat, String> storage = new StorageImpl<>();
         String elementOne = "One";
         String elementTwo = "Two";
 
