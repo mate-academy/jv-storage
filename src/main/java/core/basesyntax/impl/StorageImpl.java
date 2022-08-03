@@ -63,8 +63,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     storage[i] = new Node(key, value);
                     break;
                 }
-            }
-            if (storage[i] == null) {
+            } else {
                 storage[i] = new Node(key, value);
                 size++;
                 break;
