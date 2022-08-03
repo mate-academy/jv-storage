@@ -21,8 +21,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        keys[size] = key;
         values[size] = value;
+        keys[size] = key;
         size++;
     }
 
