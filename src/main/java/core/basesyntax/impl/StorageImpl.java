@@ -4,20 +4,32 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE = 10;
-    private Storage[] storage;
-    private K key;
-    private V value;
+    private StorageNode[] storage;
+    //private K key;
+    //private V value;
 
-    public StorageImpl() {
-        storage = new Storage[SIZE];
-        key = null;
-        value = null;
+    private class StorageNode <K, V> {
+        private K key;
+        private V value;
+
+        public StorageNode(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 
+    public StorageImpl() {
+        storage = new StorageNode[SIZE];
+        //key = null;
+        //value = null;
+    }
+
+    /*
     public StorageImpl(K key, V value) {
         this.key = key;
         this.value = value;
     }
+     */
 
     @Override
     public void put(K key, V value) {
