@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = checkArrayForExistKey(key);
+        int index = findIndex(key);
         if (index != -1) {
             storage[VALUE_CELLS][index] = value;
             return;
@@ -28,12 +28,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int index = checkArrayForExistKey(key);
+        int index = findIndex(key);
         if (index == -1) {
             return null;
         }
-        @SuppressWarnings("unchecked") V value = (V) storage[VALUE_CELLS][index];
-        return value;
+        return (V) storage[VALUE_CELLS][index];
     }
 
     @Override
@@ -41,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int checkArrayForExistKey(K key) {
+    private int findIndex(K key) {
         for (int index = 0; index < size; index++) {
             if (key == storage[KEY_CELLS][index]
                     || storage[KEY_CELLS][index] != null
