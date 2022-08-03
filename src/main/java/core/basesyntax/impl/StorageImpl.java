@@ -22,7 +22,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         keys[size] = key;
-        values[size++] = value;
+        values[size] = value;
+        size++;
     }
 
     @Override
