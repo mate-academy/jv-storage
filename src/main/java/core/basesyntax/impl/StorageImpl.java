@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE = 10;
+    private int numberOfElements;
     private StorageNode[] storage;
 
     private class StorageNode<K, V> {
@@ -18,13 +19,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         public K getKey() {
             return key;
         }
-
-        public V getValue() {
-            return value;
-        }
     }
 
     public StorageImpl() {
+        numberOfElements = 0;
         storage = new StorageNode[SIZE];
     }
 
@@ -33,8 +31,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         boolean rewritten = false;
         for (int i = 0; i < SIZE; i++) {
             if (storage[i] != null) {
-                if (storage[i].getKey() != null && storage[i].getKey().equals(key)
-                        || storage[i].getKey() == key) {
+                if (storage[i].key != null && storage[i].getKey().equals(key)
+                        || storage[i].key == key) {
                     storage[i] = new StorageNode<>(key, value);
                     rewritten = true;
                     break;
@@ -45,6 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             for (int i = 0; i < SIZE; i++) {
                 if (storage[i] == null) {
                     storage[i] = new StorageNode<>(key, value);
+                    numberOfElements++;
                     break;
                 }
             }
@@ -55,9 +54,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < SIZE; i++) {
             if (storage[i] != null) {
-                if (storage[i].getKey() != null && storage[i].getKey().equals(key)
-                        || storage[i].getKey() == key) {
-                    return (V) storage[i].getValue();
+                if (storage[i].key != null && storage[i].getKey().equals(key)
+                        || storage[i].key == key) {
+                    return (V) storage[i].value;
                 }
             }
         }
@@ -66,14 +65,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int counter = 0;
-        for (StorageNode element : storage) {
-            if (element == null) {
-                break;
-            }
-            counter++;
-        }
-        return counter;
+        return numberOfElements;
     }
 
     @Override
