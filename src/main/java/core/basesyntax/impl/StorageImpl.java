@@ -1,14 +1,31 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_VALUE_ARRAY = 10;
     private K key;
     private V value;
-    private Storage[] items = new Storage[MAX_VALUE_ARRAY];
+    private Object[] items = new Object[MAX_VALUE_ARRAY];
     private int countOfElements = 0;
+
+    private class StorageNode {
+        private K key;
+        private V value;
+
+        public StorageNode(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+    }
 
     public StorageImpl(K key, V value) {
         this.key = key;
@@ -30,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int position = findPositions(key);
-        items[position] = new StorageImpl(key, value);
+        items[position] = new StorageNode(key, value);
         countOfElements++;
     }
 
@@ -45,7 +62,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (position == -1) {
             return null;
         }
-        return (V) items[position].getValue();
+        StorageNode castedElement = (StorageNode) items[position];
+        return castedElement.getValue();
     }
 
     @Override
@@ -64,8 +82,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean checkElementInside(int index, K key) {
-        return (items[index].getKey() == null && key == null)
-                || (items[index].getKey() == key)
-                || (items[index].getKey() != null) && items[index].getKey().equals(key);
+        StorageNode castedElement = (StorageNode) items[index];
+        return (castedElement.getKey() == null && key == null)
+                || (castedElement.getKey() == key)
+                || (castedElement.getKey() != null) && castedElement.getKey().equals(key);
     }
 }
