@@ -3,16 +3,17 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 import java.sql.Array;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private K[] keys;
-    private V[] values;
+    private Object[] keys;
+    private Object[] values;
     private int size;
 
     {
-        keys = (K[]) new Array[MAX_SIZE];
-        values = (V[]) new Array[MAX_SIZE];
+        keys =  new Object[MAX_SIZE];
+        values = new Object[MAX_SIZE];
     }
 
     @Override
@@ -30,12 +31,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = indexOfKey(key);
-        return (index == -1) ? null : values[index];
+        return (index == -1) ? null : (V) values[index];
     }
 
     @Override
     public int size() {
-        return -1;
+        return size;
     }
 
     private <K> int indexOfKey(K key) {
