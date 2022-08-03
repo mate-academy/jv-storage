@@ -8,6 +8,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
     private Storage[] items = new Storage[MAX_VALUE_ARRAY];
+    private int countOfElements = 0;
 
     public StorageImpl(K key, V value) {
         this.key = key;
@@ -28,16 +29,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int position = positionInArray(key);
+        int position = findPositions(key);
         items[position] = new StorageImpl(key, value);
+        countOfElements++;
     }
 
     @Override
     public V get(K key) {
         int position = -1;
         for (int i = 0; i < size(); i++) {
-            if ((items[i].getKey() == null && key == null)
-                    || Objects.equals(items[i].getKey(), key)) {
+            if (checkElementInside(i, key)) {
                 position = i;
             }
         }
@@ -49,23 +50,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int storageSize = 0;
-        for (Storage item : items) {
-            if (item != null) {
-                storageSize++;
-            } else {
-                break;
-            }
-        }
-        return storageSize;
+        return countOfElements;
     }
 
-    private int positionInArray(K key) {
+    private int findPositions(K key) {
         for (int i = 0; i < size(); i++) {
-            if ((items[i].getKey() == key) || Objects.equals(items[i].getKey(), key)) {
+            if (checkElementInside(i, key)) {
+                countOfElements--;
                 return i;
             }
         }
         return size();
+    }
+
+    private boolean checkElementInside(int index, K key) {
+        return (items[index].getKey() == null && key == null)
+                || (items[index].getKey() == key)
+                || (items[index].getKey() != null) && items[index].getKey().equals(key);
     }
 }
