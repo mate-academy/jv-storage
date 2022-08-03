@@ -5,27 +5,18 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static int STORAGE_SIZE = 10;
     private Node[] storage = new Node[STORAGE_SIZE];
-    private K key;
-    private V value;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
     }
 
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    static class Node<K, V> {
-        private final K key;
+    private static class Node<K, V> {
+        private K key;
         private V value;
-        private Node<K, V> next;
 
-        Node(K key, V value, Node<K, V> next) {
+        Node(K key, V value) {
             this.key = key;
             this.value = value;
-            this.next = next;
         }
 
         public final K getKey() {
@@ -38,12 +29,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         public final String toString() {
             return key + "=" + value;
-        }
-
-        public final V setValue(V newValue) {
-            V oldValue = value;
-            value = newValue;
-            return oldValue;
         }
 
         @Override
@@ -72,41 +57,29 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Node<K, V> entry = new Node<K, V>(key, value, null);
-        int index = index(key);
-
-        Node<K, V> existing = storage[index];
-        if (existing == null) {
-            storage[index] = entry;
-            size++;
-        } else {
-            while (existing.next != null) {
-                if (existing.key.equals(key)) {
-                    existing.value = value;
-                    return;
+        for (int i = 0; i < STORAGE_SIZE; i++) {
+            if (storage[i] != null) {
+                if (storage[i].key != null && storage[i].key.equals(key) || storage[i].key == key) {
+                    storage[i] = new Node(key, value);
+                    break;
                 }
-                existing = existing.next;
             }
-
-            if ((existing.key == getKey()) || existing.getKey().equals(key)) { //equals?
-                existing.value = value;
-            } else {
-                existing.next = entry;
+            if (storage[i] == null) {
+                storage[i] = new Node(key, value);
                 size++;
+                break;
             }
         }
-
     }
 
     @Override
     public V get(K key) {
-        Node<K, V> entry = storage[index(key) % STORAGE_SIZE];
-
-        while (entry != null) {
-            if ((entry.key == getKey()) || entry.getKey().equals(key)) {
-                return entry.value;
+        for (Node node : storage) {
+            if (node != null) {
+                if (node.key != null && node.key.equals(key) || node.key == key) {
+                    return (V) node.value;
+                }
             }
-            entry = entry.next;
         }
         return null;
     }
@@ -118,18 +91,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public K getKey() {
-        return key;
+        return null;
     }
 
     @Override
     public V getValue() {
-        return value;
-    }
-
-    private int index(K key) {
-        if (key == null) {
-            return 0;
-        }
-        return Math.abs(key.hashCode() % STORAGE_SIZE);
+        return null;
     }
 }
