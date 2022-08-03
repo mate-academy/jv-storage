@@ -2,8 +2,6 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.Arrays;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private Object[] keys;
@@ -11,7 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     {
-        keys =  new Object[MAX_SIZE];
+        keys = new Object[MAX_SIZE];
         values = new Object[MAX_SIZE];
     }
 
