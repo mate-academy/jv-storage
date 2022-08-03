@@ -88,14 +88,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
-
-    @Override
-    public K getKey() {
-        return null;
-    }
-
-    @Override
-    public V getValue() {
-        return null;
-    }
 }
