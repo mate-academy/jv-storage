@@ -28,6 +28,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
+        int index = getIndex(key);
+        if (index != -1) {
+            return (V) values[index];
+        }
         return null;
     }
 
@@ -55,5 +59,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         Box box = new Box();
         //заполнили наше хранилище первой парой
         storage.put(22, box);
+        //хотим из нашего списка в коробку вытащить коробку валью под ключом 22
+        Box value = storage.get(22);
     }
 }
