@@ -17,11 +17,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = getIndex(key);
-;
-
-
-
-
+        if (index == -1) {
+            values[size] = value;
+            keys[size] = key;
+        } else {
+            //если ключа в массиве нет то добавляем валью в полученный индекс
+            values[index] = value;
+        }
     }
 
     @Override
