@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         int size = 0;
-        for(V value: values) {
+        for (V value: values) {
             if (value != null) {
                 size++;
             }
