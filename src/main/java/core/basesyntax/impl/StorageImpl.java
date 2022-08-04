@@ -4,30 +4,31 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Object[] keys = new Object[MAX_ITEMS_NUMBER];
-    private Object[] values = new Object[MAX_ITEMS_NUMBER];
-    private int amount = 0;
+    private Object[] keys;
+    private Object[] values;
+    private int size = 0;
+
+    public StorageImpl() {
+        keys = new Object[MAX_ITEMS_NUMBER];
+        values = new Object[MAX_ITEMS_NUMBER];
+    }
 
     @Override
     public void put(K key, V value) {
-        if (amount == 0) {
-            addKeyValue(key, value, 0);
-            return;
-        }
-        for (int i = 0; i < amount; i++) {
+        for (int i = 0; i < size; i++) {
             if (isEqualsKeys((K) keys[i], key)) {
                 values[i] = value;
                 return;
             }
         }
-        if (amount < MAX_ITEMS_NUMBER) {
-            addKeyValue(key, value, amount);
-        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+        for (int i = 0; i < keys.length; i++) {
             if (isEqualsKeys((K) keys[i], key)) {
                 return (V) values[i];
             }
@@ -37,22 +38,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return amount;
+        return size;
     }
 
     private boolean isEqualsKeys(K firstKey, K secondKey) {
-        if (firstKey == null && secondKey == null) {
-            return true;
-        }
-        if (firstKey != null && firstKey.equals(secondKey)) {
-            return true;
-        }
-        return false;
-    }
-
-    private void addKeyValue(K key, V value, int index) {
-        keys[index] = (Object) key;
-        values[index] = (Object) value;
-        amount += 1;
+        return firstKey == secondKey || firstKey != null && firstKey.equals(secondKey);
     }
 }
