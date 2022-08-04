@@ -37,20 +37,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private <K> int indexOfKey(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    return i;
-                }
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return i;
             }
         }
-
         return -1;
     }
 }
