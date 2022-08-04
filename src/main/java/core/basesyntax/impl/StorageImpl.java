@@ -33,6 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private void replace(int index, K key, V value) {
         keyArray[index] = key;
         valueArray[index] = value;
+        firstEmptyIndex = index + 1;
     }
 
     private int contains(int firstEmptyIndex, K key) {
@@ -46,11 +47,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return null;
+        return valueArray[contains(firstEmptyIndex, key)];
     }
 
     @Override
     public int size() {
-        return -1;
+        return firstEmptyIndex + 1;
     }
 }
