@@ -6,6 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
     private final V[] values;
     private final K[] keys;
+    private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
@@ -15,28 +16,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (getKey(key) < 0) {
-            int index = size();
-            values[index] = value;
-            keys[index] = key;
+        int index = getKey(key);
+        if (index < 0) {
+            values[size] = value;
+            keys[size++] = key;
         } else {
-            values[getKey(key)] = value;
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        return getKey(key) >= 0 ? values[getKey(key)] : null;
+        int index = getKey(key);
+        return index >= 0 ? values[getKey(key)] : null;
     }
 
     @Override
     public int size() {
-        int size = 0;
-        for (V value: values) {
-            if (value != null) {
-                size++;
-            }
-        }
         return size;
     }
 
@@ -44,8 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int index = 0; index < keys.length; index++) {
             if (keys[index] == null && values[index] == null) {
                 return -1;
-            } else if (key == null && keys[index] == null && values[index] != null
-                    || keys[index] != null && keys[index].equals(key)) {
+            } else if (keys[index] == key || ((keys[index] != null) && keys[index].equals(key))) {
                 return index;
             }
         }
