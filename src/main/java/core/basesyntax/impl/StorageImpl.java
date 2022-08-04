@@ -38,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int contains(int firstEmptyIndex, K key) {
         for (int i = 0; i < firstEmptyIndex; i++) {
-            if (key.equals(keyArray[i])) {
+            if (key == keyArray[i] || (key != null && key.equals(keyArray[i]))) {
                 return i;
             }
         }
