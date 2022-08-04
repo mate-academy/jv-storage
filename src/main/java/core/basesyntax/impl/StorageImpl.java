@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.lang.reflect.Array;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -47,7 +46,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return contains(firstEmptyIndex, key) == -1 ? null : valueArray[contains(firstEmptyIndex, key)];
+        return contains(firstEmptyIndex, key) == -1
+                ? null : valueArray[contains(firstEmptyIndex, key)];
     }
 
     @Override
