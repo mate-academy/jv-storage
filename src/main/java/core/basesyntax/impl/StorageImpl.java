@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return -1;
+        return size;
     }
 
     //проверяем есть ли ключ в массиве ключей, если есть то вернем индекс
@@ -61,5 +61,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         storage.put(22, box);
         //хотим из нашего списка в коробку вытащить коробку валью под ключом 22
         Box value = storage.get(22);
+        int size = storage.size();
     }
 }
