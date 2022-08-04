@@ -18,6 +18,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        int containsIndex = contains(firstEmptyIndex, key);
+        if (containsIndex != -1) {
+            replace(containsIndex, value);
+        } else if (firstEmptyIndex < MAX_ARRAY_LENGTH) {
+            replace(firstEmptyIndex, key, value);
+        }
+    }
+
+    private void replace(int index, V value) {
+        valueArray[index] = value;
+    }
+
+    private void replace(int index, K key, V value) {
+        keyArray[index] = key;
+        valueArray[index] = value;
+    }
+
+    private int contains(int firstEmptyIndex, K key) {
+        for (int i = 0; i <= firstEmptyIndex; i++) {
+            if (key.equals(keyArray[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
