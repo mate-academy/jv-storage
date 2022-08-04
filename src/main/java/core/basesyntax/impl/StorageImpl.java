@@ -3,59 +3,52 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_VALUE_ARRAY = 10;
-    private Object[] items = new Object[MAX_VALUE_ARRAY];
-    private int countOfElements = 0;
+    private static final int MAX_ARRAY_LENGTH = 10;
+    private StorageNode<K, V>[] items;
+    private int size = 0;
 
     public StorageImpl() {
-
+        items = new StorageNode[MAX_ARRAY_LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
         int position = findPositions(key);
-        items[position] = new StorageNode(key, value);
-        countOfElements++;
+        items[position] = new StorageNode<>(key, value);
+        size++;
     }
 
     @Override
     public V get(K key) {
-        int position = -1;
         for (int i = 0; i < size(); i++) {
-            if (checkElementInside(i, key)) {
-                position = i;
+            if (isKeyAtIndexEqualTo(i, key)) {
+                return items[i].getValue();
             }
         }
-        if (position == -1) {
-            return null;
-        }
-        StorageNode castedElement = (StorageNode) items[position];
-        return castedElement.getValue();
+        return null;
     }
 
     @Override
     public int size() {
-        return countOfElements;
+        return size;
     }
 
     private int findPositions(K key) {
         for (int i = 0; i < size(); i++) {
-            if (checkElementInside(i, key)) {
-                countOfElements--;
+            if (isKeyAtIndexEqualTo(i, key)) {
+                size--;
                 return i;
             }
         }
         return size();
     }
 
-    private boolean checkElementInside(int index, K key) {
-        StorageNode castedElement = (StorageNode) items[index];
-        return (castedElement.getKey() == null && key == null)
-                || (castedElement.getKey() == key)
-                || (castedElement.getKey() != null) && castedElement.getKey().equals(key);
+    private boolean isKeyAtIndexEqualTo(int index, K key) {
+        StorageNode<K,V> node = (StorageNode) items[index];
+        return node.getKey() == key || (node.getKey() != null && node.getKey().equals(key));
     }
 
-    private class StorageNode {
+    private class StorageNode<K, V> {
         private K key;
         private V value;
 
@@ -72,5 +65,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return value;
         }
     }
-
 }
