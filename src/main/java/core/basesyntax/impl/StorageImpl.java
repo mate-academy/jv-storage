@@ -12,8 +12,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         firstEmptyIndex = 0;
-        K[] keyArray = (K[]) Array.newInstance(Object.class, MAX_ARRAY_LENGTH);
-        V[] valueArray = (V[]) Array.newInstance(Object.class, MAX_ARRAY_LENGTH);
+        keyArray = (K[]) Array.newInstance(Object.class, MAX_ARRAY_LENGTH);
+        valueArray = (V[]) Array.newInstance(Object.class, MAX_ARRAY_LENGTH);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int contains(int firstEmptyIndex, K key) {
-        for (int i = 0; i <= firstEmptyIndex; i++) {
+        for (int i = 0; i < firstEmptyIndex; i++) {
             if (key.equals(keyArray[i])) {
                 return i;
             }
@@ -47,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return valueArray[contains(firstEmptyIndex, key)];
+        return contains(firstEmptyIndex, key) == -1 ? null : valueArray[contains(firstEmptyIndex, key)];
     }
 
     @Override
