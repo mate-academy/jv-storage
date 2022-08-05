@@ -4,24 +4,31 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NUMBER_OF_ELEMENTS = 10;
-    private K[] keysArray = (K[]) new Object[NUMBER_OF_ELEMENTS];
-    private V[] valuesArray = (V[]) new Object[NUMBER_OF_ELEMENTS];
-    private int size = 0;
+    private K[] keys;
+    private V[] values;
+    private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[NUMBER_OF_ELEMENTS];
+        values = (V[]) new Object[NUMBER_OF_ELEMENTS];
+    }
 
     @Override
     public void put(K key, V value) {
-        if (getValueIndexByKey(key) == -1) {
-            keysArray[size] = key;
-            valuesArray[size] = value;
+        int index = getIndexByKey(key);
+        if (index == -1) {
+            keys[size] = key;
+            values[size] = value;
             size++;
         } else {
-            valuesArray[getValueIndexByKey(key)] = value;
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        return (getValueIndexByKey(key) == -1) ? null : (V) valuesArray[getValueIndexByKey(key)];
+        int index = getIndexByKey(key);
+        return (index == -1) ? null : (V) values[index];
     }
 
     @Override
@@ -29,9 +36,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int getValueIndexByKey(K key) {
+    private int getIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (keysArray[i] == key || key != null && key.equals(keysArray[i])) {
+            if (keys[i] == key || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
