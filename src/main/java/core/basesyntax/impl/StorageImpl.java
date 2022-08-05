@@ -3,9 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final String NULL_MARKER = "Null marker";
     private K[] keys = (K[]) new Object[10];
     private V[] values = (V[]) new Object[10];
-    private static final String NULL_MARKER = "Null marker";
 
     @Override
     public void put(K key, V value) {
