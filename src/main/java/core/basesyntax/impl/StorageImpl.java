@@ -13,9 +13,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = new Object[DEFAULT_CAPACITY];
     }
 
-    public StorageImpl(int catacity) {
-        keys = new Object[catacity];
-        values = new Object[catacity];
+    public StorageImpl(int capacity) {
+        keys = new Object[capacity];
+        values = new Object[capacity];
     }
 
     @Override
