@@ -5,22 +5,16 @@ import core.basesyntax.Storage;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Pair<K, V>[] pairs = new Pair[MAX_ITEMS_NUMBER];
+    private Pair<K, V>[] pairs;
     private int size;
 
-    private class Pair<K,V> {
-        private final K key;
-        private V value;
-
-        public Pair(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
+    public StorageImpl() {
+        pairs = new Pair[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
-        Pair pair = getPairByKey(key);
+        Pair<K,V> pair = getPairByKey(key);
         if (pair == null) {
             pairs[size++] = new Pair<>(key, value);
         } else {
@@ -28,7 +22,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private Pair getPairByKey(K key) {
+    @Override
+    public V get(K key) {
+        Pair<K,V> pair = getPairByKey(key);
+        return pair == null ? null : pair.value;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    private Pair<K,V> getPairByKey(K key) {
         for (int i = 0; i < size; i++) {
             if (pairs[i].key == key || (pairs[i].key != null && pairs[i].key.equals(key))) {
                 return pairs[i];
@@ -37,14 +42,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    @Override
-    public V get(K key) {
-        Pair pair = getPairByKey(key);
-        return pair == null ? null : (V) pair.value;
-    }
+    private static class Pair<K,V> {
+        private final K key;
+        private V value;
 
-    @Override
-    public int size() {
-        return size;
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
