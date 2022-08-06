@@ -5,51 +5,30 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private StorageNode[] items;
-    private int index;
-    private boolean alreadyExists;
+    private int size;
 
     public StorageImpl() {
         items = new StorageNode[MAX_ITEMS_NUMBER];
-        index = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (StorageNode item : items) {
-            if (item != null) {
-                if (key != null) {
-                    if (item.getKey() != null && item.getKey().equals(key)) {
-                        alreadyExists = true;
-                        item.setValue(value);
-                    }
-                } else {
-                    if (item.getKey() == null) {
-                        alreadyExists = true;
-                        item.setValue(value);
-                    }
-                }
+        for (int i = 0; i < size; i++) {
+            if (items[i].key != null && items[i].key.equals(key) || items[i].key == key) {
+                items[i].setValue(value);
+                return;
             }
         }
 
-        if (!alreadyExists) {
-            items[index] = new StorageNode(key, value);
-            index++;
-        }
+        items[size++] = new StorageNode(key, value);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public V get(K key) {
-        for (StorageNode item : items) {
-            if (item != null) {
-                if (key != null) {
-                    if (item.getKey() != null && item.getKey().equals(key)) {
-                        return (V) item.getValue();
-                    }
-                } else {
-                    if (item.getKey() == null) {
-                        return (V) item.getValue();
-                    }
-                }
+        for (int i = 0; i < size; i++) {
+            if (items[i].key != null && items[i].key.equals(key) || items[i].key == key) {
+                return (V) items[i].value;
             }
         }
         return null;
@@ -57,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return index;
+        return size;
     }
 
     public static class StorageNode {
