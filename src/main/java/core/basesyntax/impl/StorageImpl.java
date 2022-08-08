@@ -4,24 +4,24 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
-    private K[] keyStorage;
-    private V[] valueStorage;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        keyStorage = (K[]) new Object[MAX_ELEMENTS];
-        valueStorage = (V[]) new Object[MAX_ELEMENTS];
+        keys = (K[]) new Object[MAX_ELEMENTS];
+        values = (V[]) new Object[MAX_ELEMENTS];
     }
 
     @Override
     public void put(K key, V value) {
         int index = getKeyIndex(key);
         if (index == -1) {
-            keyStorage[size] = key;
-            valueStorage[size] = value;
+            keys[size] = key;
+            values[size] = value;
             size++;
         } else {
-            valueStorage[index] = value;
+            values[index] = value;
         }
     }
 
@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index = getKeyIndex(key);
         if (index != -1) {
-            return valueStorage[index];
+            return values[index];
         }
         return null;
     }
@@ -41,7 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == keyStorage[i] || (key != null && key.equals(keyStorage[i]))) {
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
