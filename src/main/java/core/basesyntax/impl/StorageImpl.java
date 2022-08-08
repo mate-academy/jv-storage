@@ -1,43 +1,35 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_VALUE = 10;
-    private K[] key;
-    private V[] value;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        key = (K[]) new Object[MAX_STORAGE_VALUE];
-        value = (V[]) new Object[MAX_STORAGE_VALUE];
-    }
-
-    private int getIndex(K key) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(this.key[i], key)) {
-                return i;
-            }
-        }
-        return -1;
+        keys = (K[]) new Object[MAX_STORAGE_VALUE];
+        values = (V[]) new Object[MAX_STORAGE_VALUE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (getIndex(key) == -1) {
-            this.value[size] = value;
-            this.key[size] = key;
+        int keyIndex = getIndex(key);
+        if (keyIndex == -1) {
+            this.values[size] = value;
+            this.keys[size] = key;
             size++;
         } else {
-            this.value[getIndex(key)] = value;
+            this.values[getIndex(key)] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        if (getIndex(key) != -1) {
-            return value[getIndex(key)];
+        int keyIndex = getIndex(key);
+        if (keyIndex == -1) {
+            return values[getIndex(key)];
         }
         return null;
     }
@@ -46,4 +38,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
+
+    private int getIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
 }
