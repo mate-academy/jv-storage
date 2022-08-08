@@ -39,7 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         valueArray[index] = value;
     }
 
-    private void replace( K key, V value) {
+    private void replace(K key, V value) {
         keyArray[size] = key;
         valueArray[size] = value;
         size++;
