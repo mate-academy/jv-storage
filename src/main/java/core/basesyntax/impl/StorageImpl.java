@@ -5,33 +5,34 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_VALUE = 10;
-    private final K[] keyArray;
-    private final V[] valueArray;
+    private final K[] keys;
+    private final V[] values;
+    private int size = 0;
 
     public StorageImpl() {
-        keyArray = (K[]) new Object[MAX_ITEMS_VALUE];
-        valueArray = (V[]) new Object[MAX_ITEMS_VALUE];
+        keys = (K[]) new Object[MAX_ITEMS_VALUE];
+        values = (V[]) new Object[MAX_ITEMS_VALUE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (Objects.equals(key, keyArray[i])) {
-                keyArray[i] = key;
-                valueArray[i] = value;
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                keys[i] = key;
+                values[i] = value;
                 return;
             }
         }
-        int length = size();
-        keyArray[length] = key;
-        valueArray[length] = value;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (Objects.equals(key, keyArray[i])) {
-                return valueArray[i];
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return values[i];
             }
         }
         return null;
@@ -39,12 +40,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = 0;
-        for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i] != null || valueArray[i] != null) {
-                size++;
-            }
-        }
         return size;
     }
 }
