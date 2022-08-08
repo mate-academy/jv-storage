@@ -3,11 +3,12 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static int STORAGE_SIZE = 10;
-    private Node[] storage = new Node[STORAGE_SIZE];
+    private static final int STORAGE_SIZE = 10;
+    private Node[] storage;
     private int size;
 
     public StorageImpl() {
+        storage = new Node[STORAGE_SIZE];
     }
 
     @Override
@@ -48,14 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value = value;
         }
 
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
-        }
-
         public String toString() {
             return key + "=" + value;
         }
@@ -83,6 +76,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             hash = 17 * hash + ((key == null) ? 0 : key.hashCode());
             hash = 17 * hash + ((value == null) ? 0 : value.hashCode());
             return hash;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
         }
     }
 }
