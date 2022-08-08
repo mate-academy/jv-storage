@@ -9,15 +9,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] values = new Object[ARRAY_SIZE];
     private int size = 0;
 
-    private int getIndex(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     @Override
     public void put(K key, V value) {
         int keyIndex = getIndex(key);
@@ -26,7 +17,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         } else {
-            keys[keyIndex] = key;
             values[keyIndex] = value;
         }
     }
@@ -34,11 +24,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        return index == -1 ? null : (V)values[index];
+        return index == -1 ? null : (V) values[index];
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private int getIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
