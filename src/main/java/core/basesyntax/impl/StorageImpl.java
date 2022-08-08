@@ -13,14 +13,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = new Object[MAX_STORAGE_NUMBER];
     }
 
-    public static Object[] getKeys() {
-        return keys;
-    }
-
-    public static Object[] getValue() {
-        return values;
-    }
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < storageSize; i++) {
