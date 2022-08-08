@@ -4,33 +4,35 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final String NULL_MARKER = "Null marker";
-    private K[] keys = (K[]) new Object[10];
-    private V[] values = (V[]) new Object[10];
+    private static final int MAX_CAPACITY = 10;
+    private int size;
+    private K[] keys;
+    private V[] values;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_CAPACITY];
+        values = (V[]) new Object[MAX_CAPACITY];
+    }
 
     @Override
     public void put(K key, V value) {
-        key = nullCheck(key);
-        for (int i = 0; i < keys.length; i++) {
-            if (key.equals(keys[i]) || keys[i] == null) {
+        System.out.println(key + " " + value + " " + (key == null));
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 keys[i] = key;
                 values[i] = value;
-                break;
+                return;
             }
         }
-    }
-
-    private K nullCheck(K key) {
-        if (key == null) {
-            key = (K) NULL_MARKER;
-        }
-        return key;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        key = nullCheck(key);
-        for (int i = 0; i < keys.length; i++) {
-            if (key.equals(keys[i])) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 return values[i];
             }
         }
@@ -39,10 +41,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int count = 0;
-        while (keys[count] != null) {
-            count++;
-        }
-        return count;
+        return size;
     }
 }
