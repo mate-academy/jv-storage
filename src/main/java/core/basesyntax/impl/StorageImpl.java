@@ -4,36 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_CAPACITY = 10;
-    private K key;
-    private V value;
-    private final Object[] arrayKey = new Object[MAXIMUM_CAPACITY];
-    private final Object[] arrayValue = new Object[MAXIMUM_CAPACITY];
-    private int size = 0;
+    private final Object[] keys;
+    private final Object[] values;
+    private int size;
 
     public StorageImpl() {
+        keys = (K[]) new Object[MAXIMUM_CAPACITY];
+        values = (V[]) new Object[MAXIMUM_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (((key != null) && key.equals(arrayKey[i])) || (key == null && arrayKey[i] == key)) {
-                arrayValue[i] = value;
+            if ((key != null && key.equals(keys[i])) || (key == keys[i])) {
+                values[i] = value;
                 return;
             }
         }
-        arrayKey[size] = key;
-        arrayValue[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
-        if (size == 0 && (key == null && arrayKey[size] == key)) {
-            return (V) arrayValue[size];
-        }
         for (int i = 0; i < size; i++) {
-            if (key == null && arrayKey[i] == null || key != null && key.equals(arrayKey[i])) {
-                return (V) arrayValue[i];
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return (V) values[i];
             }
         }
         return null;
