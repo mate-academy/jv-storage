@@ -20,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (containsIndex != -1) {
             replace(containsIndex, value);
         } else if (size < MAX_ARRAY_LENGTH) {
-            replace(size, key, value);
+            replace(key, value);
         }
     }
 
@@ -39,10 +39,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         valueArray[index] = value;
     }
 
-    private void replace(int index, K key, V value) {
-        keyArray[index] = key;
-        valueArray[index] = value;
-        size = index + 1;
+    private void replace( K key, V value) {
+        keyArray[size] = key;
+        valueArray[size] = value;
+        size++;
     }
 
     private int contains(K key) {
