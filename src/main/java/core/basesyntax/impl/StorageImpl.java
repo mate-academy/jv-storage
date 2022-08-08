@@ -7,7 +7,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
     private final Object[] keys = new Object[ARRAY_SIZE];
     private final Object[] values = new Object[ARRAY_SIZE];
-    private int exist = -1;
     private int size = 0;
 
     @Override
@@ -18,9 +17,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             size++;
         } else {
             getIndex(key);
-            if (exist != -1) {
-                this.keys[exist] = key;
-                this.values[exist] = value;
+            int index = getIndex(key);
+            if (index != -1) {
+                this.keys[index] = key;
+                this.values[index] = value;
             } else {
                 this.keys[size] = key;
                 this.values[size] = value;
@@ -44,11 +44,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private void getIndex(K key) {
+    private int getIndex(K key) {
         for (int i = 0; i < size; i++) {
             if (key != null && key.equals(keys[i]) || key == keys[i]) {
-                exist = i;
+                return i;
             }
         }
+        return -1;
     }
 }
