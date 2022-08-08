@@ -15,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (items[i].key != null && items[i].key.equals(key) || items[i].key == key) {
-                items[i].setValue(value);
+                items[i].value = value;
                 return;
             }
         }
@@ -45,22 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         public StorageNode(Object key, Object value) {
             this.key = key;
-            this.value = value;
-        }
-
-        public Object getKey() {
-            return key;
-        }
-
-        public void setKey(Object key) {
-            this.key = key;
-        }
-
-        public Object getValue() {
-            return value;
-        }
-
-        public void setValue(Object value) {
             this.value = value;
         }
     }
