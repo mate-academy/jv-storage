@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private final KeyValueStorage[] keyValueStorages = new KeyValueStorage[10];
-    private int index = 0;
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
@@ -13,19 +13,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             replaceOldValue(existPairByKey, value);
             return;
         }
-        keyValueStorages[index] = new KeyValueStorage(key, value);
-        index++;
+        keyValueStorages[size] = new KeyValueStorage(key, value);
+        size++;
     }
 
     @Override
     public V get(K key) {
         Object value = null;
-        for (KeyValueStorage keyValueStorage : keyValueStorages) {
-            if (keyValueStorage != null && keyValueStorage.getKey() == key
-                    || (keyValueStorage != null
-                    && keyValueStorage.getKey() != null
-                    && keyValueStorage.getKey().equals(key))) {
-                value = keyValueStorage.getValue();
+        for (int i = 0; i < size; i++) {
+            if (keyValueStorages[i] != null && keyValueStorages[i].getKey() == key
+                    || (keyValueStorages[i] != null
+                    && keyValueStorages[i].getKey() != null
+                    && keyValueStorages[i].getKey().equals(key))) {
+                value = keyValueStorages[i].getValue();
                 break;
             }
         }
@@ -34,28 +34,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = 0;
-        for (KeyValueStorage keyValueStorage : keyValueStorages) {
-            if (keyValueStorage != null) {
-                size++;
-            }
-        }
         return size;
     }
 
     private KeyValueStorage findExistPairByKey(K key) {
-        for (KeyValueStorage keyValueStorage : keyValueStorages) {
-            if (keyValueStorage != null && ((keyValueStorage.getKey() == null && key == null)
-                    || (keyValueStorage.getKey() != null
-                    && keyValueStorage.getKey().equals(key)))) {
-                return keyValueStorage;
+        for (int i = 0; i < size; i++) {
+            if (keyValueStorages[i] != null
+                    && ((keyValueStorages[i].getKey() == null && key == null)
+                    || (keyValueStorages[i].getKey() != null
+                    && keyValueStorages[i].getKey().equals(key)))) {
+                return keyValueStorages[i];
             }
         }
         return null;
     }
 
     private void replaceOldValue(KeyValueStorage keyValueStorage, V value) {
-        for (int i = 0; i < size(); i++) {
+        for (int i = 0; i < size; i++) {
             if (keyValueStorages[i].equals(keyValueStorage)) {
                 keyValueStorages[i].setValue(value);
             }
