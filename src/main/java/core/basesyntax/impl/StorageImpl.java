@@ -6,8 +6,13 @@ import java.util.Objects;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_RANGE = 10;
     private int size;
-    private final K[] keys = (K[]) new Object[MAX_RANGE];
-    private final V[] values = (V[]) new Object[MAX_RANGE];
+    private final K[] keys;
+    private final V[] values;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_RANGE];
+        values = (V[]) new Object[MAX_RANGE];
+    }
 
     @Override
     public void put(K key, V value) {
