@@ -3,7 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final String NULL_MARKER = "Null marker";
     private static final int MAX_CAPACITY = 10;
     private int size;
     private K[] keys;
@@ -16,7 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        System.out.println(key + " " + value + " " + (key == null));
         for (int i = 0; i < size; i++) {
             if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 keys[i] = key;
