@@ -62,10 +62,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (obj instanceof Node) {
                 Node entry = (Node) obj;
 
-                return (this.key == entry.getKey()
-                        || this.key != null && this.key.equals(entry.getKey()))
-                        && (this.value == entry.getValue()
-                        || this.value != null && this.value.equals(entry.getValue()));
+                return (this.key == entry.key
+                        || this.key != null && this.key.equals(entry.key))
+                        && (this.value == entry.value
+                        || this.value != null && this.value.equals(entry.value));
             }
             return false;
         }
@@ -76,14 +76,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             hash = 17 * hash + ((key == null) ? 0 : key.hashCode());
             hash = 17 * hash + ((value == null) ? 0 : value.hashCode());
             return hash;
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
         }
     }
 }
