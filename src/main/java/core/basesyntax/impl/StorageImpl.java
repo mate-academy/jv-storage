@@ -7,22 +7,33 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_LENGTH = 10;
     private K[] keyArray;
     private V[] valueArray;
-    private int firstEmptyIndex;
+    private int size;
 
     public StorageImpl() {
-        firstEmptyIndex = 0;
-        keyArray = (K[]) Array.newInstance(Object.class, MAX_ARRAY_LENGTH);
-        valueArray = (V[]) Array.newInstance(Object.class, MAX_ARRAY_LENGTH);
+        size = 0;
+        keyArray = (K[]) new Object[MAX_ARRAY_LENGTH];
+        valueArray = (V[]) new Object[MAX_ARRAY_LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
-        int containsIndex = contains(firstEmptyIndex, key);
+        int containsIndex = contains(key);
         if (containsIndex != -1) {
             replace(containsIndex, value);
-        } else if (firstEmptyIndex < MAX_ARRAY_LENGTH) {
-            replace(firstEmptyIndex, key, value);
+        } else if (size < MAX_ARRAY_LENGTH) {
+            replace(size, key, value);
         }
+    }
+
+    @Override
+    public V get(K key) {
+        return contains(key) == -1
+                ? null : valueArray[contains(key)];
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 
     private void replace(int index, V value) {
@@ -32,26 +43,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private void replace(int index, K key, V value) {
         keyArray[index] = key;
         valueArray[index] = value;
-        firstEmptyIndex = index + 1;
+        size = index + 1;
     }
 
-    private int contains(int firstEmptyIndex, K key) {
-        for (int i = 0; i < firstEmptyIndex; i++) {
-            if (key == keyArray[i] || (key != null && key.equals(keyArray[i]))) {
-                return i;
+    private int contains(K key) {
+        int containsIndex = -1;
+        for (int i = 0; i < size; i++) {
+            if (key == keyArray[i] || key != null && key.equals(keyArray[i])) {
+                containsIndex = i;
             }
         }
-        return -1;
-    }
-
-    @Override
-    public V get(K key) {
-        return contains(firstEmptyIndex, key) == -1
-                ? null : valueArray[contains(firstEmptyIndex, key)];
-    }
-
-    @Override
-    public int size() {
-        return firstEmptyIndex;
+        return containsIndex;
     }
 }
