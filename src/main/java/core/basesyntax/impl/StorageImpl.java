@@ -2,8 +2,6 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.Objects;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_VOLUME = 10;
     private static final int NOT_FOUND = -1;
@@ -42,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOf(K key) {
         for (int i = 0; i < size(); i++) {
-            if (Objects.equals(key, keys[i])) {
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
