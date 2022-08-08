@@ -5,8 +5,8 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ROWS_SIZE = 10;
     private static final int COLUMNS_SIZE = 2;
-    private static final int FIRST_COLUMN_INDEX = 0;
-    private static final int SECOND_COLUMN_INDEX = 1;
+    private static final int KEY_INDEX = 0;
+    private static final int VALUE_INDEX = 1;
     private Object[][] keysAndValues;
     private int size;
 
@@ -18,10 +18,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getIndex(key);
         if (index != -1) {
-            keysAndValues[index][SECOND_COLUMN_INDEX] = value;
+            keysAndValues[index][VALUE_INDEX] = value;
         } else {
-            keysAndValues[size][FIRST_COLUMN_INDEX] = key;
-            keysAndValues[size][SECOND_COLUMN_INDEX] = value;
+            keysAndValues[size][KEY_INDEX] = key;
+            keysAndValues[size][VALUE_INDEX] = value;
             size++;
         }
     }
@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index = getIndex(key);
         if (index != -1) {
-            return (V) keysAndValues[index][SECOND_COLUMN_INDEX];
+            return (V) keysAndValues[index][VALUE_INDEX];
         }
         return null;
     }
@@ -42,9 +42,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (keysAndValues[i][FIRST_COLUMN_INDEX] == key
-                    || (keysAndValues[i][FIRST_COLUMN_INDEX] != null
-                    && keysAndValues[i][FIRST_COLUMN_INDEX].equals(key))) {
+            if (keysAndValues[i][KEY_INDEX] == key
+                    || (keysAndValues[i][KEY_INDEX] != null
+                    && keysAndValues[i][KEY_INDEX].equals(key))) {
                 return i;
             }
         }
