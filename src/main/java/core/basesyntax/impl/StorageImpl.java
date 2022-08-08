@@ -8,13 +8,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (isUniqueKey(key, value)) {
+        KeyValueStorage existPairByKey = findExistPairByKey(key);
+        if (existPairByKey != null) {
+            replaceOldValue(existPairByKey, value);
             return;
         }
-        KeyValueStorage.Builder builder = new KeyValueStorage.Builder();
-        builder.setValueObject(value);
-        builder.setKeyObject(key);
-        keyValueStorages[index] = builder.build();
+        keyValueStorages[index] = new KeyValueStorage(key, value);
         index++;
     }
 
@@ -44,15 +43,48 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean isUniqueKey(K key, V value) {
+    private KeyValueStorage findExistPairByKey(K key) {
         for (KeyValueStorage keyValueStorage : keyValueStorages) {
             if (keyValueStorage != null && ((keyValueStorage.getKey() == null && key == null)
                     || (keyValueStorage.getKey() != null
                     && keyValueStorage.getKey().equals(key)))) {
-                keyValueStorage.setValue(value);
-                return true;
+                return keyValueStorage;
             }
         }
-        return false;
+        return null;
+    }
+
+    private void replaceOldValue(KeyValueStorage keyValueStorage, V value) {
+        for (int i = 0; i < size(); i++) {
+            if (keyValueStorages[i].equals(keyValueStorage)) {
+                keyValueStorages[i].setValue(value);
+            }
+        }
+    }
+
+    public static class KeyValueStorage {
+        private Object key;
+        private Object value;
+
+        public KeyValueStorage(Object key, Object value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public Object getKey() {
+            return key;
+        }
+
+        public void setKey(Object key) {
+            this.key = key;
+        }
+
+        public Object getValue() {
+            return value;
+        }
+
+        public void setValue(Object value) {
+            this.value = value;
+        }
     }
 }
