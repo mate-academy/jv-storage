@@ -5,8 +5,6 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int ARRAY_SIZE = 10;
-    private K key;
-    private V value;
     private final Object[] keys = new Object[ARRAY_SIZE];
     private final Object[] values = new Object[ARRAY_SIZE];
     private int exist = -1;
@@ -41,21 +39,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    public V getValue() {
-        return value;
-    }
-
     @Override
     public int size() {
         return size;
     }
 
-    private int getIndex(K key) {
+    private void getIndex(K key) {
         for (int i = 0; i < size; i++) {
             if (key != null && key.equals(keys[i]) || key == keys[i]) {
                 exist = i;
             }
         }
-        return exist;
     }
 }
