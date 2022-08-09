@@ -51,7 +51,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void replaceOldValue(KeyValueStorage keyValueStorage, V value) {
         for (int i = 0; i < size; i++) {
-            if (keyValueStorages[i].equals(keyValueStorage)) {
+            if (keyValueStorages[i].getKey().equals(keyValueStorage.getKey())) {
                 keyValueStorages[i].setValue(value);
             }
         }
