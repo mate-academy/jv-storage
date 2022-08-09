@@ -16,7 +16,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.values[size] = value;
             size++;
         } else {
-            getIndex(key);
             int index = getIndex(key);
             if (index != -1) {
                 this.keys[index] = key;
