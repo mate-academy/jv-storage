@@ -23,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         keys[size] = key;
         values[size] = value;
-        size();
+        size++;
     }
 
     @Override
@@ -39,6 +39,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return size++;
+        return size;
     }
 }
