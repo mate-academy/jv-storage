@@ -7,7 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys = (K[]) new Object[MAX_SIZE];
     private V[] values = (V[]) new Object[MAX_SIZE];
 
-    private int elementCounter = 0;
+    private int elementCounter;
 
     @Override
     public void put(K key, V value) {
