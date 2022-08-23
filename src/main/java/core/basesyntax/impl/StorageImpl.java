@@ -19,14 +19,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int keyIndex = getKeyIndex(key);
         if (keyIndex >= 0) {
             values[keyIndex] = value;
-            return;
-        }
-        if (size < 10) {
+        } else {
             keys[size] = key;
             values[size] = value;
             size++;
-        } else {
-            throw new RuntimeException("Key: '" + key + "' not found and Storage is full.");
         }
     }
 
