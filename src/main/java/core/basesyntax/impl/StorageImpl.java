@@ -22,7 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         } else {
-            values[findKeyIndex(key)] = value;
+            values[index] = value;
         }
     }
 
