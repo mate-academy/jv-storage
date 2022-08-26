@@ -30,9 +30,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < storageSize; i++) {
+            if (storageSize == MAX_ITEMS_NUMBER) {
+                throw new RuntimeException("Storage is full");
+            }
             if (key == keys[i]
                     || keys[i] != null && keys[i].equals(key)
-                    || key == null && keys[i] == null && values[i] != null) {
+                    || key == null && keys[i] == null) {
                 return values[i];
             }
         }
