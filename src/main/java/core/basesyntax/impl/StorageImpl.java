@@ -4,46 +4,36 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private final K[] keys = (K[]) new Object[MAX_ITEMS_NUMBER];
-    private final V[] values = (V[]) new Object[MAX_ITEMS_NUMBER];
-    private int storageSize = 0;
+    private final K[] keys;
+    private final V[] values;
+    private int storageSize;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
+    }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.length; i++) {
-            if (key != null && keys[i] == null && values[i] != null) {
-                continue;
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
+        for (int i = 0; i < storageSize; i++) {
+            if (keys[i] == key
+                    || key != null && key.equals(keys[i])) {
                 values[i] = value;
-                break;
-            }
-            if (key == null && keys[i] == null && value != null && values[i] == null) {
-                values[i] = value;
-                storageSize++;
-                break;
-            }
-            if (key == null && keys[i] == null && value != null && values[i] != null) {
-                values[i] = value;
-                break;
-            }
-            if (keys[i] == null && key != null) {
-                keys[i] = key;
-                values[i] = value;
-                storageSize++;
-                break;
+                return;
             }
         }
+        keys[storageSize] = key;
+        values[storageSize] = value;
+        storageSize++;
     }
 
     @Override
     public V get(K key) {
-        for (int index = 0; index < storageSize; index++) {
-            if (key == null && keys[index] == null) {
-                return values[index];
-            }
-            if (keys[index] != null && keys[index].equals(key)) {
-                return values[index];
+        for (int i = 0; i < storageSize; i++) {
+            if (key == keys[i]
+                    || keys[i] != null && keys[i].equals(key)
+                    || key == null && keys[i] == null && values[i] != null) {
+                return values[i];
             }
         }
         return null;
