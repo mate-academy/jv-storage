@@ -25,15 +25,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private Pair<K, V> getPairByKey(K key) {
-        for (int i = 0; i < size; i++) {
-            if (pairs[i].key == key || (pairs[i].key != null && pairs[i].key.equals(key))) {
-                return pairs[i];
-            }
-        }
-        return null;
-    }
-
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = getPairByKey(key);
@@ -53,5 +44,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private Pair<K, V> getPairByKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (pairs[i].key == key || (pairs[i].key != null && pairs[i].key.equals(key))) {
+                return pairs[i];
+            }
+        }
+        return null;
     }
 }
