@@ -3,39 +3,24 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_OF_ELEMENTS = 10;
+    private static final int MAX_CAPACITY = 10;
     private final Pair<K, V>[] pairs;
     private int size;
 
     public StorageImpl() {
-        pairs = new Pair[MAX_ITEMS_OF_ELEMENTS];
-    }
-
-    public static class Pair<K, V> {
-        private final K key;
-        private V value;
-
-        public Pair(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        public V getValue() {
-            return value;
-        }
+        pairs = new Pair[MAX_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        try {
-            Pair<K, V> pair = getPairByKey(key);
-            if (pair == null) {
-                pairs[size++] = new Pair<>(key, value);
-            } else {
-                pair.value = value;
-            }
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Storage is full", e);
+        if (size == MAX_CAPACITY) {
+            throw new RuntimeException("Storage is full");
+        }
+        Pair<K, V> pair = getPairByKey(key);
+        if (pair == null) {
+            pairs[size++] = new Pair<>(key, value);
+        } else {
+            pair.value = value;
         }
     }
 
@@ -48,6 +33,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private static class Pair<K, V> {
+        private final K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public V getValue() {
+            return value;
+        }
     }
 
     private Pair<K, V> getPairByKey(K key) {
