@@ -27,11 +27,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Pair<K, V> pair = getPairByKey(key);
-        if (pair == null) {
-            pairs[size++] = new Pair<>(key, value);
-        } else {
-            pair.value = value;
+        try {
+            Pair<K, V> pair = getPairByKey(key);
+            if (pair == null) {
+                pairs[size++] = new Pair<>(key, value);
+            } else {
+                pair.value = value;
+            }
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Storage is full", e);
         }
     }
 
