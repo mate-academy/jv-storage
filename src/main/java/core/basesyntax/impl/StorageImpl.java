@@ -7,8 +7,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
     private int size;
-    private K key;
-    private V value;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
@@ -18,8 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((keys[i] == null && key == null)
-                    || ((keys[i] == key) || (keys[i] != null && keys[i].equals(key)))) {
+            if (getValueByKey(key) == values[i]) {
                 values[i] = value;
                 return;
             }
@@ -31,13 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if ((keys[i] == null && key == null)
-                    || ((keys[i] == key) || (keys[i] != null && keys[i].equals(key)))) {
-                return values[i];
-            }
-        }
-        return null;
+        return getValueByKey(key);
     }
 
     @Override
@@ -51,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private V info(K key, V value) {
+    private V getValueByKey(K key) {
         for (int i = 0; i < size; i++) {
             if ((keys[i] == null && key == null)
                     || ((keys[i] == key) || (keys[i] != null && keys[i].equals(key)))) {
@@ -61,3 +52,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 }
+
