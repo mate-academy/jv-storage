@@ -1,33 +1,43 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final List<K> listOfKeys = new ArrayList<>();
-    private final List<V> listOfValues = new ArrayList<>();
+    private static final int MAXIMUM_ARRAY_CAPACITY = 10;
+    private final K[] arrayOfKeys;
+    private final V[] arrayOfValues;
+    private int size = 0;
+
+    public StorageImpl() {
+        arrayOfKeys = (K[]) new Object[MAXIMUM_ARRAY_CAPACITY];
+        arrayOfValues = (V[]) new Object[MAXIMUM_ARRAY_CAPACITY];
+    }
 
     @Override
     public void put(K key, V value) {
-        if (listOfKeys.contains(key)) {
-            listOfValues.set(listOfKeys.indexOf(key), value);
-            return;
+        for (int i = 0; i < size; i++) {
+            if (arrayOfKeys[i] == key || key != null && key.equals(arrayOfKeys[i])) {
+                arrayOfValues[i] = value;
+                return;
+            }
         }
-        listOfKeys.add(key);
-        listOfValues.add(value);
+        arrayOfKeys[size] = key;
+        arrayOfValues[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        if (!listOfKeys.contains(key)) {
-            return null;
+        for (int i = 0; i < size; i++) {
+            if (arrayOfKeys[i] == key || key != null && key.equals(arrayOfKeys[i])) {
+                return arrayOfValues[i];
+            }
         }
-        return listOfValues.get(listOfKeys.indexOf(key));
+        return null;
     }
 
     @Override
     public int size() {
-        return listOfKeys.size();
+        return size;
     }
 }
