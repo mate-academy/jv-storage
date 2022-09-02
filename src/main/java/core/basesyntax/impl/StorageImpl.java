@@ -3,38 +3,35 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int MAX_SIZE = 10;
-    private final K[] keysArray = (K[]) new Object[MAX_SIZE];
-    private final V[] valuesArray = (V[]) new Object[MAX_SIZE];
+    private static final int ELEMENT_COUNT = 10;
+    private K[] keys;
+    private V[] values;
     private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[ELEMENT_COUNT];
+        values = (V[]) new Object[ELEMENT_COUNT];
+    }
 
     @Override
     public void put(K key, V value) {
-        int index = getIndex(key);
-        if (index != -1) {
-            valuesArray[index] = (V) value;
-            return;
-        }
-        keysArray[size] = (K) key;
-        valuesArray[size] = (V) value;
-        size++;
-        return;
-    }
-
-    private int getIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (keysArray[i] == key || key != null && key.equals(keysArray[i])) {
-                return i;
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                values[i] = value;
+                return;
             }
         }
-        return -1;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        int index = getIndex(key);
-        if (index != -1) {
-            return valuesArray[index];
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return values[i];
+            }
         }
         return null;
     }
@@ -43,5 +40,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
-
 }
