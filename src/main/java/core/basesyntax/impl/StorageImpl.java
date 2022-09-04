@@ -2,11 +2,9 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-@SuppressWarnings("unchecked")
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_ELEMENTS = 10;
-    private int size = 0;
+    private int size;
     private K[] keyArray;
     private V[] valueArray;
 
@@ -17,11 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size == 0) {
-            keyArray[size] = key;
-            valueArray[size] = value;
-            size++;
-        }
         for (int i = 0; i < size; i++) {
             if ((key != null && key.equals(keyArray[i]))
                     || (key == keyArray[i])) {
