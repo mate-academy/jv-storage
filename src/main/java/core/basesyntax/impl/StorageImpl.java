@@ -4,33 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_ARRAY_CAPACITY = 10;
-    private final K[] arrayOfKeys;
-    private final V[] arrayOfValues;
-    private int size = 0;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        arrayOfKeys = (K[]) new Object[MAXIMUM_ARRAY_CAPACITY];
-        arrayOfValues = (V[]) new Object[MAXIMUM_ARRAY_CAPACITY];
+        keys = (K[]) new Object[MAXIMUM_ARRAY_CAPACITY];
+        values = (V[]) new Object[MAXIMUM_ARRAY_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (arrayOfKeys[i] == key || key != null && key.equals(arrayOfKeys[i])) {
-                arrayOfValues[i] = value;
+            if (equals(keys[i], key)) {
+                values[i] = value;
                 return;
             }
         }
-        arrayOfKeys[size] = key;
-        arrayOfValues[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (arrayOfKeys[i] == key || key != null && key.equals(arrayOfKeys[i])) {
-                return arrayOfValues[i];
+            if (equals(keys[i], key)) {
+                return values[i];
             }
         }
         return null;
@@ -39,5 +39,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean equals(K firstKey, K secondKey) {
+        return firstKey == secondKey || secondKey != null && secondKey.equals(firstKey);
     }
 }
