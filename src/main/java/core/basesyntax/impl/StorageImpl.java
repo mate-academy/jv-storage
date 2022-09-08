@@ -4,33 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private final Pair<K,V>[]storage = (Pair<K,V>[]) new Pair[MAX_CAPACITY];
-    private int size = 0;
+    private final Pair<K, V>[]storage;
+    private int size;
 
-    public static class Pair<K,V> {
-        private K key;
-        private V value;
-
-        public Pair(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-
-        public void setKey(K key) {
-            this.key = key;
-        }
-
-        public void setValue(V value) {
-            this.value = value;
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
-        }
+    public StorageImpl() {
+        storage = (Pair<K, V>[]) new Pair[MAX_CAPACITY];
     }
 
     @Override
@@ -58,5 +36,31 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private static class Pair<K, V> {
+        private K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
     }
 }
