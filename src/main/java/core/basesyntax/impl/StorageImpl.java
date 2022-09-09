@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_CAPACITY = 10;
@@ -9,24 +10,45 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         table = new Entry[MAXIMUM_CAPACITY];
-        size = 0;
+    }
+
+    public static class Entry<K, V> {
+        private K key;
+        private V value;
+
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
     }
 
     @Override
     public void put(K key, V value) {
         Entry<K, V> element = new Entry<>(key, value);
-        for (int i = 0; i < table.length; i++) {
-            // find duplicated key !!!(two null keys is also duplicated)
-            for (int j = 0; j < getSize(); j++) {
-                if (equalKeys(key, table[j].getKey()) && !value.equals(table[j].getValue())) {
-                    table[j].setValue(value);
-                    decreaseSize();
-                }
+        for (int i = 0; i < MAXIMUM_CAPACITY; i++) {
+            if (i > 0 && Objects.equals(key,
+                    table[i - 1].getKey()) && !value.equals(table[i - 1].getValue())) {
+                table[i - 1].setValue(value);
+                return;
             }
             if (table[i] == null) {
                 table[i] = element;
-                increaseSize();
-                break;
+                size++;
+                return;
             }
         }
     }
@@ -37,7 +59,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return null;
         } else {
             for (Entry<K, V> element: table) {
-                if (key == element.getKey() || key != null && key.equals(element.getKey())) {
+                if (Objects.equals(key, element.getKey())) {
                     return element.getValue();
                 }
             }
@@ -49,21 +71,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
-
-    private void increaseSize() {
-        size++;
-    }
-
-    private void decreaseSize() {
-        size--;
-    }
-
-    private int getSize() {
-        return size;
-    }
-
-    private boolean equalKeys(K firstKey, K secondKey) {
-        return firstKey == secondKey || firstKey != null && firstKey.equals(secondKey);
-    }
-
 }
