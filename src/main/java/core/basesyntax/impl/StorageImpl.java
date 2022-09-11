@@ -3,7 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEM_NUMBER = 8;
+    private static final int MAX_ITEM_NUMBER = 10;
     private final Pair<K, V>[] pairs;
     private int size;
 
@@ -23,7 +23,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-
         Pair<K, V> pair = getPairByKey(key);
         return pair == null ? null : pair.value;
     }
