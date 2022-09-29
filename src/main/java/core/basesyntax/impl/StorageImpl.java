@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
     private K[] keys;
     private V[] values;
-    private int arrayLength;
+    private int arraySize;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_STORAGE_SIZE];
@@ -15,20 +15,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < arrayLength; i++) {
+        for (int i = 0; i < arraySize; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
                 values[i] = value;
                 return;
             }
         }
-        keys[arrayLength] = key;
-        values[arrayLength] = value;
-        arrayLength++;
+        keys[arraySize] = key;
+        values[arraySize] = value;
+        arraySize++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < arrayLength; i++) {
+        for (int i = 0; i < arraySize; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return values[i];
             }
@@ -38,6 +38,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return arrayLength;
+        return arraySize;
     }
 }
