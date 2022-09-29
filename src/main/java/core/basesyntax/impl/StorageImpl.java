@@ -3,12 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int ARRAY_BOUND = 10;
     private K[] storageKeys;
     private V[] storageValues;
-    private int storageSize;
-    private int currentIndex;
 
     public StorageImpl() {
         storageKeys = (K[]) new Object[ARRAY_BOUND];
@@ -17,30 +14,38 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (get(key) != null) {
-            storageValues[currentIndex] = value;
-            return;
+        if (indexOf(key) >= 0) {
+            storageKeys[indexOf(key)] = key;
+            storageValues[indexOf(key)] = value;
+        } else {
+            storageKeys[size()] = key;
+            storageValues[size()] = value;
         }
-        storageKeys[storageSize] = key;
-        storageValues[storageSize] = value;
-        storageSize++;
     }
 
     @Override
     public V get(K key) {
-        for (currentIndex = 0; currentIndex < storageKeys.length; currentIndex++) {
-            if (key == storageKeys[currentIndex]) {
-                return storageValues[currentIndex];
-            }
-            if (storageKeys[currentIndex] != null && storageKeys[currentIndex].equals(key)) {
-                return storageValues[currentIndex];
+        return indexOf(key) < 0 ? null : storageValues[indexOf(key)];
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < storageKeys.length; i++) {
+            if (key == storageKeys[i] || (storageKeys[i] != null
+                    && storageKeys[i].equals(key))) {
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     @Override
     public int size() {
-        return storageSize;
+        int i = 0;
+        for (; i < storageValues.length; i++) {
+            if (storageValues[i] == null) {
+                break;
+            }
+        }
+        return i;
     }
 }
