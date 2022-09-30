@@ -4,8 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
-    private final Node<K, V>[] data = new Node[STORAGE_SIZE];
-    private int size = 0;
+    private final Node<K, V>[] data;
+    private int size;
+
+    public StorageImpl() {
+        data = new Node[STORAGE_SIZE];
+        this.size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
