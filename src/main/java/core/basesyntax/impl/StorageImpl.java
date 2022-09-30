@@ -2,7 +2,6 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-@SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int STORAGE_CAPACITY = 10;
     private final Object[] keys;
