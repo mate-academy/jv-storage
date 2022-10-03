@@ -29,7 +29,7 @@ public class StorageData<K, S> {
             return (S) values[defaultIndex];
         }
         for (int i = 1; i <= index; i++) {
-            if (key.equals( keys[i])) {
+            if (key.equals(keys[i])) {
                 return (S) values[i];
             }
         }
