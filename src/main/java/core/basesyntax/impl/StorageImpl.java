@@ -5,19 +5,21 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private int storageSize = 0;
-    private final K[] keyStorage;
-    private final V[] valueStorage;
+    private final Object[] keyStorage;
+    private final Object[] valueStorage;
 
     public StorageImpl() {
-        keyStorage = (K[]) new Object[MAX_ITEMS_NUMBER];
-        valueStorage = (V[]) new Object[MAX_ITEMS_NUMBER];
+        keyStorage = new Object[MAX_ITEMS_NUMBER];
+        valueStorage = new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
-        if (get(key) != null) {
-            valueStorage[getIndex(key)] = value;
-            return;
+        for (int i = 0; i < storageSize; i++) {
+            if (equalsObjects(keyStorage[i], key)) {
+                valueStorage[i] = value;
+                return;
+            }
         }
         keyStorage[storageSize] = key;
         valueStorage[storageSize] = value;
@@ -26,20 +28,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return getIndex(key) == storageSize ? null : valueStorage[getIndex(key)];
+        for (int i = 0; i < storageSize; i++) {
+            if (equalsObjects(keyStorage[i], key)) {
+                return (V) valueStorage[i];
+            }
+        }
+        return null;
     }
 
     @Override
     public int size() {
-        return storageSize;
-    }
-
-    private int getIndex(K key) {
-        for (int i = 0; i < storageSize; i++) {
-            if (equalsObjects(keyStorage[i], key)) {
-                return i;
-            }
-        }
         return storageSize;
     }
 
