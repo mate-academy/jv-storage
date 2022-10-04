@@ -6,7 +6,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
     private static final int DEFAULT_INDEX = 0;
-    private static final int NUMBER_ONE = 1;
+    private static final int INITIAL_INDEX = 1;
     private final Object[] keys = new Object[INITIAL_CAPACITY];
     private final Object[] values = new Object[INITIAL_CAPACITY];
     private int indexCounter = 1;
@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[DEFAULT_INDEX] = value;
             return;
         }
-        for (int i = NUMBER_ONE; i < indexCounter; i++) {
+        for (int i = INITIAL_INDEX; i < indexCounter; i++) {
             if (key.equals(keys[i])) {
                 values[i] = value;
                 return;
@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (key == null) {
             return (V) values[DEFAULT_INDEX];
         }
-        for (int i = NUMBER_ONE; i <= indexCounter; i++) {
+        for (int i = INITIAL_INDEX; i <= indexCounter; i++) {
             if (key.equals(keys[i])) {
                 return (V) values[i];
             }
@@ -42,9 +42,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        if (keys[NUMBER_ONE] == null && values[DEFAULT_INDEX] != null) {
-            return NUMBER_ONE;
+        if (keys[INITIAL_INDEX] == null && values[DEFAULT_INDEX] != null) {
+            return INITIAL_INDEX;
         }
-        return indexCounter - NUMBER_ONE;
+        return indexCounter - INITIAL_INDEX;
     }
 }
