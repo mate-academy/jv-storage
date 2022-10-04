@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPABILITY = 10;
 
-    static class StorageBox<K, V> {
+    private static class StorageBox<K, V> {
         private final K key;
         private V value;
 
@@ -37,10 +37,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         try {
             if (boxes.length >= MAX_CAPABILITY) {
-                throw new StorageOverflowError("Full storage. Impossible to write this data");
+                throw new StorageOverflowException("Full storage. Impossible to write this data");
             }
             addDataInBox(key, value);
-        } catch (StorageOverflowError e) {
+        } catch (StorageOverflowException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -49,7 +49,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         try {
             return (V) getBoxByKey(key).getValue();
-        } catch (KeyContainError e) {
+        } catch (KeyContainException e) {
             System.out.println(e.getMessage());
             return null;
         }
@@ -63,7 +63,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private void addDataInBox(K key, V value) {
         try {
             getBoxByKey(key).setValue(value);
-        } catch (KeyContainError e) {
+        } catch (KeyContainException e) {
             fillStorageBox(key, value);
         }
     }
@@ -77,12 +77,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         boxes = newBoxes.clone();
     }
 
-    private StorageBox getBoxByKey(K key) throws KeyContainError {
+    private StorageBox getBoxByKey(K key) throws KeyContainException {
         for (StorageBox box : boxes) {
             if ((box.getKey() == key) || (box.getKey() != null && box.getKey().equals(key))) {
                 return box;
             }
         }
-        throw new KeyContainError("No such key");
+        throw new KeyContainException("No such key");
     }
 }
