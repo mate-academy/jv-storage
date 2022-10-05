@@ -4,11 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NOT_FOUND = -1;
+
+    private static final int MAX_ITEMS_NUMBER = 10;
     private int size;
     private Pair<K, V> [] items;
 
     public StorageImpl() {
-        items = new Pair[10];
+        items = new Pair[MAX_ITEMS_NUMBER];
     }
 
     @Override
@@ -17,6 +19,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != NOT_FOUND) {
             items[index].setValue(value);
             return;
+        }
+        for (int i = 0; i < items.length; i++) {
+            if (i == items.length - 1) {
+                System.out.println("Array is full");
+            }
         }
         items[size] = new Pair<>(key, value);
         size++;
