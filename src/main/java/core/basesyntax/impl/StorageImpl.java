@@ -6,24 +6,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
 
     private final Container<K, V>[] containers;
-    private int counter;
+    private int queueCounter;
 
     public StorageImpl() {
         containers = new Container[ARRAY_SIZE];
-        counter = 0;
+        queueCounter = 0;
 
     }
 
     @Override
     public void put(K key, V value) {
-        if (counter > ARRAY_SIZE) {
-            counter = 0;
+        if (queueCounter >= ARRAY_SIZE) {
+            throw new RuntimeException("Out of bound of array. Limit is " + ARRAY_SIZE);
         }
         if (get(key) != null) {
             rewriteValueByKey(key, value);
         } else {
-            containers[counter] = new Container<>(key, value, counter);
-            counter++;
+            containers[queueCounter] = new Container<>(key, value, queueCounter);
+            queueCounter++;
         }
     }
 
@@ -33,14 +33,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private Container<K, V> getContainerByKey(K key) {
-        Container<K, V> lookingContainer = null;
+        Container<K, V> existingContainer  = null;
         for (Container<K, V> container : containers) {
             if (container != null
                     && (key == null ? key == container.getKey() : key.equals(container.getKey()))) {
-                lookingContainer = container;
+                existingContainer  = container;
             }
         }
-        return lookingContainer;
+        return existingContainer ;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return counter;
+        return queueCounter;
     }
 
     private static class Container<K, V> {
