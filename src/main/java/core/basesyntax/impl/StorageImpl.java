@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         containers = new Container[ARRAY_SIZE];
         queueCounter = 0;
-
     }
 
     @Override
@@ -33,14 +32,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private Container<K, V> getContainerByKey(K key) {
-        Container<K, V> existingContainer  = null;
+        Container<K, V> existingContainer = null;
         for (Container<K, V> container : containers) {
             if (container != null
                     && (key == null ? key == container.getKey() : key.equals(container.getKey()))) {
-                existingContainer  = container;
+                existingContainer = container;
             }
         }
-        return existingContainer ;
+        return existingContainer;
     }
 
     @Override
