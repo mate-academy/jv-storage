@@ -15,11 +15,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < storageSize; i++) {
-            if (equalsObjects(keyStorage[i], key)) {
-                valueStorage[i] = value;
-                return;
-            }
+        if (containsKey(key, value)) {
+            return;
         }
         keyStorage[storageSize] = key;
         valueStorage[storageSize] = value;
@@ -39,6 +36,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return storageSize;
+    }
+
+    private boolean containsKey(K key, V value) {
+        for (int i = 0; i < storageSize; i++) {
+            if (equalsObjects(keyStorage[i], key)) {
+                valueStorage[i] = value;
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean equalsObjects(Object a, Object b) {
