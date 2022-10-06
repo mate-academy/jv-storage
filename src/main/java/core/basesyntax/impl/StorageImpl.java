@@ -14,31 +14,31 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.values = new Object[SIZE];
     }
 
-    @Override
-    public void put(K key, V value) {
-        int index = -1;
+    private int compareKeys(K key) {
         for (int i = 0; i < elementQuantity; i++) {
             if (Objects.equals(keys[i], key)) {
-                index = i;
-                values[index] = value;
-                break;
+                return i;
             }
         }
+        return -1;
+    }
+
+    @Override
+    public void put(K key, V value) {
+        int index = compareKeys(key);
         if (index == -1) {
             values[elementQuantity] = value;
             keys[elementQuantity] = key;
             elementQuantity++;
+        } else {
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < elementQuantity; i++) {
-            if (Objects.equals(keys[i], key)) {
-                return (V) values[i];
-            }
-        }
-        return null;
+        int index = compareKeys(key);
+        return index >= 0 ? (V) values[index] : null;
     }
 
     @Override
