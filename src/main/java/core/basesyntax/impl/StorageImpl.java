@@ -20,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("Can't add new object to storage, because storage is full!");
         }
         for (int i = 0; i < keyStorage.length; i++) {
-            if ((key != null && key.equals(keyStorage[i]))
+            if (checkKey(key, i)
                     || (count != 0 && key == keyStorage[i]) && valueStorage[i] != null) {
                 valueStorage[i] = value;
                 return;
@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < keyStorage.length; i++) {
-            if (key == keyStorage[i] || (key != null && key.equals(keyStorage[i]))) {
+            if (key == keyStorage[i] || checkKey(key, i)) {
                 return (V) valueStorage[i];
             }
         }
@@ -44,5 +44,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return count;
+    }
+
+    public boolean checkKey(Object key, int i) {
+        return key != null && key.equals(keyStorage[i]);
     }
 }
