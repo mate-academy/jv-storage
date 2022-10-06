@@ -20,11 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             items[index].setValue(value);
             return;
         }
-        for (int i = 0; i < items.length; i++) {
-            if (i == items.length - 1) {
-                System.out.println("Array is full");
-            }
-        }
+
         items[size] = new Pair<>(key, value);
         size++;
     }
@@ -49,5 +45,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private void compareStorage() {
+        if (size == MAX_ITEMS_NUMBER) {
+            throw new RuntimeException("Storage is full");
+        }
     }
 }
