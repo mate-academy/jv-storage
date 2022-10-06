@@ -18,11 +18,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = getKeyIndex(key);
+        if (index == -1) {
+            index = tail;
+            tail++;
+        }
         try {
-            if (index == -1) {
-                index = tail;
-                tail++;
-            }
             keys[index] = key;
             values[index] = value;
         } catch (ArrayIndexOutOfBoundsException e) {
