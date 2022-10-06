@@ -16,21 +16,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (count == 10) {
+        if (count == SIZE) {
             throw new RuntimeException("Can't add new object to storage, because storage is full!");
         }
         for (int i = 0; i < keyStorage.length; i++) {
             if ((key != null && key.equals(keyStorage[i]))
                     || (count != 0 && key == keyStorage[i]) && valueStorage[i] != null) {
                 valueStorage[i] = value;
-                break;
-            } else if (i == keyStorage.length - 1) {
-                keyStorage[count] = key;
-                valueStorage[count] = value;
-                count++;
-                break;
+                return;
             }
         }
+        keyStorage[count] = key;
+        valueStorage[count] = value;
+        count++;
     }
 
     @Override
