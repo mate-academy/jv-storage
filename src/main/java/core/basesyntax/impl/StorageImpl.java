@@ -4,48 +4,46 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private int storageSize = 0;
-    private final Object[] keyStorage;
-    private final Object[] valueStorage;
+    private int size = 0;
+    private final Object[] keys;
+    private final Object[] values;
 
     public StorageImpl() {
-        keyStorage = new Object[MAX_ITEMS_NUMBER];
-        valueStorage = new Object[MAX_ITEMS_NUMBER];
+        keys = new Object[MAX_ITEMS_NUMBER];
+        values = new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
-        if (containsKey(key, value)) {
+        if (containsKey(key) != size) {
+            values[containsKey(key)] = value;
             return;
         }
-        keyStorage[storageSize] = key;
-        valueStorage[storageSize] = value;
-        storageSize++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storageSize; i++) {
-            if (equalsObjects(keyStorage[i], key)) {
-                return (V) valueStorage[i];
-            }
+        if (containsKey(key) != size) {
+            return (V) values[containsKey(key)];
         }
         return null;
     }
 
     @Override
     public int size() {
-        return storageSize;
+        return size;
     }
 
-    private boolean containsKey(K key, V value) {
-        for (int i = 0; i < storageSize; i++) {
-            if (equalsObjects(keyStorage[i], key)) {
-                valueStorage[i] = value;
-                return true;
+    private int containsKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (equalsObjects(keys[i], key)) {
+                return i;
             }
         }
-        return false;
+        return size;
     }
 
     private boolean equalsObjects(Object a, Object b) {
