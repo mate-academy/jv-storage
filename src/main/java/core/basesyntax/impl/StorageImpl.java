@@ -13,19 +13,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (getKeyPosition(key) == -1) {
+        int keyPosition = getKeyPosition(key);
+        if (keyPosition == -1) {
             storage[currentPosition][KEY_ELEMENT] = key;
             storage[currentPosition][VALUE_ELEMENT] = value;
             currentPosition++;
         } else {
-            storage[getKeyPosition(key)][VALUE_ELEMENT] = value;
+            storage[keyPosition][VALUE_ELEMENT] = value;
         }
 
     }
 
     @Override
     public V get(K key) {
-        return (V) (getKeyPosition(key) != -1 ? storage[getKeyPosition(key)][VALUE_ELEMENT] : null);
+        int keyPosition = getKeyPosition(key);
+        return (V) (keyPosition != -1 ? storage[keyPosition][VALUE_ELEMENT] : null);
     }
 
     @Override
