@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if ((key==null && keys[i]==null)||(key!=null && key.equals(keys[i]))){
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
                 return values[i];
             }
         }
@@ -44,18 +44,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public int getKeyIndexInStorage(K key){
-        for(int i=0;i<MAX_ITEMS_NUMBER;i++){
-            if((key==null && keys[i]==null)||(key!=null && key.equals(keys[i]))){
+    public int getKeyIndexInStorage(K key) {
+        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
         return NOTHING_WAS_FOUND;
     }
 
-    private int getFreeCellIndex(){
-        for(int i=0;i<MAX_ITEMS_NUMBER;i++){
-            if(keys[i]==null && values[i]==null){
+    private int getFreeCellIndex() {
+        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+            if (keys[i] == null && values[i] == null) {
                 return i;
             }
         }
