@@ -20,6 +20,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values[index] = value;
         keys[index] = key;
         index++;
+        if (keys[0] == null & values[0] != null) {
+            index = 1;
+        }
     }
 
     @Override
@@ -41,9 +44,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        if (keys[0] == null & values[1] != null) {
-            return 1;
-        }
         return index;
     }
 }
