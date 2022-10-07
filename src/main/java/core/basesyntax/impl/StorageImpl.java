@@ -157,6 +157,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (oldEntry != null) {
                 Entry<K, V> entry = (Entry<K, V>) oldEntry;
                 put(entry.getKey(), entry.getValue());
+                Entry<K, V> next = entry.getNext();
+                while (next != null) {
+                    put(next.getKey(), next.getValue());
+                    next = next.getNext();
+                }
             }
         }
     }
