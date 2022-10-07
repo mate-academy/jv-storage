@@ -20,8 +20,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values[index] = value;
         keys[index] = key;
         index++;
-        if (keys[0] == null & values[0] != null) {
-            index = 1;
+        if (keys[0] == null & values[1] != null) {
+            index--;
         }
     }
 
