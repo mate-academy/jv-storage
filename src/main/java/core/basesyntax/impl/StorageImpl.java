@@ -33,7 +33,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         for (int i = MAX_STORAGE_SIZE; i > 0; i--) {
             if (keys[i - 1] == null & values[i - 1] != null) {
-                index--;
                 return values[i - 1];
             }
         }
@@ -42,6 +41,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
+        if (keys[0] == null & values[1] != null) {
+            return 1;
+        }
         return index;
     }
 }
