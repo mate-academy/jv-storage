@@ -1,61 +1,33 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
+import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
-    private StorageImpl[] storages = new StorageImpl[10];
-
-    public void setKey(K key) {
-        this.key = key;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
-    }
-
-    public K getKey() {
-        return this.key;
-    }
+    private ArrayList<K> keys = new ArrayList<>();
+    private ArrayList<V> values = new ArrayList<>();
 
     @Override
     public void put(K key, V value) {
-        for (StorageImpl<K, V> str : storages) {
-            if (str != null && Objects.equals(str.getKey(), key)) {
-                str.value = value;
-                return;
-            }
+        int index = keys.indexOf(key);
+        if (index == -1) {
+            keys.add(key);
+            values.add(value);
+            return;
         }
-        for (int i = 0; i < storages.length; i++) {
-            if (storages[i] == null) {
-                storages[i] = new StorageImpl<K, V>();
-                storages[i].setKey(key);
-                storages[i].setValue(value);
-                return;
-            }
-        }
+        values.set(index, value);
     }
 
     @Override
     public V get(K key) {
-        for (StorageImpl<K, V> str : storages) {
-            if (str != null && Objects.equals(str.key, key)) {
-                return str.value;
-            }
-        }
-        return null;
+        int index = keys.indexOf(key);
+        return (index == -1) ? null : values.get(index);
     }
 
     @Override
     public int size() {
-        int size = 0;
-        for (StorageImpl<K, V> str : storages) {
-            if (str != null) {
-                size++;
-            }
-        }
-        return size;
+        return keys.size();
     }
 }
