@@ -19,7 +19,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int keyIndex = getKeyIndex(key);
         if (keyIndex != WRONG_KEY) {
             valueArray[keyIndex] = value;
-            keyArray[keyIndex] = key;
         } else if (MAX_SIZE > size) {
             keyArray[size] = key;
             valueArray[size] = value;
