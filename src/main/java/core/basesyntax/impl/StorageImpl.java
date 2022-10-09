@@ -7,7 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private Object[] keyArray;
     private Object[] valueArray;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         keyArray = new Object[MAX_LENGTH];
