@@ -15,60 +15,36 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean flag = false;
-        int neededIndex = 0;
-        if (key == null) {
-            for (int i = 0; i < counter; i++) {
-                if (keys[i].equals("null")) {
-                    flag = true;
-                    neededIndex = i;
-                }
-            }
-        } else {
-            for (int i = 0; i < counter; i++) {
-                if (keys[i].equals(key)) {
-                    flag = true;
-                    neededIndex = i;
-                }
-            }
-        }
-        if (flag) {
-            if (key == null) {
-                values[neededIndex] = value;
-            } else {
-                values[neededIndex] = value;
-            }
-        } else {
-            if (key == null) {
-                keys[counter] = (K) "null";
-            } else {
-                keys[counter] = key;
-            }
+        int index = findIndex(key);
+        if (index < 0) {
+            keys[counter] = key;
             values[counter] = value;
             counter++;
+        } else {
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < counter; i++) {
-                if (keys[i] == "null") {
-                    return values[i];
-                }
-            }
-        } else {
-            for (int i = 0; i < counter; i++) {
-                if (keys[i].equals(key)) {
-                    return values[i];
-                }
-            }
+        int index = findIndex(key);
+        if (index < 0) {
+            return null;
         }
-        return null;
+        return values[index];
     }
 
     @Override
     public int size() {
         return counter;
+    }
+
+    private int findIndex(K key) {
+        for (int i = 0; i < counter; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
