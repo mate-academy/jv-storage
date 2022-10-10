@@ -5,10 +5,11 @@ import core.basesyntax.Storage;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static final int CELL_FOR_NULL = 9;
+    private static final int CELL_FOR_NULL = 0;
+    private static final int START_INDEX = 1;
     private final K[] keys;
     private final V[] values;
-    private int size;
+    private int size = 1;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
@@ -19,10 +20,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         if (key == null && value != null) {
             values[CELL_FOR_NULL] = value;
-            size = size == 0 ? 1 : size;
             return;
         }
-        for (int i = 0; i < size; i++) {
+        for (int i = START_INDEX; i < size; i++) {
             if (key.equals(keys[i])) {
                 values[i] = value;
                 return;
@@ -35,20 +35,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key != null && key.equals(keys[i])) {
-                return values[i];
-            }
-        }
         if (key == null) {
             return values[CELL_FOR_NULL];
         }
-        return values[1];
+        for (int i = START_INDEX; i < size; i++) {
+            if (key.equals(keys[i])) {
+                return values[i];
+            }
+        }
+        return null;
     }
 
     @Override
     public int size() {
-        return size;
+        if (keys[1] == null && values[0] != null) {
+            return 1;
+        }
+        return size - START_INDEX;
     }
 
 }
