@@ -30,14 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size == ARRAYS_ARE_EMPTY) {
             return null;
         }
-        if (key != null) {
-            for (int i = size; i >= 0; i--) {
-                if (key.equals(keys[i - 1])) {
-                    return values[i - 1];
-                }
-            }
-        }
-        return values[findValueWithNullKey(key)];
+        return values[findValue(key)];
     }
 
     @Override
@@ -63,9 +56,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return false;
     }
 
-    private int findValueWithNullKey(K key) {
+    private int findValue(K key) {
         int index = size;
-        for (int i = size - 1; i > 0; i--) {
+        for (int i = size; i >= 0; i--) {
+            if (key != null) {
+                if (key.equals(keys[i])) {
+                    index = i;
+                    break;
+                }
+            }
             if (keys[i] == key & values[i] != null) {
                 index = i;
                 break;
