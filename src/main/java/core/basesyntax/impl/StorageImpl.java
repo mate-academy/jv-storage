@@ -15,10 +15,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        int index = findIndex(key);
+
         if (get(key) != null) {
-            int index = findIndex(key);
-            keyArray[findIndex(key)] = key;
-            valueArray[findIndex(key)] = value;
+            keyArray[index] = key;
+            valueArray[index] = value;
             return;
         }
         keyArray[size] = key;
