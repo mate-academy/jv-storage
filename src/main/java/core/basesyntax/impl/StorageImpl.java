@@ -17,8 +17,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (canAddWithSameKey(key, value)) {
-            return;
+        if (canAddWithSameKey(key)) {
+            if (key != null && key.equals(keys[size - 1])) {
+                keys[size - 1] = key;
+                values[size - 1] = value;
+                return;
+            }
+            if (keys[size - 1] == null) {
+                values[size] = value;
+                return;
+            }
         }
         keys[size] = key;
         values[size] = value;
@@ -30,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size == ARRAYS_ARE_EMPTY) {
             return null;
         }
-        return values[findValue(key)];
+        return findValue(key);
     }
 
     @Override
@@ -38,38 +46,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean canAddWithSameKey(K key, V value) {
+    private boolean canAddWithSameKey(K key) {
         if (size != ARRAYS_ARE_EMPTY) {
-            if (key != null) {
-                if (key.equals(keys[size - 1])) {
-                    keys[size - 1] = key;
-                    values[size - 1] = value;
-                    return true;
-                }
-            } else {
-                if (keys[size - 1] == null) {
-                    values[size] = value;
-                    return true;
-                }
-            }
+            return  key != null && key.equals(keys[size - 1])
+                    || key == null && keys[size - 1] == null;
         }
         return false;
     }
 
-    private int findValue(K key) {
+    private V findValue(K key) {
         int index = size;
-        for (int i = size; i >= 0; i--) {
-            if (key != null) {
-                if (key.equals(keys[i])) {
-                    index = i;
-                    break;
-                }
-            }
-            if (keys[i] == key & values[i] != null) {
-                index = i;
-                break;
+        for (; index >= 0; index--) {
+            if (key != null && key.equals(keys[index])
+                    || keys[index] == key & values[index] != null) {
+                return values[index];
             }
         }
-        return index;
+        return values[size];
     }
 }
