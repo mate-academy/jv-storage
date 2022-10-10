@@ -5,6 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private static final int START_SIZE = 0;
+    private static final int MISSING_KEY = -1;
     private K[] key;
     private V[] value;
     private int size;
@@ -17,24 +18,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (this.size == START_SIZE || get(key) == null) {
+        if (get(key) == null) {
             this.key[size] = key;
             this.value[size] = value;
             size++;
         } else {
-            this.value[this.indexOf(get(key))] = value;
+            this.value[indexOf(key)] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < this.size + 1; i++) {
-            if (key == null && this.key[i] == null) {
-                return this.value[i];
-            }
-            if (this.key[i] != null && this.key[i].equals(key)) {
-                return this.value[i];
-            }
+        int index = indexOf(key);
+        if (index != MISSING_KEY) {
+            return this.value[index];
         }
         return null;
     }
@@ -44,13 +41,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return this.size;
     }
 
-    private int indexOf(V value) {
-        int index = -1;
+    private int indexOf(K key) {
         for (int i = 0; i < this.size; i++) {
-            if (this.value[i].equals(value)) {
-                index = i;
+            if (this.key[i] == key || (key != null && key.equals(this.key[i]))) {
+                return i;
             }
         }
-        return index;
+        return MISSING_KEY;
     }
 }
