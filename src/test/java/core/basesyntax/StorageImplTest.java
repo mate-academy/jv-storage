@@ -111,14 +111,10 @@ public class StorageImplTest {
         storage.put(secondCat, elementTwo);
         storage.put(sameFirstCat, elementThree);
 
-        Assert.assertEquals(
-            "With two elements added with the same key, "
-                + "the value should be rewritten",
-            elementThree,
-            storage.get(firstCat));
         Assert.assertEquals("With two elements added with the same key, "
-                + "the storage size should be 2",
-            2, storage.size());
+                + "the value should be rewritten", elementThree, storage.get(firstCat));
+        Assert.assertEquals("With two elements added with the same key, "
+                + "the storage size should be 2", 2, storage.size());
     }
 
     @Test
