@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_POINT = 10;
@@ -48,24 +47,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return startPoint;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        StorageImpl<?, ?> storage = (StorageImpl<?, ?>) o;
-        return Arrays.equals(keys, storage.keys) && Arrays.equals(values, storage.values);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Arrays.hashCode(keys);
-        result = 31 * result + Arrays.hashCode(values);
-        return result;
     }
 }
