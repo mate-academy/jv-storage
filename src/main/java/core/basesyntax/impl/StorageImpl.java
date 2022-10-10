@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static final int ARRAYS_ARE_EMPTY = 0;
+    private static final int CELL_FOR_NULL = 9;
     private final K[] keys;
     private final V[] values;
     private int size;
@@ -17,14 +17,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (canAddWithSameKey(key)) {
-            if (key != null && key.equals(keys[size - 1])) {
-                keys[size - 1] = key;
-                values[size - 1] = value;
-                return;
-            }
-            if (keys[size - 1] == null) {
-                values[size] = value;
+        if (key == null && value != null) {
+            values[CELL_FOR_NULL] = value;
+            size = size == 0 ? 1 : size;
+            return;
+        }
+        for (int i = 0; i < size; i++) {
+            if (key.equals(keys[i])) {
+                values[i] = value;
                 return;
             }
         }
@@ -35,10 +35,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (size == ARRAYS_ARE_EMPTY) {
-            return null;
+        for (int i = 0; i < size; i++) {
+            if (key != null && key.equals(keys[i])) {
+                return values[i];
+            }
         }
-        return findValue(key);
+        if (key == null) {
+            return values[CELL_FOR_NULL];
+        }
+        return values[1];
     }
 
     @Override
@@ -46,21 +51,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean canAddWithSameKey(K key) {
-        if (size != ARRAYS_ARE_EMPTY) {
-            return key != null && key.equals(keys[size - 1])
-                    || key == null && keys[size - 1] == null;
-        }
-        return false;
-    }
-
-    private V findValue(K key) {
-        for (int index = size; index >= 0; index--) {
-            if (key != null && key.equals(keys[index])
-                    || keys[index] == key & values[index] != null) {
-                return values[index];
-            }
-        }
-        return values[size - 1];
-    }
 }
