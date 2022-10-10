@@ -9,14 +9,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size = 0;
 
     public StorageImpl() {
-        this.keys = (K[])new Object[10];
-        this.values = (V[])new Object[10];
+        this.keys = (K[])new Object[MAX_SIZE];
+        this.values = (V[])new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (isExist(key)) {
-            rewrite(key, value);
+        if (get(key) != null) {
+            values[indexOf(key)] = value;
             return;
         }
         if (size != MAX_SIZE - 1) {
@@ -26,28 +26,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    public void rewrite(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (key == null && keys[i] == null) {
-                values[i] = value;
-            }
-            if (key != null && keys[i].equals(key)) {
-                values[i] = value;
-            }
-        }
-    }
-
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == null && keys[i] == null) {
-                return values[i];
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
-                return values[i];
-            }
-        }
-        return null;
+        return indexOf(key) < 0 ? null : values[indexOf(key)];
     }
 
     @Override
@@ -55,15 +36,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public boolean isExist(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == null && keys[i] == null) {
-                return true;
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
-                return true;
+    private int indexOf(K key) {
+        for (int i = 0; i < keys.length; i++) {
+            if (key == null && keys[i] == null || (keys[i] != null
+                    && keys[i].equals(key))) {
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }
