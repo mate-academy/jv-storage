@@ -40,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int findIndex(K key) {
         for (int i = 0; i < keyArray.length; i++) {
             if (key == keyArray[i] || (keyArray[i] != null
-            && keyArray[i].equals(key))) {
+                    && keyArray[i].equals(key))) {
                 return i;
             }
         }
