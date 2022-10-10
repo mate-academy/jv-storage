@@ -6,7 +6,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
     private final Object[] arrayK;
     private final Object[] arrayV;
-    private int arrayIndex;
+    private int index;
+    private int size;
 
     public StorageImpl() {
         arrayK = new Object[MAX_ELEMENTS];
@@ -15,32 +16,33 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            arrayK[arrayIndex] = null;
+        getIndex(key);
+        arrayK[index] = key;
+        arrayV[index] = value;
+        index++;
+        size++;
+
+    }
+
+    public int getIndex(K key) {
+        for (int i = 0; i < arrayK.length; i++) {
+            if (key == arrayK[i] || key != null && key.equals(arrayK[i])) {
+                index = i;
+                return index;
+            }
         }
-        if (arrayIndex > 0 && (key == arrayK[arrayIndex - 1]
-                || key != null && key.equals(arrayK[arrayIndex - 1]))) {
-            arrayK[arrayIndex - 1] = key;
-            arrayV[arrayIndex - 1] = value;
-        } else {
-            arrayK[arrayIndex] = key;
-            arrayV[arrayIndex] = value;
-            arrayIndex++;
-        }
+        return 0;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < arrayK.length; i++) {
-            if (key == arrayK[i] || key != null && key.equals(arrayK[i])) {
-                return (V) arrayV[i];
-            }
-        }
-        return null;
+        getIndex(key);
+        size--;
+        return (V) arrayV[index];
     }
 
     @Override
     public int size() {
-        return arrayIndex;
+        return size;
     }
 }
