@@ -55,13 +55,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private V findValue(K key) {
-        int index = size;
-        for (; index >= 0; index--) {
+        for (int index = size; index >= 0; index--) {
             if (key != null && key.equals(keys[index])
                     || keys[index] == key & values[index] != null) {
                 return values[index];
             }
         }
-        return values[size];
+        return values[size - 1];
     }
 }
