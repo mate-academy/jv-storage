@@ -48,7 +48,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean canAddWithSameKey(K key) {
         if (size != ARRAYS_ARE_EMPTY) {
-            return  key != null && key.equals(keys[size - 1])
+            return key != null && key.equals(keys[size - 1])
                     || key == null && keys[size - 1] == null;
         }
         return false;
