@@ -6,7 +6,6 @@ import java.util.Objects;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_MAX_VALUE = 10;
     private int size;
-
     private final K[] keyArray;
     private final V[] valueArray;
 
