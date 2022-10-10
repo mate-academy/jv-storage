@@ -4,77 +4,48 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    private static final int INDEX_NOT_FOUND = -1;
     private int size;
-    private int lastElement;
     private K[] keys;
     private V[] values;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
         this.size = 0;
-        this.lastElement = -1;
         this.keys = (K[]) new Object[MAX_SIZE];
         this.values = (V[]) new Object[MAX_SIZE];
     }
 
     private void changeExistingKeyValue(K key, V value) {
-        int keyIndex = getIndex(key);
-        values[keyIndex] = value;
+        values[indexOf(key)] = value;
     }
 
-    private boolean isKeyExist(K key) {
-        if (size == 0 || lastElement == -1) {
-            return false;
+    private int indexOf(K key) {
+        if (size == 0) {
+            return INDEX_NOT_FOUND;
         }
-        if (key == null && lastElement >= 0) {
-            for (int i = 0; i <= lastElement; i++) {
-                if (keys[i] == null) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        boolean finded = false;
-        for (K existingKey : keys) {
-            if (key.equals(existingKey)) {
-                finded = true;
-                break;
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return i;
             }
         }
-        return finded;
-    }
-
-    private int getIndex(K key) {
-        if (isKeyExist(key)) {
-            int index = 0;
-            for (int i = 0; i <= lastElement; i++) {
-                if (key == null && keys[i] == null) {
-                    break;
-                } else if (keys[i] != null && keys[i].equals(key)) {
-                    break;
-                }
-                index++;
-            }
-            return index;
-        }
-        return -1;
+        return INDEX_NOT_FOUND;
     }
 
     @Override
     public void put(K key, V value) {
-        if (isKeyExist(key)) {
+        if (indexOf(key) != INDEX_NOT_FOUND) {
             changeExistingKeyValue(key, value);
             return;
         }
-        keys[lastElement + 1] = key;
-        values[lastElement + 1] = value;
-        lastElement++;
-        size++;
+        keys[size] = key;
+        values[size++] = value;
     }
 
     @Override
     public V get(K key) {
-        return isKeyExist(key)
-               ? values[getIndex(key)]
+        return indexOf(key) != INDEX_NOT_FOUND
+               ? values[indexOf(key)]
                : null;
     }
 
