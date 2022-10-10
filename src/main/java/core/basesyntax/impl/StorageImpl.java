@@ -8,6 +8,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final V[] values;
     private int size;
 
+
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ITEMS_NUMBER];
         values = (V[]) new Object[MAX_ITEMS_NUMBER];
