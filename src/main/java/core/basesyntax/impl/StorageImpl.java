@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private Object[] keys;
     private Object[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         this.keys = new Object[MAX_ITEMS_NUMBER];
