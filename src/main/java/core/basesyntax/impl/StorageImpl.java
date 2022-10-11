@@ -23,7 +23,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         } else {
-            size += values[keyIndex] == null ? 1 : 0;
             values[keyIndex] = value;
         }
     }
@@ -39,8 +38,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public int getKeyIndexInStorage(K key) {
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+    private int getKeyIndexInStorage(K key) {
+        for (int i = 0; i < size; i++) {
             if ((key == keys[i]) || (key != null && key.equals(keys[i]))) {
                 return i;
             }
