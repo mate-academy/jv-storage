@@ -7,11 +7,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS_NUMBER = 10;
     private Object[] keys;
     private Object[] values;
-    private int numberOfElements = 0;
+    private int numberOfElements;
 
     public StorageImpl() {
-        this.keys = new Object[MAX_ELEMENTS_NUMBER];
-        this.values = new Object[MAX_ELEMENTS_NUMBER];
+        keys = new Object[MAX_ELEMENTS_NUMBER];
+        values = new Object[MAX_ELEMENTS_NUMBER];
+        numberOfElements = 0;
     }
 
     @Override
