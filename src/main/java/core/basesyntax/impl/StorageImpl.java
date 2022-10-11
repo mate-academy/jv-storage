@@ -1,42 +1,43 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Object[] keys = new Object[10];
-    private Object[] values = new Object[10];
-    private int size;
+    private static final int MAX_ITEMS_NUMBER = 10;
+    private Object[] keys;
+    private Object[] values;
+    private int size = 0;
+
+    public StorageImpl() {
+        this.keys = new Object[MAX_ITEMS_NUMBER];
+        this.values = new Object[MAX_ITEMS_NUMBER];
+    }
+
+    private int indexOfKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null && key == null || (key != null && key.equals((K) keys[i]))) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.length; i++) {
-            if (Objects.equals((K) keys[i], key)) {
-                values[i] = value;
-                if (size == 0) {
-                    size++;
-                }
-                return;
-            }
+        int indexOfKey = indexOfKey(key);
+        if (indexOfKey == -1) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+            return;
         }
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && values[i] == null) {
-                keys[i] = key;
-                values[i] = value;
-                size++;
-                return;
-            }
-        }
+        values[indexOfKey] = value;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (Objects.equals((K) keys[i], key)) {
-                return (V) values[i];
-            }
-        }
-        return null;
+        int indexOfKey = indexOfKey(key);
+        return (indexOfKey == -1) ? null : (V) values[indexOfKey];
     }
 
     @Override
