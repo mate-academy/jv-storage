@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
@@ -16,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public int findIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(key, keyArray[i])) {
+            if (key == keyArray[i] || key != null && key.equals(keyArray[i])) {
                 return i;
             }
         }
@@ -25,9 +24,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = findIndex(key);
         if (findIndex(key) >= 0) {
-            valueArray[index] = value;
+            valueArray[findIndex(key)] = value;
             return;
         }
         if (size < MAX_SIZE) {
