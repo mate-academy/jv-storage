@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (createStorageCell(key) != BORDER){
+        if (createStorageCell(key) != BORDER) {
             this.value[createStorageCell(key)] = value;
         } else {
             this.key[size] = key;
