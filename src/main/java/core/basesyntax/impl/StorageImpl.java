@@ -5,7 +5,6 @@ import core.basesyntax.Storage;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static final int CELL_FOR_NULL = 0;
     private static final int START_INDEX = 1;
     private final K[] keys;
     private final V[] values;
@@ -18,15 +17,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        int i = indexOFkey(key);
         if (key == null && value != null) {
-            values[CELL_FOR_NULL] = value;
+            values[i] = value;
             return;
         }
-        for (int i = START_INDEX; i < size; i++) {
-            if (key.equals(keys[i])) {
-                values[i] = value;
-                return;
-            }
+        if (key != null && key.equals(keys[i])) {
+            values[i] = value;
+            return;
         }
         keys[size] = key;
         values[size] = value;
@@ -35,15 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            return values[CELL_FOR_NULL];
-        }
-        for (int i = START_INDEX; i < size; i++) {
-            if (key.equals(keys[i])) {
-                return values[i];
-            }
-        }
-        return null;
+        return values[indexOFkey(key)];
     }
 
     @Override
@@ -54,4 +44,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size - START_INDEX;
     }
 
+    private int indexOFkey(K key) {
+        if (key != null) {
+            for (int i = START_INDEX; i < size; i++) {
+                if (key.equals(keys[i])) {
+                    return i;
+                }
+            }
+        }
+        return 0;
+    }
 }
