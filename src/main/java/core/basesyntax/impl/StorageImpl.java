@@ -4,7 +4,6 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_STORAGE_SIZE = 15;
-    private static final int MINIMUM_STORAGE_SIZE = 5;
     private static final int DEFAULT_STORAGE_GROW_FACTOR = 1;
     private static final double DEFAULT_LOAD_CAPACITY = 0.5;
     private int storageSize;
@@ -25,11 +24,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public StorageImpl(int storageSize) {
-        if (storageSize <= MINIMUM_STORAGE_SIZE) {
-            throw new IllegalArgumentException("Can't create "
-                    + "Storage with size less than or equal "
-                    + MINIMUM_STORAGE_SIZE);
-        }
         this.storageSize = storageSize;
         currentSize = 0;
         this.entries = new Object[storageSize];
