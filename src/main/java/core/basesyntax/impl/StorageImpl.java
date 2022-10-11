@@ -6,12 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
     private final K[] keys;
     private final V[] values;
-    private int countAmountOfObjectsAdded;
+    private int amountOfAddedObjects;
 
     public StorageImpl() {
-        keys = (K[]) new Object[STORAGE_SIZE];
-        values = (V[]) new Object[STORAGE_SIZE];
-        countAmountOfObjectsAdded = 0;
+        this.keys = (K[]) new Object[STORAGE_SIZE];
+        this.values = (V[]) new Object[STORAGE_SIZE];
+        this.amountOfAddedObjects = 0;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         keys[size()] = key;
         values[size()] = value;
-        countAmountOfObjectsAdded++;
+        amountOfAddedObjects++;
     }
 
     @Override
@@ -39,6 +39,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return countAmountOfObjectsAdded;
+        return amountOfAddedObjects;
     }
 }
