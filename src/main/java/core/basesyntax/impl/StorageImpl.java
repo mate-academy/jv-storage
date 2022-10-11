@@ -4,30 +4,28 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
-    private K key;
-    private V value;
-    private int count = 0;
+    private int count;
     private K[] keys;
     private V[] values;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[STORAGE_SIZE];
         this.values = (V[]) new Object[STORAGE_SIZE];
+        this.count = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        if (indexOfKey(keys, key) == -1 || key == null && get(key) != null) {
+        if (indexOfKey(key) == -1) {
             keys[count] = key;
             values[count] = value;
             count = count + 1;
-        } else {
-            values[indexOfKey(keys, key)] = value;
         }
+        values[indexOfKey(key)] = value;
     }
 
-    private int indexOfKey(K[] keys, K key) {
-        for (int i = 0; i < keys.length; i++) {
+    private int indexOfKey(K key) {
+        for (int i = 0; i < count; i++) {
             if (keys[i] == key || key != null && key.equals(keys[i])) {
                 return i;
             }
@@ -37,13 +35,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(Object key) {
-        int indexByKey = 0;
-        for (int i = 0; i < count; i++) {
-            if (keys[i] == key || key != null && key.equals(keys[i])) {
-                indexByKey = i;
-            }
+        if (indexOfKey((K) key) != -1) {
+            return values[indexOfKey((K) key)];
         }
-        return values[indexByKey];
+        return null;
     }
 
     @Override
