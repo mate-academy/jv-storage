@@ -1,49 +1,62 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int STORAGE_SIZE = 10;
     private K key;
     private V value;
-    private List<K> keys = new ArrayList();
-    private List<V> values = new ArrayList<>();
+    private int count = 0;
+    private K[] keys;
+    private V[] values;
 
-    @Override
-    public void put(K key, V value) {
-        if (!keys.contains(key)) {
-            this.key = key;
-            this.value = value;
-            keys.add(key);
-            values.add(value);
-        } else {
-            int indexOfValueToBeRewritten = values.indexOf(keys.indexOf(key));
-            values.add(indexOfValueToBeRewritten + 1, value);
-        }
+    public StorageImpl() {
+        this.keys = (K[]) new Object[STORAGE_SIZE];
+        this.values = (V[]) new Object[STORAGE_SIZE];
     }
 
     @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(keys.get(0) + ", " + values.get(0));
-        for (int i = 1; i < keys.size(); i++) {
-            stringBuilder.append("\n").append(keys.get(i) + ", " + values.get(i));
+    public void put(K key, V value) {
+        if (indexOfKey(keys, key) == -1 || key == null && get(key) != null) {
+            keys[count] = key;
+            values[count] = value;
+            count = count + 1;
+        } else {
+            values[indexOfKey(keys, key)] = value;
         }
-        return stringBuilder.toString();
+    }
+
+    private int indexOfKey(K[] keys, K key) {
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i] == key || key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public V get(Object key) {
-        if (!keys.contains(key)) {
-            return null;
-        } else {
-            return values.get(keys.indexOf(key));
+        int indexByKey = 0;
+        for (int i = 0; i < count; i++) {
+            if (keys[i] == key || key != null && key.equals(keys[i])) {
+                indexByKey = i;
+            }
         }
+        return values[indexByKey];
     }
 
     @Override
     public int size() {
-        return keys.size();
+        return count;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            sb.append(keys[i]).append(", ").append(values[i]).append("\n");
+        }
+        return sb.toString();
     }
 }
