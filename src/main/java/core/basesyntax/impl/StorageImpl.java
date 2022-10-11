@@ -3,10 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ELEMENTS = 10;
+    private static final int MAX_ELEMENTS = 5;
     private final Object[] arrayK;
     private final Object[] arrayV;
-    private int index;
     private int size;
 
     public StorageImpl() {
@@ -16,33 +15,37 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        getIndex(key);
-        arrayK[index] = key;
-        arrayV[index] = value;
-        index++;
-        size++;
-
-    }
-
-    public int getIndex(K key) {
-        for (int i = 0; i < arrayK.length; i++) {
-            if (key == arrayK[i] || key != null && key.equals(arrayK[i])) {
-                index = i;
-                return index;
-            }
+        if (getIndex(key) == -1) {
+            arrayK[size] = key;
+            arrayV[size] = value;
+        } else {
+            int index = getIndex(key);
+            arrayK[index] = key;
+            arrayV[index] = value;
         }
-        return 0;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        getIndex(key);
+        if (getIndex(key) == -1) {
+            return null;
+        }
         size--;
-        return (V) arrayV[index];
+        return (V) arrayV[getIndex(key)];
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private int getIndex(K key) {
+        for (int i = 0; i < arrayK.length; i++) {
+            if (key == arrayK[i] || key != null && key.equals(arrayK[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
