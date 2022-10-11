@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 10;
+    private static final int MAX_SIZE = 11;
     private static final int START_INDEX = 1;
     private static final int UNEXPECTED_KEY = -1;
     private final K[] keys;
