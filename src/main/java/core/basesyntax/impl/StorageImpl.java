@@ -39,7 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         if (keys[1] == null && values[0] != null) {
-            return 1;
+            return size;
         }
         return size - START_INDEX;
     }
