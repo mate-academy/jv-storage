@@ -6,31 +6,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private final K[] keys = (K[]) new Object[10];
     private final V[] values = (V[]) new Object[10];
-    private int count = 0;
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keys.length; i++) {
-            if (keys[i] != null && keys[i].equals(key)
-                    || keys[i] == null && keys[i] == key && i < count) {
+            if (key == keys[i] && i < size || key != null && key.equals(keys[i])) {
                 values[i] = value;
                 return;
             }
         }
-        keys[count] = key;
-        values[count] = value;
-        count++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            try {
-                if (key == null && keys[i] == key || keys[i].equals(key)) {
-                    return values[i];
-                }
-            } catch (NullPointerException e) {
-                System.out.println("the key does not exist");
+            if (keys[i] == key || key != null && key.equals(keys[i])) {
+                return values[i];
             }
         }
         return null;
@@ -38,6 +33,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return count;
+        return size;
     }
 }
