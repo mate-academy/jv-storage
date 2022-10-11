@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_LENGTH = 10;
+    private static final int NO_KEY = -1;
     private Object[] keys;
     private Object[] values;
     private int size;
@@ -14,13 +15,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.size = 0;
     }
 
-    @Override
-    public void put(K key, V value) {
+    private int getCondition(K key) {
         for (int i = 0; i < size; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
-                values[i] = value;
-                return;
+                return i;
             }
+        }
+        return NO_KEY;
+    }
+
+    @Override
+    public void put(K key, V value) {
+        if (getCondition(key) != NO_KEY) {
+            values[getCondition(key)] = value;
+            return;
         }
         keys[size] = key;
         values[size] = value;
@@ -29,10 +37,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
-                return (V) values[i];
-            }
+        if (getCondition(key) != NO_KEY) {
+            return (V) values[getCondition(key)];
         }
         return null;
     }
