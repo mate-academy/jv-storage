@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int createStorageCell(K key) {
         for (int i = 0; i < size(); i++) {
-            if (key != null && key.equals(this.key[i])) {
+            if (key == this.key[i] || key != null && key.equals(this.key[i])) {
                 return i;
             }
         }
