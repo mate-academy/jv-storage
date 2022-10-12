@@ -20,11 +20,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return size;
+        return null;
     }
 
     public void put(K key, V value) {
-        if (indexOfKey(key) != size) {
+        if (indexOfKey(key) != null) {
             valuesList[indexOfKey(key)] = value;
         } else {
             keysList[size] = key;
@@ -35,7 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return (V) valuesList[indexOfKey(key)];
+        return indexOfKey(key) != null ? (V) valuesList[indexOfKey(key)] : null;
     }
 
     @Override
