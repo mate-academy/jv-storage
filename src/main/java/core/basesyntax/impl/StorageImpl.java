@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-/*dont shure*/
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int BORDER = -1;
