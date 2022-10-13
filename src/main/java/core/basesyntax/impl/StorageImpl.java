@@ -7,33 +7,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Pair[] pairs = new Pair[STORAGE_SIZE];
     private int size;
 
-
     public StorageImpl() {
         this.size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < pairs.length; i++) {
-            if (key != null && pairs[i].getKey().equals(key) && !key.equals(0)) {
-                Pair updateItem = pairs[i];
-                updateItem.setValue(value);
-                pairs[i] = updateItem;
-                return;
-            }
+        Pair<K, V> pair = getPairFromKey(key);
+        if (pair != null) {
+            pair.setValue(value);
+            return;
         }
-        Pair pair = new Pair(key, value);
-        pairs[size] = pair;
+
+        Pair pair1 = new Pair(key, value);
+        pairs[size] = pair1;
         size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < pairs.length; i++) {
-            if (key != null && pairs[i].getKey().equals(key)) {
-                Pair value = pairs[i];
-                return (V) value.getValue();
-            }
+        Pair<K, V> pair = getPairFromKey(key);
+        if (pair != null) {
+            return pair.getValue();
         }
         return null;
     }
@@ -41,5 +36,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private Pair<K, V> getPairFromKey(K key) {
+        for (int i = 0; i < size; i++) {
+            Pair<K, V> pair = pairs[i];
+            if (pair.getKey() == key || pair.getKey() != null && pair.getKey().equals(key)) {
+                return pair;
+            }
+        }
+        return null;
     }
 }
