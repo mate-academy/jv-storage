@@ -4,8 +4,9 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
-    private int size;
     private final Pair[] pairs = new Pair[STORAGE_SIZE];
+    private int size;
+
 
     public StorageImpl() {
         this.size = 0;
