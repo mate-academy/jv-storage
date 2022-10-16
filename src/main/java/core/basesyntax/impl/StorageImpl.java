@@ -7,27 +7,31 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INVALID_VALUE = -1;
     private Object[] key;
     private Object[] value;
-    private int storageSize = 0;
-
+    private int storageSize;
 
     public StorageImpl() {
-        Object[] key = new Object[MAX_STORAGE_SIZE];
-        Object[] value = new Object[MAX_STORAGE_SIZE];
+        this.key = new Object[MAX_STORAGE_SIZE];
+        this.value = new Object[MAX_STORAGE_SIZE];
+        storageSize = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        int findIndex = findIndex(key);
-        this.value[findIndex] = value;
-        this.key[findIndex] = key;
-        if (findIndex == storageSize) {
-            storageSize++;
+        if (findIndex(key) >= 0 && this.value[findIndex(key)] != null) {
+            this.value[findIndex(key)] = value;
+            return;
         }
+        this.value[storageSize] = value;
+        this.key[storageSize] = key;
+        storageSize++;
     }
 
     @Override
     public V get(K key) {
-        return (V) value[findIndex(key)];
+        if (findIndex(key) >= 0) {
+            return (V) value[findIndex(key)];
+        }
+        return null;
     }
 
     @Override
@@ -37,7 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndex(K key) {
         for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
-            if (this.key[i] == key || key != null && key.equals(this.key[i])) {
+            if ((this.key[i] == null && key == null) || (key != null && key.equals(this.key[i]))) {
                 return i;
             }
         }
