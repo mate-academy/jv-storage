@@ -5,16 +5,17 @@ public class Box<K, V> {
     private V value;
 
     public Box(K key, V value) {
-        this.key =  key;
-        this.value =  value;
+        this.key = key;
+        this.value = value;
     }
 
     public K getKey() {
+
         return key;
     }
 
     public void setKey(K key) {
-        if(key != null) {
+        if (key != null) {
             this.key = key;
         }
     }
@@ -24,7 +25,7 @@ public class Box<K, V> {
     }
 
     public void setValue(V value) {
-        if(value != null) {
+        if (value != null) {
             this.value = value;
         }
     }
