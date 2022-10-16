@@ -45,7 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (item.getKey() == key && key == null) {
                 return (V) item.getValue();
             }
-
             if (item.getKey() != null && item.getKey().equals(key)
                     || item.getKey() == key && key == null) {
                 return (V) item.getValue();
