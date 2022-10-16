@@ -42,9 +42,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (Box item : storage) {
-            if (item.getKey() == key && key == null) {
-                return (V) item.getValue();
-            }
             if (item.getKey() != null && item.getKey().equals(key)
                     || item.getKey() == key && key == null) {
                 return (V) item.getValue();
