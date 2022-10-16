@@ -26,8 +26,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         Box box = new Box(key, value);
         if (box.getValue() == null) {
-
             return;
+        }
+        if (storage.size() == 10) {
+            System.out.println("Sorry, storage is full! Can't add item!");
         }
         if (getIndex(key) >= 0) {
             int i = getIndex(key);
