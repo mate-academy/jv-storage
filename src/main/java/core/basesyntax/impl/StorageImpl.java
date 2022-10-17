@@ -2,7 +2,7 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-public class StorageImpl< K, V > implements Storage< K, V > {
+public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE = 10;
     private final K[] keys;
     private final V[] values;
