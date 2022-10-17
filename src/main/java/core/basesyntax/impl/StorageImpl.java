@@ -11,11 +11,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         final byte MAX_SIZE = 10;
         Pair pair = new Pair(key, value);
-        if (pair.getValue() == null) {
+        if (pair.getValue() == null || storage.size() == MAX_SIZE) {
             return;
-        }
-        if (storage.size() == MAX_SIZE) {
-            System.out.println("Sorry, storage is full! Can't add item!");
         }
         if (getIndex(key) >= 0) {
             int i = getIndex(key);
