@@ -2,12 +2,11 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE = 10;
     private final K[] keys;
     private final V[] values;
-    private  int size = 0;
+    private int size = 0;
 
     public StorageImpl() {
         keys = (K[]) new Object[SIZE];
@@ -41,7 +40,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return index;
     }
 
-
     @Override
     public V get(K key) {
         int index = findIndex(key);
@@ -51,9 +49,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return values[index];
     }
 
-
     @Override
-    public int size(){
+    public int size() {
         return size;
     }
 }
