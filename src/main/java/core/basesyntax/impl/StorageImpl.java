@@ -6,6 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final byte MAX_SIZE = 10;
     private int size;
     private Pair[] storage = new Pair[MAX_SIZE];
+
     @Override
     public void put(K key, V value) {
         Pair pair = new Pair(key, value);
