@@ -1,33 +1,34 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
-    private List<Pair> storage = new ArrayList<>();
+    final byte MAX_SIZE = 10;
+    private int size = 0;
+    private Pair[] storage = new Pair[MAX_SIZE];
     @Override
     public void put(K key, V value) {
-        final byte MAX_SIZE = 10;
         Pair pair = new Pair(key, value);
-        if (pair.getValue() == null || storage.size() == MAX_SIZE) {
+        if (size() == MAX_SIZE) {
+            throw new RuntimeException("Max size of storage is " + MAX_SIZE);
+        }
+        if (pair.getValue() == null) {
             return;
         }
         if (getIndex(key) >= 0) {
             int i = getIndex(key);
-            storage.set(i, pair);
+            storage[i] = pair;
         } else {
-            storage.add(pair);
+            storage[size++] = pair;
         }
     }
 
     @Override
     public V get(K key) {
-        for (Pair item : storage) {
-            if (item.getKey() != null && item.getKey().equals(key)
-                    || item.getKey() == key && key == null) {
-                return (V) item.getValue();
+        for (int i = 0; i < size(); i++) {
+            if (storage[i].getKey() != null && storage[i].getKey().equals(key)
+                    || storage[i].getKey() == key && key == null) {
+                return (V) storage[i].getValue();
             }
         }
         return null;
@@ -35,13 +36,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return storage.size();
+        return size;
     }
 
     private int getIndex(K key) {
-        for (int i = 0; i < storage.size(); i++) {
-            if (storage.get(i).getKey() != null && storage.get(i).getKey().equals(key)
-                    || storage.get(i).getKey() == null && key == null) {
+        for (int i = 0; i < size; i++) {
+            if ((storage[i].getKey() != null) && storage[i].getKey().equals(key)
+                    || (storage[i].getKey() == null) && (key == null)) {
                 return i;
             }
         }
