@@ -38,12 +38,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public int keyCheck(K key) {
-        int result = NEGATIVE_INDEX;
         for (int i = 0; i < size; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
-                result = i;
+                return i;
             }
         }
-        return result;
+        return NEGATIVE_INDEX;
     }
 }
