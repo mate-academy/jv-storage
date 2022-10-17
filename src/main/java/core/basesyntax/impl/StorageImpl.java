@@ -1,16 +1,16 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
     private static final int NEGATIVE_INDEX = -1;
     private K[] keys;
     private V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
+        size = 0;
         keys = (K[]) new Object[ARRAY_SIZE];
         values = (V[]) new Object[ARRAY_SIZE];
     }
@@ -28,7 +28,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return (keyCheck(key) == NEGATIVE_INDEX) ? null : values[keyCheck(key)];
+        int checkedKey = keyCheck(key);
+        return (checkedKey == NEGATIVE_INDEX) ? null : values[checkedKey];
     }
 
     @Override
@@ -38,9 +39,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public int keyCheck(K key) {
         int result = NEGATIVE_INDEX;
-
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 result = i;
             }
         }
