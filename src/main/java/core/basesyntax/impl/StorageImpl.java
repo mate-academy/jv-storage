@@ -5,59 +5,56 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE = 10;
-    private final K[] arrayKey;
-    private final V[] arrayValue;
-    private  int sizeElementsInArray = 0;
+    private final K[] keys;
+    private final V[] values;
+    private  int size = 0;
 
     public StorageImpl() {
-        arrayKey = (K[]) new Object[SIZE];
-        arrayValue = (V[]) new Object[SIZE];
+        keys = (K[]) new Object[SIZE];
+        values = (V[]) new Object[SIZE];
     }
 
     @Override
     public void put(K key, V value) {
+        int index = findAvailableIndex(key);
+        keys[index] = key;
+        values[index] = value;
+    }
 
-        for (int i = 0; i < arrayKey.length; i++) {
-            if ((key == null && arrayKey[i] == null)) {
-                arrayKey[i] = key;
-                arrayValue[i] = value;
-                break;
+    private int findIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keys[i] == null) {
+                return i;
             }
-            if ((key != null) && key.equals(arrayKey[i])) {
-                arrayKey[i] = key;
-                arrayValue[i] = value;
-                break;
-            }
-            if (key != null && arrayValue[i] == null) {
-                arrayKey[i] = key;
-                arrayValue[i] = value;
-                sizeElementsInArray++;
-                break;
+            if (key != null && key.equals(keys[i])) {
+                return i;
             }
         }
+        return -1;
+    }
+
+    private int findAvailableIndex(K key) {
+        int index = findIndex(key);
+        if (index < 0) {
+            return size++;
+        }
+        return index;
     }
 
 
     @Override
     public V get(K key) {
-        V value = null;
-        for (int i = 0; i < arrayKey.length; i++) {
-            if (key == null && arrayKey[i] == null){
-                value = arrayValue[i];
-                break;
-            }
-            if(key != null && key.equals(arrayKey[i])){
-                value = arrayValue[i];
-                break;
-            }
+        int index = findIndex(key);
+        if (index < 0) {
+            return null;
         }
-        return  value;
+        return values[index];
     }
 
 
     @Override
     public int size(){
-        return sizeElementsInArray;
+        return size;
     }
-
 }
+
