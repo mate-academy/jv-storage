@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE = 10;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[SIZE];
@@ -18,26 +18,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = findAvailableIndex(key);
         keys[index] = key;
         values[index] = value;
-    }
-
-    private int findIndex(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == null && keys[i] == null) {
-                return i;
-            }
-            if (key != null && key.equals(keys[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    private int findAvailableIndex(K key) {
-        int index = findIndex(key);
-        if (index < 0) {
-            return size++;
-        }
-        return index;
     }
 
     @Override
@@ -52,6 +32,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private int findIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keys[i] == null) ||
+                    (key != null && key.equals(keys[i]))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int findAvailableIndex(K key) {
+        int index = findIndex(key);
+        if (index < 0) {
+            return size++;
+        }
+        return index;
     }
 }
 
