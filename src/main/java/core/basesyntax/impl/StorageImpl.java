@@ -15,9 +15,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = findAvailableIndex(key);
-        keys[index] = key;
-        values[index] = value;
+        int index = findIndex(key);
+        int i  = 0;
+        if (index < 0){
+            i = size++;
+        }
+        keys[i] = key;
+        values[i] = value;
     }
 
     @Override
@@ -35,21 +39,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int findIndex(K key) {
+
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null)
-                    || (key != null && key.equals(keys[i]))) {
+            if (key == null && keys[i] == null) {
+                return i;
+            }
+            if ((key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
         return -1;
-    }
-
-    private int findAvailableIndex(K key) {
-        int index = findIndex(key);
-        if (index < 0) {
-            return size++;
-        }
-        return index;
     }
 }
 
