@@ -11,11 +11,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = new Object[MAX_NUMBER];
         values = new Object[MAX_NUMBER];
-        size = keys.length;
+        size = size();
     }
 
     @Override
     public void put(K key, V value) {
+        size++;
         for (int i = 0; i < size; i++) {
             if ((keys[i] == values[i] && key != null && value != null)
                     || (key == keys[i] && values[i] != null)
