@@ -100,22 +100,21 @@ public class StorageImplTest {
     @Test
     public void addTwoElementsWithSameKey() {
         Storage<Cat, String> storage = new StorageImpl<>();
-        Cat cat = new Cat("Myrchyk", "white");
-        Cat sameCat = new Cat("Myrchyk", "white");
+        Cat firstCat = new Cat("Myrchyk", "white");
+        Cat secondCat = new Cat("Barsik", "black");
+        Cat sameFirstCat = new Cat("Myrchyk", "white");
         String elementOne = "One";
         String elementTwo = "Two";
+        String elementThree = "Three";
 
-        storage.put(cat, elementOne);
-        storage.put(sameCat, elementTwo);
+        storage.put(firstCat, elementOne);
+        storage.put(secondCat, elementTwo);
+        storage.put(sameFirstCat, elementThree);
 
-        Assert.assertEquals(
-                "With two elements added with the same key, "
-                        + "the value should be rewritten",
-                elementTwo,
-                storage.get(cat));
         Assert.assertEquals("With two elements added with the same key, "
-                        + "the storage size should be 1",
-                1, storage.size());
+                + "the value should be rewritten", elementThree, storage.get(firstCat));
+        Assert.assertEquals("With two elements added with the same key, "
+                + "the storage size should be 2", 2, storage.size());
     }
 
     @Test
