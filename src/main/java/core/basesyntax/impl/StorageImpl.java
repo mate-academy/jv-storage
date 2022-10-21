@@ -21,18 +21,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             size++;
             return;
         }
-            for (int i = 0; i <= size; i++) {
-                if ((keys[i] == values[i] && key != null)
-                        || (key == keys[i] && values[i] == null)) {
-                    keys[i] = key;
-                    values[i] = value;
-                    size++;
-                    return;
-                } else if (key == keys[i] || (keys[i] != null && keys[i].equals(key))) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i <= size; i++) {
+            if ((keys[i] == values[i] && key != null)
+                    || (key == keys[i] && values[i] == null)) {
+                keys[i] = key;
+                values[i] = value;
+                size++;
+                return;
+            } else if (key == keys[i] || (keys[i] != null && keys[i].equals(key))) {
+                values[i] = value;
+                return;
             }
+        }
 
     }
 
