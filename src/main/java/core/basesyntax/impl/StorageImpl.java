@@ -13,12 +13,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         boolean flag = true;
         if (size > 0) {
             for (int i = 0; i < size; i++) {
-                if (keys[i] != null && keys[i].equals(key)) {
-                    values[i] = value;
-                    flag = false;
-                    break;
-                }
-                if (keys[i] == null && key == null) {
+                if ((keys[i] != null && keys[i].equals(key))
+                        || (keys[i] == null && key == null)) {
                     values[i] = value;
                     flag = false;
                     break;
@@ -36,10 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         if (size > 0) {
             for (int i = 0; i < size; i++) {
-                if (keys[i] != null && keys[i].equals(key)) {
-                    return (V)values[i];
-                }
-                if (keys[i] == null && key == null) {
+                if ((keys[i] != null && keys[i].equals(key))
+                        || (keys[i] == null && key == null)) {
                     return (V)values[i];
                 }
             }
