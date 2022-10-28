@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
@@ -12,12 +11,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[DEFAULT_CAPACITY];
         values = (V[]) new Object[DEFAULT_CAPACITY];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && values[i] == null || Objects.equals(keys[i], key)) {
+            if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
+                size++;
+                break;
+            }
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 keys[i] = key;
                 values[i] = value;
                 break;
@@ -29,7 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         V value = null;
         for (int i = 0; i < keys.length; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 value = values[i];
                 break;
             }
@@ -39,12 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        size = 0;
-        for (int i = 0; i < keys.length; i++) {
-            if (values[i] != null) {
-                size++;
-            }
-        }
         return size;
     }
 }
