@@ -23,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         keys[size] = key;
         values[size] = value;
-        size += 1;
+        size++;
     }
 
     @Override
@@ -42,6 +42,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isKeysEqual(K keyOne, K keyTwo) {
-        return keyOne == null && keyTwo == null || keyOne != null && keyOne.equals(keyTwo);
+        return keyOne == keyTwo || keyOne != null && keyOne.equals(keyTwo);
     }
 }
