@@ -4,41 +4,34 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY_OF_STORAGE = 10;
-    private StorageImpl<K, V>[] storages;
-    private K key;
-    private V value;
-    private int countOfElements;
+    private Container<K, V>[] containers;
+    private int size;
 
     public StorageImpl() {
-        storages = new StorageImpl[CAPACITY_OF_STORAGE];
-        countOfElements = 0;
+        containers = new Container[CAPACITY_OF_STORAGE];
     }
 
     @Override
     public void put(K key, V value) {
-        boolean isSameKey = false;
-        for (int i = 0; i < countOfElements; i++) {
-            if (storages[i].key == key || storages[i].key != null && storages[i].key.equals(key)) {
-                storages[i].value = value;
-                isSameKey = true;
+        for (int i = 0; i < size; i++) {
+            if (containers[i].key == key
+                    || containers[i].key != null && containers[i].key.equals(key)) {
+                containers[i].value = value;
+                return;
             }
         }
-        if (!isSameKey) {
-            StorageImpl<K, V> storage = new StorageImpl<>();
-            storage.key = key;
-            storage.value = value;
-            storages[countOfElements] = storage;
-            countOfElements++;
-        }
+        Container<K, V> container = new Container<>(key, value);
+        containers[size] = container;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (StorageImpl<K, V> storage : storages) {
-            if (storage == null) {
+        for (Container<K, V> container : containers) {
+            if (container == null) {
                 return null;
-            } else if (storage.key == key || storage.key != null && storage.key.equals(key)) {
-                return storage.value;
+            } else if (container.key == key || container.key != null && container.key.equals(key)) {
+                return container.value;
             }
         }
         return null;
@@ -46,6 +39,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return countOfElements;
+        return size;
+    }
+
+    private static class Container<K, V> {
+        private K key;
+        private V value;
+
+        public Container(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
