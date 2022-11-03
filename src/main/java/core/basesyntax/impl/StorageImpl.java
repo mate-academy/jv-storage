@@ -15,9 +15,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        keyArray[storegeSize] = key;
-        valueArray[storegeSize] = value;
-        storegeSize++;
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            if (key == null && key == keyArray[i]) {
+                valueArray[i] = value;
+                if (i == 0 && storegeSize == 0) {
+                    storegeSize++;
+                }
+                break;
+            } else if (key != null && key.equals(keyArray[i])) {
+                valueArray[i] = value;
+                break;
+            } else {
+                keyArray[storegeSize] = key;
+                valueArray[storegeSize] = value;
+                storegeSize++;
+                break;
+            }
+        }
     }
 
     @Override
@@ -25,7 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = 0;
         for (K keys : keyArray) {
             index++;
-            if (keys == null || keys.equals(key)) {
+            if ((keys != null && keys.equals((key)) || (keys == null && keys == key))) {
                 return valueArray[index - 1];
             }
         }
