@@ -4,51 +4,45 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final byte MAX_ITEMS_NUMBER = 10;
-    private final K[] arrayKeys;
-    private final V[] arrayValues;
-    private byte index = 0;
-    private boolean nullMarker = false;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
+    private boolean nullMarker;
 
     public StorageImpl() {
-        arrayValues = (V[]) new Object[MAX_ITEMS_NUMBER];
-        arrayKeys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
-        if (index == MAX_ITEMS_NUMBER) {
-            index = 0;
-        }
-        for (int i = 0; i < arrayKeys.length; i++) {
-            if (arrayKeys[i] != null && arrayKeys[i].equals(key)) {
-                arrayValues[i] = value;
-                index--;
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i] != null && keys[i].equals(key)) {
+                values[i] = value;
+                return;
             }
         }
         if (key == null) {
             if (nullMarker) {
-                index--;
+                size--;
             }
-            arrayKeys[index] = null;
-            arrayValues[index] = value;
-            index++;
+            keys[size] = null;
+            values[size] = value;
+            size++;
             nullMarker = true;
         }
         if (key != null) {
-            arrayKeys[index] = key;
-            arrayValues[index] = value;
-            index++;
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < arrayKeys.length; i++) {
-            if (key == null && arrayKeys[i] == null) {
-                return arrayValues[i];
-            }
-            if (arrayKeys[i] != null && arrayKeys[i].equals(key)) {
-                return arrayValues[i];
+        for (int i = 0; i < keys.length; i++) {
+            if (key == null && keys[i] == null || keys[i] != null && keys[i].equals(key)) {
+                return values[i];
             }
         }
         return null;
@@ -56,6 +50,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return index;
+        return size;
     }
 }
