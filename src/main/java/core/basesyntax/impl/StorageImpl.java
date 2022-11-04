@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
     private K[] keyArray;
     private V[] valueArray;
-    private int storegeSize = 0;
+    private int size;
 
     public StorageImpl() {
         this.keyArray = (K[]) new Object[ARRAY_SIZE];
@@ -15,32 +15,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < ARRAY_SIZE; i++) {
-            if (key == null && key == keyArray[i]) {
+        for (int i = 0; i < size; i++) {
+            if (isEquals(keyArray[i], key)) {
                 valueArray[i] = value;
-                if (i == 0 && storegeSize == 0) {
-                    storegeSize++;
+                if (i == 0 && size == 0) {
+                    size++;
                 }
-                break;
-            } else if (key != null && key.equals(keyArray[i])) {
-                valueArray[i] = value;
-                break;
-            } else {
-                keyArray[storegeSize] = key;
-                valueArray[storegeSize] = value;
-                storegeSize++;
-                break;
+                return;
             }
         }
+        keyArray[size] = key;
+        valueArray[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        int index = 0;
-        for (K keys : keyArray) {
-            index++;
-            if ((keys != null && keys.equals((key)) || (keys == null && keys == key))) {
-                return valueArray[index - 1];
+        for (int i = 0; i < keyArray.length; i++) {
+            if (isEquals(keyArray[i], key)) {
+                return valueArray[i];
             }
         }
         return null;
@@ -48,6 +41,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return storegeSize;
+        return size;
+    }
+
+    private boolean isEquals(K firstKey, K secondKey) {
+        if (firstKey == secondKey || (firstKey != null && firstKey.equals(secondKey))) {
+            return true;
+        }
+        return false;
     }
 }
