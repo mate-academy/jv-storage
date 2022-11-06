@@ -9,8 +9,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values;
 
     public StorageImpl() {
-       keys = (K[]) new Object[MAX_ARRAY_SIZE];
-       values = (V[]) new Object[MAX_ARRAY_SIZE];
+        keys = (K[]) new Object[MAX_ARRAY_SIZE];
+        values = (V[]) new Object[MAX_ARRAY_SIZE];
     }
 
     @Override
