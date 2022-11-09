@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ITEMS_NUMBER];
         values = (V[]) new Object[MAX_ITEMS_NUMBER];
-        cursor = 0;
     }
 
     @Override
