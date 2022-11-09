@@ -4,33 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private K[] key;
-    private V[] value;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        this.key = (K[]) new Object[ARRAY_SIZE];
-        this.value = (V[]) new Object[ARRAY_SIZE];
+        this.keys = (K[]) new Object[ARRAY_SIZE];
+        this.values = (V[]) new Object[ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (isEquals(this.key[i], key)) {
-                this.value[i] = value;
+            if (isEquals(keys[i], key)) {
+                values[i] = value;
                 return;
             }
         }
-        this.key[size] = key;
-        this.value[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < this.key.length; i++) {
-            if (isEquals(this.key[i], key)) {
-                return value[i];
+        for (int i = 0; i < keys.length; i++) {
+            if (isEquals(keys[i], key)) {
+                return values[i];
             }
         }
         return null;
