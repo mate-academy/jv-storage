@@ -39,7 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return cursor;
     }
 
-    private int keyExist(K key) {
+    private int getIndex(K key) {
         for (int i = 0; i < size(); i++) {
             if (keys[i] == key || key != null && key.equals(keys[i])) {
                 return i;
