@@ -10,19 +10,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean rewritten = false;
         for (int i = 0; i < size; i++) {
             if (checkOnEquals(key, i)) {
                 arrayValue[i] = value;
-                rewritten = true;
-                break;
+                return;
             }
         }
-        if (!rewritten) {
-            arrayKey[size] = key;
-            arrayValue[size] = value;
-            size++;
-        }
+        arrayKey[size] = key;
+        arrayValue[size] = value;
+        size++;
     }
 
     @Override
@@ -40,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public boolean checkOnEquals(K key, int i) {
+    private boolean checkOnEquals(K key, int i) {
         return (key == null) ? (arrayKey[i] == null) : (key.equals(arrayKey[i]));
     }
 }
