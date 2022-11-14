@@ -2,16 +2,14 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.lang.reflect.Array;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
-    private final int MAX_ELEMENTS = 10;
+    private final int maxElements = 10;
 
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_ELEMENTS];
-        values = (V[]) new Object[MAX_ELEMENTS];
+        keys = (K[]) new Object[maxElements];
+        values = (V[]) new Object[maxElements];
 
     }
 
@@ -21,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (keyIndex != -1) {
             values[keyIndex] = value;
         } else {
-            for (int i = 0; i < MAX_ELEMENTS; i++) {
+            for (int i = 0; i < maxElements; i++) {
                 if (keys[i] == null && values[i] == null) {
                     keys[i] = key;
                     values[i] = value;
