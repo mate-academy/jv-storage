@@ -3,14 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_ELEMENTS = 10;
     private K[] keys;
     private V[] values;
-    private final int maxElements = 10;
+    private int size = 0;
 
     public StorageImpl() {
-        keys = (K[]) new Object[maxElements];
-        values = (V[]) new Object[maxElements];
-
+        keys = (K[]) new Object[MAX_ELEMENTS];
+        values = (V[]) new Object[MAX_ELEMENTS];
     }
 
     @Override
@@ -19,18 +19,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (keyIndex != -1) {
             values[keyIndex] = value;
         } else {
-            for (int i = 0; i < maxElements; i++) {
-                if (keys[i] == null && values[i] == null) {
-                    keys[i] = key;
-                    values[i] = value;
-                    break;
-                }
-            }
+            keys[size] = key;
+            values[size] = value;
+            size += 1;
         }
     }
     
     private int findExistingKeyIndex(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < size; i++) {
             if (keys[i] == null && key == null) {
                 return i;
             } else if (keys[i] != null && keys[i].equals(key)) {
@@ -51,12 +47,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int elementsCount = 0;
-        for (V value : values) {
-            if (value != null) {
-                elementsCount += 1;
-            }
-        }
-        return elementsCount;
+        return size;
     }
 }
