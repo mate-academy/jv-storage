@@ -3,82 +3,61 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int DEFOULT_SIZE = 10;
-    private Pairs[] pairs;
-    private Pairs[] massiv;
-    private int index = 0;
+    private static final int DEFAULT_SIZE = 10;
+    private Pair<K, V>[] pair;
+    private int size;
 
     public StorageImpl() {
-        pairs = new Pairs[DEFOULT_SIZE];
-        massiv = new Pairs[index];
+        pair = new Pair[DEFAULT_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        Pairs pair = findPair(key);
-        if (pair == null) {
-            Pairs pairToPut = new Pairs(key, value);
-            pairs[index] = pairToPut;
-            massiv = createReternMassive();
-            index++;
+        Pair<K, V> pairPut = findPair(key);
+        if (pairPut == null) {
+            Pair<K, V> pairToPut = new Pair<K, V>(key, value);
+            pair[size] = pairToPut;
+            size++;
         } else {
-            pair.setValue(value);
+            pairPut.setValue(value);
         }
     }
 
-    private Pairs findPair(K key) {
-        Pairs unicPair = null;
-        for (int i = 0; i < pairs.length; i++) {
-            Pairs pair = pairs[i];
-            if (pairs[i] != null && pair.getKey() != null && pair.getKey().equals(key)) {
-                unicPair = pair;
-            }
-            if ((pairs[i] != null && pair.getKey() == null) && (key == null)) {
-                unicPair = pair;
+    private Pair<K, V> findPair(K key) {
+        for (int i = 0; i < size; i++) {
+            Pair<K, V> pairCurrent = pair[i];
+            if (pair[i] != null && (pairCurrent.getKey() != null
+                    && pairCurrent.getKey().equals(key) || (pairCurrent.getKey() == null)
+                    && (key == null))) {
+                return pairCurrent;
             }
         }
-        return unicPair;
-    }
-
-    public Pairs[] createReternMassive() {
-        Pairs[] pairsResive = new Pairs[index + 1];
-        for (int k = 0; k < pairsResive.length; k++) {
-            pairsResive[k] = pairs[k];
-        }
-        return pairsResive;
+        return null;
     }
 
     @Override
     public V get(K key) {
-        V value = null;
-        for (int i = 0; i < massiv.length; i++) {
-            if (massiv[i].getKey() != null && massiv[i].getKey().equals(key)) {
-                value = (V) massiv[i].getValue();
-            }
-            if (massiv[i].getKey() == null && key == null) {
-                value = (V) massiv[i].getValue();
-            }
+        Pair<K, V> pairGet = findPair(key);
+        if (pairGet != null) {
+            return pairGet.getValue();
+        } else {
+            return null;
         }
-        return value;
     }
 
     @Override
     public int size() {
 
-        return massiv.length;
+        return size;
     }
 
-    private class Pairs<K, V> {
+    private class Pair<K, V> {
         private K key;
         private V value;
 
-        public Pairs(K key, V value) {
+        public Pair(K key, V value) {
             this.key = key;
             this.value = value;
-        }
-
-        public void setKey(K key) {
-            this.key = key;
         }
 
         public void setValue(V value) {
