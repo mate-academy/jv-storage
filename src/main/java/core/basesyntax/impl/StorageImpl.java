@@ -3,12 +3,13 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int ARRAY_SIZE = 10;
     private Object[] keys;
     private Object[] values;
 
     public StorageImpl() {
-        keys = new Object[]{};
-        values = new Object[]{};
+        keys = new Object[ARRAY_SIZE];
+        values = new Object[ARRAY_SIZE];
     }
 
     @Override
@@ -16,12 +17,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = getKeyIndex(key);
         if (index == -1) {
             int lastElement;
-            keys = incrementArrayLength(keys);
-            lastElement = keys.length - 1;
+            lastElement = size();
             keys[lastElement] = key;
-    
-            values = incrementArrayLength(values);
-            lastElement = values.length - 1;
             values[lastElement] = value;
         } else {
             values[index] = value;
@@ -37,20 +34,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return keys.length;
+        int arraySize = 0;
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            if (values[i] != null) {
+                arraySize++;
+            }
+        }
+        return arraySize;
     }
 
-    private Object[] incrementArrayLength(Object[] array) {
-        final int requiredLength = array.length + 1;
-        Object[] changedArray = new Object[requiredLength];
-        for (int i = 0; i < array.length; i++) {
-            changedArray[i] = array[i];
-        }
-        return changedArray;
-    }  
-
     private int getKeyIndex(Object key) {
-        for (int i = 0; i < this.keys.length; i++) {
+        for (int i = 0; i < ARRAY_SIZE; i++) {
             if ((this.keys[i] == null && key == null) || (this.keys[i] != null 
                     && this.keys[i].equals(key))) {
                 return i;
