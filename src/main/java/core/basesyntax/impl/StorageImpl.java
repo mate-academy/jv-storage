@@ -3,8 +3,13 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Object[] keys = {};
-    private Object[] values = {};
+    private Object[] keys;
+    private Object[] values;
+
+    public StorageImpl() {
+        keys = new Object[]{};
+        values = new Object[]{};
+    }
 
     @Override
     public void put(K key, V value) {
@@ -46,7 +51,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getKeyIndex(Object key) {
         for (int i = 0; i < this.keys.length; i++) {
-            if ((this.keys[i] == null && key == null) || (this.keys[i] != null && this.keys[i].equals(key))) {
+            if ((this.keys[i] == null && key == null) || (this.keys[i] != null 
+                    && this.keys[i].equals(key))) {
                 return i;
             }
         }
