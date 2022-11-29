@@ -17,10 +17,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getKeyIndex(key);
         if (index == -1) {    
+            keys[size] = key;
+            values[size] = value;
             size++;
-            int lastElement = size - 1;
-            keys[lastElement] = key;
-            values[lastElement] = value;
         } else {
             values[index] = value;
         }   
@@ -39,9 +38,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getKeyIndex(Object key) {
-        for (int i = 0; i < ARRAY_SIZE; i++) {
-            if (((this.keys[i] == key) || (this.keys[i] != null 
-                    && this.keys[i].equals(key))) && values[i] != null) {
+        for (int i = 0; i < size; i++) {
+            if (this.keys[i] == key || (this.keys[i] != null 
+                    && this.keys[i].equals(key))) {
                 return i;
             }
         }
