@@ -11,12 +11,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         this.keys = (K[]) new Object [MAX_NUMBER];
         this.values = (V[]) new Object [MAX_NUMBER];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         int index = index(key);
+        if (index == -1) {
+            index = size;
+        }
         keys[index] = key;
         values[index] = value;
         if (index == size) {
@@ -26,7 +28,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return values[index(key)];
+        if (index(key) == -1) {
+            return null;
+        } else {
+            return values[index(key)];
+        }
     }
 
     @Override
@@ -36,10 +42,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int index(K key) {
         for (int i = 0; i < size; i++) {
-            if ((keys[i] == null && key == null) || (key != null && key.equals(keys[i]))) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
-        return size;
+        return -1;
     }
 }
