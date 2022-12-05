@@ -17,10 +17,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int keyPosition = getPosition(key);
         if (keyPosition == -1) {
-            if (this.size < MAX_ITEMS_NUMBER) {
+            if (size < MAX_ITEMS_NUMBER) {
                 keys[size] = key;
                 values[size] = value;
-                this.size++;
+                size++;
             } else {
                 System.out.println("Storage is full!");
             }
@@ -40,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return this.size;
+        return size;
     }
 
     private int getPosition(K key) {
