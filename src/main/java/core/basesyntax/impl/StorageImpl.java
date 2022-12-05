@@ -6,7 +6,7 @@ import java.util.Objects;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int STORAGE_SIZE = 10;
-    private int size = 0;
+    private int size;
     private K[] keys;
     private V[] values;
 
