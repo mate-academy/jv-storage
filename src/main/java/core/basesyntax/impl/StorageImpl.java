@@ -12,6 +12,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
+
     @Override
     public int size() {
         return -1;
