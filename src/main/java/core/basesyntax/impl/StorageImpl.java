@@ -3,8 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    Element[] elements;
-    int size = 0;
+    private Element[] elements;
+    private int size = 0;
+
     {
         elements = new Element[10];
     }
