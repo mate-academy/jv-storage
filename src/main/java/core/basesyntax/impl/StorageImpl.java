@@ -3,11 +3,11 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Element[] elements;
+    private Node[] elements;
     private int size;
 
-    public StorageImpl(){
-        elements = new Element[10];
+    public StorageImpl() {
+        elements = new Node[10];
     }
 
     @Override
@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        Element element = new Element(key, value);
+        Node element = new Node(key, value);
         elements[size] = element;
         size++;
     }
@@ -40,11 +40,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public Element[] getElements() {
+    public Node[] getElements() {
         return elements;
     }
 
-    public void setElements(Element[] elements) {
+    public void setElements(Node[] elements) {
         this.elements = elements;
     }
 
@@ -55,31 +55,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void setSize(int size) {
         this.size = size;
     }
+
+    class Node<K, V> {
+        private K key;
+        private V value;
+
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+    }
 }
-
-class Element<K, V> {
-    private K key;
-    private V value;
-
-    public Element(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public K getKey() {
-        return key;
-    }
-
-    public void setKey(K key) {
-        this.key = key;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
-    }
-}
-
