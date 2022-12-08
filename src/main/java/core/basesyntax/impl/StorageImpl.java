@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAXIMUM_STORAGE_SIZE = 10;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[MAXIMUM_STORAGE_SIZE];
@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (isEqualsKey(keys[i], key)) {
+            if (areEqualsKey(keys[i], key)) {
                 values[i] = value;
                 return;
             }
@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (isEqualsKey(keys[i], key)) {
+            if (areEqualsKey(keys[i], key)) {
                 return values[i];
             }
         }
@@ -42,13 +42,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean isEqualsKey(Object key1, Object key2) {
-        if (key1 == null && key2 == null) {
+    private boolean areEqualsKey(Object firstKey, Object secondKey) {
+        if (firstKey == null && secondKey == null) {
             return true;
         }
-        if (key1 == null || key2 == null) {
+        if (firstKey == null || secondKey == null) {
             return false;
         }
-        return key1.equals(key2);
+        return firstKey.equals(secondKey);
     }
 }
