@@ -35,7 +35,8 @@ public class Pair<K, V> {
         }
         if (pair.getClass().equals(Pair.class)) {
             Pair<K, V> current = (Pair<K, V>) pair;
-            return (key != null ? this.key.equals(current.key) : key == current.key) && (value != null ? this.value.equals(current.value) : value == current.value);
+            return (key != null ? this.key.equals(current.key) : key == current.key)
+                    && (value != null ? this.value.equals(current.value) : value == current.value);
         }
         return false;
     }
