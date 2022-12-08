@@ -38,11 +38,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (K key : keys) {
-            if (key != null) {
-                return size;
-            }
-        }
         return size;
     }
 }
