@@ -1,41 +1,37 @@
 package core.basesyntax.impl;
 
+import core.basesyntax.Pair;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER = 20;
-    private static final int TWO = 2;
-    private static final int ONE = 1;
-    private final Object[] temp;
+    private static final int MAX_ITEMS_NUMBER = 10;
+    private final Pair<K, V>[] temp;
     private int size;
 
     public StorageImpl() {
-        temp = new Object[MAX_ITEMS_NUMBER];
+        temp = new Pair[MAX_ITEMS_NUMBER];
         size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0, tempLength = temp.length; i < tempLength; i = i + TWO) {
-            Object item = temp[i];
-            if ((item == null && key == null && temp[i + ONE] != null)
-                    || (item != null && item.equals(key))) {
-                temp[i + ONE] = value;
+        for (Pair<K, V> item : temp) {
+            if (item != null && ((item.getKey() == null && key == null) && item.getValue() != null
+                    || (item.getKey() != null && item.getKey().equals(key)))) {
+                item.setValue(value);
                 return;
             }
         }
-        temp[size * TWO] = key;
-        temp[size * TWO + ONE] = value;
+        temp[size] = new Pair<>(key, value);
         size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0, tempLength = temp.length; i < tempLength; i++) {
-            Object item = temp[i];
-            if ((item == null && key == null && temp[i + ONE] != null)
-                    || (item != null && item.equals(key))) {
-                return (V) temp[i + ONE];
+        for (Pair<K, V> item : temp) {
+            if (item != null && ((item.getKey() == null && key == null) && item.getValue() != null
+                    || (item.getKey() != null && item.getKey().equals(key)))) {
+                return item.getValue();
             }
         }
         return null;
