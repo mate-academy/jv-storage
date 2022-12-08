@@ -4,33 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE = 10;
-    private int arrSize = 0;
-    private K[] keyArr;
-    private V[] valueArr;
+    private int size;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        this.keyArr = (K[]) new Object[MAX_STORAGE];
-        this.valueArr = (V[]) new Object[MAX_STORAGE];
+        this.keys = (K[]) new Object[MAX_STORAGE];
+        this.values = (V[]) new Object[MAX_STORAGE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < arrSize; i++) {
-            if (key == keyArr[i] || key != null && key.equals(keyArr[i])) {
-                valueArr[i] = value;
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                values[i] = value;
                 return;
             }
         }
-        keyArr[arrSize] = key;
-        valueArr[arrSize] = value;
-        arrSize++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyArr.length; i++) {
-            if (key == keyArr[i] || key != null && key.equals(keyArr[i])) {
-                return valueArr[i];
+        for (int i = 0; i < keys.length; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return values[i];
             }
         }
         return null;
@@ -38,11 +38,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (K key : keyArr) {
+        for (K key : keys) {
             if (key != null) {
-                return arrSize;
+                return size;
             }
         }
-        return arrSize;
+        return size;
     }
 }
