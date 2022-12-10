@@ -1,5 +1,5 @@
 # jv-storage
-
+ 
 Implement the `Storage` of `key-value` type that is parameterized with two types of data. 
 You should be able to put new key-value pair and to get value by key.
 
