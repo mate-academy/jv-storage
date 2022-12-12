@@ -7,7 +7,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
     }
 
-
     @Override
     public V get(K key) {
         return null;
