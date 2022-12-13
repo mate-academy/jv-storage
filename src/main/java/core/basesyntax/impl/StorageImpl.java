@@ -24,13 +24,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (checkKey(key) < size) {
-            values[checkKey(key)] = value;
-            return;
+        keys[checkKey(key)] = key;
+        values[checkKey(key)] = value;
+        if (checkKey(key) == size) {
+            size++;
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
     }
 
     @Override
