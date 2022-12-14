@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_LENGTH = 10;
     private K[] keys;
     private V[] values;
-    private int emptyCell = 0;
+    private int size = 0;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ARRAY_LENGTH];
@@ -21,13 +21,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return;
         }
 
-        if (emptyCell == MAX_ARRAY_LENGTH) {
+        if (size == MAX_ARRAY_LENGTH) {
             throw new RuntimeException("Can't put new element into a storage. Storage is full");
         }
 
-        keys[emptyCell] = key;
-        values[emptyCell] = value;
-        emptyCell++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
@@ -38,21 +38,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return emptyCell;
+        return size;
     }
 
     private int findIndex(K key) {
-        if (key == null) {
-            for (int i = 0; i < size(); i++) {
-                if (key == keys[i]) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
         for (int i = 0; i < size(); i++) {
-            if (key.equals(keys[i])) {
+            if (key == null && key == keys[i]) {
+                return i;
+            }
+            if (key != null && key.equals(keys[i])) {
                 return i;
             }
         }
