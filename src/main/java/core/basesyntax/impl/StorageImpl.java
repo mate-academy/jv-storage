@@ -12,7 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         entries = new Entry[ENTRY_ITEMS_NUMBER];
-        size = 0;
     }
 
     @Override
@@ -28,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             size++;
         } catch (IndexOutOfBoundsException e) {
             throw new RuntimeException("The storage can have a maximum of"
-                    + ENTRY_ITEMS_NUMBER + " entries/", e);
+                    + ENTRY_ITEMS_NUMBER + " entries", e);
         }
     }
 
