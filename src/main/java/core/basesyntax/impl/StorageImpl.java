@@ -6,10 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS_NUMBER = 10;
     private final K[] keys;
     private final V[] values;
+    private int dataSize;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_ELEMENTS_NUMBER];
         this.values = (V[]) new Object[MAX_ELEMENTS_NUMBER];
+        this.dataSize = 0;
     }
 
     @Override
@@ -18,33 +20,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.values[getKeyIndex(key)] = value;
             return;
         }
-        int lastIndex = size();
-        this.keys[lastIndex] = key;
-        this.values[lastIndex] = value;
+        this.keys[dataSize] = key;
+        this.values[dataSize] = value;
+        this.dataSize++;
     }
 
     @Override
     public V get(K key) {
-        return getKeyIndex(key) >= 0
-                ? values[getKeyIndex(key)]
-                : null;
+        int index = getKeyIndex(key);
+        return index >= 0 ? values[index] : null;
     }
 
     @Override
     public int size() {
-        int count = 0;
-        for (V datum : values) {
-            if (datum != null) {
-                count++;
-            }
-        }
-        return count;
+        return dataSize;
     }
 
     private int getKeyIndex(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if ((keys[i] == null && key == null)
-                    || ((keys[i] != null && key != null) && keys[i].equals(key))) {
+            if ((keys[i] == key) || ((keys[i] != null && key != null) && keys[i].equals(key))) {
                 return i;
             }
         }
