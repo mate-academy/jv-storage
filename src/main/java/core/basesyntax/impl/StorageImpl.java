@@ -3,20 +3,20 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_STORAGE_NUM = 10;
+    private static final int MAX_STORAGE_SIZE = 10;
     private K[] keys;
     private V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_STORAGE_NUM];
-        values = (V[]) new Object[MAX_STORAGE_NUM];
+        keys = (K[]) new Object[MAX_STORAGE_SIZE ];
+        values = (V[]) new Object[MAX_STORAGE_SIZE ];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (checkKeys(keys[i], key)) {
+            if (areKeysEqual(keys[i], key)) {
                 values[i] = value;
                 return;
             }
@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (checkKeys(keys[i], key)) {
+            if (areKeysEqual(keys[i], key)) {
                 return values[i];
             }
         }
@@ -41,13 +41,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public boolean checkKeys(Object key1, Object key2) {
-        if (key1 == null && key2 == null) {
+    public boolean areKeysEqual(Object key1, Object key2) {
+        if (key1 == key2) {
             return true;
         }
-        if (key1 == null || key2 == null) {
-            return false;
-        }
-        return key1.equals(key2);
+        return key1 != null && key1.equals(key2);
     }
 }
