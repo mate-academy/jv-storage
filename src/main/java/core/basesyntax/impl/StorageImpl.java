@@ -5,33 +5,28 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE_OF_ARRAY = 10;
     private final Pair<K, V>[] pairs;
-    private int counter;
+    private int size;
 
     public StorageImpl() {
         pairs = new Pair[SIZE_OF_ARRAY];
-        counter = 0;
-    }
-
-    private boolean checkKey(Pair<K, V> pair, K key) {
-        return (pair.getKey() != null && pair.getKey().equals(key)) || pair.getKey() == key;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < counter; i++) {
-            if (checkKey(pairs[i], key)) {
+        for (int i = 0; i < size; i++) {
+            if (areKeysEqual(pairs[i], key)) {
                 pairs[i].setValue(value);
                 return;
             }
         }
-        pairs[counter] = new Pair<>(key, value);
-        counter++;
+        pairs[size] = new Pair<>(key, value);
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < counter; i++) {
-            if (checkKey(pairs[i], key)) {
+        for (int i = 0; i < size; i++) {
+            if (areKeysEqual(pairs[i], key)) {
                 return pairs[i].getValue();
             }
         }
@@ -40,6 +35,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return counter;
+        return size;
+    }
+
+    private boolean areKeysEqual(Pair<K, V> pair, K key) {
+        return (pair.getKey() != null && pair.getKey().equals(key)) || pair.getKey() == key;
     }
 }
