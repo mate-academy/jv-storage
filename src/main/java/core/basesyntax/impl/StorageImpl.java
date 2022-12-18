@@ -4,42 +4,22 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS_NUMBER = 10;
-
-    private int size = 0;
-
-    private V[] valueArray;
-    private K[] keyArray;
-
-    /*V[] valueArray = (V[]) Array.newInstance(V ,MAX_ELEMENTS_NUMBER);
-    K[] keyArray = (K[]) Array.newInstance(Class<K>, MAX_ELEMENTS_NUMBER); */
-
-    public StorageImpl() {
-        valueArray = (V[]) new Object[MAX_ELEMENTS_NUMBER];
-        keyArray = (K[]) new Object[MAX_ELEMENTS_NUMBER];
-
-    }
+    private int size;
+    private V[] valueArray = (V[]) new Object[MAX_ELEMENTS_NUMBER];
+    private K[] keyArray = (K[]) new Object[MAX_ELEMENTS_NUMBER];
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_ELEMENTS_NUMBER; i++) {
-            if (key == null && keyArray[i] == null && valueArray[i] != null) {
-                valueArray[i] = value;
-                return;
-            }
-            if (key == null) {
-                continue;
-            }
-            if (keyArray[i] != null && keyArray[i].equals(key)) {
-                valueArray[i] = value;
-                return;
-            }
-        }
         for (int i = 0; i < MAX_ELEMENTS_NUMBER; i++) {
             if (valueArray[i] == null && keyArray[i] == null) {
                 valueArray[i] = value;
                 keyArray[i] = key;
                 size++;
-                break;
+                return;
+            }
+            if (keysEquals(key, keyArray[i])) {
+                valueArray[i] = value;
+                return;
             }
         }
     }
@@ -47,13 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i] == key) {
-                return valueArray[i];
-            }
-            if (key == null || keyArray[i] == null) {
-                continue;
-            }
-            if (keyArray[i].equals(key)) {
+            if (keysEquals(key, keyArray[i])) {
                 return valueArray[i];
             }
         }
@@ -63,5 +37,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean keysEquals(K firstObj, K secondObj) {
+        if (firstObj == secondObj) {
+            return true;
+        }
+        if (firstObj == null || secondObj == null) {
+            return false;
+        }
+        return firstObj.equals(secondObj);
     }
 }
