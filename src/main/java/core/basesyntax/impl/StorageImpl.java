@@ -3,6 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 import java.util.Arrays;
 
+
+@SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
     private int size = 0;
