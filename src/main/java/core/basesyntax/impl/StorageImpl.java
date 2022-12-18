@@ -3,13 +3,17 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static int SIZE_OF_ARRAY = 10;
-    private Pair[] pairs = new Pair[SIZE_OF_ARRAY];
-    private int counter = 0;
+    private static final int SIZE_OF_ARRAY = 10;
+    private final Pair<K, V>[] pairs;
+    private int counter;
 
-    private boolean checkKey(Pair pair, K key) {
-        return (pair != null && pair.getKey() == key)
-                || pair.getKey() != null && pair.getKey().equals(key);
+    public StorageImpl() {
+        pairs = new Pair[SIZE_OF_ARRAY];
+        counter = 0;
+    }
+
+    private boolean checkKey(Pair<K, V> pair, K key) {
+        return (pair.getKey() != null && pair.getKey().equals(key)) || pair.getKey() == key;
     }
 
     @Override
@@ -20,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        pairs[counter] = new Pair(key, value);
+        pairs[counter] = new Pair<>(key, value);
         counter++;
     }
 
@@ -28,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < counter; i++) {
             if (checkKey(pairs[i], key)) {
-                return (V) pairs[i].getValue();
+                return pairs[i].getValue();
             }
         }
         return null;
