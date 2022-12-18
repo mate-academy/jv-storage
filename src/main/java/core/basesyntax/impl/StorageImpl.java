@@ -11,13 +11,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_ELEMENTS_NUMBER];
         this.values = (V[]) new Object[MAX_ELEMENTS_NUMBER];
-        this.dataSize = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        if (get(key) != null) {
-            this.values[getKeyIndex(key)] = value;
+        int index = getKeyIndex(key);
+        if (index != -1) {
+            this.values[index] = value;
             return;
         }
         this.keys[dataSize] = key;
@@ -37,8 +37,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getKeyIndex(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if ((keys[i] == key) || ((keys[i] != null && key != null) && keys[i].equals(key))) {
+        for (int i = 0; i < dataSize; i++) {
+            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 return i;
             }
         }
