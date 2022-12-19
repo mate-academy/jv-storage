@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH = 10;
     private final Object[] arrayOfKey = new Object[MAX_LENGTH];
     private final Object[] arrayOfValue = new Object[MAX_LENGTH];
-    private int size = 0;
+    private int size;
 
     @Override
     public void put(K key, V value) {
