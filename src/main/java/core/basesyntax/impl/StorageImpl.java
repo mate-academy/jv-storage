@@ -4,9 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final K[] keys = (K[]) new Object[MAX_SIZE];
-    private final V[] values = (V[]) new Object[MAX_SIZE];
-    private int size = 0;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+    }
 
     private boolean objectsEquals(K o1, K o2) {
         return o1 == o2 || (o1 != null && o1.equals(o2));
