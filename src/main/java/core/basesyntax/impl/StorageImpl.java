@@ -7,16 +7,17 @@ import java.util.Arrays;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
     private int size;
-    private Object[] keySet = new Object[CAPACITY];
-    private Object[] valueSet = new Object[CAPACITY];
+    private Object[] keySet;
+    private Object[] valueSet;
+
+    public StorageImpl() {
+        keySet = new Object[CAPACITY];
+        valueSet = new Object[CAPACITY];
+    }
 
     @Override
     public void put(K key, V value) {
-        if (size == 0) {
-            keySet[size] = key;
-            valueSet[size] = value;
-            size++;
-        } else if (Arrays.asList(keySet).contains(key)
+        if (Arrays.asList(keySet).contains(key)
                 && Arrays.asList(keySet).indexOf(key) <= size - 1) {
             valueSet[Arrays.asList(keySet).indexOf(key)] = value;
         } else {
@@ -36,6 +37,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return this.size;
+        return size;
     }
 }
