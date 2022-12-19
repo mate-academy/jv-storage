@@ -3,34 +3,34 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ELEMENTS = 10;
+    private static final int MAX_NUMBER_OF_ELEMENTS = 10;
     private int size;
-    private final Object[] valueStorage;
-    private final Object[] keyStorage;
+    private final Object[] values;
+    private final Object[] keys;
 
     public StorageImpl() {
-        valueStorage = new Object[MAX_ELEMENTS];
-        keyStorage = new Object[MAX_ELEMENTS];
+        values = new Object[MAX_NUMBER_OF_ELEMENTS];
+        keys = new Object[MAX_NUMBER_OF_ELEMENTS];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (checkForEquality(key, keyStorage[i])) {
-                valueStorage[i] = value;
+            if (areKeysEqual(key, keys[i])) {
+                values[i] = value;
                 return;
             }
         }
-        keyStorage[size] = key;
-        valueStorage[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (checkForEquality(key, keyStorage[i])) {
-                return (V)valueStorage[i];
+            if (areKeysEqual(key, keys[i])) {
+                return (V)values[i];
             }
         }
         return null;
@@ -41,7 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean checkForEquality(Object firstKey, Object secondKey) {
+    private boolean areKeysEqual(Object firstKey, Object secondKey) {
         return firstKey == null && secondKey == null
                 || firstKey != null && firstKey.equals(secondKey);
     }
