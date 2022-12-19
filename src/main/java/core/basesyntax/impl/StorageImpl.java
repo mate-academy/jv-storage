@@ -6,7 +6,7 @@ import java.util.Arrays;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
-    private int size = 0;
+    private int size;
     private Object[] keySet;
     private Object[] valueSet;
     private StorageImpl<K, V> storageImpl;
@@ -30,9 +30,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keySet[size] = key;
             valueSet[size] = value;
             size++;
-        }
-        if (key == null) {
-            valueSet[Arrays.asList(keySet).indexOf(key)] = value;
         }
     }
 
