@@ -5,29 +5,31 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS_NUMBER = 10;
     private int size;
-    private V[] valueArray = (V[]) new Object[MAX_ELEMENTS_NUMBER];
-    private K[] keyArray = (K[]) new Object[MAX_ELEMENTS_NUMBER];
+    private V[] valueArray;
+    private K[] keyArray;
+
+    public StorageImpl() {
+        valueArray = (V[]) new Object[MAX_ELEMENTS_NUMBER];
+        keyArray = (K[]) new Object[MAX_ELEMENTS_NUMBER];
+    }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_ELEMENTS_NUMBER; i++) {
-            if (valueArray[i] == null && keyArray[i] == null) {
-                valueArray[i] = value;
-                keyArray[i] = key;
-                size++;
-                return;
-            }
-            if (keysEquals(key, keyArray[i])) {
+        for (int i = 0; i < size; i++) {
+            if (areKeysEqual(key, keyArray[i])) {
                 valueArray[i] = value;
                 return;
             }
         }
+        valueArray[size] = value;
+        keyArray[size] = key;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (keysEquals(key, keyArray[i])) {
+        for (int i = 0; i < size; i++) {
+            if (areKeysEqual(key, keyArray[i])) {
                 return valueArray[i];
             }
         }
@@ -39,13 +41,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean keysEquals(K firstObj, K secondObj) {
-        if (firstObj == secondObj) {
-            return true;
-        }
-        if (firstObj == null || secondObj == null) {
-            return false;
-        }
-        return firstObj.equals(secondObj);
+    private boolean areKeysEqual(K firstKey, K secondKey) {
+        return firstKey == secondKey || firstKey != null
+                && firstKey.equals(secondKey);
     }
 }
