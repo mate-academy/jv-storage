@@ -7,19 +7,12 @@ import java.util.Arrays;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
     private int size;
-    private Object[] keySet;
-    private Object[] valueSet;
-    private StorageImpl<K, V> storageImpl;
-
-    public StorageImpl() {
-        keySet = new Object[CAPACITY];
-        valueSet = new Object[CAPACITY];
-    }
+    private Object[] keySet = new Object[CAPACITY];
+    private Object[] valueSet = new Object[CAPACITY];
 
     @Override
     public void put(K key, V value) {
         if (size == 0) {
-            storageImpl = new StorageImpl<>();
             keySet[size] = key;
             valueSet[size] = value;
             size++;
