@@ -4,25 +4,37 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH = 10;
-    private final Object[] arrayOfKey = new Object[MAX_LENGTH];
-    private final Object[] arrayOfValue = new Object[MAX_LENGTH];
+    private final Object[] keys;
+    private final Object[] values;
     private int size;
+
+    public StorageImpl() {
+        keys = new Object[MAX_LENGTH];
+        values = new Object[MAX_LENGTH];
+    }
 
     @Override
     public void put(K key, V value) {
-        if (!checkedEquals(key, value)) {
-            setData(size, key, value);
+        boolean flag = true;
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
+                keys[i] = key;
+                values[i] = value;
+                flag = false;
+            }
+        }
+        if (flag) {
+            keys[size] = key;
+            values[size] = value;
             size++;
-        } else {
-            checkedEquals(key, value);
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (arrayOfKey[i] == key || (arrayOfKey[i] != null && arrayOfKey[i].equals(key))) {
-                return (V) arrayOfValue[i];
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
+                return (V) values[i];
             }
         }
         return null;
@@ -31,27 +43,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
-    }
-
-    private boolean checkedEquals(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (arrayOfKey[i] == null && key == null) {
-                setData(i, key, value);
-                return true;
-            }
-            if (arrayOfKey[i] == null) {
-                continue;
-            }
-            if (arrayOfKey[i].equals(key)) {
-                setData(i, key, value);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void setData(int index, K key, V value) {
-        arrayOfKey[index] = key;
-        arrayOfValue[index] = value;
     }
 }
