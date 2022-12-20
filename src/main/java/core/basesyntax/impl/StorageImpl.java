@@ -2,6 +2,8 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.util.Objects;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
     private static final int VALUE_OF_NULL = -1;
@@ -18,11 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < keyStorage.length; i++) {
             if (keyStorage[i] == null && valueStorage[i] == null) {
-                if (key == null) {
-                    keyStorage[i] = VALUE_OF_NULL;
-                } else {
-                    keyStorage[i] = key;
-                }
+                keyStorage[i] = Objects.requireNonNullElse(key, VALUE_OF_NULL);
                 valueStorage[i] = value;
                 size++;
                 break;
