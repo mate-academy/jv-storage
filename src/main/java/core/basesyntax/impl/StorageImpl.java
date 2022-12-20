@@ -34,9 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < keyStorage.length; i++) {
             if (keyStorage[i] != null) {
-                if (keyStorage[i].equals(VALUE_OF_NULL) && key == null) {
-                    return (V) valueStorage[i];
-                } else if (keyStorage[i].equals(key)) {
+                if (equalsKey(key, keyStorage[i])) {
                     return (V) valueStorage[i];
                 }
             }
