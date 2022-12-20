@@ -23,8 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 valueStorage[i] = value;
                 size++;
                 break;
-            } else if (keyStorage[i].equals(key) || (keyStorage[i].equals(VALUE_OF_NULL)
-                    && key == null)) {
+            } else if (equalsKey(key, keyStorage[i])) {
                 valueStorage[i] = value;
                 break;
             }
@@ -48,5 +47,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean equalsKey(Object mainKey, Object writtenKey) {
+        if (mainKey == null && writtenKey.equals(VALUE_OF_NULL)) {
+            return true;
+        } else if (mainKey == null || writtenKey.equals(VALUE_OF_NULL)) {
+            return false;
+        }
+        return writtenKey.equals(mainKey);
     }
 }
