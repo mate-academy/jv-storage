@@ -14,7 +14,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         valueStorage = new Object[MAX_CAPACITY];
     }
 
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keyStorage.length; i++) {
