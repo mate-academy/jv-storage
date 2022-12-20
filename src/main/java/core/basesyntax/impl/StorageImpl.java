@@ -6,10 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private static final int INDEX_OF_NON_EXISTENT_KEY = -1;
     private int size;
-    private final K[] keys = (K[]) new Object[MAX_ITEMS_NUMBER];
-    private final V[] values = (V[]) new Object[MAX_ITEMS_NUMBER];
+    private final K[] keys;
+    private final V[] values;
 
     public StorageImpl() {
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
