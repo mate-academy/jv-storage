@@ -3,57 +3,40 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER = 10;
-    private final StorageImpl<K,V>[] list = new StorageImpl[MAX_ITEMS_NUMBER];
-    private K typeK;
-    private V typeV;
+
+    private Pair pair = new Pair();
     private int size = 0;
-
-    public StorageImpl(K typeK, V nameV) {
-        this.typeK = typeK;
-        this.typeV = nameV;
-    }
-
-    public StorageImpl() {
-    }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (list[i].typeK == null) {
-                    list[i].typeV = value;
-                    size--;
-                    break;
-                }
+        for (int i = 0; i < size; i++) {
+            if (key == null && pair.list[i].key == null) {
+                pair.list[i].value = value;
+                return;
             }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (list[i].typeK == null) {
-                    break;
-                }
-                if (list[i].typeK.equals(key)) {
-                    list[i].typeV = value;
-                    size--;
-                    break;
-                }
+            if (pair.list[i].key == null) {
+                break;
+            }
+            if (pair.list[i].key.equals(key)) {
+                pair.list[i].value = value;
+                return;
             }
         }
-        this.list[size] = new StorageImpl<>(key, value);
+        this.pair.list[size] = new StorageImpl.Pair(key, value);
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null && list[i].typeK == null) {
-                return list[i].typeV;
+            if (key == null && pair.list[i].key == null) {
+                return (V) pair.list[i].value;
             }
-            if (list[i].typeK == null) {
+            if (pair.list[i].key == null) {
                 i++;
             }
-            if (list[i].typeK.equals(key)) {
-                return list[i].typeV;
+            if (pair.list[i].key.equals(key)) {
+                return (V) pair.list[i].value;
             }
         }
         return null;
@@ -63,4 +46,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
+    class Pair {
+        private static final int MAX_ITEMS_NUMBER = 10;
+        private final StorageImpl.Pair[] list = new StorageImpl.Pair[MAX_ITEMS_NUMBER];
+        private K key;
+        private V value;
+
+        private Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        private Pair() {
+        }
+    }
+
 }
