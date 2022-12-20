@@ -5,12 +5,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private static final int DEFAULT_SIZE = 15;
+    private static final int DEFAULT_INITIAL_CAPACITY = 10;
     private static final int RESIZE_COEFFICIENT = 2;
+    private int storageSize;
     private Node<K, V>[] nodes;
 
     public StorageImpl() {
-        nodes = new Node[DEFAULT_SIZE];
+        nodes = new Node[DEFAULT_INITIAL_CAPACITY];
+        storageSize = 0;
     }
 
     @Override
@@ -19,22 +21,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < nodes.length; i++) {
             if (nodes[i] == null) {
                 nodes[i] = node;
+                storageSize++;
                 break;
-            }
-            if (nodes[i] != null) {
-                if (key == nodes[i].getKey()) {
-                    nodes[i] = node;
-                    break;
-                }
-                if (nodes[i].getKey() != null && nodes[i].getKey().equals(key)) {
-                    nodes[i] = node;
-                    break;
-                }
-                if (i == nodes.length - 1) {
-                    Node<K, V>[] buff = nodes;
-                    nodes = new Node[nodes.length * RESIZE_COEFFICIENT];
-                    System.arraycopy(buff, 0, nodes, 0, buff.length);
-                }
+            } else if (key == nodes[i].getKey() || (nodes[i].getKey() != null
+                    && nodes[i].getKey().equals(key))) {
+                nodes[i] = node;
+                break;
             }
         }
     }
@@ -58,12 +50,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int storageSize = 0;
-        for (Node<K, V> node : nodes) {
-            if (node != null) {
-                storageSize++;
-            }
-        }
         return storageSize;
     }
 }
