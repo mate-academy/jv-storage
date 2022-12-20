@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = getKeyIndex(key);
-        return index == INDEX_UNEXIST_KEY ? values[index];
+        return index == INDEX_UNEXIST_KEY ? null : values[index];
     }
 
     @Override
