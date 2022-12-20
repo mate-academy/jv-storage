@@ -17,28 +17,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keyStorage.length; i++) {
-            if (keyStorage[i] != null) {
-                if (keyStorage[i].equals(VALUE_OF_NULL) && key == null) {
-                    valueStorage[i] = value;
-                    size--;
-                    break;
-                } else if (keyStorage[i].equals(key)) {
-                    valueStorage[i] = value;
-                    size--;
-                    break;
+            if (keyStorage[i] == null && valueStorage[i] == null) {
+                if (key == null) {
+                    keyStorage[i] = VALUE_OF_NULL;
+                } else {
+                    keyStorage[i] = key;
                 }
-            }
-        }
-        for (int i = 0; i < keyStorage.length; i++) {
-            if (key == null && keyStorage[i] == null && valueStorage[i] == null) {
-                keyStorage[i] = VALUE_OF_NULL;
                 valueStorage[i] = value;
                 size++;
                 break;
-            } else if (keyStorage[i] == null && valueStorage[i] == null) {
-                keyStorage[i] = key;
+            } else if (keyStorage[i].equals(key) || (keyStorage[i].equals(VALUE_OF_NULL)
+                    && key == null)) {
                 valueStorage[i] = value;
-                size++;
                 break;
             }
         }
