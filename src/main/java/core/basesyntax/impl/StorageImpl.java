@@ -8,6 +8,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keys = new Object[SIZE];
     private Object[] values = new Object[SIZE];
     private int arrayIndex = 0;
+
     @Override
     public void put(K key, V value) {
         if (arrayIndex == START_INDEX) {
