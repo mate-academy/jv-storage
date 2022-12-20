@@ -3,42 +3,42 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int LIMIT_OF_ARRAY = 10;
+    private static final int MAX_CAPACITY = 10;
     private static final int VALUE_OF_NULL = -1;
-    private static final int KEY_INDEX = 0;
-    private static final int VALUE_INDEX = 1;
-    private final Object[][] obj = new Object[LIMIT_OF_ARRAY][2];
+    private final Object[] keyStorage;
+    private final Object[] valueStorage;
     private int size = 0;
 
     public StorageImpl() {
+        keyStorage = new Object[MAX_CAPACITY];
+        valueStorage = new Object[MAX_CAPACITY];
     }
+
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i][KEY_INDEX] != null) {
-                if (obj[i][KEY_INDEX].equals(VALUE_OF_NULL) && key == null) {
-                    obj[i][VALUE_INDEX] = value;
+        for (int i = 0; i < keyStorage.length; i++) {
+            if (keyStorage[i] != null) {
+                if (keyStorage[i].equals(VALUE_OF_NULL) && key == null) {
+                    valueStorage[i] = value;
                     size--;
                     break;
-                }
-                if (obj[i][KEY_INDEX].equals(key)) {
-                    obj[i][VALUE_INDEX] = value;
+                } else if (keyStorage[i].equals(key)) {
+                    valueStorage[i] = value;
                     size--;
                     break;
                 }
             }
         }
-        for (int i = 0; i < obj.length; i++) {
-            if (key == null && obj[i][KEY_INDEX] == null && obj[i][VALUE_INDEX] == null) {
-                obj[i][KEY_INDEX] = VALUE_OF_NULL;
-                obj[i][VALUE_INDEX] = value;
+        for (int i = 0; i < keyStorage.length; i++) {
+            if (key == null && keyStorage[i] == null && valueStorage[i] == null) {
+                keyStorage[i] = VALUE_OF_NULL;
+                valueStorage[i] = value;
                 size++;
                 break;
-            }
-            if (obj[i][KEY_INDEX] == null && obj[i][VALUE_INDEX] == null) {
-                obj[i][KEY_INDEX] = key;
-                obj[i][VALUE_INDEX] = value;
+            } else if (keyStorage[i] == null && valueStorage[i] == null) {
+                keyStorage[i] = key;
+                valueStorage[i] = value;
                 size++;
                 break;
             }
@@ -47,13 +47,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (Object[] objects : obj) {
-            if (objects[KEY_INDEX] != null) {
-                if (objects[KEY_INDEX].equals(VALUE_OF_NULL) && key == null) {
-                    return (V) objects[VALUE_INDEX];
-                }
-                if (objects[KEY_INDEX].equals(key)) {
-                    return (V) objects[VALUE_INDEX];
+        for (int i = 0; i < keyStorage.length; i++) {
+            if (keyStorage[i] != null) {
+                if (keyStorage[i].equals(VALUE_OF_NULL) && key == null) {
+                    return (V) valueStorage[i];
+                } else if (keyStorage[i].equals(key)) {
+                    return (V) valueStorage[i];
                 }
             }
         }
