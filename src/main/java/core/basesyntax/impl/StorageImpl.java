@@ -4,20 +4,18 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private static final int KEY_NOT_VALID = -1;
+    private static final int INDEX_OF_NON_EXISTENT_KEY = -1;
     private int size;
-    private final K[] keys;
-    private final V[] values;
+    private final K[] keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+    private final V[] values = (V[]) new Object[MAX_ITEMS_NUMBER];
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_ITEMS_NUMBER];
-        this.values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
         int index = getIndex(key);
-        if (index != KEY_NOT_VALID) {
+        if (index != INDEX_OF_NON_EXISTENT_KEY) {
             values[index] = value;
         } else {
             keys[size] = key;
@@ -29,7 +27,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        return index == KEY_NOT_VALID ? null : values[index];
+        return index == INDEX_OF_NON_EXISTENT_KEY
+                ? null
+                : values[index];
     }
 
     @Override
@@ -38,12 +38,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndex(K key) {
-        int indexOfKey = KEY_NOT_VALID;
         for (int i = 0; i < size; i++) {
             if (key != null && key.equals(keys[i]) || key == keys[i]) {
-                indexOfKey = i;
+                return i;
             }
         }
-        return indexOfKey;
+        return INDEX_OF_NON_EXISTENT_KEY;
     }
 }
