@@ -19,10 +19,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < keyStorage.length; i++) {
             if (keyStorage[i] == null && valueStorage[i] == null) {
-                keyStorage[i] = Objects.requireNonNullElse(key, VALUE_OF_NULL);
-                valueStorage[i] = value;
-                size++;
-                break;
+                if (key == null) {
+                    keyStorage[i] = VALUE_OF_NULL;
+                } else {
+                    keyStorage[i] = key;
+                }
+                    valueStorage[i] = value;
+                    size++;
+                    break;
             } else if (keysEquals(key, keyStorage[i])) {
                 valueStorage[i] = value;
                 break;
