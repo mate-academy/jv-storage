@@ -3,21 +3,23 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int START_INDEX = 0;
-    private static final int SIZE = 5;
-    private Object[] keys = new Object[SIZE];
-    private Object[] values = new Object[SIZE];
-    private int arrayIndex = 0;
+    private static final int MAX_CAPACITY = 10;
+    private Object[] keys;
+    private Object[] values;
+    private int size;
+
+    public StorageImpl() {
+        keys = new Object[MAX_CAPACITY];
+        values = new Object[MAX_CAPACITY];
+        size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
-        if (arrayIndex == START_INDEX) {
-            addToArrays(key, value, arrayIndex);
-            arrayIndex++;
-        } else if (arrayIndex < SIZE) {
+        if (size < MAX_CAPACITY) {
             if (!isExist(key, value)) {
-                addToArrays(key, value, arrayIndex);
-                arrayIndex++;
+                addToArrays(key, value, size);
+                size++;
             }
         } else {
             throw new RuntimeException("You can't add data because storage is full!");
@@ -30,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isExist(K key, V value) {
-        for (int i = 0; i < arrayIndex; i++) {
+        for (int i = 0; i < size; i++) {
             if (keys[i] == key) {
                 addToArrays(key, value, i);
                 return true;
@@ -44,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < arrayIndex; i++) {
+        for (int i = 0; i < size; i++) {
             if (keys[i] == key) {
                 return (V) values[i];
             } else if (keys[i] != null && keys[i].equals(key)) {
@@ -56,6 +58,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return arrayIndex;
+        return size;
     }
 }
