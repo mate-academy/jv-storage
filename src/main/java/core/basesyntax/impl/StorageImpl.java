@@ -4,39 +4,44 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private Pair pair = new Pair();
-    private int size = 0;
+    private static final int MAX_ITEMS_NUMBER = 10;
+    private final Pair<K, V>[] pairsArray;
+    private int size;
+
+    public StorageImpl() {
+        pairsArray = new Pair[MAX_ITEMS_NUMBER];
+    }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key == null && pair.list[i].key == null) {
-                pair.list[i].value = value;
+            if (key == null && pairsArray[i].key == null) {
+                pairsArray[i].value = value;
                 return;
             }
-            if (pair.list[i].key == null) {
+            if (pairsArray[i].key == null) {
                 break;
             }
-            if (pair.list[i].key.equals(key)) {
-                pair.list[i].value = value;
+            if (pairsArray[i].key.equals(key)) {
+                pairsArray[i].value = value;
                 return;
             }
         }
-        this.pair.list[size] = new StorageImpl.Pair(key, value);
+        this.pairsArray[size] = new Pair<>(key, value);
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null && pair.list[i].key == null) {
-                return (V) pair.list[i].value;
+            if (key == null && pairsArray[i].key == null) {
+                return pairsArray[i].value;
             }
-            if (pair.list[i].key == null) {
+            if (pairsArray[i].key == null) {
                 i++;
             }
-            if (pair.list[i].key.equals(key)) {
-                return (V) pair.list[i].value;
+            if (pairsArray[i].key.equals(key)) {
+                return pairsArray[i].value;
             }
         }
         return null;
@@ -47,19 +52,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    class Pair {
-        private static final int MAX_ITEMS_NUMBER = 10;
-        private final StorageImpl.Pair[] list = new StorageImpl.Pair[MAX_ITEMS_NUMBER];
-        private K key;
+    private static class Pair<K, V> {
+
+        private final K key;
         private V value;
 
         private Pair(K key, V value) {
             this.key = key;
             this.value = value;
         }
-
-        private Pair() {
-        }
     }
-
 }
