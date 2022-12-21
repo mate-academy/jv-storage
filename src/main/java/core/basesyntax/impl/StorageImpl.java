@@ -3,14 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int MAX_CAPACITY = 10;
+    private static final int MAX_CAPACITY = 10;
     private int size;
     private K[] keys;
     private V[] values;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_CAPACITY ];
-        this.values = (V[]) new Object[MAX_CAPACITY];
+        keys = (K[]) new Object[MAX_CAPACITY];
+        values = (V[]) new Object[MAX_CAPACITY];
     }
 
     @Override
