@@ -1,9 +1,11 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
+    private static final int NOT_FOUND_INDEX = 0;
     private Object[] keys;
     private Object[] values;
     private int size;
@@ -11,15 +13,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = new Object[MAX_CAPACITY];
         values = new Object[MAX_CAPACITY];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
+        int indexOfExistingValue = returnIndexOfExistingValue(key, value);
         if (size < MAX_CAPACITY) {
-            if (!isExist(key, value)) {
+            if (indexOfExistingValue == NOT_FOUND_INDEX) {
                 addToArrays(key, value, size);
                 size++;
+            } else {
+                addToArrays(key, value, indexOfExistingValue);
             }
         } else {
             throw new RuntimeException("You can't add data because storage is full!");
@@ -31,25 +35,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.values[index] = value;
     }
 
-    private boolean isExist(K key, V value) {
+    private int returnIndexOfExistingValue(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] == key) {
-                addToArrays(key, value, i);
-                return true;
-            } else if (keys[i] != null && keys[i].equals(key)) {
-                addToArrays(key, value, i);
-                return true;
+            if (Objects.equals(keys[i], key)) {
+                return i;
             }
         }
-        return false;
+        return 0;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] == key) {
-                return (V) values[i];
-            } else if (keys[i] != null && keys[i].equals(key)) {
+            if (Objects.equals(keys[i], key)) {
                 return (V) values[i];
             }
         }
