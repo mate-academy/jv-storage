@@ -4,15 +4,12 @@ import core.basesyntax.Node;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int DEFAULT_INITIAL_CAPACITY = 10;
-    private static final int RESIZE_COEFFICIENT = 2;
-    private int storageSize;
+    private int size;
     private Node<K, V>[] nodes;
 
     public StorageImpl() {
         nodes = new Node[DEFAULT_INITIAL_CAPACITY];
-        storageSize = 0;
     }
 
     @Override
@@ -21,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < nodes.length; i++) {
             if (nodes[i] == null) {
                 nodes[i] = node;
-                storageSize++;
+                size++;
                 break;
             } else if (key == nodes[i].getKey() || (nodes[i].getKey() != null
                     && nodes[i].getKey().equals(key))) {
@@ -33,15 +30,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (Node node : nodes) {
-            if (node != null) {
-                if (key == node.getKey()) {
-                    return (V) node.getValue();
-                }
-                if (node.getKey() != null) {
-                    if (node.getKey().equals(key)) {
-                        return (V) node.getValue();
-                    }
+        for (int i = 0; i < size; i++) {
+            if (key == nodes[i].getKey()) {
+                return (V) nodes[i].getValue();
+            }
+            if (nodes[i].getKey() != null) {
+                if (nodes[i].getKey().equals(key)) {
+                    return (V) nodes[i].getValue();
                 }
             }
         }
@@ -50,6 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return storageSize;
+        return size;
     }
 }
