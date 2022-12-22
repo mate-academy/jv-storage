@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private static final int NOT_FOUND_INDEX = 0;
+    private static final int NOT_FOUND_INDEX = -1;
     private Object[] keys;
     private Object[] values;
     private int size;
@@ -41,7 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return 0;
+        return -1;
     }
 
     @Override
