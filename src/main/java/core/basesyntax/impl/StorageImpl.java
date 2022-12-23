@@ -3,7 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAX_SIZE = 10;
 
     private Pair<K, V>[] pairs = new Pair[MAX_SIZE];
@@ -19,16 +18,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 size++;
                 return;
             }
-            if (ourPair.getKey() == null) {
-                if (pairs[i].getKey() == null) {
-                    pairs[i].setValue(value);
-                    return;
-                }
-            } else {
-                if (ourPair.getKey().equals(pairs[i].getKey())) {
-                    pairs[i].setValue(value);
-                    return;
-                }
+            if (ourPair.getKey() == null && pairs[i].getKey() == null) {
+                pairs[i].setValue(value);
+                return;
+            }
+            if (ourPair.getKey() != null && ourPair.getKey().equals(pairs[i].getKey())) {
+                pairs[i].setValue(value);
+                return;
             }
         }
     }
@@ -52,5 +48,55 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private static class Pair<K,V> {
+
+        private K key;
+        private V value;
+
+        public Pair(K key,V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object pair) {
+            if (pair == this) {
+                return true;
+            }
+            if (pair == null) {
+                return false;
+            }
+            if (pair.getClass().equals(Pair.class)) {
+                Pair current = (Pair) pair;
+                return this.getKey().equals(current.getKey())
+                        && this.getValue().equals(current.getValue());
+            }
+            return false;
+        }
+
+        public int hashCode() {
+            int result = 17;
+            result = 31 + (key == null ? 0 : key.hashCode());
+            result = 31 + (value == null ? 0 : value.hashCode());
+            return result;
+        }
     }
 }
