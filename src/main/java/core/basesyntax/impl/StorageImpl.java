@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
 
     private Pair<K, V>[] pairs = new Pair[MAX_SIZE];
-    private int size = 0;
+    private int size;
 
     @Override
     public void put(K key, V value) {
@@ -32,14 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null) {
-                if (pairs[i].getKey() == null) {
-                    return pairs[i].getValue();
-                }
-            } else {
-                if (key.equals(pairs[i].getKey())) {
-                    return pairs[i].getValue();
-                }
+            if (equals(key, pairs[i].getKey())) {
+                return pairs[i].getValue();
             }
         }
         return null;
@@ -50,8 +44,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private static class Pair<K,V> {
+    private boolean equals(K first, K second) {
+        return first == second || (first != null && first.equals(second));
+    }
 
+    private static class Pair<K,V> {
         private K key;
         private V value;
 
