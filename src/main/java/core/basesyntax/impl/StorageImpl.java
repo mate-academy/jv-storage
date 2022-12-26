@@ -2,73 +2,67 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final int storageSize = 10;
+    private static final int MAX_SIZE = 10;
+    private final K[] keyStorage;
+    private final V[] valueStorage;
+    private int size = 0;
+
     @SuppressWarnings("unchecked")
-    private final K[] keyStorage = (K[]) new Object[storageSize];
-    @SuppressWarnings("unchecked")
-    private final V[] valueStorage = (V[]) new Object[storageSize];
-    private int counter = 0;
+    public StorageImpl() {
+        keyStorage = (K[]) new Object[MAX_SIZE];
+        valueStorage = (V[]) new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
-        keyStorage[counter] = key;
-        valueStorage[counter] = value;
-        checkSimilarity(value);
-        counter++;
-    }
-
-    private void checkSimilarity(V value) {
-        for (int i = 0; i < keyStorage.length; i++) {
-            for (int j = i + 1; j < keyStorage.length; j++) {
-                if (Objects.equals(keyStorage[i], keyStorage[j])) {
-                    if (!Objects.equals(valueStorage[j],null)
-                            || !Objects.equals(keyStorage[j],null)) {
-                        Arrays.asList(valueStorage)
-                                .set(Arrays.asList(keyStorage).indexOf(keyStorage[j]), value);
-                        Arrays.asList(valueStorage).set(counter, null);
-                    }
-                }
-            }
-        }
+        checkSimilarity(key, value);
     }
 
     @Override
     public V get(K key) {
-        int index;
         for (K keyValue : keyStorage) {
-            if (Objects.equals(keyValue, key)) {
-                index = Arrays.asList(keyStorage).indexOf(keyValue);
-                return valueStorage[index];
+            if (equals(keyValue, key)) {
+                return valueStorage[indexOf(keyValue)];
             }
         }
         return null;
     }
 
-    @Override
-    public int size() {
-        int count = 0;
-        for (V valueOfArray : valueStorage) {
-            if (valueOfArray != null) {
-                count++;
-            }
+    private void checkSimilarity(K key, V value) {
+        if (contains(key)) {
+            Arrays.asList(valueStorage).set(indexOf(key), value);
+            valueStorage[size] = null;
+            keyStorage[size] = null;
+            size--;
+        } else {
+            keyStorage[size] = key;
+            valueStorage[size] = value;
         }
-        return count;
+        size++;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    public int size() {
+        return size;
+    }
+
+    private boolean contains(K key) {
+        return equals(keyStorage[indexOf(key)], key);
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (equals(keyStorage[i], key)) {
+                return i;
+            }
         }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        StorageImpl<?, ?> storage = (StorageImpl<?, ?>) o;
-        return Arrays.equals(keyStorage, storage.keyStorage)
-                && Arrays.equals(valueStorage, storage.valueStorage);
+        return 0;
+    }
+
+    public boolean equals(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
     }
 
     @Override
