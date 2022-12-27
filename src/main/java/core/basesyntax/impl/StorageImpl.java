@@ -13,6 +13,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         valueArray = (V[]) new Object[MAX_SIZE_STORAGE];
     }
 
+    /*
+        keyArray = (K[]) new Object[MAX_SIZE_STORAGE];
+        valueArray = (V[]) new Object[MAX_SIZE_STORAGE];
+
+     */
+
     @Override
     public void put(K key, V value) {
         for (int i = 0; i <= size; i++) {
