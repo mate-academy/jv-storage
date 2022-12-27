@@ -42,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean areKeysEqual(Object firstKey, Object secondKey) {
-        if (firstKey == null && secondKey == null) {
+        if (firstKey == secondKey) {
             return true;
         }
         if (firstKey == null || secondKey == null) {
