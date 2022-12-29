@@ -1,13 +1,12 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private final K[] keyStorage;
     private final V[] valueStorage;
-    private int size = 0;
+    private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
@@ -17,30 +16,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        checkSimilarity(key, value);
+        for (int i = 0; i < size; i++) {
+            if (isEquals(keyStorage[i], key)) {
+                valueStorage[i] = value;
+                return;
+            }
+        }
+        keyStorage[size] = key;
+        valueStorage[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (K keyValue : keyStorage) {
-            if (equals(keyValue, key)) {
-                return valueStorage[indexOf(keyValue)];
+        for (int i = 0; i < size; i++) {
+            if (isEquals(keyStorage[i], key)) {
+                return valueStorage[i];
             }
         }
         return null;
-    }
-
-    private void checkSimilarity(K key, V value) {
-        if (contains(key)) {
-            Arrays.asList(valueStorage).set(indexOf(key), value);
-            valueStorage[size] = null;
-            keyStorage[size] = null;
-            size--;
-        } else {
-            keyStorage[size] = key;
-            valueStorage[size] = value;
-        }
-        size++;
     }
 
     @Override
@@ -48,27 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean contains(K key) {
-        return equals(keyStorage[indexOf(key)], key);
-    }
-
-    private int indexOf(K key) {
-        for (int i = 0; i < size; i++) {
-            if (equals(keyStorage[i], key)) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    public boolean equals(Object a, Object b) {
+    public boolean isEquals(Object a, Object b) {
         return (a == b) || (a != null && a.equals(b));
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Arrays.hashCode(keyStorage);
-        result = 31 * result + Arrays.hashCode(valueStorage);
-        return result;
     }
 }
