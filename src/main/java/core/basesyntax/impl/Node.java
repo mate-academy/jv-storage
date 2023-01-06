@@ -1,10 +1,10 @@
 package core.basesyntax.impl;
 
-public class StorageItem<K, V> {
+public class Node<K, V> {
     private K key;
     private V value;
 
-    public StorageItem(K key, V value) {
+    public Node(K key, V value) {
         this.key = key;
         this.value = value;
     }

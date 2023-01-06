@@ -1,50 +1,45 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private StorageItem<K, V>[] storageItems;
+    private int size;
+    private Node<K, V>[] storageItems;
 
     public StorageImpl() {
-        this.storageItems = new StorageItem[MAX_STORAGE_SIZE];
+        this.storageItems = new Node[MAX_STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        int index = getIndex(key);
-        storageItems[index] = new StorageItem<>(key, value);
+        Node<K, V> node = new Node<>(key, value);
+        for (int i = 0; i < storageItems.length; i++) {
+            if (storageItems[i] == null) {
+                storageItems[i] = node;
+                size++;
+                break;
+            } else if (key == storageItems[i].getKey() || (storageItems[i].getKey() != null
+                    && storageItems[i].getKey().equals(key))) {
+                storageItems[i] = node;
+                break;
+            }
+        }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storageItems.length; i++) {
-            if (storageItems[i] != null && Objects.equals(key, storageItems[i].getKey())) {
-                return storageItems[i].getValue();
+        for (int i = 0; i < size; i++) {
+            if (key == storageItems[i].getKey()
+                    || (storageItems[i].getKey() != null && storageItems[i].getKey().equals(key))) {
+                return (V) storageItems[i].getValue();
             }
         }
         return null;
     }
 
-    private Integer getIndex(K key) {
-        int i = 0;
-        for (; i < storageItems.length; i++) {
-            if (storageItems[i] == null || Objects.equals(key, storageItems[i].getKey())) {
-                return i;
-            }
-        }
-        throw new RuntimeException("Storage is full ");
-    }
-
     @Override
     public int size() {
-        int result = 0;
-        for (int i = 0; i < storageItems.length; i++) {
-            if (storageItems[i] != null) {
-                result++;
-            }
-        }
-        return result;
+        return size;
     }
 }
