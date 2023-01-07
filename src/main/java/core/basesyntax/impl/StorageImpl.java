@@ -19,8 +19,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 storageItems[i] = node;
                 size++;
                 break;
-            } else if (key == storageItems[i].getKey() || (storageItems[i].getKey() != null
-                    && storageItems[i].getKey().equals(key))) {
+            } else if (key == storageItems[i].key || (storageItems[i].key != null
+                    && storageItems[i].key.equals(key))) {
                 storageItems[i] = node;
                 break;
             }
@@ -30,9 +30,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == storageItems[i].getKey()
-                    || (storageItems[i].getKey() != null && storageItems[i].getKey().equals(key))) {
-                return (V) storageItems[i].getValue();
+            if (key == storageItems[i].key
+                    || (storageItems[i].key != null && storageItems[i].key.equals(key))) {
+                return storageItems[i].value;
             }
         }
         return null;
@@ -50,14 +50,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         public Node(K key, V value) {
             this.key = key;
             this.value = value;
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public V getValue() {
-            return value;
         }
     }
 }
