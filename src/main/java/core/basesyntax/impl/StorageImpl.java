@@ -6,7 +6,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_STORAGE_SIZE = 2;
     private static final int MULTIPLIER_STORAGE_SIZE = 2;
-    private int size = 0;
+    private int size;
     private Pair<K, V>[] storage = new Pair[INITIAL_STORAGE_SIZE];
 
     @Override
@@ -44,9 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void resize() {
         Pair<K, V>[] newPairStorage = new Pair[storage.length * MULTIPLIER_STORAGE_SIZE];
-        for (int i = 0; i < storage.length; ++i) {
-            newPairStorage[i] = storage[i];
-        }
+        System.arraycopy(storage, 0, newPairStorage, 0, size);
         storage = newPairStorage;
     }
 }
