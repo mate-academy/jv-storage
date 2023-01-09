@@ -1,7 +1,5 @@
 package core.basesyntax;
 
-import java.util.Objects;
-
 public class Pair<T, G> {
     private T key;
     private G value;
@@ -35,8 +33,10 @@ public class Pair<T, G> {
 
         if (pair.getClass() == Pair.class) {
             Pair other = (Pair) pair;
-            boolean isKeyEquals = Objects.equals(this.key, other.key);
-            boolean isValueEquals = Objects.equals(this.value, other.value);
+            boolean isKeyEquals = this.key == null ? other.key == null : this.key.equals(other.key);
+            boolean isValueEquals = this.value == null
+                          ? other.value == null
+                          : this.value.equals(other.value);
             if (isKeyEquals && isValueEquals) {
                 return true;
             }
