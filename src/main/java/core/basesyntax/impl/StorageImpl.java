@@ -1,18 +1,17 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private PairOfInput<K, V>[] pairArray = new PairOfInput[MAX_SIZE];
+    private Pair<K, V>[] pairArray = new Pair[MAX_SIZE];
     private int arraySize;
 
-    public class PairOfInput<K, V> {
+    public class Pair<K, V> {
         private K key;
         private V value;
 
-        public PairOfInput(K key, V value) {
+        public Pair(K key, V value) {
             this.key = key;
             this.value = value;
         }
@@ -21,12 +20,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < arraySize; i++) {
-            if (Objects.equals(pairArray[i].key, key)) {
-                pairArray[i] = new PairOfInput<>(key, value);
+            if (pairArray[i].key == key
+                    || pairArray[i].key != null && pairArray[i].key.equals(key)) {
+                pairArray[i] = new Pair<>(key, value);
                 return;
             }
         }
-        pairArray[arraySize] = new PairOfInput<>(key, value);
+        pairArray[arraySize] = new Pair<>(key, value);
         arraySize++;
     }
 
