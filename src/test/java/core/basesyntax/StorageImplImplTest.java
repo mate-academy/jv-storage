@@ -1,10 +1,9 @@
 package core.basesyntax;
 
-import core.basesyntax.impl.StorageImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class StorageImplTest {
+public class StorageImplImplTest {
     @Test
     public void checkSizeIsNonStatic() {
         Storage<Integer, String> firstInstance = new StorageImpl<>();
