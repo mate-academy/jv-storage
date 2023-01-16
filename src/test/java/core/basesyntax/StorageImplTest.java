@@ -3,7 +3,7 @@ package core.basesyntax;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class StorageImplImplTest {
+public class StorageImplTest {
     @Test
     public void checkSizeIsNonStatic() {
         Storage<Integer, String> firstInstance = new StorageImpl<>();

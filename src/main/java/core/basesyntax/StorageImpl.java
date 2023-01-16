@@ -1,44 +1,46 @@
 package core.basesyntax;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    static final int MAX_NUMBER = 10;
-    private final Object[] keyArray = new Object[MAX_NUMBER];
-    private final Object[] valueArray = new Object[MAX_NUMBER];
+    private static final int MAX_SIZE = 10;
+    private final K[] keyArray = (K[]) new Object[MAX_SIZE];
+    private final V[] valueArray = (V[]) new Object[MAX_SIZE];
+    private int size = 0;
 
     @Override
-    public void put(Object key, Object value) {
+    public void put(K key, V value) {
         boolean alreadyContain = false;
-        for (int i = 0; i < MAX_NUMBER; i++) {
+        for (int i = 0; i < size; i++) {
             if (key == null) {
                 if (key == keyArray[i]) {
-                    valueArray[i] = value;
+                    valueArray[i] = (V) value;
                     alreadyContain = true;
                     break;
                 } else {
                     continue;
                 }
             } else if (key.equals(keyArray[i])) {
-                valueArray[i] = value;
+                valueArray[i] = (V) value;
                 alreadyContain = true;
             }
         }
         if (!alreadyContain) {
-            keyArray[size()] = key;
-            valueArray[size()] = value;
+            keyArray[size()] = (K) key;
+            valueArray[size()] = (V) value;
+            size++;
         }
     }
 
     @Override
-    public Object get(Object key) {
-        for (int i = 0; i < 10; i++) {
+    public V get(K key) {
+        for (int i = 0; i < size; i++) {
             if (key == null) {
                 if (key == keyArray[i]) {
-                    return valueArray[i];
+                    return (V) valueArray[i];
                 } else {
                     continue;
                 }
             } else if (key.equals(keyArray[i])) {
-                return valueArray[i];
+                return (V) valueArray[i];
             }
         }
         return null;
@@ -46,12 +48,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int counter = 0;
-        for (int i = 0; i < 10; i++) {
-            if (null != valueArray[i]) {
-                counter++;
-            }
-        }
-        return counter;
+        return size;
     }
 }
