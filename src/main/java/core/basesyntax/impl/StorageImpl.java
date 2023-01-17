@@ -5,14 +5,10 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private final Pair<K, V>[] pairs;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         this.pairs = new Pair[MAX_SIZE];
-    }
-
-    private boolean isEquals(Object firstOne, Object secondOne) {
-        return (firstOne == secondOne || firstOne != null && firstOne.equals(secondOne));
     }
 
     @Override
@@ -23,7 +19,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-
         pairs[size] = new Pair<>(key, value);
         size++;
     }
@@ -35,13 +30,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return pairs[i].getValue();
             }
         }
-
         return null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isEquals(Object firstOne, Object secondOne) {
+        return (firstOne == secondOne || firstOne != null && firstOne.equals(secondOne));
     }
 
     private static class Pair<K, V> {
