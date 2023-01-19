@@ -14,19 +14,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean alreadyContain = false;
         for (int i = 0; i < size; i++) {
             if (key == keyArray[i] || key != null && key.equals(keyArray[i])) {
                 valueArray[i] = value;
-                alreadyContain = true;
-                break;
+                return;
             }
         }
-        if (!alreadyContain) {
-            keyArray[size] = key;
-            valueArray[size] = value;
-            size++;
-        }
+        keyArray[size] = key;
+        valueArray[size] = value;
+        size++;
     }
 
     @Override
