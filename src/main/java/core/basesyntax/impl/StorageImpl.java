@@ -4,59 +4,53 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private final K[] keys = (K[]) new Object[MAX_ITEMS_NUMBER];
-    private final V[] values = (V[]) new Object[MAX_ITEMS_NUMBER];
+    private K[] keys;
+    private V[] values;
+    private int size;
 
-    private int counter = 0;
-
-    public boolean keyCheck(K key) {
-        counter = 0;
-        for (int i = 0; i < this.values.length; i++) {
-            if (this.keys[i] == null && this.values[i] != null
-                    && key == null || this.keys[i] != null
-                    && this.keys[i].equals(key)) {
-                counter = i;
-                return true;
-            }
-        }
-        return false;
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
+        size = 0;
     }
 
-    public boolean isEmpty() {
-        counter = 0;
-        for (int i = 0; i < this.values.length; i++) {
-            if (this.keys[i] == null && this.values[i] == null) {
-                counter = i;
-                return true;
-            }
+    public boolean keyCheck(K keys, K key) {
+        return keys == null && key == null || keys != null
+                && keys.equals(key);
+    }
+
+    public boolean isEmpty(K keys, V values) {
+        if (keys == null && values == null) {
+            size++;
+            return true;
         }
         return false;
     }
 
     @Override
     public void put(K key, V value) {
-        if (keyCheck(key) || isEmpty()) {
-            this.keys[counter] = key;
-            this.values[counter] = value;
+        for (int i = 0; i < this.values.length; i++) {
+            if (keyCheck(this.keys[i], key) && this.values[i] != null
+                    || isEmpty(this.keys[i], this.values[i])) {
+                this.keys[i] = key;
+                this.values[i] = value;
+                break;
+            }
         }
     }
 
     @Override
     public V get(K key) {
-        if (keyCheck(key)) {
-            return this.values[counter];
+        for (int i = 0; i < this.values.length; i++) {
+            if (keyCheck(this.keys[i], key)) {
+                return this.values[i];
+            }
         }
         return null;
     }
 
     @Override
     public int size() {
-        int counter = 0;
-        for (Object value : this.values) {
-            if (value != null) {
-                counter++;
-            }
-        }
-        return counter;
+        return size;
     }
 }
