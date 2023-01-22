@@ -11,39 +11,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ITEMS_NUMBER];
         values = (V[]) new Object[MAX_ITEMS_NUMBER];
-        size = 0;
-    }
-
-    public boolean keyCheck(K keys, K key) {
-        return keys == null && key == null || keys != null
-                && keys.equals(key);
-    }
-
-    public boolean isEmpty(K keys, V values) {
-        if (keys == null && values == null) {
-            size++;
-            return true;
-        }
-        return false;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < this.values.length; i++) {
-            if (keyCheck(this.keys[i], key) && this.values[i] != null
-                    || isEmpty(this.keys[i], this.values[i])) {
-                this.keys[i] = key;
-                this.values[i] = value;
-                break;
+        if (size != 0) {
+            for (int i = 0; i < size; i++) {
+                if (keyCheck(keys[i], key)) {
+                    values[i] = value;
+                    return;
+                }
             }
         }
+        this.keys[size] = key;
+        this.values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < this.values.length; i++) {
-            if (keyCheck(this.keys[i], key)) {
-                return this.values[i];
+        for (int i = 0; i < size; i++) {
+            if (keyCheck(keys[i], key)) {
+                return values[i];
             }
         }
         return null;
@@ -52,5 +41,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean keyCheck(K keys, K key) {
+        return keys == key || keys != null
+                && keys.equals(key);
     }
 }
