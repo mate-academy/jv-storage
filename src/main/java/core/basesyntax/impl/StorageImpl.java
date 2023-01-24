@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
     private final K[] keys;
     private final V[] values;
-    private int now;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ELEMENTS];
