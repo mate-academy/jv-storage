@@ -1,37 +1,31 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] keys = (K[]) new Object[0];
-    private V[] values = (V[]) new Object[0];
+    private static final int DEFAULT_CAPACITY = 10;
+    private int numberOfAllKeys = 0;
+    private K[] keys = (K[]) new Object[DEFAULT_CAPACITY];
+    private V[] values = (V[]) new Object[DEFAULT_CAPACITY];
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keys.length; i++) {
-            if ((key == null) && (keys[i] == null)) {
+            if (isKeyRepeative(key, keys[i])) {
                 values[i] = value;
-                return;
-            }
-            if ((key != null) && (key.equals(keys[i]))) {
-                values[i] = value;
+                numberOfAllKeys++;
                 return;
             }
         }
-        keys = Arrays.copyOf(keys, keys.length + 1);
-        values = Arrays.copyOf(values, values.length + 1);
-        keys[keys.length - 1] = key;
-        values[values.length - 1] = value;
+        keys[numberOfAllKeys] = key;
+        values[numberOfAllKeys] = value;
+        numberOfAllKeys++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if ((key == null) && (keys[i] == null)) {
-                return values[i];
-            }
-            if ((key != null) && (key.equals(keys[i]))) {
+            if (isKeyRepeative(key, keys[i])) {
                 return values[i];
             }
         }
@@ -40,6 +34,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return values.length;
+        int counterOfRepElemetns = 0;
+        for (int i = 1; i <= numberOfAllKeys; i++) {
+            if (isKeyRepeative(keys[i - 1], keys[i])) {
+                counterOfRepElemetns++;
+            }
+        }
+        return numberOfAllKeys - counterOfRepElemetns;
+    }
+
+    public boolean isKeyRepeative(K key, K key2) {
+        if ((key == null) && (key2 == null)
+                || ((key != null) && (key.equals(key2)))) {
+            return true;
+        }
+        return false;
     }
 }
