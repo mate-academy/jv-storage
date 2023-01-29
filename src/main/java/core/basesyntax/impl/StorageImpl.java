@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
-    private int numberOfAllKeys = 0;
+    private int size = 0;
     private K[] keys = (K[]) new Object[DEFAULT_CAPACITY];
     private V[] values = (V[]) new Object[DEFAULT_CAPACITY];
 
@@ -13,19 +13,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < keys.length; i++) {
             if (isKeyRepeative(key, keys[i])) {
                 values[i] = value;
-                numberOfAllKeys++;
+                size++;
                 return;
             }
         }
-        keys[numberOfAllKeys] = key;
-        values[numberOfAllKeys] = value;
-        numberOfAllKeys++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
             if (isKeyRepeative(key, keys[i])) {
+                size = getSizeWithUniqElements();
                 return values[i];
             }
         }
@@ -34,20 +35,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
+        return size;
+    }
+
+    private boolean isKeyRepeative(K key, K key2) {
+        return ((key == null) && (key2 == null)
+                || ((key != null) && (key.equals(key2))));
+    }
+
+    private int getSizeWithUniqElements() {
         int counterOfRepElemetns = 0;
-        for (int i = 1; i <= numberOfAllKeys; i++) {
+        for (int i = 1; i <= size; i++) {
             if (isKeyRepeative(keys[i - 1], keys[i])) {
                 counterOfRepElemetns++;
             }
         }
-        return numberOfAllKeys - counterOfRepElemetns;
-    }
-
-    public boolean isKeyRepeative(K key, K key2) {
-        if ((key == null) && (key2 == null)
-                || ((key != null) && (key.equals(key2)))) {
-            return true;
-        }
-        return false;
+        return size - counterOfRepElemetns;
     }
 }
