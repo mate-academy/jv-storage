@@ -6,18 +6,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_ITEMS_QUANTITY = 10;
     private K key;
     private V value;
-    private StorageImpl[] storages = new StorageImpl[MAX_ITEMS_QUANTITY];
-
-    public StorageImpl() {
-    }
+    private StorageImpl[] storages;
 
     public StorageImpl(K key, V value) {
         this.key = key;
         this.value = value;
     }
 
-    public StorageImpl(StorageImpl[] storages) {
-        this.storages = storages;
+    public StorageImpl() {
+        storages = new StorageImpl[MAX_ITEMS_QUANTITY];
     }
 
     public K getKey() {
