@@ -1,47 +1,38 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private K key;
-    private V value;
+    private final K[] keys;
+    private final V[] values;
     private int size = 0;
-    private final StorageImpl<K, V>[] storage = new StorageImpl[MAX_SIZE];
 
     public StorageImpl() {
-    }
-
-    private StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
+        this.keys = (K[]) new Object[MAX_SIZE];
+        this.values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        boolean isExist = false;
-        for (int i = 0; i < size; i++) {
-            if (key == storage[i].getKey()
-                    || (storage[i].getKey() != null && storage[i].getKey().equals(key))) {
-                storage[i].setValue(value);
-                isExist = true;
-            }
-        }
-        if (!isExist && size < MAX_SIZE) {
-            storage[size] = new StorageImpl<>(key, value);
+        int index = getIndex(key);
+        if (index == -1 && size < MAX_SIZE) {
+            keys[size] = key;
+            values[size] = value;
             size++;
+        } else {
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == storage[i].getKey()
-                    || (storage[i].getKey() != null && storage[i].getKey().equals(key))) {
-                return storage[i].getValue();
-            }
+        int index = getIndex(key);
+        if (index == -1) {
+            return null;
         }
-        return null;
+        return values[index];
     }
 
     @Override
@@ -49,15 +40,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private K getKey() {
-        return this.key;
-    }
-
-    private void setValue(V value) {
-        this.value = value;
-    }
-
-    private V getValue() {
-        return value;
+    private int getIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(key, keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
