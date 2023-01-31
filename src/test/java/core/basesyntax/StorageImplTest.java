@@ -149,4 +149,9 @@ public class StorageImplTest {
                         + "the storage size should be 1",
                 3, storage.size());
     }
+
+    @Override
+    public String toString() {
+        return "StorageImplTest{}";
+    }
 }
