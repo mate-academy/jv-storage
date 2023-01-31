@@ -8,7 +8,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        this.pairs = new Pair[MAX_SIZE];
+        this.pairs = (Pair<K, V>[]) new Pair[MAX_SIZE];
     }
 
     @Override
