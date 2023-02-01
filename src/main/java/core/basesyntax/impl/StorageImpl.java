@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH_STORAGE = 10;
@@ -11,25 +10,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (key == null && keyArray[i] == null || (key != null && key.equals(keyArray[i]))) {
-                valueArray[i] = value;
-                return;
-            }
+        if (containsKey(key)) {
+            valueArray[indexOf(key)] = value;
+        } else {
+            keyArray[size] = key;
+            valueArray[size] = value;
+            size++;
         }
-        keyArray[size] = key;
-        valueArray[size] = value;
-        size++;
+
     }
 
     @Override
     public V get(K key) {
-        System.out.println(Arrays.toString(keyArray));
-        System.out.println(Arrays.toString(valueArray));
-        for (int i = 0; i < size; i++) {
-            if (keyArray[i] == key || (keyArray[i] != null && keyArray[i].equals(key))) {
-                return valueArray[i];
-            }
+        if (containsKey(key)) {
+            return valueArray[indexOf(key)];
         }
         return null;
     }
@@ -37,5 +31,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keyArray[i] == null || (key != null && key.equals(keyArray[i]))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean containsKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keyArray[i] == null || (key != null && key.equals(keyArray[i]))) {
+                return true;
+            }
+        }
+        return false;
     }
 }
