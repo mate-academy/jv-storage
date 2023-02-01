@@ -2,6 +2,8 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.util.Objects;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_DEFAULT_SIZE = 10;
     private final Object[] keys;
@@ -37,9 +39,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getKeyIndex(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (key == null && keys[i] == null && values[i] != null
-                    || key != null && key.equals(keys[i])) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(key, keys[i])) {
                 return i;
             }
         }
