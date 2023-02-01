@@ -7,6 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
     private final Object[] keys;
     private final Object[] values;
+    private int size = 0;
 
     public StorageImpl() {
         keys = new Object[ARRAY_SIZE];
@@ -19,16 +20,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (keys[i] == null && values[i] == null) {
                 keys[i] = key;
                 values[i] = value;
+                size++;
                 return;
             }
-            if (key == null) {
-                while (keys[i] != null) {
-                    i++;
-                }
-                values[i] = value;
-                return;
-            }
-            if (key.equals(keys[i])) {
+            if (key == null && keys[i] == null || key != null && key.equals(keys[i])) {
                 values[i] = value;
                 return;
             }
