@@ -4,34 +4,22 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_ITEMS_QUANTITY = 10;
-    private K key;
-    private V value;
-    private Pair[] elements;
-
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public StorageImpl() {
-        storages = new StorageImpl[MAX_ITEMS_QUANTITY];
-    }
-
-    public K getKey() {
-        return (K) this.key;
-    }
+    private Pair[] storage = new Pair[MAX_ITEMS_QUANTITY];
+    private Pair elements;
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < MAX_ITEMS_QUANTITY; i++) {
-            StorageImpl<K, V> inputValue = new StorageImpl<>(key, value);
-            if (isNull(storages[i])) {
-                storages[i] = inputValue;
+            elements = new Pair(key, value);
+            if (isNull(storage[i])) {
+                storage[i] = elements;
+                size++;
                 break;
-            } else if (isNull((K) storages[i].getKey()) && !isNull((K) inputValue.getKey())) {
+            } else if (isKeyNull((storage[i])) && !isKeyNull((elements))) {
                 continue;
-            } else if (areKeysEqual(storages[i], inputValue.getKey())) {
-                storages[i] = inputValue;
+            } else if (areKeysEqual(storage[i], elements)) {
+                storage[i] = elements;
                 break;
             }
         }
@@ -39,15 +27,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (StorageImpl<K, V> storage : storages) {
-            if (isNull(storage)) {
+        for (Pair pair : storage) {
+            if (isNull(pair)) {
                 return null;
-            } else if (isNull((K) storage.getKey()) && isNull(key)) {
-                return storage.value;
-            } else if (isNull((K) storage.getKey()) && !isNull(key)) {
+            } else if (isKeyNull(pair) && key == null) {
+                return (V) pair.getValue();
+            } else if (isKeyNull(pair) && key != null) {
                 continue;
-            } else if (areKeysEqual(storage, key)) {
-                return storage.value;
+            } else if (pair.key.equals(key)) {
+                return (V) pair.getValue();
             }
         }
         return null;
@@ -55,26 +43,49 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int storageSize;
-        for (storageSize = 0; storageSize < MAX_ITEMS_QUANTITY; storageSize++) {
-            if (isNull(storages[storageSize])) {
-                break;
-            }
+        return size;
+    }
+
+    private boolean isNull(Pair pair) {
+        return pair == null ? true : false;
+    }
+
+    private boolean isKeyNull(Pair pair) {
+        return pair.getKey() == null ? true : false;
+    }
+
+    private boolean areKeysEqual(Pair pair1, Pair pair2) {
+        return ((isKeyNull(pair1) && isKeyNull(pair2))
+            || pair1.getKey() == pair2.getKey()
+            || pair1.getKey().equals(pair2.getKey()));
+    }
+
+    public static class Pair<K, V> {
+        private K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
         }
-        return storageSize;
-    }
 
-    private boolean isNull(StorageImpl storage) {
-        return storage == null ? true : false;
-    }
+        public K getKey() {
+            return key;
+        }
 
-    private boolean isNull(K key) {
-        return key == null ? true : false;
-    }
+        public void setKey(K key) {
+            this.key = key;
+        }
 
-    private boolean areKeysEqual(StorageImpl storage, K key) {
-        return ((isNull((K) storage.getKey()) && isNull(key))
-            || storage.getKey() == key
-            || storage.getKey().equals(key));
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
     }
 }
+
+
+
