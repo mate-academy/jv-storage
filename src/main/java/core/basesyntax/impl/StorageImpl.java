@@ -7,7 +7,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keyArray;
     private V[] valueArray;
     private int size;
-    private int index;
 
     public StorageImpl() {
         keyArray = (K[]) new Object[MAX_LENGTH_STORAGE];
@@ -16,7 +15,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (indexOf(key)) {
+        int index = indexOf(key);
+        if (index != -1) {
             valueArray[index] = value;
         } else {
             keyArray[size] = key;
@@ -27,7 +27,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (indexOf(key)) {
+        int index = indexOf(key);
+        if (index != -1) {
             return valueArray[index];
         }
         return null;
@@ -38,13 +39,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean indexOf(K key) {
+    private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
             if (key == null && keyArray[i] == null || (key != null && key.equals(keyArray[i]))) {
-                index = i;
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }
