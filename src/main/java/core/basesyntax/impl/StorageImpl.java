@@ -4,9 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_ITEMS_QUANTITY = 10;
-    private Pair[] storage = new Pair[MAX_ITEMS_QUANTITY];
     private Pair elements;
     private int size = 0;
+    private Pair[] storage;
+
+    public StorageImpl() {
+        storage = new Pair[MAX_ITEMS_QUANTITY];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -73,17 +77,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return key;
         }
 
-        public void setKey(K key) {
-            this.key = key;
-        }
-
         public V getValue() {
             return value;
         }
 
-        public void setValue(V value) {
-            this.value = value;
-        }
     }
 }
 
