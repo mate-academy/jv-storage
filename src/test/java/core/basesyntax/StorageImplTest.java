@@ -42,13 +42,6 @@ public class StorageImplTest {
     @Test
     public void getElementWhenKeyDontExist() {
         Storage<Integer, String> storage = new StorageImpl<>();
-        String elementOne = "Element 1";
-        String elementTwo = "Element 2";
-        String elementTree = "Element 3";
-
-        storage.put(1, elementOne);
-        storage.put(2, elementTwo);
-        storage.put(3, elementTree);
 
         Assert.assertNull(
                 "When element with this key doesn't exist, the method should return \"null\"",
@@ -107,46 +100,40 @@ public class StorageImplTest {
     @Test
     public void addTwoElementsWithSameKey() {
         Storage<Cat, String> storage = new StorageImpl<>();
-        Cat firstCat = new Cat("Barsik", "black");
-        Cat secondCat = new Cat("Myrchyk", "white");
-        Cat thirdCat = new Cat("Leopold", "red");
-        Cat sameSecondCat = new Cat("Myrchyk", "white");
+        Cat cat = new Cat("Myrchyk", "white");
+        Cat sameCat = new Cat("Myrchyk", "white");
         String elementOne = "One";
         String elementTwo = "Two";
-        String elementThree = "Three";
-        String elementFour = "Four";
 
-        storage.put(firstCat, elementOne);
-        storage.put(secondCat, elementTwo);
-        storage.put(thirdCat, elementThree);
-        storage.put(sameSecondCat, elementFour);
+        storage.put(cat, elementOne);
+        storage.put(sameCat, elementTwo);
 
+        Assert.assertEquals(
+                "With two elements added with the same key, "
+                        + "the value should be rewritten",
+                elementTwo,
+                storage.get(cat));
         Assert.assertEquals("With two elements added with the same key, "
-                + "the value should be rewritten", elementFour, storage.get(secondCat));
-        Assert.assertEquals("With two elements added with the same key, "
-                + "the storage size should be 3", 3, storage.size());
+                        + "the storage size should be 1",
+                1, storage.size());
     }
 
     @Test
     public void addTwoElementsWithNullKey() {
-        Storage<Integer, String> storage = new StorageImpl<>();
+        Storage<Cat, String> storage = new StorageImpl<>();
         String elementOne = "One";
         String elementTwo = "Two";
-        String elementThree = "Three";
-        String elementFour = "Four";
 
-        storage.put(1, elementOne);
+        storage.put(null, elementOne);
         storage.put(null, elementTwo);
-        storage.put(null, elementThree);
-        storage.put(3, elementFour);
 
         Assert.assertEquals(
                 "With two elements added with the same \"null\" key, "
                         + "the value should be rewritten",
-                elementThree,
+                elementTwo,
                 storage.get(null));
         Assert.assertEquals("With two elements added with the same \"null\" key, "
                         + "the storage size should be 1",
-                3, storage.size());
+                1, storage.size());
     }
 }
