@@ -25,7 +25,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 saveStorage(key, value);
             }
             index = 0;
-        } else if (isKey(key)){
+        } else if (isKey(key)) {
             values[index] = value;
         } else {
             saveStorage(null, value);
