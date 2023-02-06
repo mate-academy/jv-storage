@@ -4,46 +4,55 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static int INDEX = 0;
+    private static int INDEX_STORAGE = 0;
+    private static int INDEX_KEY = 0;
+    private static StorageImpl[] storage;
     private K key;
     private V value;
-    private StorageImpl[] storage;
 
     public StorageImpl() {
         storage = new StorageImpl[MAX_SIZE];
     }
 
+    public StorageImpl(K key, V value) {
+        if (INDEX_STORAGE == 0) {
+            saveStorage(key, value);
+        } else if (isKey(key)){
+            this.key = key;
+            this.value = value;
+            storage[INDEX_KEY] = this;
+        } else {
+            saveStorage(key, value);
+        }
+        INDEX_KEY = 0;
+    }
+
     @Override
     public void put(K key, V value) {
-        this.key = key;
-        this.value = value;
-        storage[INDEX] = this;
-        INDEX++;
+        new StorageImpl<>(key, value);
     }
 
     @Override
     public V get(K key) {
-        V valueStorage = null;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i].key.equals(key)) {
-                valueStorage = (V) storage[i].value;
+        for (; INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
+            this.key = (K) storage[INDEX_KEY].key;
+            if (isKey(key)) {
+                value = (V) storage[INDEX_KEY].value;
             }
         }
-        return valueStorage;
+        return value;
     }
 
     @Override
     public int size() {
-        return INDEX;
+        return INDEX_STORAGE;
     }
 
     @Override
     public int hashCode() {
         int result = 17;
         if (key != null) {
-            result = 31 * result + key.hashCode();
-            result = 31 * result + value.hashCode();
-            return result;
+            return  31 * result + key.hashCode();
         }
         return result;
     }
@@ -56,7 +65,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (obj == null) {
             return false;
         }
-        StorageImpl equalsKey = (StorageImpl) obj;
-        return (key == null && equalsKey.key == null) || equalsKey.key.equals(key);
+        if ((obj instanceof  StorageImpl)) {
+            return false;
+        }
+        return obj.hashCode() == key.hashCode();
+    }
+
+    public boolean  isKey(K key) {
+        for (;INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
+            if (storage[INDEX_KEY].key.equals(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void saveStorage(K key, V value) {
+        this.key = key;
+        this.value = value;
+        storage[INDEX_STORAGE] = this;
+        INDEX_STORAGE++;
     }
 }
