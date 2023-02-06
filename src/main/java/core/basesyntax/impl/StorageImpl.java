@@ -3,45 +3,38 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 10;
-    private static int indexStorage = 0;
-    private static int indexKey = 0;
-    private static StorageImpl[] storage;
-    private K key;
-    private V value;
+    private static final int MAX_ARRAY_SIZE = 10;
+    private static int lastIndexOfArray = 0;
+    private static int index = 0;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        storage = new StorageImpl[MAX_SIZE];
-    }
-
-    public StorageImpl(K key, V value) {
-        if (indexStorage == 0) {
-            saveStorage(key, value);
-        } else if (isKey(key)) {
-            this.key = key;
-            this.value = value;
-            storage[indexKey] = this;
-        } else {
-            saveStorage(key, value);
-        }
-        indexKey = 0;
+        keys = (K[]) new Object[MAX_ARRAY_SIZE];
+        values = (V[]) new Object[MAX_ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         if (key != null) {
-            new StorageImpl<>(key, value);
+            if (lastIndexOfArray == 0) {
+                saveStorage(key, value);
+            } else if (isKey(key)) {
+                values[index] = value;
+            } else {
+                saveStorage(key, value);
+            }
+            index = 0;
         } else {
-            new StorageImpl<>(null, value);
+            saveStorage(null, value);
         }
     }
 
     @Override
     public V get(K key) {
-        for (; indexKey < indexStorage; indexKey++) {
-            this.key = (K) storage[indexKey].key;
+        for (; index < lastIndexOfArray; index++) {
             if (isKey(key)) {
-                return (V) storage[indexKey].value;
+                return values[index];
             }
         }
         return null;
@@ -49,14 +42,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return indexStorage;
+        return lastIndexOfArray;
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        if (key != null) {
-            return 31 * result + key.hashCode();
+        if (keys[index] != null) {
+            return 31 * result + keys[index].hashCode();
         }
         return result;
     }
@@ -72,21 +65,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if ((obj instanceof StorageImpl)) {
             return false;
         }
-        return obj.hashCode() == key.hashCode();
+        return obj.hashCode() == keys[index].hashCode();
     }
 
     public boolean isKey(K key) {
         if (key != null) {
-            for (;indexKey < indexStorage; indexKey++) {
-                if (storage[indexKey].key != null) {
-                    if (storage[indexKey].key.equals(key)) {
+            for (;index < lastIndexOfArray; index++) {
+                if (keys[index] != null) {
+                    if (keys[index].equals(key)) {
                         return true;
                     }
                 }
             }
         } else {
-            for (;indexKey < indexStorage; indexKey++) {
-                if (storage[indexKey].key == null) {
+            for (;index < lastIndexOfArray; index++) {
+                if (keys[index] == null) {
                     return true;
                 }
             }
@@ -95,9 +88,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public void saveStorage(K key, V value) {
-        this.key = key;
-        this.value = value;
-        storage[indexStorage] = this;
-        indexStorage++;
+        keys[lastIndexOfArray] = key;
+        values[lastIndexOfArray] = value;
+        lastIndexOfArray++;
     }
 }
