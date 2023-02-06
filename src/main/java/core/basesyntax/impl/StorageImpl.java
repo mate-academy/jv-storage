@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl(K key, V value) {
         if (INDEX_STORAGE == 0) {
             saveStorage(key, value);
-        } else if (isKey(key)){
+        } else if (isKey(key)) {
             this.key = key;
             this.value = value;
             storage[INDEX_KEY] = this;
@@ -56,7 +56,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int hashCode() {
         int result = 17;
         if (key != null) {
-            return  31 * result + key.hashCode();
+            return 31 * result + key.hashCode();
         }
         return result;
     }
@@ -69,13 +69,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (obj == null) {
             return false;
         }
-        if ((obj instanceof  StorageImpl)) {
+        if ((obj instanceof StorageImpl)) {
             return false;
         }
         return obj.hashCode() == key.hashCode();
     }
 
-    public boolean  isKey(K key) {
+    public boolean isKey(K key) {
         if (key != null) {
             for (;INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
                 if (storage[INDEX_KEY].key != null) {
