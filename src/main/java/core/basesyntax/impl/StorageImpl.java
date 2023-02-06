@@ -41,10 +41,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (; INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
             this.key = (K) storage[INDEX_KEY].key;
             if (isKey(key)) {
-                value = (V) storage[INDEX_KEY].value;
+                return (V) storage[INDEX_KEY].value;
             }
         }
-        return value;
+        return null;
     }
 
     @Override
