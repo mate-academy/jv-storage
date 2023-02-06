@@ -29,7 +29,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        new StorageImpl<>(key, value);
+        if (key != null) {
+            new StorageImpl<>(key, value);
+        } else {
+            new StorageImpl<>(null, value);
+        }
     }
 
     @Override
@@ -72,9 +76,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public boolean  isKey(K key) {
-        for (;INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
-            if (storage[INDEX_KEY].key.equals(key)) {
-                return true;
+        if (key != null) {
+            for (;INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
+                if (storage[INDEX_KEY].key != null) {
+                    if (storage[INDEX_KEY].key.equals(key)) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            for (;INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
+                if (storage[INDEX_KEY].key == null) {
+                    return true;
+                }
             }
         }
         return false;
