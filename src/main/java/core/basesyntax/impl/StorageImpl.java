@@ -4,8 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static int INDEX_STORAGE = 0;
-    private static int INDEX_KEY = 0;
+    private static int indexStorage = 0;
+    private static int indexKey = 0;
     private static StorageImpl[] storage;
     private K key;
     private V value;
@@ -15,16 +15,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public StorageImpl(K key, V value) {
-        if (INDEX_STORAGE == 0) {
+        if (indexStorage == 0) {
             saveStorage(key, value);
         } else if (isKey(key)) {
             this.key = key;
             this.value = value;
-            storage[INDEX_KEY] = this;
+            storage[indexKey] = this;
         } else {
             saveStorage(key, value);
         }
-        INDEX_KEY = 0;
+        indexKey = 0;
     }
 
     @Override
@@ -38,10 +38,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (; INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
-            this.key = (K) storage[INDEX_KEY].key;
+        for (; indexKey < indexStorage; indexKey++) {
+            this.key = (K) storage[indexKey].key;
             if (isKey(key)) {
-                return (V) storage[INDEX_KEY].value;
+                return (V) storage[indexKey].value;
             }
         }
         return null;
@@ -49,7 +49,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return INDEX_STORAGE;
+        return indexStorage;
     }
 
     @Override
@@ -77,16 +77,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public boolean isKey(K key) {
         if (key != null) {
-            for (;INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
-                if (storage[INDEX_KEY].key != null) {
-                    if (storage[INDEX_KEY].key.equals(key)) {
+            for (;indexKey < indexStorage; indexKey++) {
+                if (storage[indexKey].key != null) {
+                    if (storage[indexKey].key.equals(key)) {
                         return true;
                     }
                 }
             }
         } else {
-            for (;INDEX_KEY < INDEX_STORAGE; INDEX_KEY++) {
-                if (storage[INDEX_KEY].key == null) {
+            for (;indexKey < indexStorage; indexKey++) {
+                if (storage[indexKey].key == null) {
                     return true;
                 }
             }
@@ -97,7 +97,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void saveStorage(K key, V value) {
         this.key = key;
         this.value = value;
-        storage[INDEX_STORAGE] = this;
-        INDEX_STORAGE++;
+        storage[indexStorage] = this;
+        indexStorage++;
     }
 }
