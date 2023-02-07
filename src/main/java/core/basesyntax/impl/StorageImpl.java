@@ -1,45 +1,63 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAX_STORAGE_VALUE = 10;
     private int createdStorages;
-
-    private ArrayList<K> keyArrayList = new ArrayList<>();
-    private ArrayList<V> valueArrayList = new ArrayList<>();
+    private Object[] keyArrayList = new Object[MAX_STORAGE_VALUE];
+    private Object[] valueArrayList = new Object[MAX_STORAGE_VALUE];
 
     private K key;
     private V value;
 
+    private boolean contains(Object[] array, Object o) {
+        for (int i = 0; i < createdStorages; i++) {
+            if (Objects.equals(array[i], o)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int indexOf(Object[] array, Object o) {
+        for (int i = 0; i < createdStorages; i++) {
+            if (Objects.equals(array[i], o)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public void put(K key, V value) {
-        if (createdStorages <= MAX_STORAGE_VALUE) {
-            if (keyArrayList.contains(key)) {
-                valueArrayList.remove(valueArrayList
-                        .get(keyArrayList.indexOf(key)));
-                keyArrayList.remove(key);
+        if (createdStorages < MAX_STORAGE_VALUE) {
+            if (contains(keyArrayList, key)) {
+                this.key = key;
+                this.value = value;
+                valueArrayList[indexOf(keyArrayList, key)] = value;
+                keyArrayList[indexOf(keyArrayList, key)] = key;
+                return;
             }
             this.key = key;
             this.value = value;
-            keyArrayList.add(0, key);
-            valueArrayList.add(0, value);
+            keyArrayList[createdStorages] = key;
+            valueArrayList[createdStorages] = value;
             createdStorages++;
         }
     }
 
     @Override
     public V get(K key) {
-        if (!keyArrayList.contains(key)) {
+        if (!contains(keyArrayList, key)) {
             return null;
         }
-        return valueArrayList.get(keyArrayList.indexOf(key));
+        return (V) valueArrayList[indexOf(keyArrayList, key)];
     }
 
     @Override
     public int size() {
-        return this.valueArrayList.size();
+        return createdStorages;
     }
 }
