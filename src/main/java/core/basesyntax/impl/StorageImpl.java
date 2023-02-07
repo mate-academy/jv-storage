@@ -34,10 +34,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        index = 0;
-        for (; index < lastIndexOfArray; index++) {
+        for (int i = 0; i < lastIndexOfArray; i++) {
             if (isKey(key)) {
-                return values[index];
+                return values[i];
             }
         }
         return null;
