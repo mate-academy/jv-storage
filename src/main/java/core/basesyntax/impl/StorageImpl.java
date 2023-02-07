@@ -45,6 +45,29 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return keys.length;
     }
 
+    @Override
+    public int hashCode() {
+        int result = 17;
+        if (key != null) {
+            return 31 * result + key.hashCode();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if ((obj instanceof StorageImpl)) {
+            return false;
+        }
+        return obj.hashCode() == key.hashCode();
+    }
+
     public boolean isKey(K key) {
         if (key != null) {
             for (int i = 0; i < size(); i++) {
