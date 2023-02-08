@@ -5,59 +5,52 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_VALUE = 10;
-    private int createdStorages;
-    private Object[] keyArrayList = new Object[MAX_STORAGE_VALUE];
-    private Object[] valueArrayList = new Object[MAX_STORAGE_VALUE];
+    private int size;
+    private Object[] keys = new Object[MAX_STORAGE_VALUE];
+    private Object[] values = new Object[MAX_STORAGE_VALUE];
 
-    private K key;
-    private V value;
+    @Override
+    public void put(K key, V value) {
+        if (size < MAX_STORAGE_VALUE) {
+            if (contains(keys, key)) {
+                values[indexOf(keys, key)] = value;
+                keys[indexOf(keys, key)] = key;
+                return;
+            }
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
+    }
 
-    private boolean contains(Object[] array, Object o) {
-        for (int i = 0; i < createdStorages; i++) {
-            if (Objects.equals(array[i], o)) {
+    @Override
+    public V get(K key) {
+        if (!contains(keys, key)) {
+            return null;
+        }
+        return (V) values[indexOf(keys, key)];
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    private boolean contains(Object[] array, Object key) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(array[i], key)) {
                 return true;
             }
         }
         return false;
     }
 
-    private int indexOf(Object[] array, Object o) {
-        for (int i = 0; i < createdStorages; i++) {
-            if (Objects.equals(array[i], o)) {
+    private int indexOf(Object[] array, Object key) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(array[i], key)) {
                 return i;
             }
         }
         return -1;
-    }
-
-    @Override
-    public void put(K key, V value) {
-        if (createdStorages < MAX_STORAGE_VALUE) {
-            if (contains(keyArrayList, key)) {
-                this.key = key;
-                this.value = value;
-                valueArrayList[indexOf(keyArrayList, key)] = value;
-                keyArrayList[indexOf(keyArrayList, key)] = key;
-                return;
-            }
-            this.key = key;
-            this.value = value;
-            keyArrayList[createdStorages] = key;
-            valueArrayList[createdStorages] = value;
-            createdStorages++;
-        }
-    }
-
-    @Override
-    public V get(K key) {
-        if (!contains(keyArrayList, key)) {
-            return null;
-        }
-        return (V) valueArrayList[indexOf(keyArrayList, key)];
-    }
-
-    @Override
-    public int size() {
-        return createdStorages;
     }
 }
