@@ -5,6 +5,7 @@ import core.basesyntax.Storage;
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    private static final int NOT_FOUND_INDEX = -1;
     private final K[] keys;
     private final V[] values;
     private int size;
@@ -23,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         int index = contains(key);
 
-        if (index == -1) {
+        if (index == NOT_FOUND_INDEX) {
             values[size] = value;
             keys[size] = key;
             size++;
@@ -35,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = contains(key);
-        if (index != -1) {
+        if (index != NOT_FOUND_INDEX) {
             return values[index];
         }
 
@@ -48,7 +49,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int contains(K key) {
-        int index = -1;
+        int index = NOT_FOUND_INDEX;
 
         for (int i = 0; i < size; i++) {
             if ((key == keys[i]) || (key != null && key.equals(keys[i]))) {
