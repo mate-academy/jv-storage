@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (!isNull(storage[i]) && areKeysEqual((K) storage[i].key, key)) {
+            if (areKeysEqual((K) storage[i].key, key)) {
                 return (V) storage[i].value;
             }
         }
