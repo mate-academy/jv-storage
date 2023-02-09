@@ -50,10 +50,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return key == null ? true : false;
     }
 
-    private boolean areKeysEqual(K key1, K key2) {
-        return ((isKeyNull(key1) && isKeyNull(key2))
-            || key1 == key2
-            || !isKeyNull(key1) && key1.equals(key2));
+    private boolean areEqual(Object o1, Object o2) {
+        return o1 == o2 || o1 != null && o1.equals(o2);
     }
 
     private static class Pair<K, V> {
