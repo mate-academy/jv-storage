@@ -3,38 +3,34 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_CAPACITY = 10;
+    private Object[] arrKey;
+    private Object[] arrValue;
+    private int size;
 
-    private final int maxCapacity = 10;
-    private final Object[] arrKey = new Object [maxCapacity];
-    private final Object[] arrValue = new Object [maxCapacity];
+    public StorageImpl() {
+        arrKey = new Object[MAX_CAPACITY];
+        arrValue = new Object[MAX_CAPACITY];
+    }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < maxCapacity; i++) {
-            if (key != null) {
-                if (arrKey[i] == null && arrValue[i] == null || key.equals(arrKey[i])) {
-                    arrKey[i] = key;
-                    arrValue[i] = value;
-                    break;
-                }
-            }
-            if (arrKey[i] == key) {
+        for (int i = 0; i < size; i++) {
+            if (arrKey[i] == key || (key != null && key.equals(arrKey[i]))) {
                 arrKey[i] = key;
                 arrValue[i] = value;
-                break;
+                size -= 1;
             }
         }
+        arrKey[size] = key;
+        arrValue[size] = value;
+        size += 1;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < maxCapacity; i++) {
-            if (key != null) {
-                if (arrKey[i] == null && arrValue[i] == null || key.equals(arrKey[i])) {
-                    return (V) arrValue[i];
-                }
-            }
-            if (arrKey[i] == key) {
+        for (int i = 0; i <= size; i++) {
+            if (arrKey[i] == key || (key != null && key.equals(arrKey[i]))) {
                 return (V) arrValue[i];
             }
         }
@@ -43,12 +39,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = 0;
-        for (int i = 0; i < maxCapacity; i++) {
-            if (arrValue[i] != null) {
-                size += 1;
-            }
-        }
         return size;
     }
 }
