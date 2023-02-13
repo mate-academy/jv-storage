@@ -4,41 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private K[] keyItem;
-    private V[] itemPair;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        keyItem = (K[]) new Object[MAX_STORAGE_SIZE];
-        itemPair = (V[]) new Object[MAX_STORAGE_SIZE];
-    }
-
-    private boolean isKeyTheSame(K key, K[] keyItem, int i) {
-        boolean isKeyNull = (key == null && keyItem[i] == null);
-        boolean isKeyNotNull = (key != null && key.equals(keyItem[i]));
-        return isKeyNull || isKeyNotNull;
+        keys = (K[]) new Object[MAX_STORAGE_SIZE];
+        values = (V[]) new Object[MAX_STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            boolean isKeyTheSame = isKeyTheSame(key, keyItem, i);
-            if (isKeyTheSame) {
-                itemPair[i] = value;
-                size--;
+            if (isKeyTheSame(key, keys[i])) {
+                values[i] = value;
+                return;
             }
         }
-        keyItem[size] = key;
-        itemPair[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            boolean isKeyTheSame = isKeyTheSame(key, keyItem, i);
-            if (isKeyTheSame) {
-                return itemPair[i];
+            if (isKeyTheSame(key, keys[i])) {
+                return values[i];
             }
         }
         return null;
@@ -47,5 +39,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isKeyTheSame(K externalKey, K key) {
+        boolean isKeyNull = (key == null && externalKey == null);
+        boolean isKeyNotNull = (key != null && key.equals(externalKey));
+        return isKeyNull || isKeyNotNull;
     }
 }
