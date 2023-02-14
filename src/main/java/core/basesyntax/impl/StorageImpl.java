@@ -4,7 +4,6 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int LENGTH = 10;
-    private static final int FIRST_INDEX = 0;
     private V[] value;
     private K[] key;
     private int index;
@@ -12,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         value = (V[]) new Object[LENGTH];
         key = (K[])new Object[LENGTH];
-        index = FIRST_INDEX;
     }
 
     @Override
