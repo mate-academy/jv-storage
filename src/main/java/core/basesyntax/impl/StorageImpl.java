@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_CAPACITY = 10;
@@ -29,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < MAXIMUM_CAPACITY; i++) {
-            if ((keyArray[i] == key) || (Objects.equals(keyArray[i], key))) {
+            if ((keyArray[i] == key) || (keyArray[i] != null && keyArray[i].equals(key))) {
                 return valueArray[i];
             }
         }
