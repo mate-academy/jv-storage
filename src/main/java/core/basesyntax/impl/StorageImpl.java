@@ -6,7 +6,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_MAX_LENGTH = 10;
     private K[] keysStore;
     private V[] valuesStore;
-
     private int length;
 
     public StorageImpl() {
