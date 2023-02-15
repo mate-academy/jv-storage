@@ -47,19 +47,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         return i;
     }
-
-    public static void main(String[] args) {
-        StorageImpl<String, Integer> si = new StorageImpl<>();
-        System.out.println(si.size());
-        si.put("R", 1);
-        si.put("B", 2);
-        si.put("K", 3);
-        System.out.println(si.size());
-        si.put("R",10);
-        si.put(null, 4);
-        si.put(null, 14);
-        System.out.println(si.size());
-        System.out.println(si.get("R"));
-        System.out.println(si.get(null));
-    }
 }
