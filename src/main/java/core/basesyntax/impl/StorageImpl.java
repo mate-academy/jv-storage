@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (size == 10) {
-            throw new RuntimeException("The storage is full, you can replace an existing item!");
+            throw new RuntimeException("The storage is full, you can replace an existing element!");
         }
         boolean isExist = false;
         KeyValuePair<K, V> instanceOfKeyValue = new KeyValuePair<>(key, value);
