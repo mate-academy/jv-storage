@@ -21,7 +21,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         if (!isExist) {
             if (size == START_CAPACITY) {
-                throw new RuntimeException("The storage is full, you can replace an existing element!");
+                throw new RuntimeException(
+                        "The storage is full, you can replace an existing element!");
             }
             array[size] = instanceOfKeyValue;
             size++;
