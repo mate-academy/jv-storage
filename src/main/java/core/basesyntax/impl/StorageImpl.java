@@ -15,37 +15,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean keyWas = false;
         for (int i = 0; i < index; i++) {
-            if (compare(this.key[i], key)) {
+            if (compareKeys(this.key[i], key)) {
                 this.value[i] = value;
-                keyWas = true;
+                return;
             }
         }
-        if (keyWas == false) {
-            this.key[index] = key;
-            this.value[index] = value;
-            index++;
-        }
+        this.key[index] = key;
+        this.value[index] = value;
+        index++;
     }
 
-    private boolean compare(Object first, Object second) {
-        if (first == null || second == null) {
-            if (first == second) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return first.equals(second);
-        }
+    private boolean compareKeys(Object first, Object second) {
+        return (first == null || second == null)
+                ? ((first == second) ? true : false) : first.equals(second);
     }
 
     @Override
     public V get(K key) {
-        int indexResult = 0;
         for (int i = 0; i < index; i++) {
-            if (compare(this.key[i], key)) {
+            if (compareKeys(this.key[i], key)) {
                 return value[i];
             }
         }
