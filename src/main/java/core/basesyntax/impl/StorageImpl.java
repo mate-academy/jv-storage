@@ -9,7 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size == 10) {
+        if (size >= START_CAPACITY) {
             throw new RuntimeException("The storage is full, you can replace an existing element!");
         }
         boolean isExist = false;
