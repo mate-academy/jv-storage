@@ -24,6 +24,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 break;
             }
         }
+        if (this.usedSpace == MAX_ROW) {
+            throw new RuntimeException("Storage is full! Denys asked me to throw this exception");
+        }
         if (newKey) {
             this.pairs[this.usedSpace][KEY_INDEX] = key;
             this.pairs[this.usedSpace][VALUE_INDEX] = value;
