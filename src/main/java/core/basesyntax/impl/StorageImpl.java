@@ -10,10 +10,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.length; i++) {
-            if (isKeyRepeative(key, keys[i])) {
+        for (int i = 0; i < size; i++) {
+            if (isKeysEqual(key, keys[i])) {
                 values[i] = value;
-                size++;
                 return;
             }
         }
@@ -24,9 +23,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (isKeyRepeative(key, keys[i])) {
-                size = getSizeWithUniqElements();
+        for (int i = 0; i < size; i++) {
+            if (isKeysEqual(key, keys[i])) {
                 return values[i];
             }
         }
@@ -38,18 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean isKeyRepeative(K key, K key2) {
-        return ((key == null) && (key2 == null)
-                || ((key != null) && (key.equals(key2))));
-    }
-
-    private int getSizeWithUniqElements() {
-        int counterOfRepElemetns = 0;
-        for (int i = 1; i <= size; i++) {
-            if (isKeyRepeative(keys[i - 1], keys[i])) {
-                counterOfRepElemetns++;
-            }
-        }
-        return size - counterOfRepElemetns;
+    private boolean isKeysEqual(K key, K key2) {
+        return key == key2 || (key2 != null && key2.equals(key));
     }
 }
