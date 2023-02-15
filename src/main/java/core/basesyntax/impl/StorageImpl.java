@@ -9,16 +9,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (size == 10) {
+            throw new RuntimeException("The storage is full, you can replace an existing item!");
+        }
         boolean isExist = false;
         KeyValuePair<K, V> instanceOfKeyValue = new KeyValuePair<>(key, value);
         for (int i = 0; i < size; i++) {
-            if (array[i].getKey() != null) {
-                if (array[i].getKey().equals(key)) {
-                    array[i] = instanceOfKeyValue;
-                    isExist = true;
-                    break;
-                }
-            } else if (array[i].getKey() == key) {
+            if (array[i].getKey() == key || array[i].getKey() != null
+                    && array[i].getKey().equals(key)) {
                 array[i] = instanceOfKeyValue;
                 isExist = true;
                 break;
@@ -33,11 +31,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (array[i].getKey() != null) {
-                if (array[i].getKey().equals(key)) {
-                    return array[i].getValue();
-                }
-            } else if (array[i].getKey() == key) {
+            if (array[i].getKey() == key || array[i].getKey() != null
+                    && array[i].getKey().equals(key)) {
                 return array[i].getValue();
             }
         }
