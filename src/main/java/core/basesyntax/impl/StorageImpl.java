@@ -9,9 +9,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size >= START_CAPACITY) {
-            throw new RuntimeException("The storage is full, you can replace an existing element!");
-        }
         boolean isExist = false;
         KeyValuePair<K, V> instanceOfKeyValue = new KeyValuePair<>(key, value);
         for (int i = 0; i < size; i++) {
@@ -23,6 +20,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         if (!isExist) {
+            if (size == START_CAPACITY) {
+                throw new RuntimeException("The storage is full, you can replace an existing element!");
+            }
             array[size] = instanceOfKeyValue;
             size++;
         }
