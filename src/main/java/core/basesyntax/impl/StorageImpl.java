@@ -7,72 +7,48 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
     private final StorageImpl<K, V>[] boxes;
+    private int size;
 
     public StorageImpl() {
-        boxes = new StorageImpl[10];
+        boxes = new StorageImpl[MAX_VALUE];
     }
 
     @Override
     public void put(K key, V value) {
         if (this.getStorage(key) == null) {
-            StorageImpl<K, V> box = new StorageImpl<>();
-            box.setValue(value);
-            box.setKey(key);
-            boxes[findEmptyPlace()] = box;
-        } else {
-            getStorage(key).setValue(value);
-        }
-    }
-
-    private int findEmptyPlace() {
-        for (int i = 0; i < MAX_VALUE; i++) {
-            if (boxes[i] == null) {
-                return i;
+            if (size == MAX_VALUE) {
+                throw new FullStorageException();
             }
+            StorageImpl<K, V> box = new StorageImpl<>();
+            box.value = value;
+            box.key = key;
+            boxes[size] = box;
+            size++;
+        } else {
+            getStorage(key).value = value;
         }
-        throw new FullStorageException();
     }
 
     @Override
     public V get(K key) {
         StorageImpl<K, V> box = getStorage(key);
-        if (box == null) {
-            return null;
-        } else {
-            return box.getValue();
+        if (box != null) {
+            return box.value;
         }
+        return null;
     }
 
     private StorageImpl<K, V> getStorage(K key) {
-        for (int i = 0; i < findEmptyPlace(); i++) {
-            if (boxes[i] != null && boxes[i].getKey() == null && key == null) {
-                return boxes[i];
-            }
-            if (boxes[i] != null && boxes[i].getKey() != null && boxes[i].key.equals(key)) {
+        for (int i = 0; i < size; i++) {
+            if (boxes[i].key != null && boxes[i].key.equals(key) || key == boxes[i].key) {
                 return boxes[i];
             }
         }
         return null;
     }
 
-    private K getKey() {
-        return key;
-    }
-
-    private V getValue() {
-        return value;
-    }
-
-    private void setKey(K key) {
-        this.key = key;
-    }
-
-    private void setValue(V value) {
-        this.value = value;
-    }
-
     @Override
     public int size() {
-        return findEmptyPlace();
+        return size;
     }
 }
