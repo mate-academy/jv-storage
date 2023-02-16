@@ -17,9 +17,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         boolean newKey = true;
-        for (int i = 0; i < this.usedSpace; i++) {
-            if (comparator(this.pairs[i][KEY_INDEX], key)) {
-                this.pairs[i][VALUE_INDEX] = value;
+        for (int i = 0; i < usedSpace; i++) {
+            if (compare(pairs[i][KEY_INDEX], key)) {
+                pairs[i][VALUE_INDEX] = value;
                 newKey = false;
                 break;
             }
@@ -28,28 +28,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("Storage is full! Denys asked me to throw this exception");
         }
         if (newKey) {
-            this.pairs[this.usedSpace][KEY_INDEX] = key;
-            this.pairs[this.usedSpace][VALUE_INDEX] = value;
-            this.usedSpace++;
+            pairs[usedSpace][KEY_INDEX] = key;
+            pairs[usedSpace][VALUE_INDEX] = value;
+            usedSpace++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < this.usedSpace; i++) {
-            if (comparator(this.pairs[i][KEY_INDEX], key)) {
-                return (V) this.pairs[i][VALUE_INDEX];
+        for (int i = 0; i < usedSpace; i++) {
+            if (compare(pairs[i][KEY_INDEX], key)) {
+                return (V) pairs[i][VALUE_INDEX];
             }
         }
         return null;
     }
 
-    private boolean comparator(Object a, Object b) {
+    private boolean compare(Object a, Object b) {
         return a == null ? a == b : a.equals(b);
     }
 
     @Override
     public int size() {
-        return this.usedSpace;
+        return usedSpace;
     }
 }
