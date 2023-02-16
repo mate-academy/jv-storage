@@ -3,14 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int STARTING_ARRAY_LENGTH = 10;
-    private K[] keys = (K[]) new Object[STARTING_ARRAY_LENGTH];
-    private V[] values = (V[]) new Object[STARTING_ARRAY_LENGTH];
+    public static final int STARTING_CAPACITY = 10;
+    private K[] keys = (K[]) new Object[STARTING_CAPACITY];
+    private V[] values = (V[]) new Object[STARTING_CAPACITY];
     private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        int keyIndex = keyIndex(key);
+        int keyIndex = getKeyIndex(key);
         if (keyIndex == -1) {
             keys[size] = key;
             values[size] = value;
@@ -19,13 +19,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[keyIndex] = value;
         }
         if (keys.length == size) {
-            increaseStorage();
+            increaseCapacity();
         }
     }
 
     @Override
     public V get(K key) {
-        int keyIndex = keyIndex(key);
+        int keyIndex = getKeyIndex(key);
         if (keyIndex != -1) {
             return values[keyIndex];
         }
@@ -38,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     //returns -1 if no such key was found
-    private int keyIndex(K obj) {
+    private int getKeyIndex(K obj) {
         for (int i = 0; i < size; i++) {
             if (keys[i] != null && keys[i].equals(obj)) {
                 return i;
@@ -51,7 +51,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     //doubles arrays length
-    private void increaseStorage() {
+    private void increaseCapacity() {
         K[] newKeysArray = (K[]) new Object[keys.length * 2];
         System.arraycopy(keys, 0, newKeysArray, 0, keys.length);
         keys = newKeysArray;
