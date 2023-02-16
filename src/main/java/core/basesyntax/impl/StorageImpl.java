@@ -4,9 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int STARTING_CAPACITY = 10;
-    private K[] keys = (K[]) new Object[STARTING_CAPACITY];
-    private V[] values = (V[]) new Object[STARTING_CAPACITY];
-    private int size = 0;
+    private K[] keys;
+    private V[] values;
+    private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[STARTING_CAPACITY];
+        values = (V[]) new Object[STARTING_CAPACITY];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -40,10 +45,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     //returns -1 if no such key was found
     private int getKeyIndex(K obj) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] != null && keys[i].equals(obj)) {
-                return i;
-            }
-            if (keys[i] == null && obj == null) {
+            if ((keys[i] != null && keys[i].equals(obj))
+                    || (keys[i] == obj)) {
                 return i;
             }
         }
