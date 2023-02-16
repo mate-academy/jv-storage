@@ -15,27 +15,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         storegeOfValues = (V[]) new Object[ARRAY_SIZE];
     }
 
-    @Override
-    public void put(K key, V value) {
+    private int keySearch(K key) {
         for (int i = 0; i < sizeOfArrays; i++) {
             if (Objects.equals(key, storegeOfKeys[i])) {
-                storegeOfValues[i] = value;
-                return;
+                return i;
             }
         }
-        storegeOfKeys[sizeOfArrays] = key;
-        storegeOfValues[sizeOfArrays] = value;
-        sizeOfArrays++;
+        return sizeOfArrays++;
+    }
+
+    @Override
+    public void put(K key, V value) {
+        int keyPosition = keySearch(key);
+        storegeOfKeys[keyPosition] = key;
+        storegeOfValues[keyPosition] = value;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < sizeOfArrays; i++) {
-            if (Objects.equals(key, storegeOfKeys[i])) {
-                return storegeOfValues[i];
-            }
-        }
-        return null;
+        int keyPosition = keySearch(key);
+        return storegeOfValues[keyPosition];
     }
 
     @Override
