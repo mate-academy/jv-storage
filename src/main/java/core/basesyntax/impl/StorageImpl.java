@@ -24,9 +24,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         } else {
             values[keyIndex] = value;
         }
-        if (keys.length == size) {
-            increaseCapacity();
-        }
     }
 
     @Override
@@ -51,15 +48,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return NOT_FOUND_INDEX;
-    }
-
-    private void increaseCapacity() {
-        K[] newKeysArray = (K[]) new Object[keys.length * 2];
-        System.arraycopy(keys, 0, newKeysArray, 0, keys.length);
-        keys = newKeysArray;
-
-        V[] newValuesArray = (V[]) new Object[values.length * 2];
-        System.arraycopy(values, 0, newValuesArray, 0, values.length);
-        values = newValuesArray;
     }
 }
