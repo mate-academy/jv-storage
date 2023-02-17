@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int STARTING_CAPACITY = 10;
+    public static final int NOT_FOUND_INDEX = -1;
     private K[] keys;
     private V[] values;
     private int size;
@@ -31,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int keyIndex = getKeyIndex(key);
-        if (keyIndex != -1) {
+        if (keyIndex != NOT_FOUND_INDEX) {
             return values[keyIndex];
         }
         return null;
@@ -42,7 +43,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    //returns -1 if no such key was found
     private int getKeyIndex(K obj) {
         for (int i = 0; i < size; i++) {
             if ((keys[i] != null && keys[i].equals(obj))
@@ -50,10 +50,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND_INDEX;
     }
 
-    //doubles arrays length
     private void increaseCapacity() {
         K[] newKeysArray = (K[]) new Object[keys.length * 2];
         System.arraycopy(keys, 0, newKeysArray, 0, keys.length);
