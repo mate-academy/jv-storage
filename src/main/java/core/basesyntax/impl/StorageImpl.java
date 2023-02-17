@@ -20,7 +20,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 valuesStorage[i] = value;
                 return;
             }
-
+        }
+        if (isStorageFull()) {
+            throw new RuntimeException("Can't add key: " + key + ", and value: " + value + "."
+                    + " Storage is full");
         }
         keysStorage[length] = key;
         valuesStorage[length] = value;
@@ -44,5 +47,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean compareKeys(K key1, K key2) {
         return key1 == key2 || (key1 != null && key1.equals(key2));
+    }
+
+    private boolean isStorageFull() {
+        return length == ARRAY_MAX_LENGTH;
     }
 }
