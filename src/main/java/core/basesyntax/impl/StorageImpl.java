@@ -8,14 +8,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] valuesStorage;
     private int length;
 
-    public StorageImpl(){
+    public StorageImpl() {
         keysStorage = (K[]) new Object[ARRAY_MAX_LENGTH];
         valuesStorage = (V[]) new Object[ARRAY_MAX_LENGTH];
     }
+
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < length; i++) {
-            if(compareKeys(keysStorage[i],key)) {
+            if (compareKeys(keysStorage[i],key)) {
                 valuesStorage[i] = value;
                 return;
             }
