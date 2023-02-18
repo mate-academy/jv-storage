@@ -2,41 +2,61 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
-    List<K> keyList = new ArrayList<>();
-    List<V> valueList = new ArrayList<>();
+    private K[] keyList;
+    private V[] valueList;
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keyList.size(); i++) {
-            if (key == null && keyList.get(i) == null) {
-                valueList.set(i, value);
-                return;
-            }
-            if (keyList.get(i) != null && keyList.get(i).equals(key)) {
-                valueList.set(i, value);
-                return;
+        if (keyList != null) {
+            for (int i = 0; i < keyList.length; i++) {
+                if (key == null && keyList[i] == null) {
+                    valueList[i] = value;
+                    return;
+                }
+                if (keyList[i] != null && keyList[i].equals(key)) {
+                    valueList[i] = value;
+                    return;
+                }
             }
         }
         addCell(key, value);
     }
 
     private void addCell(K key, V value) {
-        keyList.add(key);
-        valueList.add(value);
+        if (keyList == null) {
+            keyList = (K[])new Object[1];
+            keyList[0] = key;
+            valueList = (V[])new Object[1];
+            valueList[0] = value;
+            return;
+        }
+        keyList = appendKeyArray(keyList, key);
+        valueList = appendValuesArray(valueList, value);
+    }
+
+    private K[] appendKeyArray(K[] original, K toAdd) {
+        K[] newArr = (K[])new Object[original.length + 1];
+        System.arraycopy(original, 0, newArr, 0, original.length);
+        newArr[newArr.length - 1] = toAdd;
+        return newArr;
+    }
+
+    private V[] appendValuesArray(V[] original, V toAdd) {
+        V[] newArr = (V[])new Object[original.length + 1];
+        System.arraycopy(original, 0, newArr, 0, original.length);
+        newArr[newArr.length - 1] = toAdd;
+        return newArr;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyList.size(); i++) {
-            if (key == null && keyList.get(i) == null) {
-                return valueList.get(i);
+        for (int i = 0; i < keyList.length; i++) {
+            if (key == null && keyList[i] == null) {
+                return valueList[i];
             }
-            if (keyList.get(i) != null && keyList.get(i).equals(key)) {
-                return valueList.get(i);
+            if (keyList[i] != null && keyList[i].equals(key)) {
+                return valueList[i];
             }
         }
         return null;
@@ -44,6 +64,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return keyList.size();
+        return keyList == null ? 0 : keyList.length;
     }
 }
