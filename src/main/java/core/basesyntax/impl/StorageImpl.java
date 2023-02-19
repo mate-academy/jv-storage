@@ -4,21 +4,27 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LIST_SIZE = 10;
-    private StorageList<K,V>[] list;
+    private StoragePair<K,V>[] list;
+    private int size = 0;
 
     public StorageImpl() {
-        list = new StorageList[MAX_LIST_SIZE];
+        list = new StoragePair[MAX_LIST_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        StorageList<K,V> tempStorage = new StorageList<>(key, value);
+        size = 1;
+        StoragePair<K,V> tempStorage = new StoragePair<>(key, value);
         for (int i = 0; i < list.length; i++) {
+            if (list[i] != null) {
+                ++size;
+            }
             if (list[i] == null || valid(i, key)) {
                 list[i] = tempStorage;
                 break;
             }
         }
+
     }
 
     @Override
@@ -33,13 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int res = 0;
-        for (StorageList<K, V> kvStorageList : list) {
-            if (kvStorageList != null) {
-                res++;
-            }
-        }
-        return res;
+        return size;
     }
 
     private boolean valid(int i, K key) {
