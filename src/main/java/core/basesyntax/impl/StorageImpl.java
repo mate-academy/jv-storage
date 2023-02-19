@@ -33,8 +33,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < lengthOfActualValue; i++) {
             if (Objects.equals(keyArr[i], key)) {
                 index = i;
-            }
-            if (index >= 0) {
                 return (V) valueArr[index];
             }
         }
