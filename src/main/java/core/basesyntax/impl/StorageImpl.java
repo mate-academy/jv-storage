@@ -42,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return res;
     }
 
-    private boolean valid (int i, K key) {
+    private boolean valid(int i, K key) {
         return (list[i] != null && (list[i].getKey() == key
                 || (list[i].getKey() != null && list[i].getKey().equals(key))));
     }
