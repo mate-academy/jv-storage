@@ -29,9 +29,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-           if (comparator(keys[i], key)) {
-               return values[i];
-           }
+            if (comparator(keys[i], key)) {
+                return values[i];
+            }
         }
         return null;
     }
