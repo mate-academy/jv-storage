@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < length; i++) {
-            if (comparisonKey(keysInStorage[i], key)) {
+            if (compare(keysInStorage[i], key)) {
                 valuesInStorage[i] = value;
                 return;
             }
@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < length; i++) {
-            if (comparisonKey(keysInStorage[i], key)) {
+            if (compare(keysInStorage[i], key)) {
                 return valuesInStorage[i];
             }
         }
@@ -42,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return length;
     }
 
-    private boolean comparisonKey(K firstKey, K secondKey) {
-        return (firstKey == secondKey) || (firstKey != null && firstKey.equals(secondKey));
+    private boolean compare(K firstKey, K secondKey) {
+        return firstKey == secondKey || firstKey != null && firstKey.equals(secondKey);
     }
 }
