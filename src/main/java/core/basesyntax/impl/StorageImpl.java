@@ -4,34 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    private static final int NOT_EXIST_INDEX = -1;
     private final K[] keys;
     private final V[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_SIZE];
-        this.values = (V[]) new Object[MAX_SIZE];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (compare(key, i)) {
-                values[i] = value;
-                return;
-            }
+        int index = getKeyIndex(key);
+        if (index == NOT_EXIST_INDEX) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+            return;
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
+        values[index] = value;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (compare(key, i)) {
-                return values[i];
-            }
+        int index = getKeyIndex(key);
+        if (index != NOT_EXIST_INDEX) {
+            return values[index];
         }
         return null;
     }
@@ -41,7 +40,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean compare(K key, int i) {
-        return (keys[i] == key || keys[i] != null && keys[i].equals(key));
+    private int getKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
+                return i;
+            }
+        }
+        return NOT_EXIST_INDEX;
     }
 }
