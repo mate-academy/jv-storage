@@ -36,13 +36,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    private boolean equalKeysCondition(K firstKey, K secondKey) {
-        return firstKey == secondKey || firstKey != null && firstKey.equals(secondKey);
-
-    }
-
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean equalKeysCondition(K firstKey, K secondKey) {
+        return firstKey == secondKey || firstKey != null && firstKey.equals(secondKey);
     }
 }
