@@ -2,16 +2,18 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.lang.reflect.Array;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
 
-    private K[] keys;
-    private V[] values;
+    private final K[] keys;
+    private final V[] values;
     private int space;
 
     public StorageImpl() {
-        keys = (K[]) new Object[STORAGE_SIZE];
-        values = (V[]) new Object[STORAGE_SIZE];
+        keys = (K[]) Array.newInstance(Object.class, STORAGE_SIZE);
+        values = (V[]) Array.newInstance(Object.class, STORAGE_SIZE);
     }
 
     public boolean verify(K k, K v) {
@@ -27,8 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         keys[space] = key;
-        values[space] = value;
-        space++;
+        values[space++] = value;
     }
 
     @Override
