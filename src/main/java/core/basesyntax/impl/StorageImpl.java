@@ -36,8 +36,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    private boolean compareValue(Object obj1, Object obj2) {
-        return obj1 == obj2 || obj1 != null && obj1.equals(obj2);
+    private boolean compareValue(Object object1, Object object2) {
+        return object1 == object2 || object1 != null && object1.equals(object2);
     }
 
     @Override
