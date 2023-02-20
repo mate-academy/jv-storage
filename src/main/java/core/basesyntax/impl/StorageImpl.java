@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LIST_SIZE = 10;
     private StoragePair<K,V>[] storagePairs;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         storagePairs = new StoragePair[MAX_LIST_SIZE];
