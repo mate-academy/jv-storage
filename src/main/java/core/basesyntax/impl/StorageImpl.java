@@ -3,35 +3,34 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_VALUES_NUMBERS = 10;
-
-    private K[] keysInStorage;
-    private V[] valuesInStorage;
-    private int length;
+    private static final int MAX_ELEMENTS = 10;
+    private K[] keys;
+    private V[] values;
+    private int size;
 
     public StorageImpl() {
-        keysInStorage = (K[]) new Object[MAX_VALUES_NUMBERS];
-        valuesInStorage = (V[]) new Object[MAX_VALUES_NUMBERS];
+        keys = (K[]) new Object[MAX_ELEMENTS];
+        values = (V[]) new Object[MAX_ELEMENTS];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < length; i++) {
-            if (compare(keysInStorage[i], key)) {
-                valuesInStorage[i] = value;
+        for (int i = 0; i < size; i++) {
+            if (compare(keys[i], key)) {
+                values[i] = value;
                 return;
             }
         }
-        keysInStorage[length] = key;
-        valuesInStorage[length] = value;
-        length++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < length; i++) {
-            if (compare(keysInStorage[i], key)) {
-                return valuesInStorage[i];
+        for (int i = 0; i < size; i++) {
+            if (compare(keys[i], key)) {
+                return values[i];
             }
         }
         return null;
@@ -39,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return length;
+        return size;
     }
 
     private boolean compare(K firstKey, K secondKey) {
