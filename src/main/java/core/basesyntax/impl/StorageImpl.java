@@ -15,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (isKeyInPair(storagePairs[i], key)) {
-                storagePairs[i].setValue(value);
+                storagePairs[i].value = value;
                 return;
             }
         }
@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             if (isKeyInPair(storagePairs[i], key)) {
-                return storagePairs[i].getValue();
+                return storagePairs[i].value;
             }
         }
         return null;
@@ -38,7 +38,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isKeyInPair(StoragePair<K,V> pair, K key) {
-        return pair != null && (pair.getKey() == key
-                || (pair.getKey() != null && pair.getKey().equals(key)));
+        return pair != null && (pair.key == key
+                || (pair.key != null && pair.key.equals(key)));
+    }
+
+    public class StoragePair<K,V> {
+        private K key;
+        private V value;
+
+        public StoragePair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
