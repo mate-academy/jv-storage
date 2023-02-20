@@ -7,6 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int STORAGE_SIZE = 10;
     public static final int NO_RESULT = -1;
     private final Pair<K, V>[] storage;
+    private int size;
 
     public StorageImpl() {
         storage = new Pair[STORAGE_SIZE];
@@ -19,9 +20,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (position != NO_RESULT) {
             storage[position] = toSave;
         } else {
-            position = size();
-            if (position != NO_RESULT) {
-                storage[position] = toSave;
+            if (size < STORAGE_SIZE) {
+                storage[size++] = toSave;
             } else {
                 throw new ArrayStoreException("Storage is out of free space!");
             }
@@ -39,20 +39,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < STORAGE_SIZE; i++) {
-            if (storage[i] == null) {
-                return i;
-            }
-        }
-        return NO_RESULT;
+        return size;
     }
 
     private int findExistingPositionByKey(K key) {
-        for (int i = 0; i < STORAGE_SIZE; i++) {
-            if (storage[i] == null) {
-                return NO_RESULT;
-            }
-            K storageKey = storage[i].getKey();
+        for (int i = 0; i < size; i++) {
+            final K storageKey = storage[i].getKey();
             if (storageKey == null && key == null
                     || storageKey != null && storageKey.equals(key)) {
                 return i;
