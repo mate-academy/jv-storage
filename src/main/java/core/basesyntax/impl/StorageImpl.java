@@ -3,10 +3,10 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int NOT_FOUND_INDEX = -1;
     private static final int STORAGE_ARRAYS_LENGTH = 10;
     private final K[] keys;
     private final V[] values;
-    private final int NOT_FOUND_INDEX = -1;
     private int size;
 
     public StorageImpl() {
