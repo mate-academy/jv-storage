@@ -6,6 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_ARRAYS_LENGTH = 10;
     private final K[] keys;
     private final V[] values;
+    private final int NOT_FOUND_INDEX = -1;
     private int size;
 
     public StorageImpl() {
@@ -15,25 +16,37 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] != null && keys[i].equals(key) || keys[i] == key) {
-                values[i] = value;
-                return;
-            }
+        int keyIndex = indexOf(key);
+        if (contains(key)) {
+            values[keyIndex] = value;
+        } else {
+            values[size] = value;
+            keys[size] = key;
+            size++;
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
     }
 
     @Override
     public V get(K key) {
+        int keyIndex = indexOf(key);
+        if (!contains(key)) {
+            return null;
+        } else {
+            return values[keyIndex];
+        }
+    }
+
+    private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
             if (keys[i] != null && keys[i].equals(key) || keys[i] == key) {
-                return values[i];
+                return i;
             }
         }
-        return null;
+        return NOT_FOUND_INDEX;
+    }
+
+    private boolean contains(K key) {
+        return indexOf(key) >= 0;
     }
 
     @Override
