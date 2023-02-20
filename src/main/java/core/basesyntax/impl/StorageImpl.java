@@ -3,52 +3,61 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER = 10;
-    private final StorageItem[] storageItems;
-    private int indexCounter = 0;
+    private static final int MAX_ITEMS = 10;
+    private final Pair[] pairs;
+    private int size;
 
     public StorageImpl() {
-        this.storageItems = new StorageItem[MAX_ITEMS_NUMBER];
+        this.pairs = new Pair[MAX_ITEMS];
     }
 
     @Override
     public void put(K key, V value) {
-        StorageItem<K, V> existingStorageItem = getStorageItemByKey(key);
+        Pair<K, V> existingStorageItem = getStorageItemByKey(key);
         if (existingStorageItem != null) {
-            existingStorageItem.setValue(value);
+            existingStorageItem.value = value;
             return;
         }
-        StorageItem<K, V> storageItem = new StorageItem<>(key, value);
-        try {
-            storageItems[indexCounter] = storageItem;
-            indexCounter++;
-        } catch (IndexOutOfBoundsException e) {
-            throw new RuntimeException("Storage is FULL, you can't add new item", e);
+        Pair<K, V> storageItem = new Pair<>(key, value);
+        if (size == pairs.length) {
+            throw new RuntimeException("Storage is FULL, you can't add new pair");
         }
+        pairs[size] = storageItem;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        StorageItem<K, V> existingStorageItem = getStorageItemByKey(key);
+        Pair<K, V> existingStorageItem = getStorageItemByKey(key);
         if (existingStorageItem != null) {
-            return existingStorageItem.getValue();
+            return existingStorageItem.value;
         }
         return null;
     }
 
     @Override
     public int size() {
-        return indexCounter;
+        return size;
     }
 
-    private StorageItem<K, V> getStorageItemByKey(K key) {
-        for (StorageItem<K, V> item : storageItems) {
-            if (item != null) {
-                if (item.getKey() == key || (item.getKey() != null && item.getKey().equals(key))) {
-                    return item;
+    private Pair<K, V> getStorageItemByKey(K key) {
+        for (Pair<K, V> pair : pairs) {
+            if (pair != null) {
+                if (pair.key == key || (pair.key != null && pair.key.equals(key))) {
+                    return pair;
                 }
             }
         }
         return null;
+    }
+
+    private static class Pair<K, V> {
+        private K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
