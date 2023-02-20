@@ -1,40 +1,38 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.lang.reflect.Array;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
-
     private final K[] keys;
     private final V[] values;
-    private int space;
+    private int size;
 
     public StorageImpl() {
-        keys = (K[]) Array.newInstance(Object.class, STORAGE_SIZE);
-        values = (V[]) Array.newInstance(Object.class, STORAGE_SIZE);
+        keys = (K[]) new Object[STORAGE_SIZE];
+        values = (V[]) new Object[STORAGE_SIZE];
     }
 
-    public boolean verify(K k, K v) {
-        return (k != null && k.equals(v) || k == v);
+    private boolean areKeysEqual(K key1, K key2) {
+        return key1 == key2 || key1 != null && key1.equals(key2);
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < space; i++) {
-            if (verify(keys[i], key)) {
+        for (int i = 0; i < size; i++) {
+            if (areKeysEqual(keys[i], key)) {
                 values[i] = value;
                 return;
             }
         }
-        keys[space] = key;
-        values[space++] = value;
+        keys[size] = key;
+        values[size++] = value;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < space; i++) {
-            if (verify(keys[i], key)) {
+        for (int i = 0; i < size; i++) {
+            if (areKeysEqual(keys[i], key)) {
                 return values[i];
             }
         }
@@ -43,6 +41,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return space;
+        return size;
     }
 }
