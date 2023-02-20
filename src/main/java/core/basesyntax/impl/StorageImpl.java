@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE_STORAGE = 10;
+    private static final int INDEX_NOT_FOUND = -1;
     private final K[] keys;
     private final V[] values;
     private int size;
@@ -15,23 +16,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (compare(keys[i], key)) {
-                values[i] = value;
-                return;
-            }
+        if (!contains(key)) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+            return;
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
+        values[indexOf(key)] = value;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (compare(keys[i], key)) {
-                return values[i];
-            }
+        if (contains(key)) {
+            return values[indexOf(key)];
         }
         return null;
     }
@@ -41,7 +38,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean compare(K keyByIndex, K key) {
-        return (keyByIndex == key) || (key != null && key.equals(keyByIndex));
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] != null && keys[i].equals(key) || key == keys[i]) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
+    }
+
+    private boolean contains(K key) {
+        return indexOf(key) >= 0;
     }
 }
