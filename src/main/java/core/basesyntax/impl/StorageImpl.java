@@ -16,23 +16,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean keyIsNew = true;
         for (int i = 0; i < storageSize; i++) {
             if (compareObjects(keyValuePairs[i][KEY_INDEX], key)) {
                 keyValuePairs[i][VALUE_INDEX] = value;
-                keyIsNew = false;
-                break;
+                return;
             }
         }
         if (isStorageFull()) {
             throw new RuntimeException("Storage is full! Can't add key: "
                     + key + ", value: " + value);
         }
-        if (keyIsNew) {
-            keyValuePairs[storageSize][KEY_INDEX] = key;
-            keyValuePairs[storageSize][VALUE_INDEX] = value;
-            storageSize++;
-        }
+        keyValuePairs[storageSize][KEY_INDEX] = key;
+        keyValuePairs[storageSize][VALUE_INDEX] = value;
+        storageSize++;
     }
 
     private boolean isStorageFull() {
