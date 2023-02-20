@@ -49,7 +49,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return storageSize == MAX_LENGTH;
     }
 
-    private boolean compare(Object obj1, Object obj2) {
+    private boolean compare(K key1, K key2) {
         return (obj1 == obj2) || obj1 != null && obj1.equals(obj2);
     }
 }
