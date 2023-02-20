@@ -33,7 +33,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return values[i];
             }
         }
-        System.out.println("Can't find record with key: " + key);
         return null;
     }
 
