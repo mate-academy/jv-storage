@@ -29,14 +29,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         size++;
     }
 
-    public boolean compare(Object first, Object second) {
+    private boolean compare(Object first, Object second) {
         return (first == second || first != null && first.equals(second));
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] != null && keys[i].equals(key) || keys[i] == key) {
+            if (compare(keys[i], key)) {
                 return values[i];
             }
         }
