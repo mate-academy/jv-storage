@@ -7,13 +7,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_ELEMENTS_NUMBER = 2;
     public static final int KEY_INDEX = 0;
     public static final int VALUE_INDEX = 1;
-    private Object[][] values = new Object[MAX_ITEMS_NUMBER][MAX_ELEMENTS_NUMBER];
+    private final Object[][] values = new Object[MAX_ITEMS_NUMBER][MAX_ELEMENTS_NUMBER];
 
     @Override
     public void put(K key, V value) {
         if (key == null) {
             for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-                if (values[i][KEY_INDEX] == null && values[i][VALUE_INDEX] == null
+                if (isEmpty(i)
                         || values[i][KEY_INDEX] == null && values[i][VALUE_INDEX] != null) {
                     values[i][VALUE_INDEX] = value;
                     return;
@@ -22,7 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         if (get(key) == null) {
             for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-                if (values[i][KEY_INDEX] == null && values[i][VALUE_INDEX] == null) {
+                if (isEmpty(i)) {
                     values[i][KEY_INDEX] = key;
                     values[i][VALUE_INDEX] = value;
                     return;
@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         } else {
             for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-                if (values[i][KEY_INDEX] != null && values[i][KEY_INDEX].equals(key)) {
+                if (keyEquals(i, key)) {
                     values[i][VALUE_INDEX] = value;
                 }
             }
@@ -48,7 +48,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (values[i][KEY_INDEX] != null && values[i][KEY_INDEX].equals(key)) {
+            if (keyEquals(i, key)) {
                 return (V) values[i][VALUE_INDEX];
             }
         }
@@ -64,5 +64,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return size;
+    }
+
+    public boolean keyEquals(int i, K key) {
+        return values[i][KEY_INDEX] != null && values[i][KEY_INDEX].equals(key);
+    }
+
+    public boolean isEmpty(int i) {
+        return values[i][KEY_INDEX] == null && values[i][VALUE_INDEX] == null;
     }
 }
