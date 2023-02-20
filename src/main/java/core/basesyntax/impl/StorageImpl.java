@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LIST_SIZE = 10;
+    private static final int START_SIZE_VALUE = 1;
     private StoragePair<K,V>[] list;
     private int size = 0;
 
@@ -13,11 +14,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        size = 1;
+        size = START_SIZE_VALUE;
         StoragePair<K,V> tempStorage = new StoragePair<>(key, value);
         for (int i = 0; i < list.length; i++) {
             if (list[i] != null) {
-                ++size;
+                size++;
             }
             if (list[i] == null || valid(i, key)) {
                 list[i] = tempStorage;
