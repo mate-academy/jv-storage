@@ -4,8 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_SIZE = 10;
-    private Object[] key;
-    private Object[] value;
+    private K[] key;
+    private V[] value;
     private int size = 0;
 
     public StorageImpl() {
@@ -36,12 +36,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    private boolean compareValue(Object object1, Object object2) {
-        return object1 == object2 || object1 != null && object1.equals(object2);
-    }
-
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean compareValue(Object object1, Object object2) {
+        return object1 == object2 || object1 != null && object1.equals(object2);
     }
 }
