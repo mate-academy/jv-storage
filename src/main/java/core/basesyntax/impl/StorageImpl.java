@@ -15,37 +15,45 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (isKeyIdentical(key, i)) {
-                values[i] = value;
-                return;
-            }
+        int index = indexOf(key);
+        if (checkIndex(index)) {
+            values[index] = value;
+            return;
         }
         if (isStorageFull()) {
             throw new RuntimeException("Can't add key: " + key + ", value: " + value + "."
                     + " Storage is full");
         }
         keys[size] = key;
-        values[size++] = value;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (isKeyIdentical(key, i)) {
-                return values[i];
-            }
+        int index = indexOf(key);
+        if (checkIndex(index)) {
+            return values[index];
         }
         return null;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean checkIndex(int index) {
+        return index != -1;
     }
 
     @Override
     public int size() {
         return size;
-    }
-
-    private boolean isKeyIdentical(K key, int i) {
-        return keys[i] == key || keys[i] != null && keys[i].equals(key);
     }
 
     private boolean isStorageFull() {
