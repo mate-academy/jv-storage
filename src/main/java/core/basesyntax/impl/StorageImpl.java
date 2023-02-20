@@ -4,53 +4,45 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_ELEMENTS = 10;
-    private Object[] keys;
-    private Object[] values;
-    private boolean storageContainsKey;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        keys = new Object[MAX_STORAGE_ELEMENTS];
-        values = new Object[MAX_STORAGE_ELEMENTS];
+        keys = (K[]) new Object[MAX_STORAGE_ELEMENTS];
+        values = (V[]) new Object[MAX_STORAGE_ELEMENTS];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        storageContainsKey = false;
-        for (int i = 0; i < keys.length; i++) {
-            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
+        for (int i = 0; i < size; i++) {
+            if (isEqual(key, keys[i])) {
                 values[i] = value;
-                storageContainsKey = true;
-                break;
+                return;
             }
         }
-        if (!storageContainsKey) {
-            for (int i = 0; i < keys.length; i++) {
-                if (keys[i] == null && values[i] == null) {
-                    keys[i] = key;
-                    values[i] = value;
-                    break;
-                }
-            }
-        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if ((key == keys[i]) || (key != null && key.equals(keys[i]))) {
-                return (V) values[i];
+        for (int i = 0; i < size; i++) {
+            if (isEqual(key, keys[i])) {
+                return values[i];
             }
         }
         return null;
     }
 
+    private boolean isEqual(K key1, K key2) {
+        return (key1 == key2) || (key1 != null && key1.equals(key2));
+    }
+
     @Override
     public int size() {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && values[i] == null) {
-                return i;
-            }
-        }
-        return MAX_STORAGE_ELEMENTS;
+        return size;
     }
 }
