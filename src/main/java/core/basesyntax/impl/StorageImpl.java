@@ -3,32 +3,32 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER = 10;
+    private static final int ARRAY_SIZE = 10;
     private V[] values;
     private K[] keys;
-    private int keyValue;
+    private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
-        values = (V[]) new Object[MAX_ITEMS_NUMBER];
+        keys = (K[]) new Object[ARRAY_SIZE];
+        values = (V[]) new Object[ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keyValue;i++) {
+        for (int i = 0; i < size;i++) {
             if (equelsKeys(keys[i],key)) {
                 values[i] = value;
                 return;
             }
         }
-        keys[keyValue] = key;
-        values[keyValue] = value;
-        keyValue++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0;i < keyValue;i++) {
+        for (int i = 0;i < size;i++) {
             if (equelsKeys(keys[i],key)) {
                 return values[i];
             }
@@ -38,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return keyValue;
+        return size;
     }
 
     private boolean equelsKeys(K key1,K key2) {
