@@ -42,6 +42,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean compareKeys(K firstKey, K secondKey) {
-        return (firstKey == secondKey) || (firstKey != null && firstKey.equals(secondKey));
+        return firstKey == secondKey || (firstKey != null && firstKey.equals(secondKey));
     }
 }
