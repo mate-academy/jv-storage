@@ -5,6 +5,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int STORAGE_SIZE = 10;
+    public static final int NO_RESULT = -1;
     private final Pair<K, V>[] storage;
 
     public StorageImpl() {
@@ -15,11 +16,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         Pair<K, V> toSave = new Pair<>(key, value);
         int position = findExistingPositionByKey(key);
-        if (position != -1) {
+        if (position != NO_RESULT) {
             storage[position] = toSave;
         } else {
-            position = findFreeSpace();
-            if (position != -1) {
+            position = size();
+            if (position != NO_RESULT) {
                 storage[position] = toSave;
             } else {
                 throw new ArrayStoreException("Storage is out of free space!");
@@ -30,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int position = findExistingPositionByKey(key);
-        if (position != -1) {
+        if (position != NO_RESULT) {
             return storage[position].getValue();
         }
         return null;
@@ -38,13 +39,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return findFreeSpace();
+        for (int i = 0; i < STORAGE_SIZE; i++) {
+            if (storage[i] == null) {
+                return i;
+            }
+        }
+        return NO_RESULT;
     }
 
     private int findExistingPositionByKey(K key) {
         for (int i = 0; i < STORAGE_SIZE; i++) {
             if (storage[i] == null) {
-                return -1;
+                return NO_RESULT;
             }
             K storageKey = storage[i].getKey();
             if (storageKey == null && key == null
@@ -52,15 +58,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
-    }
-
-    private int findFreeSpace() {
-        for (int i = 0; i < STORAGE_SIZE; i++) {
-            if (storage[i] == null) {
-                return i;
-            }
-        }
-        return -1;
+        return NO_RESULT;
     }
 }
