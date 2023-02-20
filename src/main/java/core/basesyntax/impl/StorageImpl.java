@@ -46,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         private K key;
         private V value;
 
-        public StoragePair(K key, V value) {
+        private StoragePair(K key, V value) {
             this.key = key;
             this.value = value;
         }
