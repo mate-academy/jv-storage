@@ -30,14 +30,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         storageSize++;
     }
 
-    private boolean isStorageFull() {
-        return storageSize == MAX_LENGTH;
-    }
-
-    private boolean compare(Object obj1, Object obj2) {
-        return (obj1 == obj2) || obj1 != null && obj1.equals(obj2);
-    }
-
     @Override
     public V get(K key) {
         for (int i = 0; i < storageSize; i++) {
@@ -51,5 +43,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return storageSize;
+    }
+
+    private boolean isStorageFull() {
+        return storageSize == MAX_LENGTH;
+    }
+
+    private boolean compare(Object obj1, Object obj2) {
+        return (obj1 == obj2) || obj1 != null && obj1.equals(obj2);
     }
 }
