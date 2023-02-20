@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_SIZE = 10;
     private K[] keys;
     private V[] values;
-    private int count = 0;
+    private int quantity = 0;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
@@ -15,17 +15,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < count; i++) {
-            if ((keys[i] == null && key == null)
-                    || (keys[i] != null && keys[i].equals(key))) {
+        for (int i = 0; i < quantity; i++) {
+            if (checkEqual(key)) {
                 values[i] = value;
                 return;
             }
         }
-        if (count < MAX_SIZE) {
-            keys[count] = key;
-            values[count] = value;
-            count++;
+        if (quantity < MAX_SIZE) {
+            keys[quantity] = key;
+            values[quantity] = value;
+            quantity++;
         } else {
             throw new RuntimeException("Cannot add more then 10 values!");
         }
@@ -33,9 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < count; i++) {
-            if ((keys[i] == null && key == null)
-                    || (keys[i] != null && keys[i].equals(key))) {
+        for (int i = 0; i < quantity; i++) {
+            if (checkEqual(key)) {
                 return values[i];
             }
         }
@@ -44,6 +42,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return count;
+        return quantity;
+    }
+
+    private boolean checkEqual(K key) {
+        return (keys[i] == null && key == null)
+                || (keys[i] != null && keys[i].equals(key));
     }
 }
