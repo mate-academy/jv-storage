@@ -4,13 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_STORAGE_PLACE = 10;
-    private final Object[] value;
-    private final Object[] key;
+    private final V[] value;
+    private final K[] key;
     private int currentSize;
 
     public StorageImpl() {
-        key = new Object[MAX_STORAGE_PLACE];
-        value = new Object[MAX_STORAGE_PLACE];
+        key = (K[]) new Object[MAX_STORAGE_PLACE];
+        value = (V[]) new Object[MAX_STORAGE_PLACE];
     }
 
     @Override
@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < currentSize; i++) {
             if (equal(key,this.key[i])) {
-                return (V) this.value[i];
+                return this.value[i];
             }
         }
         return null;
@@ -42,12 +42,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean equal(Object a, Object b) {
-        if (a == b) {
-            return true;
-        }
-        if (a == null || b == null || a.getClass() != b.getClass()) {
-            return false;
-        }
         return (a == b) || (a != null && a.equals(b));
     }
 }
