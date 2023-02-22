@@ -3,7 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final static int STORAGE_SIZE = 10;
+    private static final int STORAGE_SIZE = 10;
+
     private final K[] keys;
     private final V[] values;
     private int size;
@@ -14,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isKeyExist(K key, int i) {
-     return (keys[i] == key || keys[i] != null) && keys[i].equals(key);
+        return (keys[i] == key || keys[i] != null) && keys[i].equals(key);
     }
 
     @Override
