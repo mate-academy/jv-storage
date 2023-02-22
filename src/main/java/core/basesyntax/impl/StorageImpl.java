@@ -1,64 +1,55 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.lang.reflect.Array;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER = 10;
-    private static final int MAX_WIDTH_NUMBER = 2;
-    private Object [][] storage;
+    private static final int MAX_ARRAY_LENGTH = 10;
+    private static final int START_INDEX_LENGTH = -1;
+    private static int sizeIndex;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        storage = new Object[MAX_WIDTH_NUMBER][MAX_ITEMS_NUMBER];
+        keys = (K[]) Array.newInstance(Object.class, MAX_ARRAY_LENGTH);
+        values = (V[]) Array.newInstance(Object.class, MAX_ARRAY_LENGTH);
+        sizeIndex = START_INDEX_LENGTH;
     }
 
     @Override
     public void put(K key, V value) {
-        boolean haveEquals = false;
-        for (int i = 0; i < storage.length; i++) {
-            if (key == null && storage[0][i] == null) {
-                storage[1][i] = value;
-                haveEquals = true;
-                break;
-            } else if (key == null && storage != null) {
-                continue;
-            } else if (key.equals(storage[0][i])) {
-                storage[1][i] = value;
-                haveEquals = true;
-                break;
-            }
-        }
-        if (!haveEquals) {
-            for (int i = 0; i < storage[0].length; i++) {
-                if (storage[0][i] == null && storage[1][i] == null) {
-                    storage[0][i] = key;
-                    storage[1][i] = value;
-                    break;
-                }
-            }
+        if (findKey(key) == -1) {
+            sizeIndex += 1;
+            sizeIndex = (values[sizeIndex] == null) ? sizeIndex : sizeIndex + 1;
+            keys[sizeIndex] = key;
+            values[sizeIndex] = value;
+        } else {
+            values[findKey(key)] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storage[0].length; i++) {
-            if (key == null && storage[0][i] == null) {
-                return (V) (storage[1][i]);
-            } else if (key == null && storage != null) {
-                continue;
-            } else if (key.equals(storage[0][i])) {
-                return (V) (storage[1][i]);
-            }
-        }
-        return null;
+        return (findKey(key) == -1) ? null : values[findKey(key)];
     }
 
     @Override
     public int size() {
-        for (int i = 0; i < storage[1].length; i++) {
-            if (storage[0][i] == null && storage[1][i] == null) {
+        for (int i = 0; i < values.length; i++) {
+            if (keys[i] == null && values[i] == null) {
                 return i;
             }
         }
         return 0;
+    }
+
+    private int findKey(K key) {
+        Integer keyIndex = -1;
+        for (int i = 0; i < keys.length; i++) {
+            if (key == keys[i] || keys[i] != null && keys[i].equals(key)) {
+                return keyIndex = i;
+            }
+        }
+        return keyIndex;
     }
 }
