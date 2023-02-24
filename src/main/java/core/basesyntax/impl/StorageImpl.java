@@ -12,28 +12,56 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
     }
 
+    public StorageImpl(K key, V value) {
+        key = nullToString(key);
+        this.key = key;
+        this.value = value;
+    }
+
     @Override
     public void put(K key, V value) {
-        storages[storageCounter].key = key;
-        storages[storageCounter].value = value;
-        storageCounter++;
+
+        boolean interrupt = false;
+        key = nullToString(key);
+
+        for (int i = 0; i < storageCounter; i++) {
+            if (storages[i].key.equals(key)) {
+                storages[i].value = value;
+                interrupt = true;
+            }
+        }
+
+        if (interrupt == false) {
+            storages[storageCounter] = new StorageImpl(key, value);
+            storageCounter++;
+        }
     }
 
     @Override
     public V get(K key) {
-        V result = null;
-        if (key != null) {
-            for (int i = 0; i < maxStorage; i++) {
+
+        key = nullToString(key);
+
+        for (int i = 0; i < maxStorage; i++) {
+            if (storages[i] != null) {
                 if (storages[i].key.equals(key)) {
                     return (V) storages[i].value;
                 }
             }
         }
+
         return null;
     }
 
     @Override
     public int size() {
         return storageCounter;
+    }
+
+    public K nullToString(K key) {
+        if (key == null) {
+            key = (K) new String("null");
+        }
+        return key;
     }
 }
