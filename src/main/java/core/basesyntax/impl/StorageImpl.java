@@ -3,50 +3,47 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K key;
-    private V value;
-    private int storageCounter = 0;
-    private int maxStorage = 10;
-    private StorageImpl[] storages = new StorageImpl[maxStorage];
+
+    private int size = 0;
+    private final int maxItems = 10;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
+        keys = (K[]) new Object[maxItems];
+        values = (V[]) new Object[maxItems];
     }
 
     public StorageImpl(K key, V value) {
-        key = nullToString(key);
-        this.key = key;
-        this.value = value;
+        keys[size] = key;
+        values[size] = value;
     }
 
     @Override
     public void put(K key, V value) {
 
         boolean interrupt = false;
-        key = nullToString(key);
 
-        for (int i = 0; i < storageCounter; i++) {
-            if (storages[i].key.equals(key)) {
-                storages[i].value = value;
+        for (int i = 0; i < size; i++) {
+            if (keysEqual(keys[i], key)) {
+                this.values[i] = value;
                 interrupt = true;
             }
         }
 
         if (interrupt == false) {
-            storages[storageCounter] = new StorageImpl(key, value);
-            storageCounter++;
+            this.keys[size] = key;
+            this.values[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
 
-        key = nullToString(key);
-
-        for (int i = 0; i < maxStorage; i++) {
-            if (storages[i] != null) {
-                if (storages[i].key.equals(key)) {
-                    return (V) storages[i].value;
-                }
+        for (int i = 0; i < size; i++) {
+            if (keysEqual(keys[i], key)) {
+                return values[i];
             }
         }
 
@@ -55,13 +52,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return storageCounter;
+        return size;
     }
 
-    public K nullToString(K key) {
-        if (key == null) {
-            key = (K) new String("null");
-        }
-        return key;
+    private boolean keysEqual(K key1, K key2) {
+        return key1 == key2 || (key1 != null && key1.equals(key2));
     }
 }
