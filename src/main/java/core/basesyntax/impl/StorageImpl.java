@@ -42,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public boolean areKeysEquals(K firstKey, V secondKey) {
+    private boolean areKeysEquals(K firstKey, V secondKey) {
         return (firstKey == secondKey || firstKey != null && firstKey.equals(secondKey));
     }
 }
