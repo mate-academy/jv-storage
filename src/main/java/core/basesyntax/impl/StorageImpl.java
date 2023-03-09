@@ -4,44 +4,30 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_INDEX = 0;
-    private K key;
-    private V value;
-    private StorageImpl<K, V>[] arrayElements;
+    private static final int MAX_SIZE = 10;
+    private final K[] arrayKey;
+    private final V[] arrayValue;
     private int size;
 
     public StorageImpl() {
-        arrayElements = new StorageImpl[10];
+        arrayKey = (K[]) new Object[MAX_SIZE];
+        arrayValue = (V[]) new Object[MAX_SIZE];
         size = 0;
-    }
-
-    private StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    private K getKey() {
-        return key;
-    }
-
-    private V getValue() {
-        return value;
-    }
-
-    private void setValue(V value) {
-        this.value = value;
     }
 
     @Override
     public void put(K key, V value) {
         if (size == 0) {
-            arrayElements[INITIAL_INDEX] = new StorageImpl<>(key, value);
+            arrayKey[INITIAL_INDEX] = key;
+            arrayValue[INITIAL_INDEX] = value;
             size++;
         } else {
             int index = findIndex(key);
             if (index != -1) {
-                arrayElements[index].setValue(value);
+                arrayValue[index] = value;
             } else {
-                arrayElements[size] = new StorageImpl<>(key, value);
+                arrayKey[size] = key;
+                arrayValue[size] = value;
                 size++;
             }
         }
@@ -49,14 +35,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndex(K element) {
         for (int i = 0; i < size; i++) {
-            try {
-                if (arrayElements[i].getKey().equals(element)) {
-                    return i;
-                }
-            } catch (NullPointerException e) {
-                if (arrayElements[i].getKey() == null && element == null) {
-                    return i;
-                }
+            if ((arrayKey[i] == null && element == null)
+                    || (arrayKey[i] != null && arrayKey[i].equals(element))) {
+                return i;
             }
         }
         return -1;
@@ -66,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index = findIndex(key);
         if (index != -1) {
-            return arrayElements[index].getValue();
+            return arrayValue[index];
         } else {
             return null;
         }
