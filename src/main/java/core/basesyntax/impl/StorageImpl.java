@@ -14,10 +14,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public boolean keyEquals(K keyFirst, K keySecond) {
-        if (keyFirst != null && keyFirst.equals(keySecond)) {
-            return true;
-        }
-        if (keyFirst == keySecond) {
+        if (keyFirst == keySecond || keyFirst != null && keyFirst.equals(keySecond)) {
             return true;
         }
         return false;
