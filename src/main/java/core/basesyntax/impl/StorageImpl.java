@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_AMOUNT = 10;
-    private int size = 0;
+    private int size;
     private K[] keys;
     private V[] values;
 
@@ -13,7 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.values = (V[]) new Object[MAX_AMOUNT];
     }
 
-    public boolean keyEquals(K keyFirst, K keySecond) {
+    private boolean keyEquals(K keyFirst, K keySecond) {
         if (keyFirst == keySecond || keyFirst != null && keyFirst.equals(keySecond)) {
             return true;
         }
