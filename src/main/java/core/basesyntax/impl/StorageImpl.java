@@ -24,20 +24,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         itemsNumber++;
     }
 
-    private boolean putItemsCopy(K key, V value) {
-        for (int i = 0; i < itemsNumber; i++) {
-            if (Objects.equals(keyArray[i], key)) {
-                valueArray[i] = value;
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public V get(K key) {
         for (int i = 0; i < itemsNumber; i++) {
-            if (Objects.equals(keyArray[i], key)) {
+            if ((keyArray[i] == key) || (keyArray[i] != null && keyArray[i].equals(key))) {
                 return valueArray[i];
             }
         }
@@ -47,5 +37,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return itemsNumber;
+    }
+
+    private boolean putItemsCopy(K key, V value) {
+        for (int i = 0; i < itemsNumber; i++) {
+            if ((keyArray[i] == key) || (keyArray[i] != null && keyArray[i].equals(key))) {
+                valueArray[i] = value;
+                return true;
+            }
+        }
+        return false;
     }
 }
