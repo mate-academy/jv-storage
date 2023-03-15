@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NUMBER_OF_ELEMENTS = 10;
     private Object[] keys;
     private Object[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         this.keys = new Object[NUMBER_OF_ELEMENTS];
@@ -15,18 +15,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i <= size; i++) {
-            if (keys[i] == null && values[i] == null
-                    || keys[i] == key && values[i] != null
-                    || keys[i] != null && keys[i].equals(key)) {
-                if (keys[i] == null && values[i] == null) {
-                    size++;
-                }
-                keys[i] = key;
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || key != null && key.equals(keys[i])) {
                 values[i] = value;
-                break;
+                return;
             }
         }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
