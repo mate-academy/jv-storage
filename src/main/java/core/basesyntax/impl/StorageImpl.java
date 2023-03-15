@@ -13,24 +13,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         boolean trigger = true;
-            for(int i = 0; i < array.length; i++) {
-                if (array[i] != null) {
-                    if ((key == null && this.array[i].keyJ == null) || (this.array[i].keyJ != null && array[i].keyJ.equals(key)))  {
-                        array[i] = new ArrayRepresenting<>(key, value);
-                        trigger = false;
-                        break;
-                    }
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null
+                    && ((key == null && this.array[i].keyJ == null)
+                    || (this.array[i].keyJ != null && array[i].keyJ.equals(key)))) {
+                array[i] = new ArrayRepresenting<>(key, value);
+                trigger = false;
+                break;
+            }
+        }
+        if (trigger == true) {
+            for (int i = 0; i < array.length; i++) {
+                if (array[i] == null) {
+                    array[i] = new ArrayRepresenting<>(key, value);
+                    sizeInt++;
+                    break;
                 }
             }
-            if (trigger == true) {
-                for (int i = 0; i < array.length; i++) {
-                    if (array[i] == null) {
-                        array[i] = new ArrayRepresenting<>(key, value);
-                        sizeInt++;
-                        break;
-                    }
-                }
-            }
+        }
     }
 
     @Override
@@ -38,8 +38,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < array.length; i++) {
             if (array[i] != null && array[i].keyJ == null && key == null) {
                 return (V) array[i].valueB;
-            }
-            else if (array[i] != null && this.array[i].keyJ != null &&array[i].keyJ.equals(key)) {
+            } else if (array[i] != null
+                    && this.array[i].keyJ != null && array[i].keyJ.equals(key)) {
                 return (V) array[i].valueB;
             }
         }
@@ -52,13 +52,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
 }
-class ArrayRepresenting<J,B> {
-     J keyJ;
-     B valueB;
 
-    public ArrayRepresenting(J keyJ, B valueB) {
-        this.keyJ = keyJ;
-        this.valueB = valueB;
-    }
-}
 
