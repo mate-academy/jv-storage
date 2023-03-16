@@ -21,15 +21,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     size++;
                 }
                 arrayValue[i] = value;
-                break;
-            }
-            if (arrayKey[i] == null && arrayValue[i] == null) {
-                arrayKey[i] = key;
-                arrayValue[i] = value;
-                size++;
-                break;
+                return;
             }
         }
+            arrayKey[size] = key;
+            arrayValue[size] = value;
+            size++;
     }
 
     @Override
