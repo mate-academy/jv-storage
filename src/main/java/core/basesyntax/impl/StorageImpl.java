@@ -24,9 +24,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-            arrayKey[size] = key;
-            arrayValue[size] = value;
-            size++;
+        arrayKey[size] = key;
+        arrayValue[size] = value;
+        size++;
     }
 
     @Override
@@ -41,9 +41,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        if (size > MAX_SIZE) {
-            return MAX_SIZE;
-        }
         return size;
     }
 }
