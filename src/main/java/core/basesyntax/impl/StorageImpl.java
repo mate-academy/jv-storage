@@ -4,28 +4,31 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_LENGTH = 10;
-    private K key;
-    private V value;
     private int sizeInt = 0;
-
-    private ArrayRepresenting[] array = new ArrayRepresenting[MAX_ARRAY_LENGTH];
+    private Object[] keyArray = new Object[MAX_ARRAY_LENGTH];
+    private Object[] valueArray = new Object[MAX_ARRAY_LENGTH];
 
     @Override
     public void put(K key, V value) {
-        boolean trigger = true;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null
-                    && ((key == null && this.array[i].keyJ == null)
-                    || (this.array[i].keyJ != null && array[i].keyJ.equals(key)))) {
-                array[i] = new ArrayRepresenting<>(key, value);
-                trigger = false;
+        boolean createNewIndexStorage = true;
+
+        for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
+            if (key != null && keyArray[i] != null && keyArray[i].equals(key)) {
+                valueArray[i] = value;
+                createNewIndexStorage = false;
+                break;
+            }
+            if (key == null && keyArray[i] == null && valueArray[i] != null) {
+                valueArray[i] = value;
+                createNewIndexStorage = false;
                 break;
             }
         }
-        if (trigger == true) {
-            for (int i = 0; i < array.length; i++) {
-                if (array[i] == null) {
-                    array[i] = new ArrayRepresenting<>(key, value);
+        if (createNewIndexStorage) {
+            for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
+                if (keyArray[i] == null && valueArray[i] == null) {
+                    keyArray[i] = key;
+                    valueArray[i] = value;
                     sizeInt++;
                     break;
                 }
@@ -35,12 +38,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null && array[i].keyJ == null && key == null) {
-                return (V) array[i].valueB;
-            } else if (array[i] != null
-                    && this.array[i].keyJ != null && array[i].keyJ.equals(key)) {
-                return (V) array[i].valueB;
+        for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
+            if (key != null && keyArray[i] != null && keyArray[i].equals(key)) {
+                return (V) valueArray[i];
+            }
+            if (key == null && keyArray[i] == null) {
+                return (V) valueArray[i];
             }
         }
         return null;
