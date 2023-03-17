@@ -5,48 +5,46 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_LENGTH = 10;
     private int sizeInt = 0;
-    private Object[] keyArray = new Object[MAX_ARRAY_LENGTH];
-    private Object[] valueArray = new Object[MAX_ARRAY_LENGTH];
+    private K[] keys;
+    private V[] values;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_ARRAY_LENGTH];
+        values = (V[]) new Object[MAX_ARRAY_LENGTH];
+    }
+
+    private int findValueWithKey(K key) {
+        for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
+            if ((values[i] != null)
+                    && ((key == keys[i] || key != null && keys[i].equals(key)))) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
     @Override
     public void put(K key, V value) {
-        boolean createNewIndexStorage = true;
-
-        for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
-            if (key != null && keyArray[i] != null && keyArray[i].equals(key)) {
-                valueArray[i] = value;
-                createNewIndexStorage = false;
-                break;
-            }
-            if (key == null && keyArray[i] == null && valueArray[i] != null) {
-                valueArray[i] = value;
-                createNewIndexStorage = false;
-                break;
-            }
+        int index = findValueWithKey(key);
+        if (index != -1) {
+            values[index] = value;
         }
-        if (createNewIndexStorage) {
             for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
-                if (keyArray[i] == null && valueArray[i] == null) {
-                    keyArray[i] = key;
-                    valueArray[i] = value;
+                if (keys[i] == null && values[i] == null) {
+                    keys[i] = key;
+                    values[i] = value;
                     sizeInt++;
                     break;
                 }
             }
-        }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
-            if (key != null && keyArray[i] != null && keyArray[i].equals(key)) {
-                return (V) valueArray[i];
-            }
-            if (key == null && keyArray[i] == null) {
-                return (V) valueArray[i];
-            }
-        }
-        return null;
+        int index = findValueWithKey(key);
+        if (index == -1) {
+            return null;
+        } else return values[index];
     }
 
     @Override
