@@ -15,8 +15,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findValueWithKey(K key) {
         for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
-            if ((values[i] != null)
-                    && ((key == keys[i] || key != null && keys[i].equals(key)))) {
+            if (values[i] != null && key == keys[i]
+                    || key != null && keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
@@ -28,15 +28,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = findValueWithKey(key);
         if (index != -1) {
             values[index] = value;
+            return;
         }
-            for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
-                if (keys[i] == null && values[i] == null) {
-                    keys[i] = key;
-                    values[i] = value;
-                    sizeInt++;
-                    break;
-                }
+        for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
+            if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
+                sizeInt++;
+                break;
             }
+        }
     }
 
     @Override
@@ -44,7 +45,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = findValueWithKey(key);
         if (index == -1) {
             return null;
-        } else return values[index];
+        } else {
+            return values[index];
+        }
     }
 
     @Override
