@@ -3,7 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final int SIZE_OF_STORAGE = 10;
+    private static final int SIZE_OF_STORAGE = 10;
     private final K[] keysOfStorage;
     private final V[] valuesOfStorage;
     private int sizeOfStorage;
