@@ -3,7 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAX_STORAGE_SIZE = 10;
     private int size;
     private final Node<K, V>[] storageItems;
@@ -27,9 +26,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private boolean keyCondition(K key, int i) {
-        return (key == storageItems[i].key || (storageItems[i].key != null
-                && storageItems[i].key.equals(key)));
+    private boolean keyCondition(K key, int keyIndex) {
+        return (key == storageItems[keyIndex].key || (storageItems[keyIndex].key != null
+                && storageItems[keyIndex].key.equals(key)));
     }
 
     @Override
