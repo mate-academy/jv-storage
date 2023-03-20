@@ -3,15 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static class Node<K, V> {
-        private final K key;
-        private final V value;
-
-        public Node(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
 
     private static final int MAX_STORAGE_SIZE = 10;
     private int size;
@@ -29,19 +20,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 storageItems[i] = node;
                 size++;
                 break;
-            } else if (key == storageItems[i].key || (storageItems[i].key != null
-                    && storageItems[i].key.equals(key))) {
+            } else if (keyCondition(key, i)) {
                 storageItems[i] = node;
                 break;
             }
         }
     }
 
+    private boolean keyCondition(K key, int i) {
+        return (key == storageItems[i].key || (storageItems[i].key != null
+                && storageItems[i].key.equals(key)));
+    }
+
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == storageItems[i].key
-                    || (storageItems[i].key != null && storageItems[i].key.equals(key))) {
+            if (keyCondition(key, i)) {
                 return storageItems[i].value;
             }
         }
@@ -51,5 +45,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private static class Node<K, V> {
+        private final K key;
+        private final V value;
+
+        public Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
