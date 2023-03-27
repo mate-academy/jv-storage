@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[index] = value;
         } else {
             if (size == SIZE) {
-                throw new RuntimeException("Storage is full");
+                throw new RuntimeException("Array is full");
             }
             keys[size] = key;
             values[size] = value;
