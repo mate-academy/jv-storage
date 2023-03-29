@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private final Map<K,V> map = new LinkedHashMap<>();
+
     @Override
     public void put(K key, V value) {
         map.put(key, value);
