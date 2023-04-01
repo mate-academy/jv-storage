@@ -4,18 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_NUMBER_OF_ELEMENTS = 10;
-    private final Node<K, V>[] nodeArray = new Node[MAX_NUMBER_OF_ELEMENTS];
-    private int size = 0;
+    private final Node<K, V>[] nodeArray;
+    private int size;
 
-    private int getIndex(K key) {
-        int index = -1;
-        for (int i = 0; i < size; i++) {
-            if (key == nodeArray[i].key
-                    || nodeArray[i].key != null && nodeArray[i].key.equals(key)) {
-                index = i;
-            }
-        }
-        return index;
+    public StorageImpl() {
+        nodeArray = new Node[MAX_NUMBER_OF_ELEMENTS];
     }
 
     @Override
@@ -25,18 +18,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             nodeArray[index].value = value;
             return;
         }
-        nodeArray[size] = new Node<>(key, value);
-        size++;
+        nodeArray[size++] = new Node<>(key, value);
     }
 
     @Override
     public V get(K key) {
-        V value = null;
         int index = getIndex(key);
         if (index != -1) {
-            value = nodeArray[index].value;
+            return nodeArray[index].value;
         }
-        return value;
+        return null;
+    }
+
+    private int getIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == nodeArray[i].key
+                || nodeArray[i].key != null && nodeArray[i].key.equals(key)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
