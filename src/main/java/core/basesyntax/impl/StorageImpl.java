@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         V value = null;
         for (int i = 0; i < size; i++) {
             if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
-                value = (V) values[i];
+                value = values[i];
             }
         }
         return value;
