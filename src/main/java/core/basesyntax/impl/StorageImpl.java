@@ -4,33 +4,36 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private K valueKey;
-    private V value;
     private int storageIndex = 0;
-    private final StorageImpl<K, V>[] storageArray = new StorageImpl[10];
+    private final Pair<K, V>[] storageArray = new Pair[10];
+
+    private static class Pair<K, V> {
+        private K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
 
     public StorageImpl() {
     }
 
-    private StorageImpl(K valueKey, V value) {
-        this.valueKey = valueKey;
-        this.value = value;
-    }
-
     @Override
     public void put(K key, V value) {
-        StorageImpl<K, V> newObject = new StorageImpl<>(key, value);
+        Pair<K, V> newObject = new Pair<>(key, value);
         int maxElementNumber = 10;
         if (storageIndex == maxElementNumber) {
             System.out.println("Can't add new element. There is no free space");
             return;
         }
-        for (int i = 0; i < size(); i++) {
-            if ((storageArray[i] != null) && ((storageArray[i].valueKey == key)
-                    || (storageArray[i].valueKey != null
-                    && storageArray[i].valueKey.equals(key)))) {
+        for (int i = 0; i < storageIndex; i++) {
+            if ((storageArray[i] != null) && ((storageArray[i].key == key)
+                    || (storageArray[i].key != null
+                    && storageArray[i].key.equals(key)))) {
                 System.out.println("kArray["
-                        + i + "] is " + storageArray[i].valueKey
+                        + i + "] is " + storageArray[i].key
                         + " and is equals with key " + key);
                 storageArray[i].value = value;
                 return;
@@ -42,9 +45,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (StorageImpl<K, V> si : storageArray) {
-            if ((si != null) && ((si.valueKey == key) || (si.valueKey != null
-                    && si.valueKey.equals(key)))) {
+        for (Pair<K, V> si : storageArray) {
+            if ((si != null) && ((si.key == key) || (si.key != null
+                    && si.key.equals(key)))) {
                 System.out.println("with key \""
                         + key + "\" value is \"" + si.value + "\"");
                 return si.value;
@@ -56,7 +59,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         int arraySize = 0;
-        for (StorageImpl<K, V> si : storageArray) {
+        for (Pair<K, V> si : storageArray) {
             if (si != null) {
                 arraySize++;
             }
@@ -69,7 +72,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < storageArray.length; i++) {
             if (storageArray[i] != null) {
                 System.out.println("kArray [" + i + "] = "
-                        + storageArray[i].valueKey + " " + storageArray[i].value);
+                        + storageArray[i].key + " " + storageArray[i].value);
             }
         }
         return "";
