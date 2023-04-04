@@ -3,10 +3,45 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int STORAGE_SIZE = 10;
-    private int storageIndex;
+    private int size;
     private final Pair<K, V>[] storageArray;
+
+    public StorageImpl() {
+        size = 0;
+        storageArray = new Pair[STORAGE_SIZE];
+    }
+
+    @Override
+    public void put(K key, V value) {
+        Pair<K, V> newObject = new Pair<>(key, value);
+        for (int i = 0; i < size; i++) {
+            if ((storageArray[i] != null) && ((storageArray[i].key == key)
+                    || (storageArray[i].key != null
+                    && storageArray[i].key.equals(key)))) {
+                storageArray[i].value = value;
+                return;
+            }
+        }
+        storageArray[size] = newObject;
+        size++;
+    }
+
+    @Override
+    public V get(K key) {
+        for (Pair<K, V> pair : storageArray) {
+            if ((pair != null) && ((pair.key == key) || (pair.key != null
+                    && pair.key.equals(key)))) {
+                return pair.value;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
 
     private static class Pair<K, V> {
         private K key;
@@ -16,48 +51,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.key = key;
             this.value = value;
         }
-    }
-
-    public StorageImpl() {
-        storageIndex = 0;
-        storageArray = new Pair[STORAGE_SIZE];
-    }
-
-    @Override
-    public void put(K key, V value) {
-        Pair<K, V> newObject = new Pair<>(key, value);
-        int maxElementNumber = 10;
-        for (int i = 0; i < storageIndex; i++) {
-            if ((storageArray[i] != null) && ((storageArray[i].key == key)
-                    || (storageArray[i].key != null
-                    && storageArray[i].key.equals(key)))) {
-                storageArray[i].value = value;
-                return;
-            }
-        }
-        storageArray[storageIndex] = newObject;
-        storageIndex++;
-    }
-
-    @Override
-    public V get(K key) {
-        for (Pair<K, V> si : storageArray) {
-            if ((si != null) && ((si.key == key) || (si.key != null
-                    && si.key.equals(key)))) {
-                return si.value;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public int size() {
-        int arraySize = 0;
-        for (Pair<K, V> si : storageArray) {
-            if (si != null) {
-                arraySize++;
-            }
-        }
-        return arraySize;
     }
 }
