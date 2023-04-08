@@ -3,11 +3,13 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int ARRAY_LENGTH = 10;
+
     private Pair<K, V>[] storage;
     private int indexFreePosition;
 
     public StorageImpl() {
-        storage = new Pair[10];
+        storage = new Pair[ARRAY_LENGTH];
         indexFreePosition = 0;
     }
 
@@ -20,12 +22,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 storage[i].setValue(value);
                 return;
             }
-            if (storage[i] == null) {
-                break;
-            }
         }
-
-        storage[indexFreePosition] = new Pair<>(key, value);
+        try {
+            storage[indexFreePosition] = new Pair<>(key, value);
+        } catch (IndexOutOfBoundsException e) {
+            throw new RuntimeException("In array not enough"
+                    + " space for this operation", e);
+        }
         indexFreePosition++;
     }
 
