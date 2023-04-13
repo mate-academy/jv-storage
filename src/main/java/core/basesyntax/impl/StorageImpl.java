@@ -8,34 +8,34 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Pair<K, V>[] storage;
 
     public StorageImpl() {
-        size = 0;
         storage = new Pair[MAX_STORAGE_SIZE];
+    }
+
+    public boolean keyCheck(Pair<K, V> pair, K key) {
+        return ((pair != null) && (pair.getKey() == key
+                || (pair.getKey() != null && pair.getKey().equals(key))));
     }
 
     @Override
     public void put(K key, V value) {
         Pair<K, V> newPair = new Pair<>(key, value);
-        for (int i = 0; i < size; i++) {
-            if ((storage[i] != null) && (storage[i].getKey() == key
-                    || storage[i].getKey() != null && storage[i].getKey().equals(key))) {
-                storage[i].setValue(value);
+        for (Pair<K, V> pair : storage) {
+            if (keyCheck(pair, key)) {
+                pair.setValue(value);
                 return;
             }
         }
-        if (size > MAX_STORAGE_SIZE) {
-            throw new RuntimeException("Storage is full");
+        if (size >= MAX_STORAGE_SIZE) {
+            throw new RuntimeException("Storage is at its maximum capacity of " + size);
         }
-        storage[size] = newPair;
-        size++;
+        storage[size++] = newPair;
     }
 
     @Override
     public V get(K key) {
         for (Pair<K, V> pair : storage) {
-            if (pair != null) {
-                if (pair.getKey() == key || (pair.getKey() != null && pair.getKey().equals(key))) {
-                    return pair.getValue();
-                }
+            if (keyCheck(pair, key)) {
+                return pair.getValue();
             }
         }
         return null;
