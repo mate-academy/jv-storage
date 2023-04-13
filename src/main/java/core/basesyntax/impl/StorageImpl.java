@@ -11,11 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         storage = new Pair[MAX_STORAGE_SIZE];
     }
 
-    public boolean keyCheck(Pair<K, V> pair, K key) {
-        return ((pair != null) && (pair.getKey() == key
-                || (pair.getKey() != null && pair.getKey().equals(key))));
-    }
-
     @Override
     public void put(K key, V value) {
         Pair<K, V> newPair = new Pair<>(key, value);
@@ -44,5 +39,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean keyCheck(Pair<K, V> pair, K key) {
+        return ((pair != null) && (pair.getKey() == key
+                || (pair.getKey() != null && pair.getKey().equals(key))));
     }
 }
