@@ -9,13 +9,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values;
 
     public StorageImpl() {
-        size = 0;
         keys = (K[]) new Object[MAX_ARRAY_LENGTH];
         values = (V[]) new Object[MAX_ARRAY_LENGTH];
-    }
-
-    private boolean isKeysEqual(K key, K key1) {
-        return (key == null && key1 == null || (key != null && key.equals(key1)));
     }
 
     @Override
@@ -44,5 +39,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isKeysEqual(K key, K key1) {
+        return (key == null && key1 == null || (key != null && key.equals(key1)));
     }
 }
