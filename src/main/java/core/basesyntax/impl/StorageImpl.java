@@ -2,20 +2,19 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.security.Key;
-import java.util.Arrays;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_ITEMS_CAPACITY = 10;
     private static final byte NON_EXISTING_INDEX = -1;
-    private K keys[];
-    private V values[];
+    private final Object[] keys;
+    private final Object[] values;
     private int size;
+    private boolean isAlreadyHaveNullKey;
 
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_ITEMS_CAPACITY];
-        values = (V[]) new Object[MAX_ITEMS_CAPACITY];
+        keys = new Object[MAX_ITEMS_CAPACITY];
+        values = new Object[MAX_ITEMS_CAPACITY];
         size = 0;
+        isAlreadyHaveNullKey = false;
     }
 
     @Override
@@ -26,13 +25,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         putNewKeyValue(key, value);
     }
 
-
+    @SuppressWarnings("unchecked")
     @Override
     public V get(K key) {
-        byte keyIndex = getEqualKeyIndex(key);
-        return keyIndex > NON_EXISTING_INDEX
-                ? values[keyIndex]
-                : null;
+        byte keyIndex = (key == null) ? getNullKeyIndex() : getEqualKeyIndex(key);
+        return keyIndex > NON_EXISTING_INDEX ? (V) values[keyIndex] : null;
     }
 
     @Override
@@ -41,7 +38,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean replaceExistingKeyValue(K key, V value) {
-        byte keyIndex = getEqualKeyIndex(key);
+        if (key == null && !isAlreadyHaveNullKey) {
+            return false;
+        }
+        byte keyIndex = (key == null) ? getNullKeyIndex() : getEqualKeyIndex(key);
         if (keyIndex > NON_EXISTING_INDEX) {
             values[keyIndex] = value;
             return true;
@@ -50,8 +50,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void putNewKeyValue(K key, V value) {
+        if (key == null) {
+            isAlreadyHaveNullKey = true;
+        }
         for (byte i = 0; i < MAX_ITEMS_CAPACITY; i++) {
-            if (keys[i] == null) {
+            if (keys[i] == null && values[i] == null) {
                 keys[i] = key;
                 values[i] = value;
                 size++;
@@ -63,6 +66,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private byte getEqualKeyIndex(K key) {
         for (byte i = 0; i < MAX_ITEMS_CAPACITY; i++) {
             if (keys[i] != null && keys[i].equals(key)) {
+                return i;
+            }
+        }
+        return NON_EXISTING_INDEX;
+    }
+
+    private byte getNullKeyIndex() {
+        for (byte i = 0; i < MAX_ITEMS_CAPACITY; i++) {
+            if (keys[i] == null) {
                 return i;
             }
         }
