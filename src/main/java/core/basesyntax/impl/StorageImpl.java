@@ -5,29 +5,21 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keys;
     private final V[] values;
+    private final int maxSize = 10;
     private int size;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[10];
-        this.values = (V[]) new Object[10];
-        this.size = 0;
+        this.keys = (K[]) new Object[maxSize];
+        this.values = (V[]) new Object[maxSize];
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i < size; i++) {
+            boolean isMatch = (key == null) ? (keys[i] == null) : key.equals(keys[i]);
+            if (isMatch) {
+                values[i] = value;
+                return;
             }
         }
         keys[size] = key;
