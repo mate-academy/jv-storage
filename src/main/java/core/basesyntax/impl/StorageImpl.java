@@ -4,8 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_COUNT = 10;
-    private Object[] keyArray = new Object[ARRAY_COUNT];
-    private Object[] valueArray = new Object[ARRAY_COUNT];
+    private final Object[] keyArray = new Object[ARRAY_COUNT];
+    private final Object[] valueArray = new Object[ARRAY_COUNT];
 
     public Object keyPresentNumber(K key) {
         for (int i = 0; keyArray.length > i; i++) {
