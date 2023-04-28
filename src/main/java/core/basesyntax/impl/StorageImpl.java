@@ -3,43 +3,40 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int ARRAY_COUNT = 10;
-    private final Object[] keyArray = new Object[ARRAY_COUNT];
-    private final Object[] valueArray = new Object[ARRAY_COUNT];
-    private int size = 0;
+    private static final int MAX_LENGTH = 10;
+    private final Object[] keys = new Object[MAX_LENGTH];
+    private final Object[] values = new Object[MAX_LENGTH];
+    private int size;
 
-    public int keyPresentNumber(K key) {
-        for (int i = 0; keyArray.length > i; i++) {
-            if ((key == null ? 0 : key.hashCode())
-                    == (keyArray[i] == null ? 0 : keyArray[i].hashCode())) {
-                return i;
-            }
+    public boolean isEquel(Object firstObject, Object secondObject) {
+        if (firstObject == secondObject || firstObject != null
+                && firstObject.equals(secondObject)) {
+            return true;
         }
-        return -1;
+        return false;
     }
 
     @Override
     public void put(K key, V value) {
-        int keyPresentNumber = keyPresentNumber(key);
-        if (keyPresentNumber != -1) {
-            size = keyArray[keyPresentNumber] == null ? size += 1 : size;
-            keyArray[keyPresentNumber] = key == null ? 0 : key.hashCode();
-            valueArray[keyPresentNumber] = value;
-        } else {
-            for (int i = 0; i < ARRAY_COUNT; i++) {
-                if (keyArray[i] == null) {
-                    keyArray[i] = key == null ? 0 : key.hashCode();
-                    valueArray[i] = value;
-                    size += 1;
-                    break;
-                }
+        for (int i = 0; i < size; i++) {
+            if (isEquel(keys[i], key)) {
+                values[i] = value;
+                return;
             }
         }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        return keyPresentNumber(key) == -1 ? null : (V) valueArray[keyPresentNumber(key)];
+        for (int i = 0; i < keys.length; i++) {
+            if (isEquel(keys[i], key)) {
+                return (V) values[i];
+            }
+        }
+        return null;
     }
 
     @Override
@@ -47,3 +44,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 }
+
