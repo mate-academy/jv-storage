@@ -36,10 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (keyPresentNumber(key) == null) {
-            return null;
-        }
-        return (V) valueArray[(int) keyPresentNumber(key)];
+        return keyPresentNumber(key) == null ? null : (V) valueArray[(int) keyPresentNumber(key)];
     }
 
     @Override
