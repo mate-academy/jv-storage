@@ -3,17 +3,16 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ELEMNTS_IN_STORAGE = 10;
-    private K[] key;
-    private V[] value;
+    private static final int MAX_ELEMENTS_IN_STORAGE = 10;
+    private final K[] key;
+    private final V[] value;
     private int size;
 
     public StorageImpl() {
-        this.key = (K[]) new Object[MAX_ELEMNTS_IN_STORAGE];
-        this.value = (V[]) new Object[MAX_ELEMNTS_IN_STORAGE];
+        this.key = (K[]) new Object[MAX_ELEMENTS_IN_STORAGE];
+        this.value = (V[]) new Object[MAX_ELEMENTS_IN_STORAGE];
         this.size = 0;
     }
-
 
     @Override
     public void put(K key, V value) {
@@ -22,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value[index] = value;
         } else {
             if (size == this.key.length) {
-                throw new IllegalStateException("Storage is full");
+                throw new OutOfMemoryError("Storage is completely full");
             }
             this.key[size] = key;
             this.value[size] = value;
