@@ -8,14 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Object[] values = new Object[MAX_LENGTH];
     private int size;
 
-    public boolean isEquel(Object firstObject, Object secondObject) {
-        if (firstObject == secondObject || firstObject != null
-                && firstObject.equals(secondObject)) {
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
@@ -43,5 +35,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
-}
 
+    private boolean isEquel(Object firstObject, Object secondObject) {
+        if (firstObject == secondObject || firstObject != null
+                && firstObject.equals(secondObject)) {
+            return true;
+        }
+        return false;
+    }
+}
