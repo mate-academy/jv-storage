@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         this.key = (K[]) new Object[MAX_ELEMENTS_IN_STORAGE];
         this.value = (V[]) new Object[MAX_ELEMENTS_IN_STORAGE];
-        this.size = 0;
     }
 
     @Override
