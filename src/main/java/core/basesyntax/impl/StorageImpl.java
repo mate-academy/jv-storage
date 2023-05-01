@@ -2,52 +2,46 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int DEFAULT_SIZE = 10;
+    private static final int ARRAY_MULTIPLIER = 2;
     private K[] keys;
     private V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[10];
-        values = (V[]) new Object[10];
-        size = 0;
+        keys = createKeyArray();
+        values = createValueArray();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        StorageImpl current = (StorageImpl) o;
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], current.keys[i])) {
-                return true;
-            }
-        }
-        return false;
+    @SuppressWarnings("unchecked")
+    private K[] createKeyArray() {
+        return (K[]) new Object[StorageImpl.DEFAULT_SIZE];
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hash(size);
-        result = 31 * result + Arrays.hashCode(keys);
-        result = 31 * result + Arrays.hashCode(values);
-        return result;
+    @SuppressWarnings("unchecked")
+    private V[] createValueArray() {
+        return (V[]) new Object[StorageImpl.DEFAULT_SIZE];
     }
 
-    @Override
     public void put(K key, V value) {
         boolean found = false;
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                values[i] = value;
-                found = true;
-                break;
+        if (key == null) {
+            for (int i = 0; i < size; i++) {
+                if (keys[i] == null) {
+                    values[i] = value;
+                    found = true;
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (key.equals(keys[i])) {
+                    values[i] = value;
+                    found = true;
+                    break;
+                }
             }
         }
         if (!found) {
@@ -56,17 +50,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             size++;
         }
         if (size == keys.length) {
-            keys = Arrays.copyOf(keys, size * 2);
-            values = Arrays.copyOf(values, size * 2);
+            keys = Arrays.copyOf(keys, size * ARRAY_MULTIPLIER);
+            values = Arrays.copyOf(values, size * ARRAY_MULTIPLIER);
         }
-        keys[size] = key;
     }
 
-    @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                return values[i];
+        if (key == null) {
+            for (int i = 0; i < size; i++) {
+                if (keys[i] == null) {
+                    return values[i];
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (key.equals(keys[i])) {
+                    return values[i];
+                }
             }
         }
         return null;
