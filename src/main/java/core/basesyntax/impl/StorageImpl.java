@@ -4,13 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private K[] key;
-    private V[] value;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        key = (K[]) new Object[MAX_SIZE];
-        value = (V[]) new Object[MAX_SIZE];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
@@ -20,21 +20,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 + key + ", value: " + value + ". Storage is full! ");
         }
         for (int i = 0; i < size; i++) {
-            if (compare(this.key[i], key)) {
-                this.value[i] = value;
+            if (compare(keys[i], key)) {
+                values[i] = value;
                 return;
             }
         }
-        this.key[size] = key;
-        this.value[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (compare(this.key[i], key)) {
-                return this.value[i];
+            if (compare(this.keys[i], key)) {
+                return this.values[i];
             }
         }
         return null;
