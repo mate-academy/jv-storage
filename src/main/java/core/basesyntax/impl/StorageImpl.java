@@ -42,12 +42,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
+    @SuppressWarnings("unchecked")
     private int existKeyIndex(K key) {
         for (int i = 0; i < this.size(); i++) {
-            if (Objects.equals(this.keys[i], key)) {
+            if (isEqualsKeys((K) keys[i], key)) {
                 return i;
             }
         }
         return -1;
+    }
+
+    private boolean isEqualsKeys(K firstKey, K secondKey) {
+        return firstKey == secondKey || firstKey != null && firstKey.equals(secondKey);
     }
 }
