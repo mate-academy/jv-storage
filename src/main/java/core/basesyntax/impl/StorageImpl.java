@@ -9,14 +9,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Object[] values;
 
     public StorageImpl() {
-        size = 0;
         keys = new Object[MAX_CAPACITY];
         values = new Object[MAX_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        int keyIndex = existKeyIndex(key);
+        int keyIndex = indexOf(key);
         if (keyIndex != -1) {
             this.values[keyIndex] = value;
         } else {
@@ -29,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     @Override
     public V get(K key) {
-        int keyIndex = existKeyIndex(key);
+        int keyIndex = indexOf(key);
         if (keyIndex != -1) {
             return (V) this.values[keyIndex];
         }
@@ -42,16 +41,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     @SuppressWarnings("unchecked")
-    private int existKeyIndex(K key) {
+    private int indexOf(K key) {
         for (int i = 0; i < this.size(); i++) {
-            if (isEqualsKeys((K) keys[i], key)) {
+            if (areEqualsKeys((K) keys[i], key)) {
                 return i;
             }
         }
         return -1;
     }
 
-    private boolean isEqualsKeys(K firstKey, K secondKey) {
+    private boolean areEqualsKeys(K firstKey, K secondKey) {
         return firstKey == secondKey || firstKey != null && firstKey.equals(secondKey);
     }
 }
