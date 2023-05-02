@@ -9,17 +9,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_SIZE];
-        this.values = (V[]) new Object[MAX_SIZE];
-        this.size = 0;
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        int index = indexOf(key);
-        if (index >= 0) {
+        if (indexOf(key) >= 0) {
             // Key already exists, replace the value
-            values[index] = value;
+            values[indexOf(key)] = value;
         } else {
             // Key doesn't exist, add it
             if (size >= MAX_SIZE) {
@@ -34,13 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = indexOf(key);
-        if (index >= 0) {
-            // Key exists, return the value
-            return values[index];
-        } else {
-            // Key doesn't exist, return null
-            return null;
-        }
+        return index >= 0 ? values[index] : null;
     }
 
     @Override
@@ -50,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if ((keys[i] == null && key == null) || (keys[i] != null && keys[i].equals(key))) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
