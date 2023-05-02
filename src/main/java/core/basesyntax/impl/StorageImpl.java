@@ -21,9 +21,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != NOT_FOUND_ELEMENT) {
             values[index] = value;
         } else if (size < MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
