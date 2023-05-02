@@ -40,11 +40,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndexForPutting(K key) {
         for (int i = START_INDEX; i < size; i++) {
-            if ((key == keys[i]) || key != null && key.equals(keys[i])) {
+            if (areKeysMatch(key, keys[i])) {
                 return i;
             }
         }
         return NO_MATCH_INDEX;
+    }
+
+    private boolean areKeysMatch(K keyOne, K keyTwo) {
+        return ((keyOne == keyTwo) || keyOne != null && keyOne.equals(keyTwo));
     }
 }
 
