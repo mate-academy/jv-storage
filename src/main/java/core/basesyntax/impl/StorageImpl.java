@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
@@ -15,69 +14,68 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         size = 0;
     }
 
+    public void putKeyIsNull(V value) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null) {
+                values[i] = value;
+                return;
+            }
+        }
+        keys[size] = null;
+        values[size] = value;
+        size++;
+    }
+
+    public void putKeyIsNotNull(K key, V value) {
+        for (int i = 0; i < size; i++) {
+            if (key.equals(keys[i])) {
+                values[i] = value;
+                return;
+            }
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
+    }
+
+    public V getKeyIsNull() {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null) {
+                return values[i];
+            }
+        }
+        return null;
+    }
+
+    public V getKeyIsNotNull(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key.equals(keys[i])) {
+                return values[i];
+            }
+        }
+        return null;
+    }
+
     @Override
     public void put(K key, V value) {
         if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-            keys[size] = null;
-            values[size] = value;
-            size++;
+            putKeyIsNull(value);
         } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
-            }
-            keys[size] = key;
-            values[size] = value;
-            size++;
+            putKeyIsNotNull(key, value);
         }
     }
 
     @Override
     public V get(K key) {
         if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return values[i];
-                }
-            }
-            return null;
+            return getKeyIsNull();
         } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    return values[i];
-                }
-            }
-            return null;
+            return getKeyIsNotNull(key);
         }
     }
 
     @Override
     public int size() {
         return size;
-    }
-
-    @Override
-    public boolean equals(Object storageImpl) {
-        if (storageImpl == null) {
-            return false;
-        }
-        if (storageImpl == this) {
-            return true;
-        }
-        if (storageImpl instanceof StorageImpl) {
-            StorageImpl current = (StorageImpl)storageImpl;
-            return Objects.equals(this.keys, current.keys)
-                    && Objects.equals(this.values, current.values)
-                    && this.size == size;
-        }
-        return false;
     }
 }
