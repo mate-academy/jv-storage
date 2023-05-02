@@ -15,9 +15,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int keyForReplace;
-        if ((keyForReplace = getExistKey(key)) != -1) {
-            replaceElement(value,keyForReplace);
+        int indexForReplace = getExistIndex(key);
+        if (indexForReplace != -1) {
+            values[indexForReplace] = value;
         } else if (size <= MAX_ITEMS_NUMBER) {
             keys[size] = key;
             values[size] = value;
@@ -40,17 +40,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int getExistKey(K keyForCheck) {
+    private int getExistIndex(K keyForCheck) {
         for (int i = 0; i < size; i++) {
             if (check(keyForCheck,keys[i])) {
                 return i;
             }
         }
         return -1;
-    }
-
-    private void replaceElement(V value,int index) {
-        values[index] = value;
     }
 
     private boolean check(K keyForCheck, Object value) {
