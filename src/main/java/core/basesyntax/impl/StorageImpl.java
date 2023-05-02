@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 keysArray[i] = key;
                 valuesArray[i] = value;
                 return;
-            } else if (isEqualsKeys(keysArray[i], key)){
+            } else if (isEqualsKeys(keysArray[i], key)) {
                 valuesArray[i] = value;
                 return;
             }
