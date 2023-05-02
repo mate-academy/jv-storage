@@ -1,9 +1,11 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    private static final int NOT_FOUND_ELEMENT = -1;
     private final K[] keys;
     private final V[] values;
     private int size;
@@ -16,21 +18,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = getIndex(key);
-        if (index != -1) {
+        if (index != NOT_FOUND_ELEMENT) {
             values[index] = value;
-        } else {
-            if (size < MAX_SIZE) {
+        } else if (size < MAX_SIZE) {
                 keys[size] = key;
                 values[size] = value;
                 size++;
-            }
         }
     }
 
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        if (index != -1) {
+        if (index != NOT_FOUND_ELEMENT) {
             return values[index];
         } else {
             return null;
@@ -43,28 +43,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndex(K key) {
-        if (key == null) {
-            return getIndexNull(key);
-        } else {
-            return getEqualsKeys(key);
-        }
-    }
-
-    private int getEqualsKeys(K key) {
         for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
+            if (Objects.equals(key, keys[i])) {
                 return i;
             }
         }
-        return -1;
-    }
-
-    private int getIndexNull(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
-                return i;
-            }
-        }
-        return -1;
+        return NOT_FOUND_ELEMENT;
     }
 }
