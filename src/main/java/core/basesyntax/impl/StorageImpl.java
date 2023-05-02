@@ -36,7 +36,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         } else {
             return null;
         }
-
     }
 
     @Override
@@ -46,7 +45,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexElement(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+            if ((key == keys[i] || (key != null && key.equals(keys[i])))) {
                 return i;
             }
         }
