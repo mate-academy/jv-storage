@@ -13,10 +13,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = new Object[MAX_SIZE];
     }
 
-    public static boolean equalsKey(Object a, Object b) {
-        return (a == b) || (a != null && a.equals(b));
-    }
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
@@ -43,5 +39,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean equalsKey(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
     }
 }
