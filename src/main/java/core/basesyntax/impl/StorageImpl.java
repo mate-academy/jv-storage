@@ -15,27 +15,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = indexElement(key);
+        int index = getExistIndex(key);
         if (index >= 0) {
             values[index] = value;
-        } else {
-            if (size == MAX_SIZE) {
-                throw new RuntimeException("Storage is already full");
-            }
-            keys[size] = key;
-            values[size] = value;
-            size++;
+            return;
         }
+        if (size == MAX_SIZE) {
+            throw new RuntimeException("Storage is already full");
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        int index = indexElement(key);
+        int index = getExistIndex(key);
         if (index >= 0) {
             return values[index];
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -43,9 +42,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int indexElement(K key) {
+    private int getExistIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == keys[i] || (key != null && key.equals(keys[i])))) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
