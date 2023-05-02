@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int keyIndex = indexOf(key);
-        if (keyIndex != -1) {
+        if (isValidIndex(keyIndex)) {
             this.values[keyIndex] = value;
         } else {
             this.keys[size] = key;
@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int keyIndex = indexOf(key);
-        if (keyIndex != -1) {
+        if (isValidIndex(keyIndex)) {
             return (V) this.values[keyIndex];
         }
         return null;
@@ -52,5 +52,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean areEqualsKeys(K firstKey, K secondKey) {
         return firstKey == secondKey || firstKey != null && firstKey.equals(secondKey);
+    }
+
+    private boolean isValidIndex(int keyIndex) {
+        return keyIndex != -1;
     }
 }
