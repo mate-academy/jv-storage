@@ -3,14 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_LENGTH = 10;
+    private static final int MAX_SIZE = 10;
     private K[] key;
     private V[] value;
     private int size;
 
     public StorageImpl() {
-        key = (K[]) new Object[MAX_LENGTH];
-        value = (V[]) new Object[MAX_LENGTH];
+        key = (K[]) new Object[MAX_SIZE];
+        value = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
@@ -46,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isStorageFull() {
-        return size == MAX_LENGTH;
+        return size == MAX_SIZE;
     }
 
     private boolean compare(K key1, K key2) {
