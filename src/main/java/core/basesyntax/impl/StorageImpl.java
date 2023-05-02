@@ -1,10 +1,10 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
+    private static final int NOT_FOUND = -1;
     private int size;
     private final K[] keys;
     private final V[] values;
@@ -18,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = findIndex(key);
-        if (index != -1) {
+        if (index != NOT_FOUND) {
             values[index] = value;
             return;
         }
@@ -30,11 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = findIndex(key);
-        if (index != -1) {
-            return values[index];
-        } else {
-            return null;
-        }
+        return (index != NOT_FOUND) ? values[index] : null;
     }
 
     @Override
@@ -44,10 +40,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if ((Objects.equals(key, keys[i]))) {
+            if (isMatching(key,i)) {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND;
+    }
+
+    private boolean isMatching(K key, int index) {
+        return (key == null) ? (keys[index] == null) : key.equals(keys[index]);
     }
 }
