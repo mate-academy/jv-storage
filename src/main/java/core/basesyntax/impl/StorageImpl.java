@@ -51,6 +51,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean compare(K key1, K key2) {
-        return Objects.equals(key1, key2);
+        return key1 == key2 || key1 != null && key1.equals(key2);
     }
 }
