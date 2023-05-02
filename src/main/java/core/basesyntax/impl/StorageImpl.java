@@ -14,63 +14,61 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         size = 0;
     }
 
-    public void putKeyIsNull(V value) {
+    private boolean containsKey() {
         for (int i = 0; i < size; i++) {
             if (keys[i] == null) {
-                values[i] = value;
-                return;
+                return true;
             }
         }
-        keys[size] = null;
-        values[size] = value;
-        size++;
+        return false;
     }
 
-    public void putKeyIsNotNull(K key, V value) {
+    private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
-                values[i] = value;
-                return;
+            if (keys[i] == key) {
+                return i;
             }
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
-    }
-
-    public V getKeyIsNull() {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
-                return values[i];
-            }
-        }
-        return null;
-    }
-
-    public V getKeyIsNotNull(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
-                return values[i];
-            }
-        }
-        return null;
+        return 0;
     }
 
     @Override
     public void put(K key, V value) {
         if (key == null) {
-            putKeyIsNull(value);
+            if (containsKey()) {
+                values[indexOf(key)] = value;
+                return;
+            }
+            keys[size] = null;
+            values[size] = value;
+            size++;
         } else {
-            putKeyIsNotNull(key, value);
+            for (int i = 0; i < size; i++) {
+                if (key.equals(keys[i])) {
+                    values[i] = value;
+                    return;
+                }
+            }
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
         if (key == null) {
-            return getKeyIsNull();
+            if (containsKey()) {
+                return values[indexOf(key)];
+            }
+            return null;
         } else {
-            return getKeyIsNotNull(key);
+            for (int i = 0; i < size; i++) {
+                if (key.equals(keys[i])) {
+                    return values[i];
+                }
+            }
+            return null;
         }
     }
 
