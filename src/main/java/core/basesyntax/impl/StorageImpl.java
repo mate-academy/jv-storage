@@ -12,22 +12,33 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keysAndValues = new Object[20];
         maxSize = 10;
-        size = 0;
     }
 
-    @Override
-    public void put(final K key, final V value) {
-        // Search for the key in the array and update its value
-        for (int i = 0; i < size; i += 2) {
-            if (key == null && keysAndValues[i] == null) {
-                keysAndValues[i + 1] = value;
-                return;
-            } else if (key != null && key.equals(keysAndValues[i])) {
+    private boolean containsKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keysAndValues[i] == null
+                    || key != null && key.equals(keysAndValues[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void updateValue(K key, V value) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keysAndValues[i] == null
+                    || key != null && key.equals(keysAndValues[i])) {
                 keysAndValues[i + 1] = value;
                 return;
             }
         }
-        // If the key does not exist in the array, add it and its value
+    }
+
+    private V getValue(int index) {
+        return (V) keysAndValues[index + 1];
+    }
+
+    private void addKeyValuePair(K key, V value) {
         if (size == keysAndValues.length) {
             keysAndValues = Arrays.copyOf(keysAndValues, size * pairNum);
         }
@@ -36,16 +47,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     @Override
-    public V get(final K key) {
-        // Find the key and return its value
-        for (int i = 0; i < size; i += 2) {
-            if (key == null && keysAndValues[i] == null) {
-                return (V) keysAndValues[i + 1];
-            } else if (key != null && key.equals(keysAndValues[i])) {
-                return (V) keysAndValues[i + 1];
+    public void put(K key, V value) {
+        if (containsKey(key)) {
+            updateValue(key, value);
+        } else {
+            addKeyValuePair(key, value);
+        }
+    }
+
+    @Override
+    public V get(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keysAndValues[i] == null
+                    || key != null && key.equals(keysAndValues[i])) {
+                return getValue(i);
             }
         }
-        // return null if key doesn't exist
         return null;
     }
 
