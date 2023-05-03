@@ -17,17 +17,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && values[i] == null) {
-                keys[i] = key;
-                values[i] = value;
-                size++;
-                return;
+        int index = getKeyIndex(key);
+        if (index >= 0) {
+            values[index] = value;
+        } else {
+            if (size == keys.length) {
+                throw new RuntimeException("Storage is completely full");
             }
-            if (keyEquals(key, keys[i])) {
-                values[i] = value;
-                return;
-            }
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
@@ -53,7 +52,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean keyEquals(Object first, Object second) {
+    private boolean keyEquals(K first, K second) {
         return (first == second) || (first != null && first.equals(second));
     }
 }
