@@ -21,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 values[i] = value;
                 size++;
                 return;
-            } else if (equalsKeys(key, keys[i])) {
+            } else if (areKeysEquals(key, keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if (equalsKeys(key, keys[i])) {
+            if (areKeysEquals(key, keys[i])) {
                 return values[i];
             }
         }
@@ -43,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean equalsKeys(K first, K second) {
+    private boolean areKeysEquals(K first, K second) {
         return first == second || first != null && first.equals(second);
     }
 }
