@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static final int INDEX_OF_NOTHING = -1;
+    private static final int INVALID_INDEX = -1;
     private final Object[] keys;
     private final Object[] values;
     private int size;
@@ -12,7 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = new Object[MAX_SIZE];
         values = new Object[MAX_SIZE];
-        size = 0;
     }
 
     @Override
@@ -27,8 +26,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     @Override
     public V get(K key) {
-        int index = getKeyIndex(key);
-        return (index != INDEX_OF_NOTHING)
+        int index = getEqualKeyIndex(key);
+        return (index != INVALID_INDEX)
                 ? (V) values[index] : null;
     }
 
@@ -37,30 +36,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int getKeyIndex(K key) {
+    private int getEqualKeyIndex(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if ((key == null && keys[i] == null)
-                    || (keys[i] != null && keys[i].equals(key))) {
+            if (keysAreEqual(key, i)) {
                 return i;
             }
         }
-        return INDEX_OF_NOTHING;
+        return INVALID_INDEX;
     }
 
     private void addPair(K key, V value) {
-        for (int i = 0; i < values.length; i++) {
-            if (keys[i] == null && values[i] == null) {
-                values[i] = value;
-                keys[i] = key;
-                size++;
-                return;
-            }
-        }
+        values[size] = value;
+        keys[size] = key;
+        size++;
     }
 
     private void updatePair(K key, V value) {
-        int index = getKeyIndex(key);
+        int index = getEqualKeyIndex(key);
         values[index] = value;
-        keys[index] = key;
+    }
+
+    private boolean keysAreEqual(K key, int i) {
+        return (key == keys[i])
+                || (key != null && key.equals(keys[i]));
     }
 }
