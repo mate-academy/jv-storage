@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_NUMBER = 10;
@@ -17,27 +16,32 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (size == MAX_NUMBER) {
-            throw new RuntimeException("Can't add key: "
-                        + key
-                        + "\nvalue: "
-                        + value
-                        + "Storage is full");
+            throw new IllegalStateException(
+                        String.format("Can't add key: %s, value: %s. Storage is full.",
+                                    key, value));
         }
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                values[i] = value;
-                return;
-            }
+        if (indexOf(key, value)) {
+            return;
         }
         keys[size] = key;
         values[size] = value;
         size++;
     }
 
+    private boolean indexOf(K key, V value) {
+        for (int i = 0; i < size; i++) {
+            if (isEqual(keys[i], key)) {
+                values[i] = value;
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if (isEqual(keys[i], key)) {
                 return values[i];
             }
         }
@@ -47,5 +51,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isEqual(Object a, Object b) {
+        return (a == b) || a != null && a.equals(b);
     }
 }
