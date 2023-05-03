@@ -3,14 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 10;
+    private static final int MAX_NUMBER_OF_ELEMENTS = 10;
     private final K[] keys;
     private final V[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_SIZE];
-        this.values = (V[]) new Object[MAX_SIZE];
+        this.keys = (K[]) new Object[MAX_NUMBER_OF_ELEMENTS];
+        this.values = (V[]) new Object[MAX_NUMBER_OF_ELEMENTS];
     }
 
     @Override
@@ -21,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 values[i] = value;
                 size++;
                 return;
-            } else if (key == keys[i] || key != null && key.equals(keys[i])) {
+            } else if (equalsKeys(key, keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
+            if (equalsKeys(key, keys[i])) {
                 return values[i];
             }
         }
@@ -41,5 +41,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean equalsKeys(K first, K second) {
+        return first == second || first != null && first.equals(second);
     }
 }
