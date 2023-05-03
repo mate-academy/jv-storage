@@ -4,7 +4,6 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_LENGTH = 10;
-    private static final int START_INDEX = 0;
     private static final int NO_MATCH_INDEX = -1;
     private final K[] keys;
     private final V[] values;
@@ -17,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = getIndexForPutting(key);
+        int index = findIndex(key);
         if (index == NO_MATCH_INDEX) {
             keys[size] = key;
             values[size] = value;
@@ -29,8 +28,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return getIndexForPutting(key) == NO_MATCH_INDEX ? null
-                : values[getIndexForPutting(key)];
+        int index = findIndex(key);
+        return index == NO_MATCH_INDEX ? null
+                : values[index];
     }
 
     @Override
@@ -38,8 +38,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int getIndexForPutting(K key) {
-        for (int i = START_INDEX; i < size; i++) {
+    private int findIndex(K key) {
+        for (int i = 0; i < size; i++) {
             if (areKeysMatch(key, keys[i])) {
                 return i;
             }
@@ -48,7 +48,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean areKeysMatch(K keyOne, K keyTwo) {
-        return ((keyOne == keyTwo) || keyOne != null && keyOne.equals(keyTwo));
+        return keyOne == keyTwo || keyOne != null && keyOne.equals(keyTwo);
     }
 }
 
