@@ -18,9 +18,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (get(key) != null) {
-            reWrite(key, value);
+            updatePair(key, value);
         } else {
-            newWrite(key, value);
+            addPair(key, value);
         }
     }
 
@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public int getKeyIndex(K key) {
+    private int getKeyIndex(K key) {
         for (int i = 0; i < keys.length; i++) {
             if ((key == null && keys[i] == null)
                     || (keys[i] != null && keys[i].equals(key))) {
@@ -47,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return INDEX_OF_NOTHING;
     }
 
-    public void newWrite(K key, V value) {
+    private void addPair(K key, V value) {
         for (int i = 0; i < values.length; i++) {
             if (keys[i] == null && values[i] == null) {
                 values[i] = value;
@@ -58,7 +58,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    public void reWrite(K key, V value) {
+    private void updatePair(K key, V value) {
         int index = getKeyIndex(key);
         values[index] = value;
         keys[index] = key;
