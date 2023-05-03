@@ -15,11 +15,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (indexOf(key) >= 0) {
-            // Key already exists, replace the value
-            values[indexOf(key)] = value;
+        int index = indexOf(key);
+        if (index >= 0) {
+            values[index] = value;
         } else {
-            // Key doesn't exist, add it
             if (size >= MAX_SIZE) {
                 throw new RuntimeException("Storage is full");
             }
