@@ -2,8 +2,10 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+@SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    private static final int INDEX_NOT_FOUND = -1;
     private K[] keys;
     private V[] values;
     private int size;
@@ -31,12 +33,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keyEquals(key, keys[i])) {
-                return values[i];
-            }
+        if (getKeyIndex(key) >= 0) {
+            return values[getKeyIndex(key)];
         }
         return null;
+    }
+
+    private int getKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keyEquals(key, keys[i])) {
+                return i;
+            }
+        }
+        return INDEX_NOT_FOUND;
     }
 
     @Override
