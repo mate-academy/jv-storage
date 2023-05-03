@@ -53,7 +53,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean isEqual(Object a, Object b) {
-        return (a == b) || a != null && a.equals(b);
+    private boolean isEqual(K a, K b) {
+        return a == b || a != null && a.equals(b);
     }
 }
