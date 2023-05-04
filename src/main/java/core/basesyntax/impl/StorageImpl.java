@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keysAndValues;
@@ -39,9 +38,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void addKeyValuePair(K key, V value) {
-        if (size == keysAndValues.length) {
-            keysAndValues = Arrays.copyOf(keysAndValues, size * pairNum);
-        }
         keysAndValues[size++] = key;
         keysAndValues[size++] = value;
     }
