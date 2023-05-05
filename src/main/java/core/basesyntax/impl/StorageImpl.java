@@ -3,20 +3,23 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_SIZE = 10;
+    private static final int PAIR_NUM = 2;
     private Object[] keysAndValues;
-    private final int maxSize;
-    private final int pairNum = 2;
     private int size;
 
     public StorageImpl() {
-        keysAndValues = new Object[20];
-        maxSize = 10;
+        keysAndValues = new Object[MAX_SIZE * PAIR_NUM];
+    }
+
+    private boolean keysAreEqual(K key, Object storedKey) {
+        return key == null && storedKey == null
+                || key != null && key.equals(storedKey);
     }
 
     private boolean containsKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null && keysAndValues[i] == null
-                    || key != null && key.equals(keysAndValues[i])) {
+            if (keysAreEqual(key, keysAndValues[i])) {
                 return true;
             }
         }
@@ -25,8 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void updateValue(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key == null && keysAndValues[i] == null
-                    || key != null && key.equals(keysAndValues[i])) {
+            if (keysAreEqual(key, keysAndValues[i])) {
                 keysAndValues[i + 1] = value;
                 return;
             }
@@ -54,8 +56,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null && keysAndValues[i] == null
-                    || key != null && key.equals(keysAndValues[i])) {
+            if (keysAreEqual(key, keysAndValues[i])) {
                 return getValue(i);
             }
         }
@@ -64,7 +65,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        // return number of elements divided by two
-        return size / pairNum;
+        return size / PAIR_NUM;
     }
 }
