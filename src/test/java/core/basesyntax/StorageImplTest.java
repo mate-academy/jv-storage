@@ -1,5 +1,6 @@
 package core.basesyntax;
 
+import core.basesyntax.exception.StorageMaxSizeReachedException;
 import core.basesyntax.impl.StorageImpl;
 import org.junit.Assert;
 import org.junit.Test;
@@ -148,5 +149,14 @@ public class StorageImplTest {
         Assert.assertEquals("With two elements added with the same \"null\" key, "
                         + "the storage size should be 1",
                 3, storage.size());
+    }
+
+    @Test(expected = StorageMaxSizeReachedException.class)
+    public void addElevenElements() {
+        Storage<Integer, String> storage = new StorageImpl<>();
+
+        for (int i = 1; i <= 11; i++) {
+            storage.put(i, "Element " + i);
+        }
     }
 }
