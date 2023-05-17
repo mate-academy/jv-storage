@@ -153,10 +153,13 @@ public class StorageImplTest {
 
     @Test(expected = StorageMaxSizeReachedException.class)
     public void addElevenElements() {
+        int elementsToPut = 11;
         Storage<Integer, String> storage = new StorageImpl<>();
 
-        for (int i = 1; i <= 11; i++) {
+        for (int i = 1; i <= elementsToPut; i++) {
             storage.put(i, "Element " + i);
         }
+        Assert.fail("Max size of " + Storage.class.getSimpleName()
+                    + " should be 10 elements, but managed to put " + elementsToPut + " elements");
     }
 }
