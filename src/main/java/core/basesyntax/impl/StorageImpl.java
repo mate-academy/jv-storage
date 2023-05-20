@@ -22,8 +22,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private int getPosition (K key) {
-        if (elementsInArray == empty) {return empty;}
+    private int getPosition(K key) {
+        if (elementsInArray == empty) {
+            return empty;
+        }
         for (int i = 0; i < elementsInArray; i++) {
             if (isKeyEquals((K) store[i].getKey(), key)) {
                 return i;
