@@ -1,7 +1,5 @@
 package core.basesyntax.impl;
 
-import java.util.List;
-
 public class Pair<K, V> {
     private K key;
     private V value;
