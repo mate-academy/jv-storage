@@ -20,15 +20,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private int getPosition(K key) {
-        for (int i = 0; i < size; i++) {
-            if (areKeyEquals(store[i].getKey(), key)) {
-                return i;
-            }
-        }
-        return size;
-    }
-
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
@@ -39,12 +30,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
+    @Override
+    public int size() {
+        return size;
+    }
+
     private boolean areKeyEquals(K key1, K key2) {
         return key1 == key2 || key1 != null && key1.equals(key2);
     }
 
-    @Override
-    public int size() {
+    private int getPosition(K key) {
+        for (int i = 0; i < size; i++) {
+            if (areKeyEquals(store[i].getKey(), key)) {
+                return i;
+            }
+        }
         return size;
     }
 }

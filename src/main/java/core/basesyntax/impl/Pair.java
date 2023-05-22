@@ -21,7 +21,4 @@ public class Pair<K, V> {
         return value;
     }
 
-    public void setValue(V value) {
-        this.value = value;
-    }
 }
