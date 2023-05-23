@@ -6,7 +6,7 @@ You should be able to put new key-value pair and to get value by key.
 If you are given the key-value pair, and the storage already contains this key, you should replace the value.
 
 We assume that the maximum number of elements in our `Storage` is 10. 
-For that you have to use `StorageMaxSizeReachedException` that you need to extend from proper exception class.
+For that you have to create `StorageMaxSizeReachedException` in `basesyntax.exception` package.
 
 Example:
 ```java
