@@ -11,18 +11,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = new Object[DEFAULT_SIZE];
         values = new Object[DEFAULT_SIZE];
-        size = 0;
+
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            putForNullKey(value);
-            return;
-        }
 
         for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -32,26 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             int newSize = size * 2;
             resizeArrays(newSize);
         }
-
         keys[size] = key;
-        values[size] = value;
-        size++;
-    }
-
-    private void putForNullKey(V value) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
-                values[i] = value;
-                return;
-            }
-        }
-
-        if (size == keys.length) {
-            int newSize = size * 2;
-            resizeArrays(newSize);
-        }
-
-        keys[size] = null;
         values[size] = value;
         size++;
     }
@@ -67,21 +44,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            return getForNullKey();
-        }
-
         for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
-                return (V) values[i];
-            }
-        }
-        return null;
-    }
-
-    private V getForNullKey() {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return (V) values[i];
             }
         }
