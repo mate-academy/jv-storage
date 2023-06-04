@@ -10,35 +10,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] valuesArray;
 
     public StorageImpl() {
-        size = 0;
         keysArray = (K[]) new Object[MAX_ARRAY_LENGTH];
         valuesArray = (V[]) new Object[MAX_ARRAY_LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
-        if (key != null) {
-            for (int i = 0; i < size; i++) {
-                if (keysArray[i] != null && keysArray[i].equals(key)) {
-                    valuesArray[i] = value;
-                    return;
-                }
-            }
-            keysArray[size] = key;
-            valuesArray[size] = value;
-            size++;
-            return;
-        }
-
-        for (int i = 0; i < MAX_ARRAY_LENGTH; i++) {
-            if (keysArray[i] == null) {
-                if (valuesArray[i] == null) {
-                    size++;
-                }
+        for (int i = 0; i < size; i++) {
+            if (key == keysArray[i] || keysArray[i] != null && keysArray[i].equals(key)) {
                 valuesArray[i] = value;
                 return;
             }
         }
+        keysArray[size] = key;
+        valuesArray[size] = value;
+        size++;
+        return;
     }
 
     @Override
