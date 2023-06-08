@@ -17,24 +17,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = findKeyIndex(key);
         if (index != -1) {
             values[index] = value;
-        } else {
-            if (size < MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            } else {
-                throw new IllegalStateException("Storage is full");
-            }
+            return;
         }
+        if (size >= MAX_SIZE) {
+            throw new IllegalStateException("Storage is full");
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     public V get(K key) {
         int index = findKeyIndex(key);
         if (index >= 0) {
             return (V) values[index];
-        } else {
-            return null;
         }
+        return null;
     }
 
     public int size() {
