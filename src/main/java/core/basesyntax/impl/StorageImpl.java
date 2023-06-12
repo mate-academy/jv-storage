@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_CAPACITY = 10;
@@ -12,24 +13,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[MAX_CAPACITY];
         values = (V[]) new Object[MAX_CAPACITY];
-        currentSizeOfStorage = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < currentSizeOfStorage; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-        } else {
-            for (int i = 0; i < currentSizeOfStorage; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i < currentSizeOfStorage; i++) {
+            if (Objects.equals(key, keys[i])) {
+                values[i] = value;
+                return;
             }
         }
 
@@ -47,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (key == null) {
             for (int i = 0; i < currentSizeOfStorage; i++) {
                 if (keys[i] == null) {
-                    return  values[i];
+                    return values[i];
                 }
             }
         } else {
