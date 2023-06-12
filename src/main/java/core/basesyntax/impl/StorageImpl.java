@@ -35,17 +35,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < currentSizeOfStorage; i++) {
-                if (keys[i] == null) {
-                    return values[i];
-                }
-            }
-        } else {
-            for (int i = 0; i < currentSizeOfStorage; i++) {
-                if (key.equals(keys[i])) {
-                    return values[i];
-                }
+        for (int i = 0; i < currentSizeOfStorage; i++) {
+            if (Objects.equals(key, keys[i])) {
+                return values[i];
             }
         }
         return null;
@@ -54,18 +46,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return currentSizeOfStorage;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Storage content: ");
-        for (int i = 0; i < currentSizeOfStorage; i++) {
-            stringBuilder.append("[").append(keys[i]).append(", ").append(values[i]).append("]");
-            if (i < currentSizeOfStorage - 1) {
-                stringBuilder.append(", ");
-            }
-        }
-        return stringBuilder.toString();
     }
 }
