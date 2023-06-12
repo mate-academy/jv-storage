@@ -8,8 +8,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INDEX_NOT_FOUND = -1;
     private int size = 0;
 
-    private final Object[] keysArray = new Object[MAX_ARRAY_SIZE];
-    private final Object[] valuesArray = new Object[MAX_ARRAY_SIZE];
+    private final Object[] keysArray;
+    private final Object[] valuesArray;
+
+    public StorageImpl() {
+        keysArray = new Object[MAX_ARRAY_SIZE];
+        valuesArray = new Object[MAX_ARRAY_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
