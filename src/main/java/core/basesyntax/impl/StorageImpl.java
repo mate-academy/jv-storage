@@ -4,24 +4,19 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
-    private Object[] keys = new Object[STORAGE_SIZE];
-    private Object[] values = new Object[STORAGE_SIZE];
+    private K[] keys;
+    private V[] values;
     private int size;
-    private int index;
 
     public StorageImpl() {
-
-    }
-
-    public StorageImpl(Object[] keys, Object[] values, int size) {
-        this.keys = keys;
-        this.values = values;
-        this.size = size;
+        this.keys = (K[]) new Object[STORAGE_SIZE];
+        this.values = (V[]) new Object[STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (hasAKey(key)) {
+        int index = getKeyIndex(key);
+        if (index != -1) {
             values[index] = value;
             return;
         }
@@ -32,7 +27,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (hasAKey(key)) {
+        int index = getKeyIndex(key);
+        if (index != -1) {
             return (V) values[index];
         }
         return null;
@@ -43,13 +39,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean hasAKey(K key) {
+    private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            index = i;
             if ((key == keys[i]) || key != null && key.equals(keys[i])) {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }
