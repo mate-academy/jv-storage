@@ -3,14 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER  = 10;
+    private static final int MAX_ITEMS_NUMBER = 10;
     private final Object[] keys;
     private final Object[] values;
     private int size;
 
     public StorageImpl() {
-        keys = new Object[MAX_ITEMS_NUMBER ];
-        values = new Object[MAX_ITEMS_NUMBER ];
+        keys = new Object[MAX_ITEMS_NUMBER];
+        values = new Object[MAX_ITEMS_NUMBER];
         size = 0;
     }
 
@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != -1) {
             values[index] = value;
         } else {
-            if (size >= MAX_ITEMS_NUMBER ) {
+            if (size >= MAX_ITEMS_NUMBER) {
                 throw new IllegalStateException("Storage is full");
             }
             keys[size] = key;
@@ -27,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             size++;
         }
     }
-@SuppressWarnings("unchecked")
+
     public V get(K key) {
         int index = findIndex(key);
         if (index != -1) {
