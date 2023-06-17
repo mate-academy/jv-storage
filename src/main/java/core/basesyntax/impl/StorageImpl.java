@@ -4,39 +4,37 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private final Object[] keyArr = new Object[MAX_STORAGE_SIZE];
-    private final Object[] valuesArr = new Object[MAX_STORAGE_SIZE];
+    private final Object[] keyArr;
+    private final Object[] valuesArr;
     private int currentSize = 0;
+
+    public StorageImpl() {
+        keyArr = new Object[MAX_STORAGE_SIZE];
+        valuesArr = new Object[MAX_STORAGE_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            putIfKeyIsNull(null, value);
-            return;
+        for (int i = 0; i < currentSize; i++) {
+            if (keyArr[i] == key || key != null && key.equals(keyArr[i])) {
+                valuesArr[i] = value;
+                return;
+            }
         }
         if (currentSize < MAX_STORAGE_SIZE) {
-            putIfKeyIsNonNull(key, value);
-        } else {
-            System.out.println("You can't put new key-value pair "
-                    + "because storage size is overfilled");
+            keyArr[currentSize] = key;
+            valuesArr[currentSize] = value;
+            currentSize++;
         }
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            int index = getIndexOfMatchedPairByKey(null);
-            if (index < 0) {
-                return null;
-            }
-            return (V) valuesArr[index];
+        int index = getIndexOfMatchedPairByKey(key);
+        if (index < 0) {
+            return null;
         }
-        for (int i = 0; i < keyArr.length; i++) {
-            if (keyArr[i] != null && keyArr[i].equals(key)) {
-                return (V) valuesArr[i];
-            }
-        }
-        return null;
+        return (V) valuesArr[index];
     }
 
     @Override
@@ -45,41 +43,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndexOfMatchedPairByKey(K key) {
-        if (key == null) {
-            for (int i = 0; i < currentSize; i++) {
-                if (keyArr[i] == null) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-        for (int i = 0; i < keyArr.length; i++) {
-            if (keyArr[i].equals(key)) {
+        for (int i = 0; i < currentSize; i++) {
+            if (keyArr[i] == key || key != null && key.equals(keyArr[i])) {
                 return i;
             }
         }
         return -1;
-    }
-
-    private void putIfKeyIsNull(K key, V value) {
-        int index = getIndexOfMatchedPairByKey(null);
-        if (index < 0 && currentSize < MAX_STORAGE_SIZE) {
-            keyArr[currentSize] = null;
-            valuesArr[currentSize] = value;
-            currentSize++;
-        } else if (index > -1) {
-            valuesArr[index] = value;
-        }
-    }
-
-    private void putIfKeyIsNonNull(K key, V value) {
-        if (get(key) != null) {
-            int index = getIndexOfMatchedPairByKey(key);
-            valuesArr[index] = value;
-            return;
-        }
-        keyArr[currentSize] = key;
-        valuesArr[currentSize] = value;
-        currentSize++;
     }
 }
