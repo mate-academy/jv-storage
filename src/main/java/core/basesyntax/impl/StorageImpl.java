@@ -13,23 +13,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
         values = (V[]) new Object[MAX_SIZE];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            int nullKeyIndex = findNullKeyIndex();
-            if (nullKeyIndex != ELEMENT_NOT_FOUND) {
-                values[nullKeyIndex] = value;
-                return;
-            }
-        } else {
-            int existingKeyIndex = findKeyIndex(key);
-            if (existingKeyIndex != ELEMENT_NOT_FOUND) {
-                values[existingKeyIndex] = value;
-                return;
-            }
+        int keyIndex = findKeyIndex(key);
+        if (keyIndex != ELEMENT_NOT_FOUND) {
+            values[keyIndex] = value;
+            return;
         }
         if (size < MAX_SIZE) {
             keys[size] = key;
@@ -40,16 +31,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            int nullKeyIndex = findNullKeyIndex();
-            if (nullKeyIndex != ELEMENT_NOT_FOUND) {
-                return values[nullKeyIndex];
-            }
-        } else {
-            int existingKeyIndex = findKeyIndex(key);
-            if (existingKeyIndex != ELEMENT_NOT_FOUND) {
-                return values[existingKeyIndex];
-            }
+        int keyIndex = findKeyIndex(key);
+        if (keyIndex != ELEMENT_NOT_FOUND) {
+            return values[keyIndex];
         }
         return null;
     }
@@ -61,16 +45,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] != null && keys[i].equals(key)) {
-                return i;
-            }
-        }
-        return ELEMENT_NOT_FOUND;
-    }
-
-    private int findNullKeyIndex() {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
+            if (key == null && keys[i] == null || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
