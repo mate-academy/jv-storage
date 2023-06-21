@@ -1,53 +1,51 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE_ARRAY = 10;
-    private final K [] keys = (K[]) new Object[MAX_SIZE_ARRAY];
-    private final V [] values = (V[]) new Object[MAX_SIZE_ARRAY];
-    private int storageIndex = -1;
+    private final K [] keys;
+    private final V [] values;
+    private int size = 0;
 
     public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE_ARRAY];
+        values = (V[]) new Object[MAX_SIZE_ARRAY];
     }
 
-    private int getFoundIndex(K[] keyArray, K key, int lengthKeyArray) {
-        for (int i = 0; i < lengthKeyArray; i++) {
-            if (Objects.equals(key,keyArray[i])) {
+    private int getIndexForKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
-        return MAX_SIZE_ARRAY;
+        return -1;
     }
 
     @Override
      public void put(K key, V value) {
-        int lengthKeyArray = size();
-        int foundIndex = getFoundIndex(keys,key,lengthKeyArray);
-        if (foundIndex == MAX_SIZE_ARRAY) {
-            storageIndex = size();
-            keys [storageIndex] = key;
-            values [storageIndex] = value;
+        int index = getIndexForKey(key);
+        if (index == -1) {
+            keys [size] = key;
+            values [size] = value;
+            size++;
         } else {
-            values[foundIndex] = value;
-            keys[foundIndex] = key;
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        int lengthKeyArray = storageIndex + 1;
-        int foundIndex = getFoundIndex(keys, key,lengthKeyArray);
-        if (foundIndex == MAX_SIZE_ARRAY) {
+        int index = getIndexForKey(key);
+        if (index == -1) {
             return null;
         }
-        return values[foundIndex];
+        return values[index];
     }
 
     @Override
     public int size() {
-        return storageIndex + 1;
+        return size;
     }
 }
 
