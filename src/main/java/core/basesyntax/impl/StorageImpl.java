@@ -13,6 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = (V[]) new Object[MAX_STORAGE_SIZE];
         lastStorageIndex = 0;
     }
+
     @Override
     public void put(K key, V value) {
         int indexExistsKey = 0;
