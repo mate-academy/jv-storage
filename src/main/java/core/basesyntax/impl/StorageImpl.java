@@ -66,13 +66,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int hashCode() {
-        int result = 13;
-        result = 11 * result + (key == null ? 0 : key.hashCode());
-        result = 11 * result + (value == null ? 0 : value.hashCode());
         if (next != this) {
-            result = 11 * result + (next == null ? 0 : next.hashCode());
+            return Objects.hash(key, value, next);
         }
-        return result;
+
+        return Objects.hash(key, value);
     }
 
     @Override
@@ -88,9 +86,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (object.getClass().equals(StorageImpl.class)) {
             StorageImpl storage = (StorageImpl) object;
 
+            if (next != this) {
+                return Objects.equals(key, storage.key)
+                        && Objects.equals(value, storage.value)
+                        && Objects.equals(next, storage.next);
+            }
+
             return Objects.equals(key, storage.key)
-                    && Objects.equals(value, storage.value)
-                    && Objects.equals(next, storage.next);
+                    && Objects.equals(value, storage.value);
         }
 
         return false;
