@@ -63,4 +63,36 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return 1 + this.next.size();
         }
     }
+
+    @Override
+    public int hashCode() {
+        int result = 13;
+        result = 11 * result + (key == null ? 0 : key.hashCode());
+        result = 11 * result + (value == null ? 0 : value.hashCode());
+        if (next != this) {
+            result = 11 * result + (next == null ? 0 : next.hashCode());
+        }
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+
+        if (object == this) {
+            return true;
+        }
+
+        if (object.getClass().equals(StorageImpl.class)) {
+            StorageImpl storage = (StorageImpl) object;
+
+            return Objects.equals(key, storage.key)
+                    && Objects.equals(value, storage.value)
+                    && Objects.equals(next, storage.next);
+        }
+
+        return false;
+    }
 }
