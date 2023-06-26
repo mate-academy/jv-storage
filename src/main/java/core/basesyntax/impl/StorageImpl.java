@@ -41,14 +41,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         if (Objects.equals(this.key, key)) {
-            return this.value;
+            return value;
         }
 
-        if (this.next == null) {
+        if (next == null) {
             return null;
-        } else {
-            return this.next.get(key);
         }
+
+        return next.get(key);
     }
 
     @Override
@@ -57,11 +57,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return 0;
         }
 
-        if (this.next == null) {
+        if (next == null) {
             return 1;
-        } else {
-            return 1 + this.next.size();
         }
+
+        return 1 + next.size();
     }
 
     @Override
