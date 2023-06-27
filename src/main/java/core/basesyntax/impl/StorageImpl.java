@@ -4,9 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
-    private Object[] keyElements = new Object[STORAGE_SIZE]; //
-    private Object[] valueElements = new Object[STORAGE_SIZE];
+    private Object[] keyElements;
+    private Object[] valueElements;
     private int size;
+
+    public StorageImpl() {
+        keyElements = new Object[STORAGE_SIZE];
+        valueElements = new Object[STORAGE_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -28,7 +33,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return (V) valueElements[i];
             }
         }
-
         return null;
     }
 
