@@ -4,6 +4,10 @@ public class Node<K, V> {
     private K key;
     private V value;
 
+    public Node() {
+
+    }
+
     public Node(K key, V value) {
         this.key = key;
         this.value = value;
