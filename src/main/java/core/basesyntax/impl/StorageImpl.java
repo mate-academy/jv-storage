@@ -7,7 +7,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keys = (K[]) new Object[MAX_SIZE_STORAGE];
     private final V[] values = (V[]) new Object[MAX_SIZE_STORAGE];
     private int currentSizeStorage = 0;
-    private boolean repeatCheck = false;
 
     public boolean checkKeyInStorage(K key, V value) {
         for (int i = 0; i < currentSizeStorage; i++) {
