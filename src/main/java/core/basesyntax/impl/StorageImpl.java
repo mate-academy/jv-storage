@@ -3,8 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final K[] keysArray = (K[]) new Object[10];
-    private final V[] valueArray = (V[]) new Object[10];
+    private static final int MAX_ELEMENTS_NUMBER = 10;
+    private final K[] keysArray = (K[]) new Object[MAX_ELEMENTS_NUMBER];
+    private final V[] valueArray = (V[]) new Object[MAX_ELEMENTS_NUMBER];
     private int arrayIndex;
 
     @Override
