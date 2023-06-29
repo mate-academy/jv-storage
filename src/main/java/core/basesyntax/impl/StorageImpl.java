@@ -14,12 +14,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size != 0) {
-            for (int index = 0; index < size; ++index) {
-                if (isEqualKey(key, nodesArray[index].getKey())) {
-                    nodesArray[index].setValue(value);
-                    return;
-                }
+        for (int index = 0; index < size; ++index) {
+            if (isEqualKey(key, nodesArray[index].getKey())) {
+                nodesArray[index].setValue(value);
+                return;
             }
         }
         nodesArray[size] = getNewNode(key, value);
@@ -42,11 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isEqualKey(K key, K nodeKey) {
-        if (key == null || nodeKey == null) {
-            return nodeKey == key;
-        } else {
-            return nodeKey.equals(key);
-        }
+        return nodeKey == key || nodeKey != null && nodeKey.equals(key);
     }
 
     private Node<K, V> getNewNode(K key, V value) {
