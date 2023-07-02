@@ -4,7 +4,6 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private static final int INITIAL_SIZE = 0;
     private K[] keyStorage;
     private V[] valueStorage;
     private int size;
@@ -13,7 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keyStorage = (K[]) new Object[MAX_CAPACITY];
         valueStorage = (V[]) new Object[MAX_CAPACITY];
-        size = INITIAL_SIZE;
     }
 
     @Override
@@ -42,12 +40,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    private boolean areBothKeysNull(K key, K existingKey) {
-        return key == null && existingKey == null;
-    }
-
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean areBothKeysNull(K key, K existingKey) {
+        return key == null && existingKey == null;
     }
 }
