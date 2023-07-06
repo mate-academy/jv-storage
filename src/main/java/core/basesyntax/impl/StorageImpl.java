@@ -15,12 +15,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (isTakenKey(key)) {
-            arrayOfValues[targetKeyIndex(key)] = value;
-        } else if (key == null && value != null) {
-            arrayOfKeys[currentSize] = key;
-            arrayOfValues[currentSize] = value;
-            currentSize++;
+        int index = indexOf(key);
+        if (index != -1) {
+            arrayOfValues[indexOf(key)] = value;
         } else {
             arrayOfKeys[currentSize] = key;
             arrayOfValues[currentSize] = value;
@@ -30,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return (isTakenKey(key)) ? arrayOfValues[targetKeyIndex(key)] : null;
+        return (indexOf(key) != -1) ? arrayOfValues[indexOf(key)] : null;
     }
 
     @Override
@@ -38,26 +35,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return currentSize;
     }
 
-    private boolean isTakenKey(K key) {
+    private int indexOf(K key) {
         for (int i = 0; i < currentSize; i++) {
-            if (key == null && arrayOfKeys[i] == null) {
-                return true;
-            }
-            if (key != null) {
-                if (key.equals(arrayOfKeys[i])) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private int targetKeyIndex(K key) {
-        for (int i = 0; i < currentSize; i++) {
-            if (key == arrayOfKeys[i]) {
-                return i;
-            }
-            if (key != null && key.equals(arrayOfKeys[i])) {
+            if (key == arrayOfKeys[i] || key != null && key.equals(arrayOfKeys[i])) {
                 return i;
             }
         }
