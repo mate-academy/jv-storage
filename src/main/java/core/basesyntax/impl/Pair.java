@@ -2,7 +2,7 @@ package core.basesyntax.impl;
 
 import java.util.Objects;
 
-public class Pair<K, V> {
+class Pair<K, V> {
     private final K key;
     private V value;
 
