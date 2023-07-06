@@ -1,19 +1,47 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    @Override
-    public void put(K key, V value) {
-    }
+    private static final int MAX_SIZE = 10;
+
+    // we should be OK here to have it suppressed
+    // since Pair instances are not shared with outside world
+    @SuppressWarnings("unchecked")
+    private final Pair<K, V>[] pairs = new Pair[MAX_SIZE];
+    private int size = 0;
 
     @Override
-    public V get(K key) {
+    public void put(K key, V value) {
+        Pair<K,V> pair = find(key);
+        if (pair != null) {
+            pair.setValue(value);
+            return;
+        }
+        if (size >= MAX_SIZE) {
+            throw new RuntimeException("This storage can store up to " + MAX_SIZE + " elements");
+        }
+        pairs[size++] = new Pair<>(key, value);
+    }
+
+    private Pair<K, V> find(K key) {
+        for (int i = 0; i < size; i++) {
+            if (pairs[i] != null && Objects.equals(pairs[i].getKey(), key)) {
+                return pairs[i];
+            }
+        }
         return null;
     }
 
     @Override
+    public V get(K key) {
+        Pair<K, V> pair = find(key);
+        return pair != null ? pair.getValue() : null;
+    }
+
+    @Override
     public int size() {
-        return -1;
+        return size;
     }
 }
