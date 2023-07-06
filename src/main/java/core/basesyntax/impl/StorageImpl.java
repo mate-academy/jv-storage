@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
@@ -27,7 +26,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private Pair<K, V> find(K key) {
         for (int i = 0; i < size; i++) {
-            if (pairs[i] != null && Objects.equals(pairs[i].getKey(), key)) {
+            if (pairs[i] != null
+                    && ((pairs[i].getKey() == key)
+                        || (pairs[i].getKey() != null && pairs[i].getKey().equals(key)))) {
                 return pairs[i];
             }
         }

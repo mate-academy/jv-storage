@@ -1,7 +1,5 @@
 package core.basesyntax.impl;
 
-import java.util.Objects;
-
 class Pair<K, V> {
     private final K key;
     private V value;
@@ -40,10 +38,11 @@ class Pair<K, V> {
 
         Pair<?, ?> pair = (Pair<?, ?>) o;
 
-        if (!Objects.equals(key, pair.key)) {
+        if (!((key == pair.key) || (key != null && key.equals(pair.key)))) {
             return false;
         }
-        return Objects.equals(value, pair.value);
+
+        return (value == pair.value) || (value != null && value.equals(pair.value));
     }
 
     @Override
