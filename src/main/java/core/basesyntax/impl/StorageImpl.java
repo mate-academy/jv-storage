@@ -9,7 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     // since Pair instances are not shared with outside world
     @SuppressWarnings("unchecked")
     private final Pair<K, V>[] pairs = new Pair[MAX_SIZE];
-    private int size = 0;
+    private int size;
 
     @Override
     public void put(K key, V value) {
