@@ -13,7 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Pair<K,V> pair = find(key);
+        Pair<K,V> pair = getPairByKey(key);
         if (pair != null) {
             pair.setValue(value);
             return;
@@ -24,25 +24,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         pairs[size++] = new Pair<>(key, value);
     }
 
-    private Pair<K, V> find(K key) {
-        for (int i = 0; i < size; i++) {
-            if (pairs[i] != null
-                    && ((pairs[i].getKey() == key)
-                        || (pairs[i].getKey() != null && pairs[i].getKey().equals(key)))) {
-                return pairs[i];
-            }
-        }
-        return null;
-    }
-
     @Override
     public V get(K key) {
-        Pair<K, V> pair = find(key);
+        Pair<K, V> pair = getPairByKey(key);
         return pair != null ? pair.getValue() : null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private Pair<K, V> getPairByKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (pairs[i] != null
+                    && ((pairs[i].getKey() == key)
+                    || (pairs[i].getKey() != null && pairs[i].getKey().equals(key)))) {
+                return pairs[i];
+            }
+        }
+        return null;
     }
 }
