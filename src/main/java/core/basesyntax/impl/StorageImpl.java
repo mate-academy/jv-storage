@@ -4,9 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private final K[] keyStorage = (K[]) new Object[MAX_STORAGE_SIZE];
-    private final V[] valueStorage = (V[]) new Object[MAX_STORAGE_SIZE];
-    private int counter;
+    protected K[] keyStorage;
+    protected V[] valueStorage;
+    private int size;
+
+    public StorageImpl() {
+        keyStorage = (K[]) new Object[MAX_STORAGE_SIZE];
+        valueStorage = (V[]) new Object[MAX_STORAGE_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -14,9 +19,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != -1) {
             valueStorage[index] = value;
         } else if (size() < MAX_STORAGE_SIZE) {
-            keyStorage[counter] = key;
-            valueStorage[counter] = value;
-            counter++;
+            keyStorage[size] = key;
+            valueStorage[size] = value;
+            size++;
         } else {
             throw new RuntimeException("Storage is full. Can't put value to the storage");
         }
@@ -44,6 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return counter;
+        return size;
     }
 }
