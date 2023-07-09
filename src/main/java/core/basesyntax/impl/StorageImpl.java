@@ -15,16 +15,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = getPair(key);
-        Pair<K, V> newPair = new Pair<>(key, value);
-
         if (pair != null) {
-            replacePair(newPair);
+            pair.value = value;
             return;
         }
         if (size > elements.length - 1) {
             throw new RuntimeException("Storage capacity reached. Unable to add any more elements");
         }
-        elements[size++] = newPair;
+        elements[size++] = new Pair<>(key, value);
     }
 
     @Override
@@ -40,7 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static class Pair<K, V> {
         private final K key;
-        private final V value;
+        private V value;
 
         public Pair(K key, V value) {
             this.key = key;
@@ -57,15 +55,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         return null;
     }
-
-    private void replacePair(Pair<K, V> pair) {
-        for (int i = 0; i < size; i++) {
-            Pair<K, V> element = elements[i];
-            if (pair.key == element.key || pair.key != null && pair.key.equals(element.key)) {
-                elements[i] = pair;
-                return;
-            }
-        }
-    }
-
 }
