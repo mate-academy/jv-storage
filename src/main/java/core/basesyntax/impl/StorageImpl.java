@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean thereIsFreeSpace(){
+    private boolean thereIsFreeSpace() {
         if (size >= keys.length) {
             throw new RuntimeException("Array if filled");
         }
