@@ -20,20 +20,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[index] = value;
             return;
         }
-
-        keys[size] = key;
-        values[size] = value;
-        size++;
+            keys[size] = key;
+            values[size] = value;
+            size++;
     }
 
     @Override
     public V get(K key) {
         int index = findKey(key);
-
         if (index != -1) {
             return values[index];
         }
-
         return null;
     }
 
@@ -54,8 +51,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private boolean isFull() {
         if (size >= MAX_SIZE) {
             throw new IllegalStateException("Storage is full");
-        } else {
-            return false;
         }
+        return false;
     }
 }
