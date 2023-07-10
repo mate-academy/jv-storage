@@ -13,14 +13,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int keyIndex = indexOfKey(key);
-        if (keyIndex == -1) {
-            thereIsFreeSpace();
+        if (keyIndex == -1 && thereIsFreeSpace()) {
             keys[size] = key;
             values[size] = value;
             size++;
-        } else {
-            values[keyIndex] = value;
+            return;
         }
+        values[keyIndex] = value;
     }
 
     @Override
@@ -38,10 +37,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private void thereIsFreeSpace(){
+    private boolean thereIsFreeSpace(){
         if (size >= keys.length) {
             throw new RuntimeException("Array if filled");
         }
+        return true;
     }
 
     private int indexOfKey(K key) {
