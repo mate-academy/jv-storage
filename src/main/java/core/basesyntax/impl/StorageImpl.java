@@ -4,16 +4,18 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int BASE_CAPACITY = 0;
     private KeyValue<K, V>[] keyValueArray;
 
     public StorageImpl() {
-        keyValueArray = new KeyValue[0];
+        keyValueArray = new KeyValue[BASE_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keyValueArray.length; i++) {
-            if (Objects.equals(keyValueArray[i].getKey(), key)) {
+            if (keyValueArray[i].getKey() == key || keyValueArray[i].getKey() != null
+                    && keyValueArray[i].getKey().equals(key)) {
                 keyValueArray[i] = new KeyValue<>(key, value);
                 return;
             }
@@ -29,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (KeyValue<K, V> keyValue : keyValueArray) {
-            if (Objects.deepEquals(keyValue.getKey(), key)) {
+            if (keyValue.getKey() == key || keyValue.getKey() != null && keyValue.getKey().equals(key)) {
                 return keyValue.getValue();
             }
         }
