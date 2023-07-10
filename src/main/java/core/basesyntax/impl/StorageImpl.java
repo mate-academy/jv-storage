@@ -4,25 +4,24 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final Object [] keys;
-    private final Object [] values;
+    private final K [] keys;
+    private final V [] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = new Object[MAX_SIZE];
-        this.values = new Object[MAX_SIZE];
-        this.size = 0;
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
-    private void putNullKey(V value) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
-                values[i] = value;
-                return;
-            }
+    @Override
+    public void put(K key, V value) {
+        int index = getIndex(key);
+        if (index != -1) {
+            values[index] = value;
+            return;
         }
         if (size < MAX_SIZE) {
-            keys[size] = null;
+            keys[size] = key;
             values[size] = value;
             size++;
         } else {
@@ -30,44 +29,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private V getNullKey() {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
-                return (V) values[i];
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void put(K key, V value) {
-        if (key == null) {
-            putNullKey(value);
-            return;
-        }
-        int index = getIndex(key);
-        if (index != -1) {
-            values[index] = value;
-        } else {
-            if (size < MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            } else {
-                throw new RuntimeException("Storage is full");
-            }
-        }
-    }
-
     @Override
     public V get(K key) {
-        if (key == null) {
-            return getNullKey();
-        }
-
         int index = getIndex(key);
         if (index != -1) {
-            return (V) values[index];
+            return values[index];
         }
         return null;
     }
@@ -79,7 +45,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (key != null && key.equals(keys[i])) {
+            if (key != null && key.equals(keys[i]) || key == keys [i]) {
                 return i;
             }
         }
