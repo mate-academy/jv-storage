@@ -31,6 +31,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         }
+        if (storageSize >= BOUNDED_ARRAY_SIZE) {
+            throw new RuntimeException("You have exceeded the limit");
+        }
         keysStorage[storageSize] = key;
         valuesStorage[storageSize] = value;
         storageSize++;
