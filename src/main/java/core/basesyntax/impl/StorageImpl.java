@@ -16,18 +16,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = findKey(key);
-
-        if (index != -1) {
+        if (index != -1 || isFull()) {
             values[index] = value;
-        } else {
-            if (size >= MAX_SIZE) {
-                throw new IllegalStateException("Storage is full");
-            }
-
-            keys[size] = key;
-            values[size] = value;
-            size++;
+            return;
         }
+
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
@@ -36,9 +32,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         if (index != -1) {
             return values[index];
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     @Override
@@ -48,10 +44,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKey(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == keys[i]) || (key != null && key.equals(keys[i]))) {
+            if (keys[i] == key || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
         return -1;
+    }
+
+    private boolean isFull() {
+        if (size >= MAX_SIZE) {
+            throw new IllegalStateException("Storage is full");
+        } else {
+            return false;
+        }
     }
 }
