@@ -20,9 +20,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[index] = value;
             return;
         }
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
