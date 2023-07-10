@@ -1,20 +1,24 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final ArrayList<K> keys = new ArrayList<>();
-    private final ArrayList<V> values = new ArrayList<>();
+    private static final int MAX_LENGTH = 10;
+
+    private final K[] keys = (K[]) new Object[MAX_LENGTH];
+    private final V[] values = (V[]) new Object[MAX_LENGTH];
+
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
         int keyIndex = indexOfKey(key);
         if (keyIndex == -1) {
-            keys.add(key);
-            values.add(value);
+            keys[size] = key;
+            values[size] = value;
+            size++;
         } else {
-            values.set(keyIndex, value);
+            values[keyIndex] = value;
         }
     }
 
@@ -24,17 +28,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (keyIndex == -1) {
             return null;
         }
-        return values.get(indexOfKey(key));
+        return values[keyIndex];
+
     }
 
     @Override
     public int size() {
-        return keys.size();
+        return size;
     }
 
     private int indexOfKey(K key) {
-        for (int i = 0; i < keys.size(); i++) {
-            if (key == keys.get(i) || key != null && key.equals(keys.get(i))) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
