@@ -27,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
+        for (int i = 0; i < positionOfLastPutting; i++) {
             int position = indexOfKey(key);
             if (position != -1) {
                 return valueStorage[position];
@@ -42,13 +42,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int indexOfKey(K key) {
-        for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
-            if (key != null && key.equals(keyStorage[i])) {
-                return i;
-            } else if (key == keyStorage[i] && valueStorage[i] == null) {
-                positionOfLastPutting++;
-                return i;
-            } else if (key == keyStorage[i] && valueStorage[i] != null) {
+        for (int i = 0; i < positionOfLastPutting; i++) {
+            if (key == keyStorage[i] || (key != null && key.equals(keyStorage[i]))) {
                 return i;
             }
         }
