@@ -34,7 +34,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getValueIndexByKey(K key) {
         for (int i = 1; i <= filledCells; i++) {
-            boolean result = key == null ? storage[i][KEY_INDEX] == null : key.equals(storage[i][KEY_INDEX]);
+            boolean result = key == null ? storage[i][KEY_INDEX] == null
+                    : key.equals(storage[i][KEY_INDEX]);
             if (result) {
                 return i;
             }
