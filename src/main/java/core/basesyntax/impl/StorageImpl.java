@@ -2,7 +2,6 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import java.lang.reflect.Array;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_VALUE = 10;
@@ -18,17 +17,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (storedItems[i] == null) {
                 storedItems[i] = new StoredItem(key, value);
                 return;
-            } else if (Objects.equals(storedItems[i].key, key)) {
+            } else if (storedItems[i].key != null && storedItems[i].key.equals(key)
+                    || storedItems[i].key == key) {
                 storedItems[i].value = value;
                 return;
             }
         }
+        throw new IndexOutOfBoundsException("storedItems is already full");
     }
 
     @Override
     public V get(K key) {
         for (StoredItem storedObject : storedItems) {
-            if (storedObject != null && Objects.equals(storedObject.key, key)) {
+            if (storedObject != null && (storedObject.key != null && storedObject.key.equals(key)
+                    || storedObject.key == key)) {
                 return storedObject.value;
             }
         }
