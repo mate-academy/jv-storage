@@ -1,12 +1,29 @@
 package core.basesyntax.impl;
 
-import core.basesyntax.Pair;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_MAX_SIZE = 10;
     private Pair<K, V>[] storage;
     private int indexOfNextPair = 0;
+
+    public class Pair<K, V> {
+        private K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+    }
 
     public StorageImpl() {
         storage = new Pair[ARRAY_MAX_SIZE];
@@ -15,28 +32,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = new Pair<>(key, value);
-        int indexOfPair = getIndexOfPair(pair);
+        int indexOfPair = getIndexOfPair(key);
         if (indexOfPair != -1) {
             storage[indexOfPair] = pair;
         } else {
-            storage[indexOfNextPair] = new Pair<>(key, value);
+            storage[indexOfNextPair] = pair;
             indexOfNextPair++;
         }
     }
 
     @Override
     public V get(K key) {
-        if (indexOfNextPair == 0) {
-            return null;
-        }
-        for (int i = 0; i < size(); i++) {
-            if (storage[i].getKey() == null && key == null) {
-                return storage[i].getValue();
-            } else if (storage[i].getKey() != null && storage[i].getKey().equals(key)) {
-                return storage[i].getValue();
-            }
-        }
-        return null;
+        return getIndexOfPair(key) != -1 ? storage[getIndexOfPair(key)].getValue() : null;
     }
 
     @Override
@@ -44,10 +51,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return indexOfNextPair;
     }
 
-    private int getIndexOfPair(Pair<K,V> pair) {
+    private int getIndexOfPair(K key) {
         for (int i = 0; i < size(); i++) {
-            if ((pair.getKey() == null && storage[i].getKey() == null)
-                    || storage[i].getKey() != null && storage[i].getKey().equals(pair.getKey())) {
+            if ((storage[i].getKey() == null && key == null)
+                    || (storage[i].getKey() != null && storage[i].getKey().equals(key))) {
                 return i;
             }
         }
