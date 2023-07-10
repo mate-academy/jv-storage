@@ -13,10 +13,6 @@ public class KeyValuePair<K, V> {
         return (this.key == null) ? key == null : this.key.equals(key);
     }
 
-    public K getKey() {
-        return key;
-    }
-
     public void setValue(V value) {
         this.value = value;
     }
