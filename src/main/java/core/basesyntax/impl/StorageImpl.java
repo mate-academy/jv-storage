@@ -17,6 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             storage[index][VALUE_INDEX] = value;
         } else {
             size++;
+            checkIfSizeOverMaxStorageSize(size);
             storage[size][KEY_INDEX] = key;
             storage[size][VALUE_INDEX] = value;
         }
@@ -32,6 +33,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
+    @Override
+    public int size() {
+        return size;
+    }
+
     private int getIndexByKey(K key) {
         for (int i = 1; i <= size; i++) {
             boolean result = key == null ? storage[i][KEY_INDEX] == null
@@ -43,8 +49,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    @Override
-    public int size() {
-        return size;
+    private void checkIfSizeOverMaxStorageSize(int size) {
+        if (size > MAX_STORAGE_UNITS) {
+            throw new RuntimeException("Can't put new [key:value] to storage."
+                    + "\nMax storage units: " + MAX_STORAGE_UNITS
+                    + "\nActual units: " + size);
+        }
     }
 }
