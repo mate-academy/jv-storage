@@ -8,12 +8,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keys = (K[]) new Object[MAX_LENGTH];
     private final V[] values = (V[]) new Object[MAX_LENGTH];
 
-    private int size = 0;
+    private int size;
 
     @Override
     public void put(K key, V value) {
         int keyIndex = indexOfKey(key);
-        if (keyIndex == -1 && thereIsFreeSpace()) {
+        if (keyIndex == -1 && !isArrayFilled()) {
             keys[size] = key;
             values[size] = value;
             size++;
@@ -37,11 +37,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean thereIsFreeSpace() {
+    private boolean isArrayFilled() {
         if (size >= keys.length) {
             throw new RuntimeException("Array if filled");
         }
-        return true;
+        return false;
     }
 
     private int indexOfKey(K key) {
