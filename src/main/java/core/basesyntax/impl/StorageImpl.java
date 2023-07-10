@@ -8,23 +8,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int KEY_INDEX = 0;
     private static final int VALUE_INDEX = 1;
     private final Object[][] storage = new Object[MAX_STORAGE_UNITS][MAX_CELL_UNITS];
-    private int filledCells = 0;
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        int index = getValueIndexByKey(key);
+        int index = getIndexByKey(key);
         if (index != -1) {
             storage[index][VALUE_INDEX] = value;
         } else {
-            filledCells++;
-            storage[filledCells][KEY_INDEX] = key;
-            storage[filledCells][VALUE_INDEX] = value;
+            size++;
+            storage[size][KEY_INDEX] = key;
+            storage[size][VALUE_INDEX] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        int index = getValueIndexByKey(key);
+        int index = getIndexByKey(key);
         if (index != -1) {
             return (V) storage[index][VALUE_INDEX];
         } else {
@@ -32,8 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private int getValueIndexByKey(K key) {
-        for (int i = 1; i <= filledCells; i++) {
+    private int getIndexByKey(K key) {
+        for (int i = 1; i <= size; i++) {
             boolean result = key == null ? storage[i][KEY_INDEX] == null
                     : key.equals(storage[i][KEY_INDEX]);
             if (result) {
@@ -45,6 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return filledCells;
+        return size;
     }
 }
