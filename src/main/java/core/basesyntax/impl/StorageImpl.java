@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_MAX_SIZE = 10;
+    private static final String ARRAY_OUT_OF_SIZE = "Can`t add more than 10 objects";
     private final K[] keys;
     private final V[] values;
     private int size;
@@ -17,10 +18,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((key != null && key.equals(keys[i])) || (key == null && keys[i] == null)) {
+            if (keys[i] == key || (key != null && key.equals(keys[i]))) {
                 values[i] = value;
                 return;
             }
+        }
+        if (size > 10) {
+            throw new RuntimeException(ARRAY_OUT_OF_SIZE);
         }
         keys[size] = key;
         values[size] = value;
@@ -30,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
                 return values[i];
             }
         }
