@@ -36,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private static class Pair<K, V> {
+    private class Pair<K, V> {
         private final K key;
         private V value;
 
