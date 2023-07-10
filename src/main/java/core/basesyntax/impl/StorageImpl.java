@@ -14,37 +14,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.size = 0;
     }
 
-    public void put(K key, V value) {
-        if (key == null) {
-            putNullKey(value);
-            return;
-        }
-        int index = getIndex(key);
-        if (index != -1) {
-            values[index] = value;
-        } else {
-            if (size < MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            } else {
-                throw new IllegalStateException("Storage is full");
-            }
-        }
-    }
-
-    public V get(K key) {
-        if (key == null) {
-            return getNullKey();
-        }
-
-        int index = getIndex(key);
-        if (index != -1) {
-            return (V) values[index];
-        }
-        return null;
-    }
-
     private void putNullKey(V value) {
         for (int i = 0; i < size; i++) {
             if (keys[i] == null) {
@@ -70,6 +39,40 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
+    @Override
+    public void put(K key, V value) {
+        if (key == null) {
+            putNullKey(value);
+            return;
+        }
+        int index = getIndex(key);
+        if (index != -1) {
+            values[index] = value;
+        } else {
+            if (size < MAX_SIZE) {
+                keys[size] = key;
+                values[size] = value;
+                size++;
+            } else {
+                throw new IllegalStateException("Storage is full");
+            }
+        }
+    }
+
+    @Override
+    public V get(K key) {
+        if (key == null) {
+            return getNullKey();
+        }
+
+        int index = getIndex(key);
+        if (index != -1) {
+            return (V) values[index];
+        }
+        return null;
+    }
+
+    @Override
     public int size() {
         return size;
     }
