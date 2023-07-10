@@ -5,6 +5,8 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_UNITS = 10;
     private static final int MAX_CELL_UNITS = 2;
+    private static final int KEY_INDEX = 0;
+    private static final int VALUE_INDEX = 1;
     private final Object[][] storage = new Object[MAX_STORAGE_UNITS][MAX_CELL_UNITS];
     private int filledCells = 0;
 
@@ -12,11 +14,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getValueIndexByKey(key);
         if (index != -1) {
-            storage[index][1] = value;
+            storage[index][VALUE_INDEX] = value;
         } else {
             filledCells++;
-            storage[filledCells][0] = key;
-            storage[filledCells][1] = value;
+            storage[filledCells][KEY_INDEX] = key;
+            storage[filledCells][VALUE_INDEX] = value;
         }
     }
 
@@ -24,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index = getValueIndexByKey(key);
         if (index != -1) {
-            return (V) storage[index][1];
+            return (V) storage[index][VALUE_INDEX];
         } else {
             return null;
         }
@@ -32,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getValueIndexByKey(K key) {
         for (int i = 1; i <= filledCells; i++) {
-            boolean result = key == null ? storage[i][0] == null : key.equals(storage[i][0]);
+            boolean result = key == null ? storage[i][KEY_INDEX] == null : key.equals(storage[i][KEY_INDEX]);
             if (result) {
                 return i;
             }
