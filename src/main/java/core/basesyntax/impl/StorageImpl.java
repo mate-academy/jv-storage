@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         Pair<K, V> pair = new Pair<>(key, value);
-        int indexOfPair = getIndexOfPair(key);
+        int indexOfPair = getIndexByKey(key);
         if (indexOfPair != -1) {
             storage[indexOfPair] = pair;
         } else {
@@ -43,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return getIndexOfPair(key) != -1 ? storage[getIndexOfPair(key)].getValue() : null;
+        return getIndexByKey(key) != -1 ? storage[getIndexByKey(key)].getValue() : null;
     }
 
     @Override
@@ -51,10 +51,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return indexOfNextPair;
     }
 
-    private int getIndexOfPair(K key) {
+    private int getIndexByKey(K key) {
         for (int i = 0; i < size(); i++) {
-            if ((storage[i].getKey() == null && key == null)
-                    || (storage[i].getKey() != null && storage[i].getKey().equals(key))) {
+            K storageKey = storage[i].getKey();
+            if ((storageKey== null && key == null)
+                    || (storageKey != null && storageKey.equals(key))) {
                 return i;
             }
         }
