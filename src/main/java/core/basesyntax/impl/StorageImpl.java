@@ -3,30 +3,29 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAX_SIZE = 10;
     private static final String PUT_EXCEPTION_MESSAGE =
             "Can't add new data, the storage is full";
     private K[] keys;
     private V[] values;
-    private int itemsInStorage = 0;
+    private int storageSize;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
         values = (V []) new Object[MAX_SIZE];
-
+        storageSize = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        int index = indexOfKey(key);
+        int index = getIndexByKey(key);
         if (index > -1) {
             keys[index] = key;
             values[index] = value;
-        } else if (index == -1 && itemsInStorage < MAX_SIZE) {
-            keys[itemsInStorage] = key;
-            values[itemsInStorage] = value;
-            itemsInStorage++;
+        } else if (index == -1 && storageSize < MAX_SIZE) {
+            keys[storageSize] = key;
+            values[storageSize] = value;
+            storageSize++;
         } else {
             throw new RuntimeException(PUT_EXCEPTION_MESSAGE);
         }
@@ -34,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int index = indexOfKey(key);
+        int index = getIndexByKey(key);
         if (index == -1) {
             return null;
         }
@@ -43,11 +42,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return itemsInStorage;
+        return storageSize;
     }
 
-    private int indexOfKey(K key) {
-        for (int i = 0; i < itemsInStorage; i++) {
+    private int getIndexByKey(K key) {
+        for (int i = 0; i < storageSize; i++) {
             if (key == keys[i] || (key != null && key.equals(keys[i]))) {
                 return i;
             }
