@@ -5,9 +5,9 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_MAX_SIZE = 10;
     private Pair<K, V>[] storage;
-    private int indexOfNextPair = 0;
+    private int size;
 
-    public class Pair<K, V> {
+    private class Pair<K, V> {
         private K key;
         private V value;
 
@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public StorageImpl() {
-        storage = new Pair[ARRAY_MAX_SIZE];
+        storage = (Pair<K, V>[]) new Pair[ARRAY_MAX_SIZE];
     }
 
     @Override
@@ -36,8 +36,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (indexOfPair != -1) {
             storage[indexOfPair] = pair;
         } else {
-            storage[indexOfNextPair] = pair;
-            indexOfNextPair++;
+            storage[size] = pair;
+            size++;
         }
     }
 
@@ -48,13 +48,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return indexOfNextPair;
+        return size;
     }
 
     private int getIndexByKey(K key) {
         for (int i = 0; i < size(); i++) {
             K storageKey = storage[i].getKey();
-            if ((storageKey == null && key == null)
+            if ((storageKey == key)
                     || (storageKey != null && storageKey.equals(key))) {
                 return i;
             }
