@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
     private final K[] keyStorage;
     private final V[] valueStorage;
-    private int positionOfLastPutting;
+    private int size;
 
     public StorageImpl() {
         keyStorage = (K[]) new Object[MAX_STORAGE_SIZE];
@@ -15,20 +15,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int position = indexOfKey(key);
+        int position = getIndexByKey(key);
         if (position != -1) {
             valueStorage[position] = value;
         } else {
-            keyStorage[positionOfLastPutting] = key;
-            valueStorage[positionOfLastPutting] = value;
-            positionOfLastPutting++;
+            keyStorage[size] = key;
+            valueStorage[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < positionOfLastPutting; i++) {
-            int position = indexOfKey(key);
+        for (int i = 0; i < size; i++) {
+            int position = getIndexByKey(key);
             if (position != -1) {
                 return valueStorage[position];
             }
@@ -38,11 +38,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return positionOfLastPutting;
+        return size;
     }
 
-    private int indexOfKey(K key) {
-        for (int i = 0; i < positionOfLastPutting; i++) {
+    private int getIndexByKey(K key) {
+        for (int i = 0; i < size; i++) {
             if (key == keyStorage[i] || (key != null && key.equals(keyStorage[i]))) {
                 return i;
             }
