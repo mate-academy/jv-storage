@@ -11,29 +11,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keysStorage = (K[]) new Object[BOUNDED_ARRAY_SIZE];
         valuesStorage = (V[]) new Object[BOUNDED_ARRAY_SIZE];
-        storageSize = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < storageSize; i++) {
-                if (keysStorage[i] == null) {
-                    valuesStorage[i] = value;
-                    return;
-                }
-            }
-        } else {
-            for (int i = 0; i < storageSize; i++) {
-                if (key.equals(keysStorage[i])) {
-                    valuesStorage[i] = value;
-                    return;
-                }
-            }
-        }
         if (storageSize >= BOUNDED_ARRAY_SIZE) {
             throw new RuntimeException("You have exceeded the limit");
         }
+            for (int i = 0; i < storageSize; i++) {
+                if (keysStorage[i] == key || (keysStorage[i] != null && keysStorage[i].equals(key))) {
+                    valuesStorage[i] = value;
+                    return;
+                }
+            }
         keysStorage[storageSize] = key;
         valuesStorage[storageSize] = value;
         storageSize++;
