@@ -25,11 +25,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keys[size] = key;
             values[size] = value;
             size++;
-            } else {
-                throw new RuntimeException("Storage is full");
-            }
+        } else {
+            throw new RuntimeException("Storage is full");
         }
-
+    }
 
     @Override
     public V get(K key) {
