@@ -5,9 +5,9 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
 
-    private K[] storageKey;
-    private V[] storageValue;
-    private int size = 0;
+    private final K[] storageKey;
+    private final V[] storageValue;
+    private int size;
 
     public StorageImpl() {
         storageKey = (K[]) new Object[MAX_ITEMS_NUMBER];
