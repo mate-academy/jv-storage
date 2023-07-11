@@ -22,7 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 values[size] = value;
                 size++;
             } else {
-                throw new RuntimeException("Storage size is full");
+                throw new RuntimeException("Storage size is full!");
             }
         } else {
             values[index] = value;
