@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS_NUMBER = 10;
@@ -13,10 +12,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         Element<K, V> existingElement = findElementByKey(key);
         if (existingElement != null) {
             existingElement.setValue(value);
-        } else {
+        } else if (elementCounter <= elements.length) {
             Element<K, V> element = new Element<>(key, value);
             elements[elementCounter] = element;
             elementCounter++;
+        } else {
+            throw new RuntimeException("can't put " + key
+                    + ", " + value + " down to full storage");
         }
     }
 
@@ -32,7 +34,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Element<K, V> findElementByKey(K key) {
         for (int i = 0; i < elementCounter; i++) {
             Element<K, V> existingElement = elements[i];
-            if (Objects.equals(existingElement.getKey(), key)) {
+            if ((existingElement.getKey() == key) || (existingElement.getKey()
+                    != null && existingElement.getKey().equals(key))) {
                 return existingElement;
             }
         }
