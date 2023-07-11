@@ -16,8 +16,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != -1) {
             storage[index][VALUE_INDEX] = value;
         } else {
-            size++;
             checkIfSizeOverMaxStorageSize(size);
+            size++;
             storage[size][KEY_INDEX] = key;
             storage[size][VALUE_INDEX] = value;
         }
@@ -40,9 +40,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndexByKey(K key) {
         for (int i = 1; i <= size; i++) {
-            boolean result = key == null ? storage[i][KEY_INDEX] == null
+            boolean isValueValid = key == null ? storage[i][KEY_INDEX] == null
                     : key.equals(storage[i][KEY_INDEX]);
-            if (result) {
+            if (isValueValid) {
                 return i;
             }
         }
@@ -50,7 +50,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void checkIfSizeOverMaxStorageSize(int size) {
-        if (size > MAX_STORAGE_UNITS) {
+        if (size >= MAX_STORAGE_UNITS) {
             throw new RuntimeException("Can't put new [key:value] to storage."
                     + "\nMax storage units: " + MAX_STORAGE_UNITS
                     + "\nActual units: " + size);
