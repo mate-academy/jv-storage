@@ -19,10 +19,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = indexOfKey(key);
         if (index != -1) {
             values[index] = value;
-        } else {
+        } else if (size < values.length) {
             keys[size] = key;
             values[size] = value;
             size++;
+        } else {
+            throw new RuntimeException("Can't put the file into storage, that storage is full");
         }
     }
 
