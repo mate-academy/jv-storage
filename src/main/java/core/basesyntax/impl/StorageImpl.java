@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int TOTAL_ROWS_NUMBER = 10;
@@ -12,7 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        this.storageArray = new Object[TOTAL_ROWS_NUMBER][TOTAL_COLUMNS_NUMBER];
+        storageArray = new Object[TOTAL_ROWS_NUMBER][TOTAL_COLUMNS_NUMBER];
     }
 
     @Override
@@ -44,9 +45,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndex(K key) {
         for (int rowIndex = 0; rowIndex < size; rowIndex++) {
-            if ((storageArray[rowIndex][FIRST_COLUMNS_INDEX] == null && key == null)
-                    || (storageArray[rowIndex][FIRST_COLUMNS_INDEX] != null
-                    && storageArray[rowIndex][FIRST_COLUMNS_INDEX].equals(key))) {
+            if (Objects.equals(storageArray[rowIndex][FIRST_COLUMNS_INDEX], key)) {
                 return rowIndex;
             }
         }
