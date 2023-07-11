@@ -10,9 +10,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size >= MAX_STORAGE_SIZE) {
-            throw new RuntimeException("Storage is full");
-        }
 
         for (int i = 0; i < size; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
@@ -20,6 +17,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
+
+        if (size >= MAX_STORAGE_SIZE) {
+            throw new RuntimeException("Storage is full");
+        }
+
         keys[size] = key;
         values[size] = value;
         size++;
