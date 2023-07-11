@@ -43,5 +43,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
-
 }
