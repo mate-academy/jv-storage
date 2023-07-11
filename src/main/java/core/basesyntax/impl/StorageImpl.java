@@ -43,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean isArrayFilled() {
         if (size >= keys.length) {
-            throw new RuntimeException("Array if filled");
+            throw new RuntimeException("Array is filled");
         }
         return false;
     }
