@@ -3,25 +3,22 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int MAX_SIZE_PAIR = 10;
+    public static final int MAX_SIZE = 10;
     private Pair<K, V>[] storageArray;
     private int size;
 
     public StorageImpl() {
-        storageArray = new Pair[MAX_SIZE_PAIR];
+        storageArray = new Pair[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (size == storageArray.length) {
+        if (size == MAX_SIZE) {
             throw new ArrayIndexOutOfBoundsException(
                     "Max capacity of array is 10! You cant add more items");
         }
         for (int i = 0; i < size; ++i) {
             if (equals(key, storageArray[i].getKey())) {
-                storageArray[i] = new Pair<>(key, value);
-                return;
-            } else if (key == null && storageArray[i].getKey() == null) {
                 storageArray[i] = new Pair<>(key, value);
                 return;
             }
@@ -45,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean equals(K key, K keySecond) {
-        return key == keySecond || key != null && key.equals(keySecond);
+    private boolean equals(K key, K secondKey) {
+        return key == secondKey || key != null && key.equals(secondKey);
     }
 }
