@@ -15,14 +15,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (storageSize >= BOUNDED_ARRAY_SIZE) {
-            throw new RuntimeException("You have exceeded the limit");
-        }
         for (int i = 0; i < storageSize; i++) {
             if (keysStorage[i] == key || (keysStorage[i] != null && keysStorage[i].equals(key))) {
                 valuesStorage[i] = value;
                 return;
             }
+        }
+        if (storageSize >= BOUNDED_ARRAY_SIZE) {
+            throw new RuntimeException("You have exceeded the limit");
         }
         keysStorage[storageSize] = key;
         valuesStorage[storageSize] = value;
