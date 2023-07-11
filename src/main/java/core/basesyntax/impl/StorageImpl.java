@@ -3,47 +3,48 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ELEMENTS_NUMBER = 10;
-    private final Element<K, V>[] elements = new Element[MAX_ELEMENTS_NUMBER];
-    private int elementCounter = 0;
+    private static final int MAX_STORAGE_CAPACITY = 10;
+    private final Pair<K, V>[] pairs = new Pair[MAX_STORAGE_CAPACITY];
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        Element<K, V> existingElement = findElementByKey(key);
-        if (existingElement != null) {
-            existingElement.setValue(value);
-        } else if (elementCounter <= elements.length) {
-            Element<K, V> element = new Element<>(key, value);
-            elements[elementCounter] = element;
-            elementCounter++;
-        } else {
+        Pair<K, V> existingPair = findPairByKey(key);
+        if (size == pairs.length) {
             throw new RuntimeException("can't put " + key
                     + ", " + value + " down to full storage");
+        }
+        if (existingPair != null) {
+            existingPair.setValue(value);
+        } else if (size <= pairs.length) {
+            Pair<K, V> pair = new Pair<>(key, value);
+            pairs[size] = pair;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        Element<K, V> existingElement = findElementByKey(key);
-        if (existingElement != null) {
-            return existingElement.getValue();
-        }
-        return null;
-    }
-
-    private Element<K, V> findElementByKey(K key) {
-        for (int i = 0; i < elementCounter; i++) {
-            Element<K, V> existingElement = elements[i];
-            if ((existingElement.getKey() == key) || (existingElement.getKey()
-                    != null && existingElement.getKey().equals(key))) {
-                return existingElement;
-            }
+        Pair<K, V> existingPair = findPairByKey(key);
+        if (existingPair != null) {
+            return existingPair.getValue();
         }
         return null;
     }
 
     @Override
     public int size() {
-        return elementCounter;
+        return size;
+    }
+
+    private Pair<K, V> findPairByKey(K key) {
+        for (int i = 0; i < size; i++) {
+            Pair<K, V> existingPair = pairs[i];
+            if ((existingPair.getKey() == key) || (existingPair.getKey()
+                    != null && existingPair.getKey().equals(key))) {
+                return existingPair;
+            }
+        }
+        return null;
     }
 }
