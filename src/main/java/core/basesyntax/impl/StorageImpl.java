@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_LIMIT = 10;
+    private static final String OUT_OF_LIMIT_EXCEPTION = "The storage is full";
     private final K[] keys;
     private final V[] values;
     private int currentStorageSize = 0;
@@ -15,6 +16,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (currentStorageSize >= STORAGE_LIMIT) {
+            throw new RuntimeException(OUT_OF_LIMIT_EXCEPTION);
+        }
         int index = getKeyIndex(key);
         if (index == -1) {
             keys[currentStorageSize] = key;
