@@ -12,12 +12,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        KeyValuePair pair = new KeyValuePair(key, value);
         for (int i = 0; i < MAX_ITEMS_VALUE; i++) {
             KeyValuePair target = keyValuePairs[i];
             if (target == null) {
-                keyValuePairs[i] = new KeyValuePair(key, value);
+                keyValuePairs[i] = pair;
                 return;
-            } else if (target.equalsByKey(key)) {
+            } else if (target.equals(pair)) {
                 target.setValue(value);
                 return;
             }
@@ -27,8 +28,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
+        KeyValuePair pair = new KeyValuePair(key);
         for (KeyValuePair keyValuePair : keyValuePairs) {
-            if (keyValuePair != null && keyValuePair.equalsByKey(key)) {
+            if (keyValuePair != null && keyValuePair.equals(pair)) {
                 return (V) keyValuePair.getValue();
             }
         }

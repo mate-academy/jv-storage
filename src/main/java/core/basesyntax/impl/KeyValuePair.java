@@ -9,8 +9,8 @@ public class KeyValuePair<K, V> {
         this.value = value;
     }
 
-    public boolean equalsByKey(K key) {
-        return (this.key == null) ? key == null : this.key.equals(key);
+    public KeyValuePair(K key) {
+        this.key = key;
     }
 
     public void setValue(V value) {
@@ -19,5 +19,22 @@ public class KeyValuePair<K, V> {
 
     public V getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(Object pair) {
+        if (this == pair) {
+            return true;
+        }
+        if (pair == null || !pair.getClass().equals(KeyValuePair.class)) {
+            return false;
+        }
+        KeyValuePair target = (KeyValuePair) pair;
+        return (key == null) ? target.key == null : key.equals(target.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * 17 + (key == null ? 0 : key.hashCode());
     }
 }
