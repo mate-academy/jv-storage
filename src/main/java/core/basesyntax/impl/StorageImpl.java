@@ -7,8 +7,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CELL_UNITS = 2;
     private static final int KEY_INDEX = 0;
     private static final int VALUE_INDEX = 1;
-    private final Object[][] storage = new Object[MAX_STORAGE_UNITS][MAX_CELL_UNITS];
-    private int size = 0;
+    private final Object[][] storage;
+    private int size;
+
+    public StorageImpl() {
+        storage = new Object[MAX_STORAGE_UNITS][MAX_CELL_UNITS];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -17,9 +21,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             storage[index][VALUE_INDEX] = value;
         } else {
             checkIfSizeOverMaxStorageSize(size);
-            size++;
             storage[size][KEY_INDEX] = key;
             storage[size][VALUE_INDEX] = value;
+            size++;
         }
     }
 
@@ -28,9 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = getIndexByKey(key);
         if (index != -1) {
             return (V) storage[index][VALUE_INDEX];
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -52,8 +55,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private void checkIfSizeOverMaxStorageSize(int size) {
         if (size >= MAX_STORAGE_UNITS) {
             throw new RuntimeException("Can't put new [key:value] to storage."
-                    + "\nMax storage units: " + MAX_STORAGE_UNITS
-                    + "\nActual units: " + size);
+                    + System.lineSeparator()
+                    + "Max storage units: " + MAX_STORAGE_UNITS
+                    + System.lineSeparator()
+                    + "Actual units: " + size);
         }
     }
 }
