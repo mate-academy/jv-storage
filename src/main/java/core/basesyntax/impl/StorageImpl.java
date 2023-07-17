@@ -4,14 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int KEY_MISSING = -1;
+    public static final int MAX_ITEMS_NUMBER = 10;
     private K[] keys;
     private V[] values;
-    private int sizeArray;
+    private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[10];
-        values = (V[]) new Object[10];
-        sizeArray = 0;
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
@@ -22,9 +22,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return;
         }
 
-        this.keys[sizeArray] = key;
-        this.values[sizeArray] = value;
-        ++sizeArray;
+        this.keys[size] = key;
+        this.values[size] = value;
+        ++size;
     }
 
     @Override
@@ -35,11 +35,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return sizeArray;
+        return size;
     }
 
     private int getPositionByKey(K key) {
-        for (int i = 0; i < sizeArray; i++) {
+        for (int i = 0; i < size; i++) {
             if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 return i;
             }
