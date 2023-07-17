@@ -3,12 +3,16 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] storageKey;
-    private V[] storageValue;
+    private static final int SIZE = 10;
+    private int size;
+
+    private final K[] storageKey;
+    private final V[] storageValue;
 
     public StorageImpl() {
-        storageKey = (K[]) new Object[0];
-        storageValue = (V[]) new Object[0];
+        this.storageKey = (K[]) new Object[SIZE];
+        this.storageValue = (V[]) new Object[SIZE];
+        this.size = 0;
     }
 
     @Override
@@ -16,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         boolean isNewKey = true;
         int rewriteIndex = -1;
 
-        for (int i = 0; i < storageKey.length; i++) {
+        for (int i = 0; i < size(); i++) {
             if ((storageKey[i] != null && storageKey[i].equals(key))
                     || (storageKey[i] == null && key == null)) {
                 isNewKey = false;
@@ -27,11 +31,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         if (isNewKey) {
-            storageKey = expandStorageKey(storageKey);
-            storageValue = expandStorageValue(storageValue);
+            storageKey[size] = key;
+            storageValue[size] = value;
 
-            storageKey[storageKey.length - 1] = key;
-            storageValue[storageKey.length - 1] = value;
+            size++;
         } else {
             storageValue[rewriteIndex] = value;
         }
@@ -39,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storageKey.length; i++) {
+        for (int i = 0; i < size(); i++) {
             if ((storageKey[i] != null && storageKey[i].equals(key))
                     || (storageKey[i] == null && key == null)) {
                 return storageValue[i];
@@ -51,23 +54,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return storageKey.length;
-    }
-
-    private K[] expandStorageKey(K[] storageKey) {
-        K[] newStorageKey = (K[]) new Object[storageKey.length + 1];
-
-        System.arraycopy(storageKey, 0, newStorageKey, 0, storageKey.length);
-
-        return newStorageKey;
-    }
-
-    private V[] expandStorageValue(V[] storageValue) {
-        V[] newStorageKey = (V[]) new Object[storageValue.length + 1];
-
-        System.arraycopy(storageValue, 0, newStorageKey, 0, storageValue.length);
-
-        return newStorageKey;
+        return size;
     }
 
 }
