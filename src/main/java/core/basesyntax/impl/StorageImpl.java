@@ -13,6 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = new Object[MAX_SIZE];
         size = 0;
     }
+
     @Override
     public void put(K key, V value) {
         if (key == null) {
@@ -43,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return (V) values[i];
             }
         }
-        return  null;
+        return null;
     }
 
     @Override
