@@ -1,55 +1,79 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final List<K> keys;
-    private final List<V> values;
+    private final Object[] keys;
+    private final Object[] values;
+    private int size;
 
     public StorageImpl() {
-        keys = new ArrayList<>();
-        values = new ArrayList<>();
+        this.keys = new Object[MAX_SIZE];
+        this.values = new Object[MAX_SIZE];
+        this.size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         if (key == null) {
-            int nullKeyIndex = keys.indexOf(null);
+            int nullKeyIndex = findNullKeyIndex();
             if (nullKeyIndex != -1) {
-                values.set(nullKeyIndex, value);
+                values[nullKeyIndex] = value;
             } else {
-                keys.add(null);
-                values.add(value);
-            }
-        } else {
-            int index = keys.indexOf(key);
-            if (index != -1) {
-                values.set(index, value);
-            } else {
-                if (keys.size() == MAX_SIZE) {
+                if (size == MAX_SIZE) {
                     throw new IllegalStateException("Storage is full.");
                 }
-                keys.add(key);
-                values.add(value);
+                keys[size] = null;
+                values[size] = value;
+                size++;
+            }
+        } else {
+            int index = findKeyIndex(key);
+            if (index != -1) {
+                values[index] = value;
+            } else {
+                if (size == MAX_SIZE) {
+                    throw new IllegalStateException("Storage is full.");
+                }
+                keys[size] = key;
+                values[size] = value;
+                size++;
             }
         }
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public V get(K key) {
         if (key == null) {
-            int index = keys.indexOf(null);
-            return (index != -1) ? values.get(index) : null;
+            int nullKeyIndex = findNullKeyIndex();
+            return (nullKeyIndex != -1) ? (V) values[nullKeyIndex] : null;
         }
-        int index = keys.indexOf(key);
-        return (index != -1) ? values.get(index) : null;
+        int index = findKeyIndex(key);
+        return (index != -1) ? (V) values[index] : null;
     }
 
     @Override
     public int size() {
-        return keys.size();
+        return size;
+    }
+
+    private int findNullKeyIndex() {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
