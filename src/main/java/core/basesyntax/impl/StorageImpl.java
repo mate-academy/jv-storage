@@ -32,11 +32,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     public V get(K key) {
         if (key == null) {
+            int nullKeyIndex = findKeyIndex(null);
+            return (nullKeyIndex != -1) ? (V) values[nullKeyIndex] : null;
+        } else {
             int index = findKeyIndex(key);
             return (index != -1) ? (V) values[index] : null;
         }
-        int index = findKeyIndex(key);
-        return (index != -1) ? (V) values[index] : null;
     }
 
     @Override
