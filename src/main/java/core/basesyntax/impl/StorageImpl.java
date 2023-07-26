@@ -15,30 +15,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            int nullKeyIndex = findKeyIndex(null);
-            if (nullKeyIndex != -1) {
-                values[nullKeyIndex] = value;
-            } else {
-                if (size == MAX_SIZE) {
-                    throw new IllegalStateException("Storage is full.");
-                }
-                keys[size] = null;
-                values[size] = value;
-                size++;
-            }
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            values[index] = value;
         } else {
-            int index = findKeyIndex(key);
-            if (index != -1) {
-                values[index] = value;
-            } else {
-                if (size == MAX_SIZE) {
-                    throw new IllegalStateException("Storage is full.");
-                }
-                keys[size] = key;
-                values[size] = value;
-                size++;
+            if (size == MAX_SIZE) {
+                throw new IllegalStateException("Storage is full.");
             }
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
