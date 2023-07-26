@@ -11,13 +11,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         this.keys = new Object[MAX_SIZE];
         this.values = new Object[MAX_SIZE];
-        this.size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         if (key == null) {
-            int nullKeyIndex = findNullKeyIndex();
+            int nullKeyIndex = findKeyIndex(null);
             if (nullKeyIndex != -1) {
                 values[nullKeyIndex] = value;
             } else {
@@ -47,8 +46,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     public V get(K key) {
         if (key == null) {
-            int nullKeyIndex = findNullKeyIndex();
-            return (nullKeyIndex != -1) ? (V) values[nullKeyIndex] : null;
+            int index = findKeyIndex(key);
+            return (index != -1) ? (V) values[index] : null;
         }
         int index = findKeyIndex(key);
         return (index != -1) ? (V) values[index] : null;
@@ -59,18 +58,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int findNullKeyIndex() {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     private int findKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
