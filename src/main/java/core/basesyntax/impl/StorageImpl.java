@@ -65,7 +65,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return -2;
     }
 
     private int findKeyIndex(K key) {
