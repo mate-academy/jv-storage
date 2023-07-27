@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int findKeyIndex(K key) {
         for (int i = 0; i < entries.size(); i++) {
             Entry<K, V> entry = entries.get(i);
-            if ((key == null && entry.getKey() == null) || (key != null && key.equals(entry.getKey()))) {
+            if ((key == null && entry.getKey() == null)
+                    || (key != null && key.equals(entry.getKey()))) {
                 return i;
             }
         }
