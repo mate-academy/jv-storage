@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
@@ -12,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = new Object[MAX_SIZE];
         values = new Object[MAX_SIZE];
-        size = 0;
     }
 
     @Override
@@ -66,6 +64,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
+    // Updated comment: Get the value associated with a null key.
     private V getNullKey() {
         for (int i = 0; i < size; i++) {
             if (keys[i] == null) {
@@ -82,7 +81,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndex(Object key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 return i;
             }
         }
