@@ -4,34 +4,34 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private int count = 0;
-    private Inner[] items;
+    private int size = 0;
+    private Pair[] items;
 
     public StorageImpl() {
-        items = new Inner[MAX_ITEMS_NUMBER];
+        items = new Pair[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
-        if (count > MAX_ITEMS_NUMBER) {
+        if (size > MAX_ITEMS_NUMBER) {
             return;
         }
 
         int index = findIndexByKey(key);
         if (index != -1) {
-            items[index] = new Inner(key, value);
+            items[index] = new Pair(key, value);
             return;
         }
 
-        items[count] = new Inner(key, value);
-        count++;
+        items[size] = new Pair(key, value);
+        size++;
     }
 
     @Override
     public V get(K key) {
         int index = findIndexByKey(key);
         if (index != -1) {
-            Inner item = (Inner) items[index];
+            Pair item = (Pair) items[index];
             return (V) item.value;
         }
 
@@ -40,12 +40,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return count;
+        return size;
     }
 
     private int findIndexByKey(K key) {
-        for (int i = 0; i < count; i++) {
-            Inner item = (Inner) items[i];
+        for (int i = 0; i < size; i++) {
+            Pair item = (Pair) items[i];
             if (key == item.key || (key != null && key.equals(item.key))) {
                 return i;
             }
@@ -54,11 +54,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    public class Inner<K, V> {
+    private class Pair<K, V> {
         private K key;
         private V value;
 
-        public Inner(K key, V value) {
+        public Pair(K key, V value) {
             this.key = key;
             this.value = value;
         }
