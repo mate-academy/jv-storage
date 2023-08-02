@@ -46,14 +46,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null) {
-                if (keys[i] == null) {
-                    return i;
-                }
-            } else {
-                if (key.equals(keys[i])) {
-                    return i;
-                }
+            if (keys[i] == key || key != null && key.equals(keys[i])) {
+                return i;
             }
         }
         return NOT_EXISTING_INDEX;
