@@ -7,7 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NOT_EXISTING_INDEX = -1;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAXIMUM_NUMBER_OF_ELEMENTS];
