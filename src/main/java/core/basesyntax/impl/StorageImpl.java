@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         this.keys = new Object[MAX_CAPACITY];
         this.values = new Object[MAX_CAPACITY];
-        this.size = 0;
     }
 
     @Override
@@ -44,12 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean equalsKey(Object key1, Object key2) {
-        if (key1 == null && key2 == null) {
-            return true;
-        }
-        if (key1 == null || key2 == null) {
-            return false;
-        }
-        return key1.equals(key2);
+        return key1 == key2
+                || key1 != null && key1.equals(key2);
     }
 }
