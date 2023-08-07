@@ -3,7 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static String[] arraysValue;
     private static String[] arraysKey;
     private static final String SPLIT_INDEX = "___";
@@ -19,7 +18,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-
         keys.append(key).append(SPLIT_INDEX);
         values.append(value).append(SPLIT_INDEX);
         arraysKey = keys.toString().split(SPLIT_INDEX);
