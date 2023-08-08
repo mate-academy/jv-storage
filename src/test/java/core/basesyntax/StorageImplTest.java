@@ -40,6 +40,22 @@ public class StorageImplTest {
     }
 
     @Test
+    public void addCustomElementToStorage() {
+        Storage<Integer, Cat> storage = new StorageImpl<>();
+        Cat firstCat = new Cat("Myrchyk", "white");
+        Cat secondCat = new Cat("Barsik", "black");
+        Cat thirdCat = new Cat("Musia", "grey");
+
+        storage.put(1, firstCat);
+        storage.put(2, secondCat);
+        storage.put(3, thirdCat);
+
+        Assert.assertEquals(firstCat, storage.get(1));
+        Assert.assertEquals(secondCat, storage.get(2));
+        Assert.assertEquals(thirdCat, storage.get(3));
+    }
+
+    @Test
     public void getElementWhenKeyDontExist() {
         Storage<Integer, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
