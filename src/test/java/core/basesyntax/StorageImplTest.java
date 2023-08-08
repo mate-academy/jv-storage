@@ -40,7 +40,7 @@ public class StorageImplTest {
     }
 
     @Test
-    public void addCustomElementToStorage() {
+    public void addCustomElementsToStorage() {
         Storage<Integer, Cat> storage = new StorageImpl<>();
         Cat firstCat = new Cat("Myrchyk", "white");
         Cat secondCat = new Cat("Barsik", "black");
