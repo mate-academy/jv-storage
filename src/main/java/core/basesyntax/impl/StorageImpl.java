@@ -4,34 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Object [] massivKey;
-    private Object [] massivValue;
+    private Object [] keys;
+    private Object [] mvalues;
     private int size;
 
     public StorageImpl() {
-        massivKey = new Object[MAX_ITEMS_NUMBER];
-        massivValue = new Object[MAX_ITEMS_NUMBER];
+        keys = new Object[MAX_ITEMS_NUMBER];
+        mvalues = new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((massivKey[i] == key) || (massivKey[i] != null && massivKey[i].equals(key))) {
-                massivKey[i] = key;
-                massivValue[i] = value;
+            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
+                mvalues[i] = value;
                 return;
             }
         }
-        massivKey[size] = key;
-        massivValue[size] = value;
+        keys[size] = key;
+        mvalues[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if ((massivKey[i] == key) || (massivKey[i] != null && massivKey[i].equals(key))) {
-                return (V) massivValue[i];
+            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
+                return (V) mvalues[i];
             }
         }
         return null;
