@@ -6,7 +6,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
     private Pair<K, V>[] pairs;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         pairs = new Pair[MAX_CAPACITY];
@@ -15,14 +15,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key == null && pairs[i].getKey() == null) {
-                pairs[i] = new Pair<>(null, value);
-                return;
-            }
-            if (pairs[i].getKey() == null) {
-                continue;
-            }
-            if (pairs[i].getKey().equals(key)) {
+            if (key == pairs[i].getKey() || (pairs[i].getKey() != null
+                    && pairs[i].getKey().equals(key))) {
                 pairs[i] = new Pair<>(key, value);
                 return;
             }
