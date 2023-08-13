@@ -14,28 +14,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (isKeysEqual(key, i)) {
-                items[i].setValue(value);
-                return;
-            }
+        int i = getIndex(key);
+        if (i != -1) {
+            items[i].setValue(value);
+        } else {
+            items[size++] = new Pair<>(key, value);
         }
-        items[size++] = new Pair<>(key, value);
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (isKeysEqual(key, i)) {
-                return items[i].getValue();
-            }
-        }
-        return null;
+        int i = getIndex(key);
+        return i != -1 ? items[i].getValue() : null;
     }
 
-    private boolean isKeysEqual(K key, int i) {
-        K currentKey = items[i].getKey();
-        return (key == currentKey) || (currentKey != null && currentKey.equals(key));
+    private int getIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            K currentKey = items[i].getKey();
+            if ((key == currentKey) || (currentKey != null && currentKey.equals(key))) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
