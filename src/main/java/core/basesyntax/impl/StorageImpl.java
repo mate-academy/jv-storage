@@ -8,7 +8,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        size = -1;
+        size = 0;
         data = new Pair[CAPACITY];
     }
 
@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != -1) {
             data[index].setValue(value);
         } else {
-            data[++size] = new Pair<>(key, value);
+            data[size++] = new Pair<>(key, value);
         }
     }
 
@@ -31,13 +31,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return size + 1;
+        return size;
     }
 
     private int getIndexByKey(K key) {
-        for (int i = 0; i <= size; i++) {
-            if ((data[i].getKey() != null && data[i].getKey().equals(key))
-                    || (data[i].getKey() == null && key == null)) {
+        for (int i = 0; i < size; i++) {
+            if ((data[i].getKey() == key)
+                    || (data[i].getKey() != null && data[i].getKey().equals(key))) {
                 return i;
             }
         }
