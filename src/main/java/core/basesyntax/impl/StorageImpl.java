@@ -1,37 +1,37 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final Pair<K, V>[] storage;
+    private Pair<K, V>[] pairs;
     private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-        storage = (Pair<K, V>[]) new Pair[10];
+        pairs = (Pair<K, V>[]) new Pair[10];
         size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(storage[i].getKey(), key)) {
-                storage[i].setValue(value);
+            if (compareKeys(key, pairs[i].getKey())) {
+                pairs[i].setValue(value);
                 return;
             }
         }
-        if (size < storage.length) {
-            storage[size] = new Pair<>(key, value);
-            size++;
+        if (size == pairs.length) {
+            increaseCapacity();
         }
+        pairs[size] = new Pair<>(key, value);
+        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(storage[i].getKey(), key)) {
-                return storage[i].getValue();
+            if (compareKeys(key, pairs[i].getKey())) {
+                return pairs[i].getValue();
             }
         }
         return null;
@@ -40,6 +40,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean compareKeys(Object obj1, Object obj2) {
+        if (obj1 == null) {
+            return obj2 == null;
+        }
+        return obj1.equals(obj2);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void increaseCapacity() {
+        int newCapacity = pairs.length * 2;
+        Pair<K, V>[] newPairs = (Pair<K, V>[]) new Pair[newCapacity];
+        System.arraycopy(pairs, 0, newPairs, 0, size);
+        pairs = newPairs;
     }
 
     private static class Pair<K, V> {
@@ -61,23 +76,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         public void setValue(V value) {
             this.value = value;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Pair<?, ?> pair = (Pair<?, ?>) o;
-            return Objects.equals(key, pair.key) && Objects.equals(value, pair.value);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(key, value);
         }
     }
 }
