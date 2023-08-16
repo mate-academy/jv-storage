@@ -2,9 +2,6 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.net.Inet4Address;
-import java.util.ArrayList;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private static final int AMOUNT_OF_OBJECTS = 2;
