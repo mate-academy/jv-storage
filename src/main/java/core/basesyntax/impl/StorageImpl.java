@@ -3,12 +3,13 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Pair<K, V>[] pairs;
+    private static final int INITIAL_CAPACITY = 10;
+    private final Pair<K, V>[] pairs;
     private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-        pairs = (Pair<K, V>[]) new Pair[10];
+        pairs = (Pair<K, V>[]) new Pair[INITIAL_CAPACITY];
     }
 
     @Override
@@ -18,9 +19,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 pairs[i].setValue(value);
                 return;
             }
-        }
-        if (size == pairs.length) {
-            increaseCapacity();
         }
         pairs[size++] = new Pair<>(key, value);
     }
@@ -45,14 +43,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return obj2 == null;
         }
         return obj1.equals(obj2);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void increaseCapacity() {
-        int newCapacity = pairs.length * 2;
-        Pair<K, V>[] newPairs = (Pair<K, V>[]) new Pair[newCapacity];
-        System.arraycopy(pairs, 0, newPairs, 0, size);
-        pairs = newPairs;
     }
 
     private static class Pair<K, V> {
