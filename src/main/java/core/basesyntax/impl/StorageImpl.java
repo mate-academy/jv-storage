@@ -22,8 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size == pairs.length) {
             increaseCapacity();
         }
-        pairs[size] = new Pair<>(key, value);
-        size++;
+        pairs[size++] = new Pair<>(key, value);
     }
 
     @Override
