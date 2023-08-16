@@ -19,24 +19,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
                 values[i] = value;
-                isNewKey = false;
-                break;
-
+                return;
             }
         }
-        if (isNewKey) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-        }
 
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] == (key) || (keys[i] != null && !(keys[i].getClass().isPrimitive())
-                    && keys[i].equals(key))) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 return values[i];
             }
         }
