@@ -2,6 +2,9 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.net.Inet4Address;
+import java.util.ArrayList;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private static final int AMOUNT_OF_OBJECTS = 2;
@@ -9,7 +12,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int VALUE_INDEX = 1;
     private int currentIndex = 0;
 
-    private Object[][] array = new Object[MAX_SIZE][AMOUNT_OF_OBJECTS];
+    private Object[][] array;
+
+    public StorageImpl() {
+        array = new Object[MAX_SIZE][AMOUNT_OF_OBJECTS];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -28,8 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < currentIndex; i++) {
-            if ((key == null && array[i][KEY_INDEX] == null)
-                    || (key != null && key.equals(array[i][KEY_INDEX]))) {
+            if (isSameKey(key, i)) {
                 return (V) array[i][VALUE_INDEX];
             }
         }
@@ -43,11 +49,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKeyIndex(K key) {
         for (int i = 0; i < currentIndex; i++) {
-            if ((key == null && array[i][KEY_INDEX] == null)
-                    || (key != null && key.equals(array[i][KEY_INDEX]))) {
+            if (isSameKey(key, i)) {
                 return i;
             }
         }
         return -1;
+    }
+
+    private boolean isSameKey(K key, int index) {
+        return (key == null && array[index][KEY_INDEX] == null)
+                || (key != null && key.equals(array[index][KEY_INDEX]));
     }
 }
