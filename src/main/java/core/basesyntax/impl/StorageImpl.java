@@ -15,13 +15,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (canBeAdded()) {
-            int keyIndex = getKeyIndex(key);
-            if (keyIndex >= 0) {
-                pairs[keyIndex].setValue(value);
-            } else {
-                pairs[index++] = new Pair<>(key, value);
-            }
+        if (isFull()) {
+            return;
+        }
+        int keyIndex = getKeyIndex(key);
+        if (keyIndex >= 0) {
+            pairs[keyIndex].setValue(value);
+        } else {
+            pairs[index++] = new Pair<>(key, value);
         }
     }
 
@@ -40,15 +41,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int getKeyIndex(K key) {
         for (int i = 0; i < size(); i++) {
             K current = pairs[i].getKey();
-            if ((current != null && current.equals(key))
-                    || (current == null && key == null)) {
+            if (current == key || current != null && current.equals(key)) {
                 return i;
             }
         }
         return -1;
     }
 
-    private boolean canBeAdded() {
-        return size() < STORAGE_CAPACITY;
+    private boolean isFull() {
+        return size() >= STORAGE_CAPACITY;
     }
 }
