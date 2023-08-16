@@ -9,7 +9,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     public StorageImpl() {
         pairs = (Pair<K, V>[]) new Pair[10];
-        size = 0;
     }
 
     @Override
