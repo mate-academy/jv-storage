@@ -6,12 +6,12 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS_QUANTITY = 10;
-    private final int indexNotFound = -1;
+    private static final int indexNotFound = -1;
     private int currentSize;
-    private KeyValuePair<K, V>[] pairsArray;
+    private Pair<K, V>[] pairs;
 
     public StorageImpl() {
-        pairsArray = new KeyValuePair[MAX_ELEMENTS_QUANTITY];
+        pairs = new Pair[MAX_ELEMENTS_QUANTITY];
         currentSize = 0;
     }
 
@@ -19,16 +19,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = checkIndex(key);
         if (index == indexNotFound) {
-            pairsArray[currentSize++] = new KeyValuePair<>(key, value);
+            pairs[currentSize++] = new Pair<>(key, value);
         } else {
-            pairsArray[index].setValue(value);
+            pairs[index].setValue(value);
         }
     }
 
     @Override
     public V get(K key) {
         int index = checkIndex(key);
-        return index == indexNotFound ? null : pairsArray[index].getValue();
+        return index == indexNotFound ? null : pairs[index].getValue();
     }
 
     @Override
@@ -39,9 +39,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int checkIndex(K key) {
         int index = indexNotFound;
         for (int i = 0; i < currentSize; i++) {
-            if (pairsArray[i].getKey() == null ? pairsArray[i].getKey() == key
-                    : pairsArray[i].getKey().equals(key)) {
-                index = i;
+            if (pairs[i].getKey() == null) {
+                if (pairs[i].getKey() == key) {
+                    index = i;
+                }
+            } else {
+                if (pairs[i].getKey().equals(key)) {
+                    index = i;
+                }
             }
         }
         return index;
