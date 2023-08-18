@@ -4,44 +4,26 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 9;
-    private K key;
-    private V value;
-    private int size = 0;
-    private StorageImpl[] storArr = new StorageImpl[MAX_SIZE];
+    private int size;
+    private Object[] keys;
+    private Object[] values;
 
     public StorageImpl() {
-    }
-
-    public K getKey() {
-        return key;
-    }
-
-    public void setKey(K key) {
-        this.key = key;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
+        size = 0;
+        keys = new Object[MAX_SIZE];
+        values = new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < storArr.length; i++) {
-            if ((storArr[i] != null && storArr[i].key == null) && key == null) {
-                storArr[i].value = value;
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (((values[i] != null && keys[i] == null) && key == null)
+                    || (values[i] != null && keys[i] != null && keys[i].equals(key))) {
+                values[i] = value;
                 break;
-            } else if (storArr[i] != null && storArr[i].key != null && storArr[i].key.equals(key)) {
-                storArr[i].value = value;
-                break;
-            } else if (storArr[i] == null) {
-                StorageImpl newobj = new StorageImpl();
-                newobj.setKey(key);
-                newobj.setValue(value);
-                storArr[i] = newobj;
+            } else if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
                 size++;
                 break;
             }
@@ -50,19 +32,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        V res = null;
-        for (int i = 0; i < storArr.length; i++) {
+        V result = null;
+        for (int i = 0; i < MAX_SIZE; i++) {
             if ((key == null
-                    && storArr[i] != null
-                    && storArr[i].key == null)
-                    || (storArr[i] != null
-                    && storArr[i].key != null
-                    && storArr[i].key.equals(key))) {
-                res = (V) storArr[i].value;
+                    && values[i] != null
+                    && keys[i] == null)
+                    || (values[i] != null
+                    && keys[i] != null
+                    && keys[i].equals(key))) {
+                result = (V) values[i];
                 break;
             }
         }
-        return res;
+        return result;
     }
 
     @Override
