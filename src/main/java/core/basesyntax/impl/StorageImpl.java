@@ -28,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keysValues[countOfElements] = new KeyValue<>(key, value);
             countOfElements += 1;
         } else {
-            System.out.println("There are maximum count of elements in array.");
+            System.out.println("There are maximum count of elements in array");
         }
     }
 
