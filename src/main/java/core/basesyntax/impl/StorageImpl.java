@@ -4,10 +4,18 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Pair<K, V>[] pairs = new Pair[0];
+    private static final int MAX_PAIRS_COUNT = 10;
+    private Pair<K, V>[] pairs;
+
+    public StorageImpl() {
+        pairs = new Pair[0];
+    }
 
     @Override
     public void put(K key, V value) {
+        if (pairs.length >= 10) {
+            throw new RuntimeException("You already have full storage");
+        }
         Pair<K, V> pair = new Pair<>(key, value);
         if (pairs.length == 0) {
             pairs = new Pair[1];
