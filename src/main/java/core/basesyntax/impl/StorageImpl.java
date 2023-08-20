@@ -8,16 +8,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Object[] values;
     private int size;
 
-    public StorageImpl(){
+    public StorageImpl() {
         size = 0;
-        keys =  new Object[MAX_OF_ELEMENTS];
+        keys = new Object[MAX_OF_ELEMENTS];
         values = new Object[MAX_OF_ELEMENTS];
-
     }
+
     @Override
     public void put(K key, V value) {
         int index = getKeyIndex(key);
-        if(index == -1 ) {
+        if (index == -1) {
             keys[size] = key;
             values[size++] = value;
 
@@ -38,8 +38,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public int getKeyIndex(K key) {
-        for(int i = 0 ; i < size ; i++) {
-            if(keys[i] != null && keys[i].equals(key) || keys[i] == key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] != null && keys[i].equals(key) || keys[i] == key) {
                 return i;
             }
         }
