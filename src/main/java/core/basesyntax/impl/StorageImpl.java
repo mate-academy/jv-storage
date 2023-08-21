@@ -1,33 +1,37 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
+    private static final int MIN_INDEX = 0;
     private KeyValue<K, V>[] keysValues;
     private int size;
 
     public StorageImpl() {
         keysValues = new KeyValue[MAX_ELEMENTS];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        boolean isInArray = false;
-        if (size > 0 && get(key) != null) {
-            keysValues[getKeyIndex(key)].setValue(value);
-            isInArray = true;
-        }
-        if (!isInArray && size != MAX_ELEMENTS) {
-            keysValues[size++] = new KeyValue<>(key, value);
+        int keyIndex = getKeyIndex(key);
+        if (keyIndex >= MIN_INDEX) {
+            keysValues[keyIndex].setValue(value);
+        } else {
+            try {
+                keysValues[size++] = new KeyValue<>(key, value);
+            } catch (RuntimeException e) {
+                throw new RuntimeException("You can't put at the storage more than "
+                        + MAX_ELEMENTS + " elements");
+            }
         }
     }
 
     @Override
     public V get(K key) {
         int keyIndex = getKeyIndex(key);
-        return keyIndex >= 0 ? keysValues[keyIndex].getValue() : null;
+        return keyIndex >= MIN_INDEX ? keysValues[keyIndex].getValue() : null;
     }
 
     @Override
@@ -37,8 +41,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (keysValues[i].getKey() == key || keysValues[i].getKey() != null
-                    && keysValues[i].getKey().equals(key)) {
+            K currentKey = keysValues[i].getKey();
+            if (Objects.equals(key, currentKey) || currentKey != null
+                    && currentKey.equals(key)) {
                 return i;
             }
         }
