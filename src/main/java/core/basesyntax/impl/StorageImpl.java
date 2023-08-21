@@ -4,48 +4,43 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static final int AMOUNT_OF_OBJECTS = 2;
-    private static final int KEY_INDEX = 0;
-    private static final int VALUE_INDEX = 1;
-    private int currentIndex = 0;
-
-    private Object[][] array;
+    private int size = 0;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        array = new Object[MAX_SIZE][AMOUNT_OF_OBJECTS];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (currentIndex < MAX_SIZE) {
-            int index = findKeyIndex(key);
-            if (index == -1) {
-                array[currentIndex][KEY_INDEX] = key;
-                array[currentIndex][VALUE_INDEX] = value;
-                currentIndex++;
-            } else {
-                array[index][VALUE_INDEX] = value;
-            }
+        if (size >= MAX_SIZE) {
+            return;
+        }
+        int index = findKeyIndex(key);
+        if (index == -1) {
+            keys[this.size] = key;
+            values[this.size] = value;
+            this.size++;
+        } else {
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < currentIndex; i++) {
-            if (isSameKey(key, i)) {
-                return (V) array[i][VALUE_INDEX];
-            }
-        }
-        return null;
+        int index = findKeyIndex(key);
+        return index == -1 ? null : values[index];
     }
 
     @Override
     public int size() {
-        return currentIndex;
+        return size;
     }
 
     private int findKeyIndex(K key) {
-        for (int i = 0; i < currentIndex; i++) {
+        for (int i = 0; i < size; i++) {
             if (isSameKey(key, i)) {
                 return i;
             }
@@ -54,7 +49,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isSameKey(K key, int index) {
-        return (key == null && array[index][KEY_INDEX] == null)
-                || (key != null && key.equals(array[index][KEY_INDEX]));
+        return (key == keys[index])
+                || key != null && key.equals(keys[index]);
     }
 }
