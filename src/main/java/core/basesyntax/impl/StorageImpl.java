@@ -27,10 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        if (index == -1) {
-            return null;
-        }
-        return pairs[index].getValue();
+        return index == -1 ? null : pairs[index].getValue();
     }
 
     @Override
