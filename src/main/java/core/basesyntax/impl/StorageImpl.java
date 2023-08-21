@@ -6,50 +6,31 @@ import java.util.Objects;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_PAIRS_COUNT = 10;
     private Pair<K, V>[] pairs;
+    private int size;
 
     public StorageImpl() {
-        pairs = new Pair[0];
+        size = 0;
+        pairs = new Pair[MAX_PAIRS_COUNT];
     }
 
     @Override
     public void put(K key, V value) {
-        if (pairs.length >= 10) {
+        if (size >= MAX_PAIRS_COUNT) {
             throw new RuntimeException("You already have full storage");
         }
         Pair<K, V> pair = new Pair<>(key, value);
-        if (pairs.length == 0) {
-            pairs = new Pair[1];
-            pairs[0] = pair;
-            return;
+        if (!updatePair(pair)) {
+            pairs[size] = pair;
+            size++;
         }
-        if (get(key) == null) {
-            pairs = generateNewArray(pair, pairs);
-            return;
-        }
-        updatePair(pair);
-    }
 
-    private Pair<K, V>[] generateNewArray(Pair<K, V> newPair, Pair<K, V>[] oldPairs) {
-        Pair<K, V>[] newPairs = new Pair[oldPairs.length + 1];
-        System.arraycopy(oldPairs, 0, newPairs, 0, oldPairs.length);
-        newPairs[newPairs.length - 1] = newPair;
-        return newPairs;
-    }
-
-    private void updatePair(Pair<K, V> pair) {
-        for (int i = 0; i < pairs.length; i++) {
-            if (Objects.equals(pairs[i].getKey(), pair.getKey())) {
-                pairs[i] = pair;
-                return;
-            }
-        }
     }
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> pair : pairs) {
-            if (Objects.equals(pair.getKey(), key)) {
-                return pair.getValue();
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(pairs[i].getKey(), key)) {
+                return pairs[i].getValue();
             }
         }
         return null;
@@ -57,7 +38,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return pairs.length;
+        return size;
+    }
+
+    private boolean updatePair(Pair<K, V> pair) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(pairs[i].getKey(), pair.getKey())) {
+                pairs[i] = pair;
+                return true;
+            }
+        }
+        return false;
     }
 
     private class Pair<K, V> {
