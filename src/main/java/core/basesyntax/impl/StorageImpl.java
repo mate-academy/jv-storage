@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_PAIRS_COUNT = 10;
@@ -20,21 +19,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException(EXCEPTION_MESSAGE);
         }
         Pair<K, V> pair = new Pair<>(key, value);
-        if (!updatePair(pair)) {
+        int index = getIndexByKey(key);
+        if (index == -1) {
             pairs[size] = pair;
             size++;
+            return;
         }
+        pairs[index] = pair;
 
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(pairs[i].getKey(), key)) {
-                return pairs[i].getValue();
-            }
-        }
-        return null;
+        int index = getIndexByKey(key);
+        return index == -1 ? null : pairs[index].value;
     }
 
     @Override
@@ -42,14 +40,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean updatePair(Pair<K, V> pair) {
+    private int getIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(pairs[i].getKey(), pair.getKey())) {
-                pairs[i] = pair;
-                return true;
+            K pairKey = pairs[i].key;
+            if ((key == pairKey) || (pairKey != null && pairKey.equals(key))) {
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 
     private class Pair<K, V> {
