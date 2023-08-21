@@ -4,25 +4,22 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_PAIRS_COUNT = 10;
-    private static final String EXCEPTION_MESSAGE = "You already have full storage";
     private Pair<K, V>[] pairs;
     private int size;
 
     public StorageImpl() {
-        size = 0;
         pairs = new Pair[MAX_PAIRS_COUNT];
     }
 
     @Override
     public void put(K key, V value) {
         if (size >= MAX_PAIRS_COUNT) {
-            throw new RuntimeException(EXCEPTION_MESSAGE);
+            throw new RuntimeException("You already have full storage");
         }
         Pair<K, V> pair = new Pair<>(key, value);
         int index = getIndexByKey(key);
         if (index == -1) {
-            pairs[size] = pair;
-            size++;
+            pairs[size++] = pair;
             return;
         }
         pairs[index] = pair;
@@ -43,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int getIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
             K pairKey = pairs[i].key;
-            if ((key == pairKey) || (pairKey != null && pairKey.equals(key))) {
+            if (pairKey == key || pairKey != null && pairKey.equals(key)) {
                 return i;
             }
         }
