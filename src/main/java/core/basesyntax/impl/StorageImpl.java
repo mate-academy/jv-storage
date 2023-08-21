@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_PAIRS_COUNT = 10;
+    private static final String EXCEPTION_MESSAGE = "You already have full storage";
     private Pair<K, V>[] pairs;
     private int size;
 
@@ -16,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (size >= MAX_PAIRS_COUNT) {
-            throw new RuntimeException("You already have full storage");
+            throw new RuntimeException(EXCEPTION_MESSAGE);
         }
         Pair<K, V> pair = new Pair<>(key, value);
         if (!updatePair(pair)) {
