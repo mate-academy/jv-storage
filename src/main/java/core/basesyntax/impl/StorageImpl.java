@@ -6,7 +6,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
     private KeyValue<K, V>[] keysValues;
     private int size;
-    private int tempIndex;
 
     public StorageImpl() {
         keysValues = new KeyValue[MAX_ELEMENTS];
@@ -17,31 +16,33 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         boolean isInArray = false;
         if (size > 0 && get(key) != null) {
-            keysValues[tempIndex].setValue(value);
+            keysValues[getKeyIndex(key)].setValue(value);
             isInArray = true;
         }
         if (!isInArray && size != MAX_ELEMENTS) {
             keysValues[size++] = new KeyValue<>(key, value);
-        } else {
-            System.out.println("There are maximum count of elements in array");
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keysValues[i].getKey() == key || (keysValues[i].getKey() != null
-                    && keysValues[i].getKey().equals(key))) {
-                tempIndex = i;
-                return keysValues[i].getValue();
-            }
-        }
-        return null;
+        int keyIndex = getKeyIndex(key);
+        return keyIndex >= 0 ? keysValues[keyIndex].getValue() : null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    public int getKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keysValues[i].getKey() == key || keysValues[i].getKey() != null
+                    && keysValues[i].getKey().equals(key)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private class KeyValue<K, V> {
