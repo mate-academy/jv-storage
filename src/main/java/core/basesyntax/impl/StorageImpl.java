@@ -6,7 +6,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private K[] keys;
     private V[] values;
-
     private int size;
 
     public StorageImpl() {
@@ -16,24 +15,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = getKindex(key);
+        int index = getKeyIndex(key);
 
         if (index >= 0) {
             values[index] = value;
         } else {
-            if (size >= MAX_SIZE) {
-                // Storage is full, cannot add more elements
-                throw new IllegalStateException("Storage is full");
-            }
             keys[size] = key;
-            values[size] = value;
-            size++;
+            values[size++] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        int index = getKindex(key);
+        int index = getKeyIndex(key);
 
         if (index >= 0) {
             return values[index];
@@ -46,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int getKindex(K key) {
+    private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
