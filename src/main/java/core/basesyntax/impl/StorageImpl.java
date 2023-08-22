@@ -19,13 +19,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size == MAX_SIZE) {
             return;
         }
-        // if index exists reassign value
         int index = indexOf(key);
         if (index != -1) {
             values[index] = value;
-        }
-        // if it doesn't exist put it into arrays
-        if (index == -1) {
+        } else if (index == -1) {
             keys[size] = key;
             values[size] = value;
             size++;
