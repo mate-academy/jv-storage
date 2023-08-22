@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (checkKeysDublicate(key,value)) {
+        if (updateExistingKey(key,value)) {
             if (size < MAX_ARRAY_SIZE) {
                 keysArray[size] = key;
                 valuesArray[size] = value;
@@ -37,7 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public boolean checkKeysDublicate(K key, V value) {
+    private boolean updateExistingKey(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (keysArray[i] != null && keysArray[i].equals(key)
                     || keysArray[i] == null && key == null) {
