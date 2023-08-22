@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    private static final int NOT_FOUND_VALUE = -1;
     private final K[] keys;
     private final V[] values;
     private int size = 0;
@@ -21,7 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         int index = findKey(key);
-        if (index == -1) {
+        if (index == NOT_FOUND_VALUE) {
             keys[size] = key;
             values[size++] = value;
         } else {
@@ -32,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = findKey(key);
-        return index != -1 ? values[index] : null;
+        return index != NOT_FOUND_VALUE ? values[index] : null;
     }
 
     @Override
@@ -47,6 +48,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-        return -1;
+        return NOT_FOUND_VALUE;
     }
 }
