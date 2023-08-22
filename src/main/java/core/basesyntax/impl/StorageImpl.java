@@ -4,47 +4,47 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH_OF_ARRAYS = 10;
-
-    private final K[] arrayOfKeys;
-    private final V[] arrayOfValues;
-    private int sizeOfArrays;
+    private static final int INDEX_MISSING_INDICATOR = -1;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        arrayOfKeys = (K[]) new Object[MAX_LENGTH_OF_ARRAYS];
-        arrayOfValues = (V[]) new Object[MAX_LENGTH_OF_ARRAYS];
-        sizeOfArrays = 0;
+        keys = (K[]) new Object[MAX_LENGTH_OF_ARRAYS];
+        values = (V[]) new Object[MAX_LENGTH_OF_ARRAYS];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         int index = getKeyIndex(key);
-        if (index == -1) {
-            arrayOfKeys[sizeOfArrays] = key;
-            arrayOfValues[sizeOfArrays] = value;
-            sizeOfArrays++;
+        if (index == INDEX_MISSING_INDICATOR) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         } else {
-            arrayOfValues[index] = value;
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
         int index = getKeyIndex(key);
-        return index == -1 ? null : arrayOfValues[getKeyIndex(key)];
+        return index == INDEX_MISSING_INDICATOR ? null : values[getKeyIndex(key)];
     }
 
     @Override
     public int size() {
-        return sizeOfArrays;
+        return size;
     }
 
-    public int getKeyIndex(K key) {
-        for (int i = 0; i < sizeOfArrays; i++) {
-            if (arrayOfKeys[i] != null && arrayOfKeys[i].equals(key)
-                    || arrayOfKeys[i] == key) {
+    private int getKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] != null && keys[i].equals(key)
+                    || keys[i] == key) {
                 return i;
             }
         }
-        return -1;
+        return INDEX_MISSING_INDICATOR;
     }
 }
