@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
@@ -18,14 +17,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int keyIndex = getKeyIndex(key);
         if (keyIndex >= MIN_INDEX) {
             keysValues[keyIndex].setValue(value);
-        } else {
-            try {
-                keysValues[size++] = new KeyValue<>(key, value);
-            } catch (RuntimeException e) {
-                throw new RuntimeException("You can't put at the storage more than "
-                        + MAX_ELEMENTS + " elements");
-            }
+            return;
         }
+        if (size >= MAX_ELEMENTS) {
+            throw new RuntimeException("You can't put at the storage more than "
+                    + MAX_ELEMENTS + " elements");
+        }
+        keysValues[size++] = new KeyValue<>(key, value);
     }
 
     @Override
@@ -39,10 +37,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public int getKeyIndex(K key) {
+    private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
             K currentKey = keysValues[i].getKey();
-            if (Objects.equals(key, currentKey) || currentKey != null
+            if (key == currentKey || currentKey != null
                     && currentKey.equals(key)) {
                 return i;
             }
