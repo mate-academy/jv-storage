@@ -4,15 +4,16 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static int CAPACITY = 10;
+    public static final int NOT_FOUND = -1;
     private K[] keys;
     private V[] values;
     private int size;
+
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
         keys = (K[]) new Object[CAPACITY];
         values = (V[]) new Object[CAPACITY];
-        size = 0;
     }
 
     @Override
@@ -47,7 +48,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND;
     }
 }
-
