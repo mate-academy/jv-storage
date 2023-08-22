@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ATTEMPTS];
-        values = (V[]) new Object[MAX_ATTEMPTS];;
+        values = (V[]) new Object[MAX_ATTEMPTS];
     }
 
     @Override
