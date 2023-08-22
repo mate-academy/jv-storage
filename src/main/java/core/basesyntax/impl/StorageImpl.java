@@ -24,10 +24,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (keysArray[i] == null && key == null) {
-                return (V) valuesArray[i];
-            }
-            if (keysArray[i] != null && keysArray[i].equals(key)) {
+            if (keysArray[i] == null && key == null
+                    || keysArray[i] != null && keysArray[i].equals(key)) {
                 return (V) valuesArray[i];
             }
         }
@@ -41,11 +39,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public boolean checkKeysDublicate(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (keysArray[i] != null && keysArray[i].equals(key)) {
-                valuesArray[i] = value;
-                return false;
-            }
-            if (keysArray[i] == null && key == null) {
+            if (keysArray[i] != null && keysArray[i].equals(key)
+                    || keysArray[i] == null && key == null) {
                 valuesArray[i] = value;
                 return false;
             }
