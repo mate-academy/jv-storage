@@ -15,13 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         size = 0;
     }
 
-    public static void main(String[] args) {
-        Storage<Integer, Integer> storage = new StorageImpl<>();
-        storage.put(1, 2);
-        storage.put(3, 4);
-        storage.put(3, 5);
-    }
-
     @Override
     public void put(K key, V value) {
         if (size == CAPACITY) {
@@ -29,10 +22,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         int keyIndex = findKeyIndex(key);
         if (keyIndex >= 0) {
-
             values[keyIndex] = value;
         } else {
-
             keys[size] = key;
             values[size] = value;
             size++;
