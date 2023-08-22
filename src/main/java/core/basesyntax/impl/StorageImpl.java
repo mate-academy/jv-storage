@@ -5,44 +5,46 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH_OF_ARRAYS = 10;
 
-    private Object[] arrayOfKeys = new Object[MAX_LENGTH_OF_ARRAYS];
-    private Object[] arrayOfValues = new Object[MAX_LENGTH_OF_ARRAYS];
+    private final Object[] arrayOfKeys;
+    private final Object[] arrayOfValues;
+    private int sizeOfArrays;
+
+    public StorageImpl() {
+        arrayOfKeys = new Object[MAX_LENGTH_OF_ARRAYS];
+        arrayOfValues = new Object[MAX_LENGTH_OF_ARRAYS];
+        sizeOfArrays = 0;
+    }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_LENGTH_OF_ARRAYS; i++) {
-            if (arrayOfKeys[i] == null) {
-                arrayOfKeys[i] = key;
-                arrayOfValues[i] = value;
-                return;
-            }
-            if (arrayOfKeys[i].equals(key)) {
-                arrayOfValues[i] = value;
-                return;
-            }
+        int index = getKeyIndex(key);
+        if (index == -1) {
+            arrayOfKeys[sizeOfArrays] = key;
+            arrayOfValues[sizeOfArrays] = value;
+            sizeOfArrays++;
+        } else {
+            arrayOfValues[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_LENGTH_OF_ARRAYS; i++) {
-            if (arrayOfKeys[i] != null && arrayOfKeys[i].equals(key)) {
-                return (V) arrayOfValues[i];
-            }
-        }
-        return null;
+        int index = getKeyIndex(key);
+        return index == -1 ? null : (V) arrayOfValues[getKeyIndex(key)];
     }
 
     @Override
     public int size() {
-        int sizeOfArrays = 0;
-        for (int i = 0; i < MAX_LENGTH_OF_ARRAYS; i++) {
-            if (arrayOfKeys[i] != null) {
-                sizeOfArrays++;
-            } else {
-                break;
+        return sizeOfArrays;
+    }
+
+    public int getKeyIndex(K key) {
+        for (int i = 0; i < sizeOfArrays; i++) {
+            if (arrayOfKeys[i] != null && arrayOfKeys[i].equals(key)
+                    || arrayOfKeys[i] == key) {
+                return i;
             }
         }
-        return sizeOfArrays;
+        return -1;
     }
 }
