@@ -5,15 +5,15 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int MAX_STORAGE_NUMBER = 10;
-    private K[] keyArray;
+    private K[] keys;
 
-    private V[] valueArray;
+    private V[] values;
 
     private int size;
 
     public StorageImpl() {
-        keyArray = (K[]) new Object[MAX_STORAGE_NUMBER];
-        valueArray = (V[]) new Object[MAX_STORAGE_NUMBER];
+        keys = (K[]) new Object[MAX_STORAGE_NUMBER];
+        values = (V[]) new Object[MAX_STORAGE_NUMBER];
         size = 0;
     }
 
@@ -22,19 +22,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size == MAX_STORAGE_NUMBER) {
             return;
         }
-        int keyIndex = findIndex(key);
+        int keyIndex = findIndexByKey(key);
         if (keyIndex >= 0) {
-            valueArray[keyIndex] = value;
+            values[keyIndex] = value;
         } else {
-            keyArray[size] = key;
-            valueArray[size] = value;
+            keys[size] = key;
+            values[size] = value;
             size++;
         }
     }
 
-    private int findIndex(K key) {
+    private int findIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (keyArray[i] == key || (key != null && key.equals(keyArray[i]))) {
+            if (keys[i] == key || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
@@ -43,8 +43,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int keyIndex = findIndex(key);
-        return keyIndex == -1 ? null : valueArray[keyIndex];
+        int keyIndex = findIndexByKey(key);
+        return keyIndex == -1 ? null : values[keyIndex];
     }
 
     @Override
