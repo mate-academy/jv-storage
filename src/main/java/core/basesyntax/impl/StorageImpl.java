@@ -8,7 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final V[] values;
     private int size;
 
-    @SuppressWarnings("unchecked")
     public StorageImpl() {
         keys = (K[]) new Object[AMOUNT_OF_ELEMENTS];
         values = (V[])new Object[AMOUNT_OF_ELEMENTS];
@@ -17,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size == AMOUNT_OF_ELEMENTS) {
+        if (size > AMOUNT_OF_ELEMENTS) {
             return;
         }
 
