@@ -1,55 +1,53 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 10;
-    private Object[] keys;
-    private Object[] values;
+    private static final int AMOUNT_OF_ELEMENTS = 10;
+    private final K[] keys;
+    private final V[] values;
     private int size;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
-        keys = new Object[MAX_SIZE];
-        values = new Object[MAX_SIZE];
+        keys = (K[]) new Object[AMOUNT_OF_ELEMENTS];
+        values = (V[]) new Object[AMOUNT_OF_ELEMENTS];
         size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                values[i] = value;
-                return;
-            }
+        if (size == AMOUNT_OF_ELEMENTS) {
+            return;
         }
+        int keyIndex = findKeyIndex(key);
+        if (keyIndex >= 0) {
+            values[keyIndex] = value;
+        } else {
 
-        keys[size] = key;
-        values[size] = value;
-        size++;
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return (V) values[i];
-                }
-            }
-            return null;
-        }
-
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                return (V) values[i];
-            }
-        }
-        return null;
+        int keyIndex = findKeyIndex(key);
+        return keyIndex == -1 ? null : values[keyIndex];
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if ((key == keys[i]) || key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
