@@ -3,53 +3,48 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAX_SIZE = 10;
     private int topElement;
     private final Object[][] elements;
 
     public StorageImpl() {
-        topElement = 0;
         elements = new Object[MAX_SIZE][2];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < topElement; i++) {
-            if (key == null) {
-                if (elements[i][0] == null) {
-                    elements[i][1] = value;
-                    return;
-                }
-                continue;
+        int index = findKeyIndex(key);
+        if (index == -1) {
+            if (topElement < MAX_SIZE) {
+                elements[topElement][0] = key;
+                elements[topElement][1] = value;
+                topElement++;
             }
-            if (key.equals(elements[i][0])) {
-                elements[i][1] = value;
-                return;
-            }
+        } else {
+            elements[index][1] = value;
         }
-        elements[topElement][0] = key;
-        elements[topElement][1] = value;
-        topElement++;
     }
 
     @Override
     public V get(K key) {
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            return (V) elements[index][1];
+        }
+        return null;
+    }
+
+    private int findKeyIndex(K key) {
         for (int i = 0; i < topElement; i++) {
             if (key == null) {
                 if (elements[i][0] == null) {
-                    return (V) elements[i][1];
+                    return i;
                 }
-                continue;
-            }
-            if (elements[i][0] == null) {
-                continue;
-            }
-            if (elements[i][0].equals(key)) {
-                return (V) elements[i][1];
+            } else if (key.equals(elements[i][0])) {
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     @Override
