@@ -5,6 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private Pair<K, V>[] keyValuePairs;
+    private int keyValuePairsSize = 0;
 
     public StorageImpl() {
         keyValuePairs = new Pair[MAX_ITEMS_NUMBER];
@@ -16,14 +17,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
             if (keyValuePairs[i] == null) {
                 keyValuePairs[i] = current;
-                break;
+                keyValuePairsSize++;
+                return;
             }
 
             if ((current.getKey() == keyValuePairs[i].getKey())
                     || ((current.getKey() != null)
                     && current.getKey().equals(keyValuePairs[i].getKey()))) {
                 keyValuePairs[i].setValue(current.getValue());
-                break;
+                return;
             }
         }
     }
@@ -46,13 +48,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int keyValuePairsSize = 0;
-        for (Pair<K, V> keyValuePair : keyValuePairs) {
-            if (keyValuePair == null) {
-                break;
-            }
-            keyValuePairsSize++;
-        }
         return keyValuePairsSize;
     }
 }
