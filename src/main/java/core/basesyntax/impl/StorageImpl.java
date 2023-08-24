@@ -5,10 +5,11 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private Pair<K, V>[] keyValuePairs;
-    private int keyValuePairsSize = 0;
+    private int keyValuePairsSize;
 
     public StorageImpl() {
         keyValuePairs = new Pair[MAX_ITEMS_NUMBER];
+        keyValuePairsSize = 0;
     }
 
     @Override
