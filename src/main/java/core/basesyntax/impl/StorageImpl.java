@@ -17,17 +17,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size == MAX_SIZE) {
-            return;
-        }
         int index = findKeyIndex(key);
         if (index != -1) {
             values[index] = value;
-        } else {
-            keys[size] = key;
-            values[size] = value;
-            size++;
 
+        } else {
+            if (size == MAX_SIZE) {
+                return;
+            } else {
+                keys[size] = key;
+                values[size] = value;
+                size++;
+            }
         }
     }
 
