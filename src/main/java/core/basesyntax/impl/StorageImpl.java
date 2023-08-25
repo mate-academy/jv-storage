@@ -9,7 +9,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         keyValuePairs = new Pair[MAX_ITEMS_NUMBER];
-        keyValuePairsSize = 0;
     }
 
     @Override
