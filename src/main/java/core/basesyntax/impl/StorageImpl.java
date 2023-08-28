@@ -9,20 +9,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int index;
 
     public StorageImpl() {
-
         pairs = new Pair[STORAGE_LENGTH];
-        index = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        if (isFull()) {
-            return;
-        }
         int keyIndex = getKeyIndex(key);
         if (keyIndex >= 0) {
             pairs[keyIndex].setValue(value);
         } else {
+            if (isFull()) {
+                return;
+            }
             pairs[index++] = new Pair<>(key, value);
         }
     }
