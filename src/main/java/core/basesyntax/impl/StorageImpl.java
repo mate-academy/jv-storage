@@ -8,18 +8,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final V[] values;
     private int size;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
         keys = (K[]) new Object[AMOUNT_OF_ELEMENTS];
         values = (V[]) new Object[AMOUNT_OF_ELEMENTS];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-
+        if (size == AMOUNT_OF_ELEMENTS) {
+            return;
+        }
         int keyIndex = findKeyIndex(key);
         if (keyIndex >= 0) {
             values[keyIndex] = value;
         } else {
+
             keys[size] = key;
             values[size] = value;
             size++;
@@ -39,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
+            if ((key == keys[i]) || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
