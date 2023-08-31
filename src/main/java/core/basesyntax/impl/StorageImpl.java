@@ -1,68 +1,39 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K key;
-    private V value;
-    private List<StorageImpl> arrayStorage = new ArrayList();
-    private int count = 0;
-
-    public void setKey(K key) {
-        this.key = key;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
-    }
-
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
-    }
+    private static final int MAX_ELEMENT = 10;
+    private K[] arrayKeys = (K[]) new Object[MAX_ELEMENT];
+    private V[] arrayValues = (V[]) new Object[MAX_ELEMENT];
+    private int storageLength;
 
     @Override
     public void put(K key, V value) {
-        StorageImpl storage = new StorageImpl();
-        storage.setKey(key);
-        storage.setValue(value);
-        arrayStorage.add(storage);
-
-        for (int i = 1; i < arrayStorage.size(); i++) {
-            if ((arrayStorage.get(i - 1).getKey() == null && key == null)
-                    || arrayStorage.get(i - 1).getKey() == key) {
-                arrayStorage.get(i - 1).setValue(value);
-                arrayStorage.remove(storage);
-            } else if (arrayStorage.get(i - 1).getKey() != null
-                    && arrayStorage.get(i - 1).getKey().equals(key)) {
-                arrayStorage.get(i - 1).setValue(value);
-                arrayStorage.remove(storage);
+        for (int i = 0; i < storageLength; i++) {
+            if (Objects.equals(key, arrayKeys[i])) {
+                arrayValues[i] = value;
+                return;
             }
         }
+        arrayKeys[storageLength] = key;
+        arrayValues[storageLength] = value;
+        storageLength++;
     }
 
     @Override
     public V get(K key) {
-        V result = null;
-        for (StorageImpl storageImpl : arrayStorage) {
-            if (storageImpl.getKey() == null) {
-                result = (V) storageImpl.getValue();
-            } else if (storageImpl.getKey().equals(key) || storageImpl.getKey() == key) {
-                result = (V) storageImpl.getValue();
-                break;
+        for (int i = 0; i < storageLength; i++) {
+            if (Objects.equals(key, arrayKeys[i])) {
+                return arrayValues[i];
             }
         }
-        return result;
+        return null;
     }
 
     @Override
     public int size() {
-
-        return arrayStorage.size();
+        return storageLength;
     }
 }
