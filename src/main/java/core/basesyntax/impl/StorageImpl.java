@@ -12,7 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[MAX_CAPACITY];
         values = (V[]) new Object[MAX_CAPACITY];
-        size = 0;
     }
 
     @Override
@@ -20,45 +19,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size >= MAX_CAPACITY) {
             throw new RuntimeException("Storage is full");
         }
-        int index = -1;
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    index = i;
-                    break;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    index = i;
-                    break;
-                }
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+                values[i] = value;
+                return;
             }
         }
 
-        if (index == -1) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-        } else {
-            values[index] = value;
-        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return values[i];
-                }
-            }
-            return null;
-        }
-
         for (int i = 0; i < size; i++) {
-            if (keys[i] != null && key.equals(keys[i])) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
                 return values[i];
             }
         }
