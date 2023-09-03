@@ -13,7 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.keys = new Object[MAX_SIZE];
         this.values = new Object[MAX_SIZE];
     }
-
+    @Override
     public void put(K key, V value) {
         int indexKey = indexOf(key);
         if (indexKey == -1) {
