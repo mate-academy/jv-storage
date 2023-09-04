@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (indexKey == -1) {
             return null;
         }
-        return (V) values[indexOf(key)];
+        return values[indexKey];
     }
 
     @Override
@@ -41,8 +41,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            boolean keysAreEqual = key == null ? key == keys[i]
-                    : key.equals(keys[i]);
             if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
