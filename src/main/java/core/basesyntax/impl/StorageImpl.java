@@ -1,38 +1,60 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final List<K> keys;
-    private final List<V> values;
+    private final Object[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        keys = new ArrayList<>(MAX_SIZE);
-        values = new ArrayList<>(MAX_SIZE);
+        keys = new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        int index = keys.indexOf(key);
-        if (index != -1) {
-            values.set(index, value);
-        } else if (keys.size() < MAX_SIZE) {
-            keys.add(key);
-            values.add(value);
+        if (size < MAX_SIZE) {
+            int existingIndex = findKeyIndex(key);
+            if (existingIndex != -1) {
+                values[existingIndex] = value;
+            } else {
+                keys[size] = key;
+                values[size] = value;
+                size++;
+            }
+        } else {
+            throw new IllegalStateException("Storage is full");
         }
     }
 
     @Override
     public V get(K key) {
-        int index = keys.indexOf(key);
-        return (index != -1) ? values.get(index) : null;
+        int keyIndex = findKeyIndex(key);
+        return keyIndex != -1 ? values[keyIndex] : null;
     }
 
     @Override
     public int size() {
-        return keys.size();
+        return size;
+    }
+
+    private int findKeyIndex(K key) {
+        if (key == null) {
+            for (int i = 0; i < size; i++) {
+                if (keys[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (key.equals(keys[i])) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 }
