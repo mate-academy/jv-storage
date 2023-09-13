@@ -4,33 +4,32 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
+    private int size;
 
-    private final K[] keysStorage = (K[]) new Object[STORAGE_SIZE];
-    private final V[] valuesStorage = (V[]) new Object[STORAGE_SIZE];
+    private K[] keysStorage;
+    private V[] valuesStorage;
+
+    public StorageImpl() {
+        keysStorage = (K[]) new Object[STORAGE_SIZE];
+        valuesStorage = (V[]) new Object[STORAGE_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
-        if (key == null && value != null) {
-            for (int i = 0; i < keysStorage.length; i++) {
-                if (keysStorage[i] == null) {
-                    valuesStorage[i] = value;
-                    break;
-                }
+        for (int i = 0; i < size; i++) {
+            if (compare(keysStorage[i], key)) {
+                valuesStorage[i] = value;
+                return;
             }
-        } else {
-            for (int i = 0; i < keysStorage.length; i++) {
-                if (key.equals(keysStorage[i])) {
-                    valuesStorage[i] = value;
-                    break;
-                }
-                if (keysStorage[i] == null && valuesStorage[i] == null) {
-                    keysStorage[i] = key;
-                    valuesStorage[i] = value;
-                    break;
-                }
-            }
-
         }
+        keysStorage[size] = key;
+        valuesStorage[size] = value;
+        size++;
+    }
+
+    private boolean compare(K keyOne, K keyTwo) {
+        return keyOne == keyTwo
+                || keyOne != null && keyOne.equals(keyTwo);
     }
 
     @Override
@@ -46,12 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int count = 0;
-        for (int i = 0; i < valuesStorage.length; i++) {
-            if (valuesStorage[i] != null) {
-                count++;
-            }
-        }
-        return count;
+        return size;
     }
 }
