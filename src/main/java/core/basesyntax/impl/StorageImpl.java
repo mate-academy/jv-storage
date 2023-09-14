@@ -5,8 +5,8 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int ARRAY_SIZE = 10;
 
-    K[] keyArr = (K[])new Object[ARRAY_SIZE];
-    V[] valArr = (V[])new Object[ARRAY_SIZE];
+    private final K[] keyArr = (K[])new Object[ARRAY_SIZE];
+    private final V[] valArr = (V[])new Object[ARRAY_SIZE];
     private int pos = 0;
 
     @Override
@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < pos; i ++) {
+        for (int i = 0; i < pos; i++) {
             if (keyArr[i] != null && key != null) {
                 if (keyArr[i].equals(key)) {
                     return valArr[i];
