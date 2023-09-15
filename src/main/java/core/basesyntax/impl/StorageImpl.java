@@ -1,32 +1,26 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.lang.reflect.Array;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
     private K[] keys;
     private V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
+        keys = (K[]) new Object[DEFAULT_CAPACITY];
+        values = (V[]) new Object[DEFAULT_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        if (keys != null) {
-            // Find & update value
-            for (int i = 0; i < size; i++) {
-                if (Objects.equals(keys[i], key)) {
-                    values[i] = value;
-                    return;
-                }
+        // Find & update value
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
+                values[i] = value;
+                return;
             }
-        }
-        if (keys == null || values == null || keys.length <= size) {
-            // Increase max storage size
-            increaseSize(key.getClass(), value.getClass());
         }
         // Add new pair
         keys[size] = key;
@@ -38,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         if (keys != null) {
             for (int i = 0; i < size; i++) {
-                if (Objects.equals(keys[i], key)) {
+                if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                     return values[i];
                 }
             }
@@ -49,20 +43,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
-    }
-
-    private void increaseSize(Class keyClass, Class valueClass) {
-        int newSize = keys == null || values == null ? DEFAULT_CAPACITY
-                : keys.length + DEFAULT_CAPACITY;
-        K[] newKeys = (K[]) Array.newInstance(keyClass, newSize);
-        V[] newValues = (V[]) Array.newInstance(valueClass, newSize);
-        if (keys != null) {
-            System.arraycopy(keys, 0, newKeys, 0, keys.length);
-        }
-        keys = newKeys;
-        if (values != null) {
-            System.arraycopy(values, 0, newValues, 0, values.length);
-        }
-        values = newValues;
     }
 }
