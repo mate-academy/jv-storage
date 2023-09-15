@@ -10,36 +10,36 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_CAPACITY];
-        this.values = (V[]) new Object[MAX_CAPACITY];
+        keys = (K[]) new Object[MAX_CAPACITY];
+        values = (V[]) new Object[MAX_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        if (this.size > MAX_CAPACITY) {
+        if (size > MAX_CAPACITY) {
             throw new IndexOutOfBoundsException("Storage is full!");
         }
 
         int indexOfFoundElement = getIndexIfContains(key);
 
         if (indexOfFoundElement != NOT_FOUND_INDEX) {
-            this.values[indexOfFoundElement] = value;
+            values[indexOfFoundElement] = value;
             return;
         }
 
-        this.keys[size] = key;
-        this.values[size] = value;
-        this.size++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        int indexOfFoundElement = getIndexIfContains(key);
-        if (indexOfFoundElement == NOT_FOUND_INDEX) {
+        int index = getIndexIfContains(key);
+        if (index == NOT_FOUND_INDEX) {
             return null;
         }
 
-        return values[getIndexIfContains(key)];
+        return values[index];
     }
 
     @Override
