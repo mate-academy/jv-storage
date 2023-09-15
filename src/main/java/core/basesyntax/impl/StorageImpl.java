@@ -5,6 +5,7 @@ import java.lang.reflect.Array;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int DEFAULT_CAPACITY = 10;
     private K[] keys;
     private V[] values;
     private int size = 0;
@@ -51,7 +52,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void increaseSize(Class keyClass, Class valueClass) {
-        int newSize = keys == null || values == null ? 10 : keys.length + 10;
+        int newSize = keys == null || values == null ? DEFAULT_CAPACITY
+                : keys.length + DEFAULT_CAPACITY;
         K[] newKeys = (K[]) Array.newInstance(keyClass, newSize);
         V[] newValues = (V[]) Array.newInstance(valueClass, newSize);
         if (keys != null) {
