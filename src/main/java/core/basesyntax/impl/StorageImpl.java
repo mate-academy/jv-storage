@@ -5,22 +5,14 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int STORAGE_SIZE = 10;
     private int size = 0;
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        keys = new Object[STORAGE_SIZE];
-        values = new Object[STORAGE_SIZE];
+        keys = (K[]) new Object[STORAGE_SIZE];
+        values = (V[]) new Object[STORAGE_SIZE];
     }
 
-    public Object[] getKeys() {
-        return keys;
-    }
-
-    public Object[] getValues() {
-        return values;
-    }
-    
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
