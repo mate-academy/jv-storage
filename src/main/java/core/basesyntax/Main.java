@@ -14,7 +14,7 @@ public class Main {
         storage.put(null, elementTwo);
         storage.put(null, elementThree);
         storage.put(3, elementFour);
-        System.out.println(storage.get(2));
+        System.out.println(storage.get(null));
 
     }
 }

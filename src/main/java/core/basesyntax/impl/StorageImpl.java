@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ITEMS_NUMBER];
@@ -26,8 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         } else {
-            keys[MAX_ITEMS_NUMBER - 1] = key;
-            values[MAX_ITEMS_NUMBER - 1] = value;
+            throw new RuntimeException("Storage is full, capacity of storage 10 items");
         }
     }
 
