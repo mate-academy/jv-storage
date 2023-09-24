@@ -2,18 +2,15 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.sql.Array;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE = 10;
     private K[] keys;
     private V[] values;
     private int size = 0;
 
-
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_STORAGE];
-        this.values= (V[]) new Object[MAX_STORAGE];
+        this.values = (V[]) new Object[MAX_STORAGE];
     }
 
     @Override
@@ -41,6 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
     private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
