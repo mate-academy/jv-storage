@@ -1,30 +1,23 @@
 package core.basesyntax.impl;
 
+import core.basesyntax.Element;
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
-    private Element<K, V>[] storage = null;
-    private int position = 0;
+    private Element<K, V>[] storage;
+    private int position;
 
-    private static class Element<K, V> {
-        private K key;
-        private V value;
-
-        public Element(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
+    public StorageImpl() {
+        storage = new Element[STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (size() == 0) {
-            storage = new Element[STORAGE_SIZE];
-        }
         for (int i = 0; i < size(); i++) {
-            if (compareKeyAndStorageKey(key, storage[i].key)) {
-                storage[i].value = value;
+            if (keysComparing(key, storage[i].getKey())) {
+                storage[i].setValue(value);
                 return;
             }
         }
@@ -36,11 +29,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (size() > 0) {
-            for (int i = 0; i < size(); i++) {
-                if (compareKeyAndStorageKey(key, storage[i].key)) {
-                    return storage[i].value;
-                }
+        for (int i = 0; i < size(); i++) {
+            if (keysComparing(key, storage[i].getKey())) {
+                return storage[i].getValue();
             }
         }
         return null;
@@ -51,10 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return position;
     }
 
-    private boolean compareKeyAndStorageKey(K key, K storageKey) {
-        return ((key == null && storageKey == null)
-                || (storageKey != null && storageKey.equals(key)));
+    private boolean keysComparing(K key, K storageKey) {
+        return Objects.equals(key, storageKey);
     }
 }
-
-
