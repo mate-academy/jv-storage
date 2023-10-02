@@ -2,12 +2,11 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Element;
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
     private Element<K, V>[] storage;
-    private int position;
+    private int size;
 
     public StorageImpl() {
         storage = new Element[STORAGE_SIZE];
@@ -21,9 +20,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        if (position < STORAGE_SIZE) {
+        if (size < STORAGE_SIZE) {
             Element<K, V> element = new Element<>(key, value);
-            storage[position++] = element;
+            storage[size++] = element;
         }
     }
 
@@ -39,10 +38,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return position;
+        return size;
     }
 
     private boolean keysComparing(K key, K storageKey) {
-        return Objects.equals(key, storageKey);
+        return (key == storageKey) || (key != null && key.equals(storageKey));
     }
 }
