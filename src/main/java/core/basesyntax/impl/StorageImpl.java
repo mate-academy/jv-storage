@@ -6,7 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private K[] key;
     private V[] value;
-    private int index = 0;
+    private int size = 0;
 
     public StorageImpl() {
         this.key = (K[]) new Object[MAX_SIZE];
@@ -15,35 +15,34 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (findByKey(key) == -1) {
-            this.key[index] = key;
-            this.value[index] = value;
-        } else {
-            this.value[findByKey(key)] = value;
+        int index = findByKey(key);
+
+        if (size >= this.key.length) {
+            increaseArrayLength(size);
         }
-        index++;
+
+        if (index == -1) {
+            this.key[size] = key;
+            this.value[size] = value;
+        } else {
+            this.value[index] = value;
+        }
+        size++; //(*) when we are changing value by key size is incrementing too
     }
 
     @Override
     public V get(K key) {
-        if (findByKey(key) != -1) {
-            return value[findByKey(key)];
+        int index = findByKey(key);
+        if (index != -1) {
+            return value[index];
         }
 
         return null;
     }
 
     @Override
-    public int size() {
-        int size = 0;
-
-        for (V element : value) {
-            if (element != null) {
-                size++;
-            }
-        }
-
-        return size;
+    public int size() { // we can't only return 'size' because of (*)
+        return countNotNullValues();
     }
 
     private int findByKey(K key) {
@@ -54,5 +53,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         return -1;
+    }
+
+    private void increaseArrayLength(int size) {
+        K[] keyCopy = (K[]) new Object[size << 1];
+        System.arraycopy(key, 0, keyCopy, 0, key.length);
+        key = keyCopy;
+
+        V[] valueCopy = (V[]) new Object[size << 1];
+        System.arraycopy(value, 0, valueCopy, 0, value.length);
+        value = valueCopy;
+    }
+
+    private int countNotNullValues() {
+        int size = 0;
+
+        for (V element : value) {
+            if (element != null) {
+                size++;
+            }
+        }
+
+        return size;
     }
 }
