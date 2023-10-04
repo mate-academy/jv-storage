@@ -8,32 +8,35 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int KEY_COLUMN_INDEX = 0;
     private static final int VALUE_COLUMN_INDEX = 1;
     private static final int DEFAULT_STORAGE_SIZE = 0;
-    private Object[][] items;
+    private Pair<K, V>[] pairs;
     private int size;
 
     public StorageImpl() {
-        items = new Object[MAX_ITEMS_NUMBER][ITEM_FIELDS];
+        pairs = new Pair[MAX_ITEMS_NUMBER];
         size = DEFAULT_STORAGE_SIZE;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (isKeyEquals(key, (K) items[i][KEY_COLUMN_INDEX])) {
-                items[i][VALUE_COLUMN_INDEX] = value;
+            if (isKeyEquals(key, pairs[i].key)) {
+                pairs[i].value = value;
                 return;
             }
         }
-        items[size][KEY_COLUMN_INDEX] = key;
-        items[size][VALUE_COLUMN_INDEX] = value;
-        size++;
+        if (size < MAX_ITEMS_NUMBER) {
+            pairs[size] = new Pair<>(key, value);
+            size++;
+        } else {
+            throw new RuntimeException("Array is full. Cannot store more elements!");
+        }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < items.length; i++) {
-            if (isKeyEquals(key, (K) items[i][KEY_COLUMN_INDEX])) {
-                return (V) items[i][VALUE_COLUMN_INDEX];
+        for (int i = 0; i < size; i++) {
+            if (isKeyEquals(key, pairs[i].key)) {
+                return pairs[i].value;
             }
         }
         return null;
@@ -46,5 +49,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean isKeyEquals(K firstKey, K secondKey) {
         return firstKey == null ? secondKey == null : firstKey.equals(secondKey);
+    }
+
+    private static class Pair<K, V> {
+        private final K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
