@@ -5,14 +5,16 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final String KEY_TYPE_NULL = "null";
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Object[] keys;
-    private Object[] values;
+    private static final int INITIAL_USED_SPACE = 0;
+
+    private K[] keys;
+    private V[] values;
     private int usedSpace;
 
     public StorageImpl() {
-        keys = new Object[MAX_ITEMS_NUMBER];
-        values = new Object[MAX_ITEMS_NUMBER];
-        usedSpace = 0;
+        keys = (K[])new Object[MAX_ITEMS_NUMBER];
+        values = (V[])new Object[MAX_ITEMS_NUMBER];
+        usedSpace = INITIAL_USED_SPACE;
     }
 
     @Override
@@ -38,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         for (int i = 0; i < keys.length; i++) {
             if ((keys[i] != null && keys[i].equals(key))) {
-                return (V)values[i];
+                return values[i];
             }
         }
         return null;
