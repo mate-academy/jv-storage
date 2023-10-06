@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             int index = findIndex(key);
             if (findIndex(key) != -1) {
                 valueArray[index] = value;
-                size--;
+                return;
             }
             keyArray[size] = key;
             valueArray[size] = value;
