@@ -3,38 +3,40 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 10;
-    private K[] key;
-    private V[] value;
+    private static final int MAX_SIZE = 1;
+    private K[] keys;
+    private V[] values;
     private int size = 0;
+    private int index = 0;
 
     public StorageImpl() {
-        this.key = (K[]) new Object[MAX_SIZE];
-        this.value = (V[]) new Object[MAX_SIZE];
+        this.keys = (K[]) new Object[MAX_SIZE];
+        this.values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        int index = findByKey(key);
+        int checkIndex = findByKey(key);
 
-        if (size >= this.key.length) {
-            increaseArrayLength(size);
+        if (index >= this.keys.length) {
+            increaseArrayLength(index);
         }
 
-        if (index == -1) {
-            this.key[size] = key;
-            this.value[size] = value;
+        if (checkIndex == -1) {
+            this.keys[index] = key;
+            this.values[index] = value;
+            size++; //UPD: the solution was very simple
         } else {
-            this.value[index] = value;
+            this.values[checkIndex] = value;
         }
-        size++; //(*) when we are changing value by key size is incrementing too
+        index++; //(*) when we are changing value by key size is incrementing too
     }
 
     @Override
     public V get(K key) {
-        int index = findByKey(key);
-        if (index != -1) {
-            return value[index];
+        int checkIndex = findByKey(key);
+        if (checkIndex != -1) {
+            return values[checkIndex];
         }
 
         return null;
@@ -42,12 +44,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() { // we can't only return 'size' because of (*)
-        return countNotNullValues();
+        return size; // now we can
     }
 
     private int findByKey(K key) {
-        for (int i = 0; i < this.key.length; i++) {
-            if (this.key[i] == key || this.key[i] != null && this.key[i].equals(key)) {
+        for (int i = 0; i < this.keys.length; i++) {
+            if (this.keys[i] == key || this.keys[i] != null && this.keys[i].equals(key)) {
                 return i;
             }
         }
@@ -57,23 +59,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void increaseArrayLength(int size) {
         K[] keyCopy = (K[]) new Object[size << 1];
-        System.arraycopy(key, 0, keyCopy, 0, key.length);
-        key = keyCopy;
+        System.arraycopy(keys, 0, keyCopy, 0, keys.length);
+        keys = keyCopy;
 
         V[] valueCopy = (V[]) new Object[size << 1];
-        System.arraycopy(value, 0, valueCopy, 0, value.length);
-        value = valueCopy;
-    }
-
-    private int countNotNullValues() {
-        int size = 0;
-
-        for (V element : value) {
-            if (element != null) {
-                size++;
-            }
-        }
-
-        return size;
+        System.arraycopy(values, 0, valueCopy, 0, values.length);
+        values = valueCopy;
     }
 }
