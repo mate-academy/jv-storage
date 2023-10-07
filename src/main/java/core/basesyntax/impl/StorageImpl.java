@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        if (size < 10) {
+        if (size < ARRAY_SIZE) {
             keys[size] = key;
             values[size] = value;
             size++;
