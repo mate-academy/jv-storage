@@ -36,15 +36,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return arrayOfValues [keyLocator(key)];
-    }
-
-    private Integer keyLocator(K key) {
-        Integer result = null;
+        V result = null;
         for (int i = 0; i < counter; i++) {
             if ((key != null && key.equals(arrayOfKeys[i]))
                     || (key == null && key == arrayOfKeys[i])) {
-                result = i;
+                result = arrayOfValues[i];
             }
         }
         return result;
