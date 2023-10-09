@@ -1,18 +1,19 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import core.basesyntax.exceptions.NotEnoughSpaceException;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NOT_FOUND_INDEX = -1;
-    private static final int MAX_ITEMS_NUMBER = 10;
+    private static final int MAX_CAPACITY = 10;
     private final K[] keys;
     private final V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
-        values = (V[]) new Object[MAX_ITEMS_NUMBER];
+        keys = (K[]) new Object[MAX_CAPACITY];
+        values = (V[]) new Object[MAX_CAPACITY];
     }
 
     @Override
@@ -22,9 +23,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[insertPosition] = value;
             return;
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
+        if (isStorageHaveSpace()) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+            return;
+        }
+        throw new NotEnoughSpaceException("There is no enough space in storage");
     }
 
     @Override
@@ -52,5 +57,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean isFound(int value) {
         return value != NOT_FOUND_INDEX;
+    }
+
+    private boolean isStorageHaveSpace() {
+        return size != MAX_CAPACITY;
     }
 }
