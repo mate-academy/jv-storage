@@ -1,8 +1,10 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int NOT_FOUND_INDEX = -1;
     private static final int MAX_ITEMS_NUMBER = 10;
     private final K[] keys;
     private final V[] values;
@@ -41,18 +43,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findValuePositionByKey(K keyToFind) {
         for (int i = 0; i < size; i++) {
-            if (isKeysEqual(keys[i], keyToFind)) {
+            if (Objects.equals(keys[i], keyToFind)) {
                 return i;
             }
         }
-        return -1;
-    }
-
-    private boolean isKeysEqual(K firstKey, K secondKey) {
-        return (firstKey == secondKey) || (firstKey != null && firstKey.equals(secondKey));
+        return NOT_FOUND_INDEX;
     }
 
     private boolean isFound(int value) {
-        return value != -1;
+        return value != NOT_FOUND_INDEX;
     }
 }
