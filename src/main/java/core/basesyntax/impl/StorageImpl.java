@@ -6,13 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int MAX_STORAGE_CAP = 10;
     private int counter = 0;
-    private boolean hasKey = false;
     private K[] arrayOfKeys = (K[]) new Object[MAX_STORAGE_CAP];
     private V[] arrayOfValues = (V[]) new Object[MAX_STORAGE_CAP];
 
     @Override
     public void put(K key, V value) {
-        hasKey = false;
+        boolean hasKey = false;
         if (counter == 0) {
             arrayOfKeys[counter] = key;
             arrayOfValues[counter] = value;
