@@ -4,31 +4,32 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_CAP = 10;
-    private int counter = 0;
-    private K[] arrayOfKeys = (K[]) new Object[MAX_STORAGE_CAP];
-    private V[] arrayOfValues = (V[]) new Object[MAX_STORAGE_CAP];
+    private static final int COUNT_START = 0;
+    private int counter;
+    private K[] arrayOfKeys;
+    private V[] arrayOfValues;
+
+    public StorageImpl() {
+        counter = COUNT_START;
+        arrayOfKeys = (K[]) new Object[MAX_STORAGE_CAP];
+        arrayOfValues = (V[]) new Object[MAX_STORAGE_CAP];
+    }
 
     @Override
     public void put(K key, V value) {
-        boolean hasKey = false;
-        if (counter == 0) {
-            arrayOfKeys[counter] = key;
-            arrayOfValues[counter] = value;
-            counter++;
-            return;
-        } else if (counter > 0) {
+        if (counter > 0) {
             for (int i = 0; i < counter; i++) {
-                if ((key != null && key.equals(arrayOfKeys[i]))
-                        || (key == null && key == arrayOfKeys[i])) {
+                if (key == arrayOfKeys[i] || key != null && key.equals(arrayOfKeys[i])) {
                     arrayOfValues[i] = value;
-                    hasKey = true;
+                    return;
                 }
             }
         }
-        if (!hasKey) {
-            arrayOfKeys[counter] = key;
-            arrayOfValues[counter] = value;
-            counter++;
+        arrayOfKeys[counter] = key;
+        arrayOfValues[counter] = value;
+        counter++;
+        if (counter == MAX_STORAGE_CAP) {
+            throw new RuntimeException("The storage is full, you cannot add more elements!");
         }
     }
 
@@ -36,8 +37,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         V result = null;
         for (int i = 0; i < counter; i++) {
-            if ((key != null && key.equals(arrayOfKeys[i]))
-                    || (key == null && key == arrayOfKeys[i])) {
+            if (key == arrayOfKeys[i] || key != null && key.equals(arrayOfKeys[i])) {
                 result = arrayOfValues[i];
             }
         }
