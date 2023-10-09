@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int insertPosition = findValuePositionByKey(key);
-        if (insertPosition != -1) {
+        if (isFound(insertPosition)) {
             values[insertPosition] = value;
             return;
         }
@@ -28,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int valuePosition = findValuePositionByKey(key);
-        if (valuePosition != -1) {
+        if (isFound(valuePosition)) {
             return values[valuePosition];
         }
         return null;
@@ -50,5 +50,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean isKeysEqual(K firstKey, K secondKey) {
         return (firstKey == secondKey) || (firstKey != null && firstKey.equals(secondKey));
+    }
+
+    private boolean isFound(int value) {
+        return value != -1;
     }
 }
