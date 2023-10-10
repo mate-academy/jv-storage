@@ -4,14 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_SIZE = 10;
-    private static final int ARRAY_STARTING_POINT = 0;
+    private static final int NEGATIVE_VALUE = -1;
     private Pair<K, V>[] pairs = new Pair[MAX_ARRAY_SIZE];
-    private int size = ARRAY_STARTING_POINT;
+    private int size;
 
     @Override
     public void put(K key, V value) {
         int index = getIndexOfEqualKeys(key);
-        if (index != -1) {
+        if (index != NEGATIVE_VALUE) {
             pairs[index].value = value;
             return;
         }
@@ -24,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = getIndexOfEqualKeys(key);
-        if (index != -1) {
+        if (index != NEGATIVE_VALUE) {
             return pairs[index].value;
         }
         return null;
@@ -41,7 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return NEGATIVE_VALUE;
     }
 
     private static class Pair<K, V> {
