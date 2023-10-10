@@ -24,9 +24,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        keys[index] = key;
-        values[index] = value;
-        index++;
+        try {
+            if (index < MAX_NUMBERS_OF_ELEMENTS) {
+                keys[index] = key;
+                values[index] = value;
+                index++;
+            }
+        } catch (IndexOutOfBoundsException e) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     @Override
