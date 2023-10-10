@@ -6,46 +6,50 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_CAP = 10;
     private static final int COUNT_START = 0;
     private int counter;
-    private K[] arrayOfKeys;
-    private V[] arrayOfValues;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
         counter = COUNT_START;
-        arrayOfKeys = (K[]) new Object[MAX_STORAGE_CAP];
-        arrayOfValues = (V[]) new Object[MAX_STORAGE_CAP];
+        keys = (K[]) new Object[MAX_STORAGE_CAP];
+        values = (V[]) new Object[MAX_STORAGE_CAP];
     }
 
     @Override
     public void put(K key, V value) {
-        if (counter > 0) {
-            for (int i = 0; i < counter; i++) {
-                if (key == arrayOfKeys[i] || key != null && key.equals(arrayOfKeys[i])) {
-                    arrayOfValues[i] = value;
-                    return;
-                }
-            }
-        }
-        arrayOfKeys[counter] = key;
-        arrayOfValues[counter] = value;
-        counter++;
         if (counter == MAX_STORAGE_CAP) {
             throw new RuntimeException("The storage is full, you cannot add more elements!");
         }
+        if (counter > 0) {
+            int index = locateIndexIfKeyExist(key);
+            if (index != -1) {
+                values[index] = value;
+                return;
+            }
+        }
+        keys[counter] = key;
+        values[counter] = value;
+        counter++;
     }
 
     @Override
     public V get(K key) {
-        V result = null;
-        for (int i = 0; i < counter; i++) {
-            if (key == arrayOfKeys[i] || key != null && key.equals(arrayOfKeys[i])) {
-                result = arrayOfValues[i];
-            }
-        }
-        return result;
+        int index = locateIndexIfKeyExist(key);
+        return (index != -1) ? values[index] : null;
     }
 
     @Override
     public int size() {
         return counter;
+    }
+
+    private int locateIndexIfKeyExist(K key) {
+        int result = -1;
+        for (int i = 0; i < counter; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                result = i;
+            }
+        }
+        return result;
     }
 }
