@@ -2,17 +2,15 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import javax.swing.*;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private K[] arrayOfKey;
-    private V[] arrayOfValue;
+    private K[] arrayOfKeys;
+    private V[] arrayOfValues;
     private int size;
 
     public StorageImpl() {
-        this.arrayOfKey = (K[]) new Object[MAX_SIZE];
-        this.arrayOfValue = (V[]) new Object[MAX_SIZE];
+        this.arrayOfKeys = (K[]) new Object[MAX_SIZE];
+        this.arrayOfValues = (V[]) new Object[MAX_SIZE];
         this.size = 0;
     }
 
@@ -20,14 +18,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
 
         for (int i = 0; i < size; i++) {
-            if (key == null && arrayOfKey[i] == null || key != null && arrayOfKey[i].equals(key)) {
-                arrayOfValue[i] = value;
+            if (key == null && arrayOfKeys[i] == null
+                    || key != null && key.equals(arrayOfKeys[i])) {
+                arrayOfValues[i] = value;
                 return;
             }
         }
         if (size < MAX_SIZE) {
-            arrayOfKey[size] = key;
-            arrayOfValue[size] = value;
+            arrayOfKeys[size] = key;
+            arrayOfValues[size] = value;
             size++;
         }
     }
@@ -35,8 +34,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null && arrayOfKey[i] == null || key != null && arrayOfKey[i].equals(key)) {
-                return (V) arrayOfValue[i];
+            if (key == null && arrayOfKeys[i] == null
+                    || key != null && key.equals(arrayOfKeys[i])) {
+                return (V) arrayOfValues[i];
             }
         }
         return null;
