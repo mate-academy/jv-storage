@@ -5,48 +5,48 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_NUMBERS_OF_ELEMENTS = 10;
-    private static final int INITIAL_INDEX = 0;
+    private static final int INITIAL_SIZE = 0;
     private K[] keys;
     private V[] values;
-    private int index;
+    private int size;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_NUMBERS_OF_ELEMENTS];
         this.values = (V[]) new Object[MAX_NUMBERS_OF_ELEMENTS];
-        this.index = INITIAL_INDEX;
+        this.size = INITIAL_SIZE;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < index; i++) {
-            if (Objects.equals(key, keys[i])) {
-                values[i] = value;
-                return;
-            }
-        }
-        try {
-            if (index < MAX_NUMBERS_OF_ELEMENTS) {
-                keys[index] = key;
-                values[index] = value;
-                index++;
-            }
-        } catch (IndexOutOfBoundsException e) {
-            throw new IndexOutOfBoundsException();
+        int i = findIndexByKey(key);
+        if (i != -1) {
+            values[i] = value;
+        } else if (size < MAX_NUMBERS_OF_ELEMENTS) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        } else {
+            throw new ArrayIndexOutOfBoundsException();
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < index; i++) {
+        int i = findIndexByKey(key);
+        return i != -1 ? values[i] : null;
+    }
+
+    private int findIndexByKey(K key) {
+        for (int i = 0; i < size; i++) {
             if (Objects.equals(key, keys[i])) {
-                return values[i];
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     @Override
     public int size() {
-        return index;
+        return size;
     }
 }
