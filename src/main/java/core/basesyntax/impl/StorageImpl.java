@@ -4,13 +4,12 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_CAP = 10;
-    private static final int COUNT_START = 0;
     private int counter;
     private K[] keys;
     private V[] values;
 
     public StorageImpl() {
-        counter = COUNT_START;
+        counter = 0;
         keys = (K[]) new Object[MAX_STORAGE_CAP];
         values = (V[]) new Object[MAX_STORAGE_CAP];
     }
