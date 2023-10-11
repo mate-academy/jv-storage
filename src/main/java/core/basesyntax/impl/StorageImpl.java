@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -20,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int keyIndex = indexOfKey(key);
         checkIsArrayFilled();
-        if (keyIndex == -1 ) {
+        if (keyIndex == -1) {
             keys[size] = key;
             values[size] = value;
             size++;
