@@ -27,7 +27,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return;
         }
         values[keyIndex] = value;
-        System.out.println("Old element gone, long live new element!");
     }
 
     @Override
