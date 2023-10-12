@@ -3,7 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    public static final int STORAGE_LENGTH = 10;
+    private static final int STORAGE_LENGTH = 10;
+    private static final String ERROR_MSG = "Storage is full!";
     private K[] keys;
     private V[] values;
     private int size;
@@ -15,23 +16,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (isKeyInStorage(key, i)) {
-                values[i] = value;
-                return;
-            }
+        int storageKey = findKeyInStorage(key);
+        if (storageKey >= 0) {
+            values[storageKey] = value;
+            return;
         }
         keys[size] = key;
         values[size] = value;
+        if (size > STORAGE_LENGTH) {
+            throw new RuntimeException(ERROR_MSG);
+        }
         size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (isKeyInStorage(key, i)) {
-                return values[i];
-            }
+        int storageKey = findKeyInStorage(key);
+        if (storageKey >= 0) {
+            return values[storageKey];
         }
         return null;
     }
@@ -43,5 +45,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean isKeyInStorage(K key, int index) {
         return key == keys[index] || keys[index] != null && keys[index].equals(key);
+    }
+
+    private int findKeyInStorage(K key) {
+        for (int i = 0; i < size; i++) {
+            if (isKeyInStorage(key, i)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
