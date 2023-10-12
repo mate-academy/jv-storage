@@ -1,10 +1,10 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARR_SIZE = 10;
+    private static final String ERROR_MESSAGE = "Can't store more than 10 elements";
     private K[] keys;
     private V[] values;
     private int size;
@@ -28,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         } else {
-            System.out.println("Can't store more than 10 elements");
+            System.out.println(ERROR_MESSAGE);
         }
     }
 
@@ -48,7 +48,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean checkKeys(int actualKey, K key) {
-        return Objects.equals(keys[actualKey], key);
+        if (keys[actualKey] == null) {
+            return key == null;
+        } else {
+            return keys[actualKey].equals(key);
+        }
     }
 }
 
