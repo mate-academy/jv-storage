@@ -4,6 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    private static final String FULL_STORAGE_MESSAGE = "Storage is full";
     private Object[] keys = new Object[MAX_SIZE];
     private Object[] values = new Object[MAX_SIZE];
     private int size;
@@ -12,7 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             K element = (K) keys[i];
-            if ((element == null && key == null) || (keys[i] != null && keys[i].equals(key))) {
+            if (checkEquality(element, key)) {
                 values[i] = value;
                 return;
             }
@@ -22,15 +23,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         } else {
-            throw new RuntimeException("Storage is full");
+            throw new RuntimeException(FULL_STORAGE_MESSAGE);
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            K k = (K) keys[i];
-            if (checkEquality(k, key)) {
+            K element = (K) keys[i];
+            if (checkEquality(element, key)) {
                 return (V) values[i];
             }
         }
@@ -42,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public boolean checkEquality(K k, K key) {
-        return k == null && key == null || k != null && k.equals(key);
+    private boolean checkEquality(K element, K key) {
+        return element == null && key == null || element != null && element.equals(key);
     }
 }
