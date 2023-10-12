@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (keys[i] != null && keys[i].equals(key))) {
+            if (keysMatch(key, keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -26,17 +26,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keys[size] = key;
             values[size] = value;
             size++;
+        } else {
+            throw new RuntimeException("Storage is full, can not add more elements");
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (keys[i] != null && keys[i].equals(key))) {
+            if (keysMatch(key, keys[i])) {
                 return (V) values[i];
             }
         }
         return null;
+    }
+
+    private boolean keysMatch(K key, K storedKey) {
+        return (key == null && storedKey == null) || (storedKey != null && storedKey.equals(key));
     }
 
     @Override
