@@ -16,13 +16,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (keysMatch(key, keys[i])) {
-                values[i] = value;
-                return;
-            }
-        }
-        if (size < MAXIMUM_NUMBER_OF_ELEMENTS) {
+        int index = getKeyIndex(key);
+        if (index >= 0) {
+            values[index] = value;
+        } else if (size < MAXIMUM_NUMBER_OF_ELEMENTS) {
             keys[size] = key;
             values[size] = value;
             size++;
@@ -33,12 +30,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
+        int index = getKeyIndex(key);
+        return (index >= 0) ? values[index] : null;
+    }
+
+    private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
             if (keysMatch(key, keys[i])) {
-                return (V) values[i];
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     private boolean keysMatch(K key, K storedKey) {
