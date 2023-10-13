@@ -18,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int storageKey = findKeyInStorage(key);
         if (storageKey >= 0) {
-        values[storageKey] = value;
+            values[storageKey] = value;
             return;
         }
         keys[size] = key;
@@ -44,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isKeyInStorage(K key, int index) {
-        K keyInStorage =  keys[index];
+        K keyInStorage = keys[index];
         return key == keyInStorage || keyInStorage != null && keyInStorage.equals(key);
     }
 
