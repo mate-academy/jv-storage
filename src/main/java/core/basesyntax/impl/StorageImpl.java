@@ -4,38 +4,45 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_VALUE = 10;
-    private Object[] keys = new Object[MAX_VALUE];
-    private Object[] values = new Object[MAX_VALUE];
+    private K[] keys;
+    private V[] values;
     private int size = 0;
+
+    public StorageImpl() {
+        this.keys = (K[]) new Object[MAX_VALUE];
+        this.values = (V[]) new Object[MAX_VALUE];
+        this.size = size;
+    }
 
     @Override
     public void put(K key, V value) {
-        int index = -1;
         for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
-                index = i;
-                break;
+            if (keyEquals(key, i)) {
+                values[i] = value;
+                return;
             }
         }
-        if (index != -1) {
-            values[index] = value;
-        } else if (size < MAX_VALUE) {
+        if (size < MAX_VALUE) {
             keys[size] = key;
             values[size] = value;
             size++;
         } else {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Storage is full");
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
-                return (V) values[i];
+            if (keyEquals(key, i)) {
+                return values[i];
             }
         }
         return null;
+    }
+
+    public boolean keyEquals(K key, int i) {
+        return (key == keys[i] || (key != null && key.equals(keys[i])));
     }
 
     @Override
