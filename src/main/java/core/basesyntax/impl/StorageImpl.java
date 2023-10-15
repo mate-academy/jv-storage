@@ -4,12 +4,12 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
+    private static final String ERROR_MESSAGE = "Storage size is limited to " + MAX_SIZE;
     private int size;
     private K[] keys;
     private V[] values;
 
     public StorageImpl() {
-        this.size = 0;
         this.keys = (K[]) new Object[MAX_SIZE];
         this.values = (V[]) new Object[MAX_SIZE];
     }
@@ -24,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         } else {
-            System.out.println("Storage size is limited to " + MAX_SIZE);
+            throw new IndexOutOfBoundsException(ERROR_MESSAGE);
         }
     }
 
