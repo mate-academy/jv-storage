@@ -16,24 +16,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int storageKey = findKeyInStorage(key);
-        if (storageKey >= 0) {
-            values[storageKey] = value;
+        if (size > STORAGE_LENGTH) {
+            throw new RuntimeException(ERROR_MSG);
+        }
+        if (getKeyIndex(key) >= 0) {
+            values[getKeyIndex(key)] = value;
             return;
         }
         keys[size] = key;
         values[size] = value;
-        if (size > STORAGE_LENGTH) {
-            throw new RuntimeException(ERROR_MSG);
-        }
         size++;
     }
 
     @Override
     public V get(K key) {
-        int storageKey = findKeyInStorage(key);
-        if (storageKey >= 0) {
-            return getItem(storageKey);
+        if (getKeyIndex(key) >= 0) {
+            return values[(getKeyIndex(key))];
         }
         return null;
     }
@@ -43,21 +41,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean isKeyInStorage(K key, int index) {
-        K keyInStorage = keys[index];
+    private boolean isEquals(K key, K keyInStorage) {
         return key == keyInStorage || keyInStorage != null && keyInStorage.equals(key);
     }
 
-    private int findKeyInStorage(K key) {
+    private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (isKeyInStorage(key, i)) {
+            if (isEquals(key, keys[i])) {
                 return i;
             }
         }
         return -1;
-    }
-
-    private V getItem(int key) {
-        return values[key];
     }
 }
