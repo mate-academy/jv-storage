@@ -7,17 +7,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final Object[] keys;
     private final Object[] values;
     private int size;
+    private final int indx = -1;
 
     public StorageImpl() {
         keys = new Object[MAX_SIZE];
         values = new Object[MAX_SIZE];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         int index = findKeyIndex(key);
-        if (index != -1) {
+        if (index != indx) {
             values[index] = value;
         } else {
             if (size >= MAX_SIZE) {
@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = findKeyIndex(key);
-        if (index != -1) {
+        if (index != indx) {
             return (V) values[index];
         }
         return null;
@@ -49,6 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return indx;
     }
 }
