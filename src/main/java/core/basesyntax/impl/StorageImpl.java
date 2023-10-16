@@ -3,11 +3,12 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int NEGATIVE_INDEX = -1;
     private static final int MAX_SIZE = 10;
     private final Object[] keys;
     private final Object[] values;
+    private final String message = "Storage is full.";
     private int size;
-    private final int indx = -1;
 
     public StorageImpl() {
         keys = new Object[MAX_SIZE];
@@ -17,11 +18,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = findKeyIndex(key);
-        if (index != indx) {
+        if (index != NEGATIVE_INDEX) {
             values[index] = value;
         } else {
             if (size >= MAX_SIZE) {
-                throw new IllegalStateException("Storage is full.");
+                throw new IllegalStateException(message);
             }
             keys[size] = key;
             values[size] = value;
@@ -32,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = findKeyIndex(key);
-        if (index != indx) {
+        if (index != NEGATIVE_INDEX) {
             return (V) values[index];
         }
         return null;
@@ -45,10 +46,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+            if ((key == keys[i]) || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
-        return indx;
+        return NEGATIVE_INDEX;
     }
 }
