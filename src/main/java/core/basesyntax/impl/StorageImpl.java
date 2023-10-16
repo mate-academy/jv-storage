@@ -4,7 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARR_SIZE = 10;
-    private static final String ERROR_MESSAGE = "Can't store more than 10 elements";
+    private static final String ERROR_MESSAGE = "Can't store more than "
+            + MAX_ARR_SIZE + "  elements";
     private K[] keys;
     private V[] values;
     private int size;
@@ -17,13 +18,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (checkKeys(i, key)) {
-                values[i] = value;
-                return;
-            }
-        }
-        if (size < MAX_ARR_SIZE) {
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            values[index] = value;
+        } else if (size < MAX_ARR_SIZE) {
             keys[size] = key;
             values[size] = value;
             size++;
@@ -34,12 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (checkKeys(i, key)) {
-                return values[i];
-            }
-        }
-        return null;
+        int index = findKeyIndex(key);
+        return (index != -1) ? values[index] : null;
     }
 
     @Override
@@ -47,11 +41,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (checkKeys(i, key)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private boolean checkKeys(int actualKey, K key) {
-        if (keys[actualKey] == null) {
+        K storedKey = keys[actualKey];
+        if (storedKey == null) {
             return key == null;
         } else {
-            return keys[actualKey].equals(key);
+            return storedKey.equals(key);
         }
     }
 }
