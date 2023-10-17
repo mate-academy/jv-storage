@@ -4,31 +4,36 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static final byte NOT_FOUND_INDEX = -1;
-
-    private final K[] keys = (K[]) new Object[MAX_SIZE];
-    private final V[] values = (V[]) new Object[MAX_SIZE];
     private int size;
+    private K[] keys;
+    private V[] values;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
-        int index = getIndex(key);
-        if (index != NOT_FOUND_INDEX) {
-            values[index] = value;
-        } else {
-            if (size == MAX_SIZE) {
-                throw new RuntimeException("Storage is full");
-            }
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        if (size == MAX_SIZE) {
+            throw new RuntimeException("Storage is full");
         }
+        if (size > 0) {
+            int index = getIndex(key);
+            if (index != -1) {
+                values[index] = value;
+                return;
+            }
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        if (index != NOT_FOUND_INDEX) {
+        if (index != -1) {
             return values[index];
         }
         return null;
