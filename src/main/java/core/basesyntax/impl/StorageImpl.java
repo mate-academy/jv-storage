@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
@@ -41,11 +40,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public int getIndex(K key) {
+        int result = -1;
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                return i;
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                result = i;
             }
         }
-        return NOT_FOUND_INDEX;
+        return result;
     }
 }
