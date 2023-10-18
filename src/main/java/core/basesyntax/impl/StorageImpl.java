@@ -1,14 +1,13 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MASS_LENGTH = 10;
     private K[] keys;
     private V[] values;
-    private  int size;
+    private int size;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[MASS_LENGTH];
