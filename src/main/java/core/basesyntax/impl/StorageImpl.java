@@ -2,17 +2,18 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = new Object[INITIAL_CAPACITY];
-        this.values = new Object[INITIAL_CAPACITY];
-        this.size = 0;
+        keys = (K[]) new Object[INITIAL_CAPACITY];
+        values = (V[]) new Object[INITIAL_CAPACITY];
+        size = 0;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = indexOfKey(key);
 
         if (index != -1) {
-            return (V) values[index];
+            return values[index];
         }
         return null;
     }
@@ -54,7 +55,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean keyEquals(Object storedKey, K newKey) {
-        return storedKey == null ? newKey == null : storedKey.equals(newKey);
+        return Objects.equals(storedKey, newKey);
     }
 
     private void ensureCapacity() {
