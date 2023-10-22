@@ -4,22 +4,21 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int SIZE = 10;
-    private Object[] keys;
-    private Object[] values;
+    private static final int MAX_SIZE = 10;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = new Object[SIZE];
-        this.values = new Object[SIZE];
-        this.size = 0;
+        this.keys = (K[]) new Object[MAX_SIZE];
+        this.values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         int index = findIndex(key);
         if (index == -1) {
-            if (size == SIZE) {
+            if (size == MAX_SIZE) {
                 throw new IllegalStateException("Storage is full");
             }
             keys[size] = key;
@@ -34,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index = findIndex(key);
         if (index != -1) {
-            return (V) values[index];
+            return values[index];
         }
         return null;
     }
