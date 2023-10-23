@@ -12,10 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value = value;
         }
 
-        public Pair() {
-
-        }
-
         public K getKey() {
             return key;
         }
@@ -33,6 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
+    private static final int EMPTY_INDEX = -1;
     private static final int MAX_ITEMS_NUMBER = 10;
     private final Pair<K, V>[] arrOfPair;
     private int size;
@@ -43,14 +40,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        Pair<K, V> pair = new Pair<>(key, value);
-        int elementIndex = getElementIndex(key);
-        if (elementIndex == -1) {
-            arrOfPair[size] = new Pair<>(key, value);
+        if (getElementIndex(key) == EMPTY_INDEX) {
+            arrOfPair[size] = getPair(key, value);
             size++;
         } else {
-            arrOfPair[elementIndex].setValue(pair.getValue());
+            arrOfPair[getElementIndex(key)].setValue(getPair(key, value).getValue());
         }
+    }
+
+    public Pair<K, V> getPair(K key, V value) {
+        Pair<K, V> pair = new Pair<>(key, value);
+        return pair;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public int getElementIndex(K key) {
-        int index = -1;
+        int index = EMPTY_INDEX;
         for (int i = 0; i < size; i++) {
             if ((arrOfPair[i].getKey() == key)
                     || (arrOfPair[i].getKey() != null && arrOfPair[i].getKey().equals(key))) {
