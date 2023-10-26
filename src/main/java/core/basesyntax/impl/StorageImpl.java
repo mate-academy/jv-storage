@@ -1,14 +1,17 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
+    private K[] keys;
+    private V[] values;
+    private int size;
 
-    private Object[] keys = new Object[MAX_CAPACITY];
-    private Object[] values = new Object[MAX_CAPACITY];
-    private int size = 0;
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_CAPACITY];
+        values = (V[]) new Object[MAX_CAPACITY];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -16,19 +19,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new IllegalStateException("Storage is full");
         }
 
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (Objects.equals(keys[i], null)) {
-                    values[i] = value;
-                    return;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (Objects.equals(key, keys[i])) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null ? key == null : keys[i].equals(key)) {
+                values[i] = value;
+                return;
             }
         }
         keys[size] = key;
@@ -38,17 +32,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (Objects.equals(keys[i], null)) {
-                    return (V) values[i];
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (Objects.equals(key, keys[i])) {
-                    return (V) values[i];
-                }
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+                return (V) values[i];
             }
         }
         return null;
