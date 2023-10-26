@@ -1,4 +1,4 @@
-package core.basesyntax.impl;
+package core.basesyntax;
 
 public class Pair<K, V> {
     private K key;
