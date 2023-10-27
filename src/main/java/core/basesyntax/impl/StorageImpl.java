@@ -18,11 +18,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int keyIndex = getIndex(key);
         if (keyIndex >= 0) {
             values[keyIndex] = value;
-        } else {
-            keys[size] = key;
-            values[size] = value;
-            size++;
+            return;
         }
+        if (size() == MAX_STORAGE_SIZE) {
+            return;
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
