@@ -4,26 +4,38 @@ import core.basesyntax.Storage;
 
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
-    K[] keys = (K[]) new Object[10];
-    V[] values = (V[]) new Object[10];
-    int size;
+    private final K[] keys = (K[]) new Object[10];
+    private final V[] values = (V[]) new Object[10];
+    private int size;
+
+    public K[] getKeys() {
+        return keys;
+    }
+
+    public V[] getValues() {
+        return values;
+    }
+
+    public int getSize() {
+        return size;
+    }
 
     @Override
     public void put(K key, V value) {
-        int index = putValidator(keys, values, key);
+        int index = putValidator(getKeys(), getValues(), key);
         if (index == -1) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
+            getKeys()[getSize()] = key;
+            getValues()[getSize()] = value;
+            grow();
         } else if (index >= 0) {
-            keys[index] = key;
-            values[index] = value;
+            getKeys()[index] = key;
+            getValues()[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        return getValidator(key);
+        return getValidator(getKeys(), getValues(), key);
     }
 
     @Override
@@ -33,7 +45,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int putValidator(K[] keys, V[] values, K key) {
         for (int i = 0; i < keys.length; i++) {
-            if ((((key == null && keys[i] == null) || (keys[i] != null && keys[i].equals(key))) && values[i] != null)) {
+            if ((((key == null && keys[i] == null)
+                    || (keys[i] != null && keys[i].equals(key))) && values[i] != null)) {
                 return i;
             } else if ((key == null && keys[i] == null) || (key != null && keys[i] == null)) {
                 return -1;
@@ -42,13 +55,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    private V getValidator(K key) {
+    private V getValidator(K[] keys, V[] values, K key) {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 return values[i];
             }
         }
         return null;
+    }
+
+    private void grow() {
+        size++;
     }
 }
 
