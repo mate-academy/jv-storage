@@ -3,31 +3,33 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ELEMENTS = 10;
-    private K[] keys = (K[]) new Object[MAX_ELEMENTS];
-    private V[] values = (V[]) new Object[MAX_ELEMENTS];
-    private int size = 0;
 
-    private K[] nullKeys = (K[]) new Object[MAX_ELEMENTS];
-    private V[] nullValues = (V[]) new Object[MAX_ELEMENTS];
-    private int nullSize = 0;
+    private static final int MAX_ELEMENTS = 10;
+    private K[] keys;
+    private V[] values;
+    private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_ELEMENTS];
+        values = (V[]) new Object[MAX_ELEMENTS];
+    }
 
     @Override
     public void put(K key, V value) {
         boolean found = false;
         if (key == null) {
-            for (int i = 0; i < nullSize; i++) {
-                if (nullKeys[i] == null) {
-                    nullValues[i] = value;
+            for (int i = 0; i < size; i++) {
+                if (keys[i] == null) {
+                    values[i] = value;
                     found = true;
                     break;
                 }
             }
 
-            if (!found && nullSize < MAX_ELEMENTS) {
-                nullKeys[nullSize] = key;
-                nullValues[nullSize] = value;
-                nullSize++;
+            if (!found && size < MAX_ELEMENTS) {
+                keys[size] = null;
+                values[size] = value;
+                size++;
             }
         } else {
             for (int i = 0; i < size; i++) {
@@ -56,9 +58,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         } else {
-            for (int i = 0; i < nullSize; i++) {
-                if (nullKeys[i] == null) {
-                    res = nullValues[i];
+            for (int i = 0; i < size; i++) {
+                if (keys[i] == null) {
+                    res = values[i];
                 }
             }
         }
@@ -67,8 +69,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return size + nullSize;
+        return size;
     }
 }
-
-
