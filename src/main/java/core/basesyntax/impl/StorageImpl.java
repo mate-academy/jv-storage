@@ -46,7 +46,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    private void grow() {
-        size++;
-    }
 }
