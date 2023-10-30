@@ -36,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int putValidator(K[] keys, V[] values, K key) {
+    private int getKeyIndex(K key) {
         for (int i = 0; i < keys.length; i++) {
             if ((((key == null && keys[i] == null)
                     || (keys[i] != null && keys[i].equals(key))) && values[i] != null)) {
