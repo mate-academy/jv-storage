@@ -4,9 +4,15 @@ import core.basesyntax.Storage;
 
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final K[] keys = (K[]) new Object[10];
-    private final V[] values = (V[]) new Object[10];
+    private final int MAX_SIZE = 10;
+    private final K[] keys;
+    private final V[] values;
     private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -15,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keys[size] = key;
             values[size] = value;
             grow();
-        } else if (index >= 0) {
+        } else {
             keys[index] = key;
             values[index] = value;
         }
@@ -34,8 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if ((((key == null && keys[i] == null)
-                    || (keys[i] != null && keys[i].equals(key))) && values[i] != null)) {
+            if (key == keys[i] || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
