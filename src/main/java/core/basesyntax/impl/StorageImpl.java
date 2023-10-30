@@ -28,7 +28,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return getValidator(getKeys(), getValues(), key);
+        int index = getKeyIndex(key);
+        return index == -1 ? null : values[index];
     }
 
     @Override
