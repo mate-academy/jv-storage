@@ -4,14 +4,14 @@ import core.basesyntax.Storage;
 
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final int maxSize = 10;
+    private static final int MAX_ARRAY_SIZE = 10;
     private final K[] keys;
     private final V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[maxSize];
-        values = (V[]) new Object[maxSize];
+        keys = (K[]) new Object[MAX_ARRAY_SIZE];
+        values = (V[]) new Object[MAX_ARRAY_SIZE];
     }
 
     @Override
