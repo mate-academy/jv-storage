@@ -20,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index == -1) {
             keys[size] = key;
             values[size] = value;
-            grow();
+            size++;
         } else {
             values[index] = value;
         }
