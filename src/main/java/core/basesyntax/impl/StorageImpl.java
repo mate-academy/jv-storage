@@ -8,13 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final V[] values = (V[]) new Object[10];
     private int size;
 
-    public K[] getKeys() {
-        return keys;
-    }
-
-    public V[] getValues() {
-        return values;
-    }
 
     public int getSize() {
         return size;
