@@ -22,7 +22,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             grow();
         } else {
-            keys[index] = key;
             values[index] = value;
         }
     }
