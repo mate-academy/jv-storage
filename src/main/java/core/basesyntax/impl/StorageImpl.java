@@ -8,21 +8,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final V[] values = (V[]) new Object[10];
     private int size;
 
-
-    public int getSize() {
-        return size;
-    }
-
     @Override
     public void put(K key, V value) {
-        int index = putValidator(getKeys(), getValues(), key);
+        int index = getKeyIndex(key);
         if (index == -1) {
-            getKeys()[getSize()] = key;
-            getValues()[getSize()] = value;
+            keys[size] = key;
+            values[size] = value;
             grow();
         } else if (index >= 0) {
-            getKeys()[index] = key;
-            getValues()[index] = value;
+            keys[index] = key;
+            values[index] = value;
         }
     }
 
@@ -39,23 +34,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getKeyIndex(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if (key == keys[i] || keys[i] != null && keys[i].equals(key)) {
+            if ((((key == null && keys[i] == null)
+                    || (keys[i] != null && keys[i].equals(key))) && values[i] != null)) {
                 return i;
-        }
-        return -1;
-    }
-
-    private V getValidator(K[] keys, V[] values, K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
-                return values[i];
             }
         }
-        return null;
+        return -1;
     }
 
     private void grow() {
         size++;
     }
 }
-
