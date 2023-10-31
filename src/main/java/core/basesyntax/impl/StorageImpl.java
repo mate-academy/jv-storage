@@ -5,8 +5,8 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INDEX_KEY = 0;
     private static final int INDEX_VALUE = 1;
-    private int arraySize = 0;
-    private int arrayIndex = 0;
+    private int arraySize;
+    private int arrayIndex;
     private final Object[][] tempValuesArray = new Object[10][2];
     private Object[][] resultValuesArray = new Object[0][0];
 
