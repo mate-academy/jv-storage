@@ -3,22 +3,21 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int INDEX_ZERO = 0;
+
+    private static final int FIRST_ELEMENT = 0;
     private static final int STORAGE_LENGTH = 10;
-    private final StorageImpl<K, V>[] storage;
-    private K key;
-    private V value;
-    private int index = 0;
+    private final Pair<K, V>[] storage;
+    private int index;
 
     public StorageImpl() {
-        storage = new StorageImpl[STORAGE_LENGTH];
+        storage = new Pair[STORAGE_LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
-        if (storage[INDEX_ZERO] == null) {
+        if (storage[FIRST_ELEMENT] == null) {
             for (int i = 0; i < STORAGE_LENGTH; i++) {
-                storage[i] = new StorageImpl<>();
+                storage[i] = new Pair<>();
             }
         }
         for (int i = 0; i < index; i++) {
@@ -34,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (StorageImpl<K, V> element : storage) {
+        for (Pair<K, V> element : storage) {
             if (equalKey(element.key, key)) {
                 return element.value;
             }
@@ -52,5 +51,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 && secondKey == null
                 || (firstKey != null
                 && firstKey.equals(secondKey));
+    }
+
+    public static class Pair<K, V> {
+        private K key;
+        private V value;
     }
 }
