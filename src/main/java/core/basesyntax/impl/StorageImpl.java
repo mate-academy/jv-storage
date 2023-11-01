@@ -1,19 +1,22 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int STORAGE_SIZE = 10;
     private int currentFilling = 0;
-    private K[] keys = (K[]) new Object[STORAGE_SIZE];
-    private V[] values = (V[]) new Object[STORAGE_SIZE];
+    private K[] keys;
+    private V[] values;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[STORAGE_SIZE];
+        values = (V[]) new Object[STORAGE_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < currentFilling; i++) {
-            if (Objects.equals(key, keys[i])) {
+            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 values[i] = value;
                 return;
             }
@@ -22,13 +25,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[currentFilling] = value;
             keys[currentFilling] = key;
             currentFilling++;
+        } else {
+            throw new RuntimeException("Current storage is full");
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 return values[i];
             }
         }
