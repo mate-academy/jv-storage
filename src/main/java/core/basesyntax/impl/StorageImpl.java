@@ -6,23 +6,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private Object[] keys = new Object[MAX_SIZE];
     private Object[] values = new Object[MAX_SIZE];
-    private int size = 0;
+    private int size;
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                values[i] = value;
+                return;
             }
         }
 
@@ -30,26 +21,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keys[size] = key;
             values[size] = value;
             size++;
+        } else {
+            throw new RuntimeException("Maximum size exceeded");
         }
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return (V) values[i];
-                }
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return (V) values[i];
             }
-            return null;
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    return (V) values[i];
-                }
-            }
-            return null;
         }
+        return null;
     }
 
     @Override
