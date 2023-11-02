@@ -6,11 +6,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int SIZE_ARRAY = 10;
     private final Object[] keyStorage;
     private final Object[] valueStorage;
-    private int countIndex = 0;
+    private int countIndex;
 
     public StorageImpl(int size) {
         keyStorage = new Object[size];
         valueStorage = new Object[size];
+        countIndex = 0;
     }
 
     public StorageImpl() {
@@ -25,6 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         } else {
             keyStorage[countIndex] = key;
             valueStorage[countIndex++] = value;
+
         }
     }
 
