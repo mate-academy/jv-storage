@@ -3,36 +3,36 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int SIZE_ARRAY = 10;
+    private static final int DEFAULT_CAPACITY = 10;
     private final Object[] keyStorage;
     private final Object[] valueStorage;
-    private int countIndex;
+    private int size;
 
     public StorageImpl(int size) {
         keyStorage = new Object[size];
         valueStorage = new Object[size];
-        countIndex = 0;
+
     }
 
     public StorageImpl() {
-        this(SIZE_ARRAY);
+        this(DEFAULT_CAPACITY);
     }
 
     @Override
     public void put(K key, V value) {
-        int indexKey = getIndexAndCheckExistKey(key);
+        int indexKey = getKeyIndex(key);
         if (indexKey >= 0) {
             valueStorage[indexKey] = value;
         } else {
-            keyStorage[countIndex] = key;
-            valueStorage[countIndex++] = value;
+            keyStorage[size] = key;
+            valueStorage[size++] = value;
 
         }
     }
 
     @Override
     public V get(K key) {
-        int indexKey = getIndexAndCheckExistKey(key);
+        int indexKey = getKeyIndex(key);
         if (indexKey >= 0) {
             return (V) valueStorage[indexKey];
         } else {
@@ -42,18 +42,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return countIndex;
+        return size;
     }
 
-    private int getIndexAndCheckExistKey(K key) {
+    private int getKeyIndex(K key) {
         if (key == null) {
-            for (int i = 0; i < countIndex; i++) {
+            for (int i = 0; i < size; i++) {
                 if (keyStorage[i] == null) {
                     return i;
                 }
             }
         } else {
-            for (int i = 0; i < countIndex; i++) {
+            for (int i = 0; i < size; i++) {
                 if (key.equals(keyStorage[i])) {
                     return i;
                 }
