@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     break;
                 }
             }
-            if (existingPair == null || existingPair.key == null) {
+            if (existingPair == null) {
                 list.add(new Pair<>(key, value));
             } else {
                 existingPair.value = value;
