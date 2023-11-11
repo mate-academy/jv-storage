@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -16,10 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         valuesArray = (V[]) new Object[DEFAULT_SIZE];
     }
 
-    private void changeSize(int delta) {
-        size += delta;
-    }
-
     @Override
     public void put(K key, V value) {
         int index = findElement(keysArray, key);
@@ -28,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         } else {
             addElem(keysArray, key);
             addElem(valuesArray, value);
-            changeSize(1);
+            size++;
         }
     }
 
