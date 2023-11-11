@@ -1,66 +1,53 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
+
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] keysArray;
-    private V[] valuesArray;
-    private V valueIfKeyIsNull = null;
+    private static final int DEFAULT_SIZE = 10;
+    private final K[] keysArray;
+    private final V[] valuesArray;
+    private int size = 0;
 
     public StorageImpl() {
         // Unchecked cast warning !
-        keysArray = (K[]) new Object[0];
-        valuesArray = (V[]) new Object[0];
+        keysArray = (K[]) new Object[DEFAULT_SIZE];
+        valuesArray = (V[]) new Object[DEFAULT_SIZE];
+    }
+
+    private void changeSize(int delta) {
+        size += delta;
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            valueIfKeyIsNull = value;
-            return;
-        }
         int index = findElement(keysArray, key);
         if (index != -1) {
             valuesArray[index] = value;
         } else {
-            keysArray = addElem(keysArray, key);
-            valuesArray = addElem(valuesArray, value);
+            addElem(keysArray, key);
+            addElem(valuesArray, value);
+            changeSize(1);
         }
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            return valueIfKeyIsNull;
-        }
         int index = findElement(keysArray, key);
         return (index != -1) ? valuesArray[index] : null;
     }
 
     @Override
     public int size() {
-        int size;
-        if (keysArray.length == valuesArray.length) {
-            size = keysArray.length;
-        } else {
-            throw new RuntimeException("Size dont match");
-        }
-
-        // We save value for null key in other cell, not to break array structure
-        // If cell is not empty (not null), so we have additional value in our array technically
-        // So we should increment size
-        if (valueIfKeyIsNull != null) {
-            size++;
-        }
         return size;
     }
 
     // Using new generic, because function must work independently in class with its own generic
-    private <T> int findElement(T[] array, T element) {
+    private <T> int findElement(T[] array, T elementToSearch) {
         int index = 0;
-        for (T item : array) {
-            if (item != null && item.equals(element)) {
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(elementToSearch, array[i])) {
                 return index; // Element found in the array
             }
             index++;
@@ -68,9 +55,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1; // Element not found in the array
     }
 
-    public <T> T[] addElem(T[] arr, T element) {
-        T[] newArr = Arrays.copyOf(arr, arr.length + 1);
-        newArr[arr.length] = element;
-        return newArr;
+    public <T> void addElem(T[] arr, T element) {
+        arr[size] = element;
     }
 }
