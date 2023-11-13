@@ -2,32 +2,37 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.lang.reflect.Array;
+
+
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Object[] keysArray;
-    private Object[] valuesArray;
-    private final int baseArraySize = 10;
+    private K[] keys;
+    private V[] values;
+    private static final int DEFAULT_SIZE = 10;
+    private static final int RESIZE_COEFFICIENT = 2;
     private int size;
 
-    public <K, V> StorageImpl() {
-        keysArray = (K[]) (new Object[baseArraySize]);
-        valuesArray = (V[]) (new Object[baseArraySize]);
-        size = 0;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[DEFAULT_SIZE];
+        values = (V[]) new Object[DEFAULT_SIZE];
+
     }
 
     @Override
     public void put(K key, V value) {
-        if (size <= keysArray.length - 1) {
+        if (size < keys.length) {
             int index = findValueIndex(key);
             if (index == -1) {
-                ++size;
-                keysArray[size - 1] = key;
-                valuesArray[size - 1] = value;
+                keys[size] = key;
+                values[size] = value;
+                size++;
             } else {
-                valuesArray[index] = value;
-                keysArray[index] = key;
+                keys[index] = key;
+                values[index] = value;
             }
         } else {
-            enlargeArrays();
+            resize();
             put(key, value);
         }
     }
@@ -38,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index == -1) {
             return null;
         } else {
-            return (V) valuesArray[index];
+            return values[index];
         }
     }
 
@@ -51,31 +56,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (key == null) {
             int index = -1;
             for (int i = 0; i < size; ++i) {
-                if (keysArray[i] == null) {
+                if (keys[i] == null) {
                     index = i;
                     return index;
                 }
             }
         }
-        int index = -1;
-        for (int i = 0; i < size; ++i) {
-            if (keysArray[i] != null) {
-                if (keysArray[i].equals(key)) {
-                    index = i;
-                    return index;
-                }
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] | key != null && key.equals(keys[i])) {
+                return i;
             }
         }
-        return index;
+        return -1;
     }
 
     //Growing array may be not mandatory, but I still think it's needed here.
-    private void enlargeArrays() {
-        Object[] newKeysArray = new Object[keysArray.length * 3 / 2];
-        Object[] newValuesArray = new Object[keysArray.length * 3 / 2];
-        System.arraycopy(keysArray, 0, newKeysArray, 0, keysArray.length);
-        System.arraycopy(valuesArray, 0, newValuesArray, 0, valuesArray.length);
-        keysArray = newKeysArray;
-        valuesArray = newValuesArray;
+    private void resize() {
+        K[] newKeysArray = (K[])(new Object[keys.length * RESIZE_COEFFICIENT]);
+        V[] newValuesArray = (V[])(new Object[keys.length * RESIZE_COEFFICIENT]);
+        System.arraycopy(keys, 0, newKeysArray, 0, keys.length);
+        System.arraycopy(values, 0, newValuesArray, 0, values.length);
+        keys = newKeysArray;
+        values = newValuesArray;
     }
 }
