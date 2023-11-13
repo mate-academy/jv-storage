@@ -20,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             resize();
             put(key, value);
         }
-        int index = findValueIndex(key);
+        int index = findIndex(key);
         if (index == -1) {
             keys[size] = key;
             values[size] = value;
@@ -33,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int index = findValueIndex(key);
+        int index = findIndex(key);
         if (index == -1) {
             return null;
         } else {
@@ -46,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int findValueIndex(K key) {
+    private int findIndex(K key) {
         int index = -1;
         for (int i = 0; i < size; ++i) {
             if (key == keys[i] || key != null && key.equals(keys[i])) {
