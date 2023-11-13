@@ -16,19 +16,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size < keys.length) {
-            int index = findValueIndex(key);
-            if (index == -1) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            } else {
-                keys[index] = key;
-                values[index] = value;
-            }
-        } else {
+        if (size > keys.length) {
             resize();
             put(key, value);
+        }
+        int index = findValueIndex(key);
+        if (index == -1) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        } else {
+            keys[index] = key;
+            values[index] = value;
         }
     }
 
