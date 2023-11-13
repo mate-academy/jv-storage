@@ -2,21 +2,17 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.lang.reflect.Array;
-
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
-    private static final int DEFAULT_SIZE = 10;
-    private static final int RESIZE_COEFFICIENT = 2;
+    static private final int DEFAULT_SIZE = 10;
+    static private final int RESIZE_COEFFICIENT = 2;
     private int size;
 
 
     public StorageImpl() {
         keys = (K[]) new Object[DEFAULT_SIZE];
         values = (V[]) new Object[DEFAULT_SIZE];
-
     }
 
     @Override
