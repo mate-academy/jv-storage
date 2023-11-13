@@ -5,8 +5,8 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
-    private static final int DEFAULT_SIZE = 10;
-    private static final int RESIZE_COEFFICIENT = 2;
+    private static int DEFAULT_SIZE = 10;
+    private static int RESIZE_COEFFICIENT = 2;
     private int size;
     
     public StorageImpl() {
