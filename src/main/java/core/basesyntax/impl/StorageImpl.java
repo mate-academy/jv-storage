@@ -5,12 +5,12 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keysArray;
     private Object[] valuesArray;
-    private final int BASE_ARRAY_SIZE = 10;
+    private final int baseArraySize = 10;
     private int size;
 
     public <K, V> StorageImpl() {
-        keysArray = (K[]) (new Object[BASE_ARRAY_SIZE]);
-        valuesArray = (V[]) (new Object[BASE_ARRAY_SIZE]);
+        keysArray = (K[]) (new Object[baseArraySize]);
+        valuesArray = (V[]) (new Object[baseArraySize]);
         size = 0;
     }
 
