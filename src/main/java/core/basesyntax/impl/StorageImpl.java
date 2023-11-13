@@ -47,21 +47,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int findValueIndex(K key) {
-        if (key == null) {
             int index = -1;
             for (int i = 0; i < size; ++i) {
-                if (keys[i] == null) {
+                if (key == keys[i] || key != null && key.equals(keys[i])) {
                     index = i;
                     return index;
                 }
             }
-        }
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] | key != null && key.equals(keys[i])) {
-                return i;
-            }
-        }
-        return -1;
+        return index;
     }
 
     //Growing array may be not mandatory, but I still think it's needed here.
