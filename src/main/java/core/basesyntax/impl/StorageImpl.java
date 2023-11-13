@@ -5,11 +5,10 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
-    private final static int DEFAULT_SIZE = 10;
-    private final static int RESIZE_COEFFICIENT = 2;
+    private static final int DEFAULT_SIZE = 10;
+    private static final int RESIZE_COEFFICIENT = 2;
     private int size;
-
-
+    
     public StorageImpl() {
         keys = (K[]) new Object[DEFAULT_SIZE];
         values = (V[]) new Object[DEFAULT_SIZE];
