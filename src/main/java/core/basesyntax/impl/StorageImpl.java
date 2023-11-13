@@ -5,30 +5,23 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keysArray;
     private Object[] valuesArray;
-    private final int baseArraySize = 10;
-    private int lastElementIndex;
+    private final int BASE_ARRAY_SIZE = 10;
+    private int size;
 
     public <K, V> StorageImpl() {
-        keysArray = (K[]) new Object[baseArraySize];
-        valuesArray = (V[]) new Object[baseArraySize];
-    }
-
-    public <K, V> StorageImpl(K key, V value) {
-        keysArray = (K[]) (new Object[baseArraySize]);
-        valuesArray = (V[]) (new Object[baseArraySize]);
-        lastElementIndex = 0;
-        keysArray[lastElementIndex] = key;
-        valuesArray[lastElementIndex] = value;
+        keysArray = (K[]) (new Object[BASE_ARRAY_SIZE]);
+        valuesArray = (V[]) (new Object[BASE_ARRAY_SIZE]);
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        if (lastElementIndex <= keysArray.length - 1) {
+        if (size <= keysArray.length - 1) {
             int index = findValueIndex(key);
             if (index == -1) {
-                ++lastElementIndex;
-                keysArray[lastElementIndex] = key;
-                valuesArray[lastElementIndex] = value;
+                ++size;
+                keysArray[size - 1] = key;
+                valuesArray[size - 1] = value;
             } else {
                 valuesArray[index] = value;
                 keysArray[index] = key;
@@ -51,14 +44,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return lastElementIndex + 1;
+        return size;
     }
 
     private int findValueIndex(K key) {
         if (key == null) {
-
             int index = -1;
-            for (int i = 0; i <= lastElementIndex; ++i) {
+            for (int i = 0; i < size; ++i) {
                 if (keysArray[i] == null) {
                     index = i;
                     return index;
@@ -66,7 +58,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         int index = -1;
-        for (int i = 0; i <= lastElementIndex; ++i) {
+        for (int i = 0; i < size; ++i) {
             if (keysArray[i] != null) {
                 if (keysArray[i].equals(key)) {
                     index = i;
@@ -77,6 +69,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return index;
     }
 
+    //Growing array may be not mandatory, but I still think it's needed here.
     private void enlargeArrays() {
         Object[] newKeysArray = new Object[keysArray.length * 3 / 2];
         Object[] newValuesArray = new Object[keysArray.length * 3 / 2];
