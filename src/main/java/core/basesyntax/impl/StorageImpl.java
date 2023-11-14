@@ -1,13 +1,17 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private Object[] keys = new Object[MAX_SIZE];
-    private Object[] values = new Object[MAX_SIZE];
+    private K[] keys;
+    private V[] values;
     private int size;
+
+    public StorageImpl() {
+        this.keys = (K[]) new Object[MAX_SIZE];
+        this.values = (V[]) new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -17,11 +21,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        if (size == keys.length) {
-            int newSize = keys.length * 2;
-            keys = Arrays.copyOf(keys, newSize);
-            values = Arrays.copyOf(values, newSize);
-        }
         this.keys[size] = key;
         this.values[size] = value;
         size++;
@@ -30,17 +29,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
-                return (V) this.values[i];
-            }
-        }
-        return null;
-    }
-
-    private V getNullKey() {
-        for (int i = 0; i < size; i++) {
-            if (this.keys[i] == null) {
-                return (V) this.values[i];
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
+                return values[i];
             }
         }
         return null;
@@ -49,22 +39,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
-    }
-
-    private void putNullKey(V value) {
-        for (int i = 0; i < size; i++) {
-            if (this.keys[i] == null) {
-                this.values[i] = value;
-                return;
-            }
-        }
-        if (size == keys.length) {
-            int newSize = keys.length * 2;
-            keys = Arrays.copyOf(keys, newSize);
-            values = Arrays.copyOf(values, newSize);
-        }
-        this.keys[size] = null;
-        this.values[size] = value;
-        size++;
     }
 }
