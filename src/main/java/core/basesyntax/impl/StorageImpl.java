@@ -22,11 +22,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            StorageImpl<K, V> entry = (StorageImpl<K, V>) storageArray[i];
-            if (key == null && entry.getKey() == null
-                    || key != null && entry.getKey() == key
-                    || entry.getKey().equals(key)) {
-                entry.setValue(value);
+            StorageImpl<K, V> storageItem = (StorageImpl<K, V>) storageArray[i];
+            if ((key == null && storageItem.getKey() == null)
+                    || (key != null && storageItem.getKey() == key)
+                    || storageItem.getKey() != null && storageItem.getKey().equals(key)) {
+                storageItem.setValue(value);
                 return;
             }
         }
@@ -36,9 +36,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            StorageImpl<K, V> entry = (StorageImpl<K, V>) storageArray[i];
-            if (entry.getKey() == key || entry.getKey().equals(key)) {
-                return entry.getValue();
+            StorageImpl<K, V> storageItem = (StorageImpl<K, V>) storageArray[i];
+            if (storageItem.getKey() == key
+                    || storageItem.getKey() != null && storageItem.getKey().equals(key)
+                    || key == null && storageItem.getKey() == null) {
+                return storageItem.getValue();
             }
         }
         return null;
@@ -63,20 +65,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public void setValue(V value) {
         this.value = value;
-    }
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        StorageImpl<K, V> kvStorage = (StorageImpl<K, V>) obj;
-        return (kvStorage.getKey() == key
-                || (kvStorage.getKey() != null && kvStorage.getKey().equals(key))
-                || kvStorage.getKey() == null & key == null)
-                && (kvStorage.getValue() == value
-                || (kvStorage.getValue() != null && kvStorage.getValue().equals(value)));
     }
 }
