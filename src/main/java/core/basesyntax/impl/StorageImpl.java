@@ -4,23 +4,19 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
-    private Object[] keys;
-    private Object[] values;
+    private final K[] keys;
+    private final V[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = new Object[CAPACITY];
-        this.values = new Object[CAPACITY];
-    }
-
-    public StorageImpl(K key, V value) {
+        keys = (K[]) new Object [CAPACITY];
+        values = (V[]) new Object [CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null)
-                    || (key != null && keys[i] == key)
+            if (key == keys[i]
                     || keys[i] != null && keys[i].equals(key)) {
                 values[i] = value;
                 return;
@@ -33,13 +29,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == key || keys[i] != null && keys[i].equals(key)
-                    || key == null && keys[i] == null) {
-                return (V) values[i];
-            }
+        int index = findEqualsKey(key);
+        if (index != -1) {
+            return values[index];
         }
         return null;
+    }
+
+    private int findEqualsKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i]
+                    || keys[i] != null && keys[i].equals(key)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
