@@ -36,17 +36,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = indexOfKey(key);
         if (index != -1) {
-            // Key already exists, replace the value
             values[index] = value;
         } else {
-            // Ensure capacity
             if (size == keys.length) {
                 int newCapacity = keys.length * 2;
                 keys = Arrays.copyOf(keys, newCapacity);
                 values = Arrays.copyOf(values, newCapacity);
             }
-
-            // Add new key-value pair
             keys[size] = key;
             values[size] = value;
             size++;
