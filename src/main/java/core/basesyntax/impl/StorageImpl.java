@@ -8,7 +8,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int elementsCount;
 
     public StorageImpl() {
-        this.data = (Pair<K, V>[]) new Object[DATA_CAPACITY];
+        this.data = new Pair[DATA_CAPACITY];
     }
 
     @Override
