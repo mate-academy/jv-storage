@@ -4,8 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DATA_CAPACITY = 10;
-    private final Pair<K, V>[] data = new Pair[DATA_CAPACITY];
+    private final Pair<K, V>[] data;
     private int elementsCount = 0;
+
+    public StorageImpl() {
+        this.elementsCount = 0;
+        this.data = new Pair[DATA_CAPACITY];
+    }
 
     @Override
     public void put(K key, V value) {
