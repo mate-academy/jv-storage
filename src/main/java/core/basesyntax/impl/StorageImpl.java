@@ -36,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = 0;
         for (Pair<K, V> pair : data) {
             if (pair == null) {
-                break;
+                return -1;
             }
             if (key == pair.key || pair.key != null && pair.key.equals(key)) {
                 return index;
