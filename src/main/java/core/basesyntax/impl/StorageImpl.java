@@ -8,7 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int elementsCount;
 
     public StorageImpl() {
-        this.elementsCount = 0;
         this.data = new Pair[DATA_CAPACITY];
     }
 
