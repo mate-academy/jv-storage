@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DATA_CAPACITY = 10;
     private final Pair<K, V>[] data;
-    private int elementsCount = 0;
+    private int elementsCount;
 
     public StorageImpl() {
         this.elementsCount = 0;
