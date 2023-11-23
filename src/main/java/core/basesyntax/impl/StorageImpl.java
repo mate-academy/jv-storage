@@ -14,7 +14,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = contains(key);
-        if (contains(key) > 0) {
+        if (index > -1) {
             data[index].value = value;
             return;
         }
