@@ -7,5 +7,4 @@ public interface Storage<K, V> {
 
     int size();
 
-    int getIndex(K key);
 }
