@@ -1,52 +1,50 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private final List<V> nullValues = new ArrayList<>();
-    private final List<Pair<K, V>> list = new ArrayList<>();
+    private final Pair<K,V>[] storageArray;
+    private int size;
 
-    @Override
+    public StorageImpl() {
+        this.storageArray = new Pair[MAX_ITEMS_NUMBER];
+        this.size = 0;
+    }
+
     public void put(K key, V value) {
 
-        if (key == null) {
-            if (nullValues.isEmpty()) {
-                nullValues.add(value);
-            } else {
-                nullValues.set(0, value);
-            }
+        int index = indexOfKey(key);
+        if (index >= 0) {
+            storageArray[index].setValue(value);
         } else {
-            Pair<K,V> existingPair = null;
-            for (Pair<K,V> pair : list) {
-                if (key.equals(pair.key)) {
-                    existingPair = pair;
-                    break;
-                }
+            storageArray[size++] = new Pair<>(key, value);
+        }
+    }
+
+    private int indexOfKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keysAreEqual(key, storageArray[i].key)) {
+                return i;
             }
-            if (existingPair == null) {
-                list.add(new Pair<>(key, value));
-            } else {
-                existingPair.value = value;
-            }
+        }
+        return -1;
+    }
+
+    private boolean keysAreEqual(K key1, K key2) {
+        if (key1 == null) {
+            return key2 == null;
+        } else {
+            return key1.equals(key2);
         }
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            if (nullValues.isEmpty()) {
-                return null;
-            } else {
-                return nullValues.get(0);
-            }
-        } else {
-            for (Pair<K, V> pair : list) {
-                if (pair.key.equals(key)) {
-                    return pair.value;
-                }
+        for (int i = 0; i < size; i++) {
+            Pair<K, V> pair = storageArray[i];
+            if (keysAreEqual(key, pair.key)) {
+                return pair.value;
             }
         }
         return null;
@@ -54,19 +52,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = list.size();
-        if (!nullValues.isEmpty()) {
-            size++;
-        }
         return size;
     }
 
     private static class Pair<K, V> {
-        private final K key;
+        private K key;
         private V value;
 
         Pair(K key, V value) {
             this.key = key;
+            this.value = value;
+        }
+
+        public void setValue(V value) {
             this.value = value;
         }
     }
