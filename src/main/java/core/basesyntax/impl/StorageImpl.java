@@ -9,8 +9,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_SIZE];
-        this.values = (V[]) new Object[MAX_SIZE];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
@@ -43,13 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int getIndex(K key) {
         if (key == null) {
             for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
+                if (keys[i] == null || key.equals(keys[i])) {
                     return i;
                 }
             }
