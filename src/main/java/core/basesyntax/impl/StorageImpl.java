@@ -23,8 +23,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 keys[size] = key;
                 values[size] = value;
                 size++;
-            } else {
-                throw new RuntimeException("Storage is full");
             }
         }
     }
@@ -41,11 +39,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndex(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null || key.equals(keys[i])) {
-                    return i;
-                }
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
+                return i;
             }
         }
         return -1;
