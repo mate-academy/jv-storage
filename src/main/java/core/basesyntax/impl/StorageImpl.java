@@ -24,12 +24,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     storage[i] = storageToAdd;
                     size++;
                     break;
-                } else if (storage[i].getKey() == null
-                        && storageToAdd.getKey() == null) {
-                    storage[i] = storageToAdd;
-                    break;
-                } else if (storage[i].getKey() != null
-                        && storage[i].getKey().equals(storageToAdd.getKey())) {
+                } else if ((storage[i].getKey() == null
+                        && storageToAdd.getKey() == null)
+                        || (storage[i].getKey() != null
+                        && storage[i].getKey().equals(storageToAdd.getKey()))) {
                     storage[i] = storageToAdd;
                     break;
                 }
@@ -42,10 +40,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (StorageObject object : storage) {
             if (object == null) {
                 break;
-            } else if (object.getKey() == null && key == null) {
-                return (V) object.getValue();
-            } else if (object.getKey() != null
-                    && object.getKey().equals(key)) {
+            } else if (object.getKey() == null && key == null
+                    || (object.getKey() != null
+                    && object.getKey().equals(key))) {
                 return (V) object.getValue();
             }
         }
