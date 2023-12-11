@@ -5,57 +5,48 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
 
-    private Object[] keys = new Object[MAX_SIZE];
-    private Object[] values = new Object[MAX_SIZE];
-    private int size = 0;
+    private Object[] keys;
+    private Object[] values;
+    private int size;
+
+    public StorageImpl() {
+        this.keys = new Object[MAX_SIZE];
+        this.values = new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
-        int i;
-        if (key == null) {
-            for (i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-
-            if (size == MAX_SIZE) {
-                throw new IllegalStateException("Storage is full");
-            }
-
-            keys[size] = null;
-            values[size] = value;
-            size++;
+        int i = findIndex(key);
+        if (i != -1) {
+            values[i] = value;
+        } else if (size == MAX_SIZE) {
+            throw new IllegalStateException("Storage is full");
         } else {
-            for (i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
-            }
-
-            if (size == MAX_SIZE) {
-                throw new IllegalStateException("Storage is full");
-            }
-
             keys[size] = key;
             values[size] = value;
             size++;
         }
+    }
 
+    private int findIndex(K key) {
+        int i;
+        for (i = 0; i < size; i++) {
+            if (areKeysEqual(key, keys[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean areKeysEqual(K key1, Object key2) {
+        return (key1 == null && key2 == null)
+                || (key1 != null && key1.equals(key2));
     }
 
     @Override
     public V get(K key) {
-        int i;
-        for (i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null
-                    && key.equals(keys[i]))) {
-                return (V) values[i];
-            }
-        }
-        return null;
+        int i = findIndex(key);
+        return (i != -1) ? (V) values[i] : null;
     }
 
     @Override
@@ -63,4 +54,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 }
-
