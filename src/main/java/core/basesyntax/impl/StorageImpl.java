@@ -28,8 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (keys[i] == null) {
                 if (key == null) {
                     return (V) (values[i]);
-                }
-                else {
+                } else {
                     return null;
                 }
             }
