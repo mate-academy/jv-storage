@@ -7,11 +7,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] keys = new Object[MAX_VALUES];
     private Object[] values = new Object[MAX_VALUES];
     private int count;
+
     public StorageImpl() {
         keys = new Object[MAX_VALUES];
         values = new Object[MAX_VALUES];
     }
-    private int valueResolve(K key){
+
+    private int valueResolve(K key) {
         for (int i = 0; i < count; i++) {
             if (keys[i] == key || key != null && key.equals(keys[i])) {
                 return i;
@@ -19,6 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         return -1;
     }
+
     @Override
     public void put(K key, V value) {
         if (get(key) == null) {
@@ -26,14 +29,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[count] = value;
             count++;
         } else {
-            values[valueResolve(key)]=value;
+            values[valueResolve(key)] = value;
         }
     }
 
     @Override
     public V get(K key) {
         int k = valueResolve(key);
-        return k == -1? null: (V) values[k];
+        return k == -1 ? null : (V) values[k];
     }
 
     @Override
