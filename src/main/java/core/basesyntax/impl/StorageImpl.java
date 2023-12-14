@@ -15,16 +15,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int i = findIndex(key);
-        if (i != -1) {
-            values[i] = value;
-        } else if (size == MAX_SIZE) {
-            throw new IllegalStateException("Storage is full");
-        } else {
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        int index = findIndex(key);
+        if (index != -1) {
+            values[index] = value;
+            return;
         }
+        if (size == MAX_SIZE) {
+            throw new IllegalStateException("Storage is full");
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
@@ -49,7 +50,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean areKeysEqual(K key1, Object key2) {
-        return (key1 == null && key2 == null)
-                || (key1 != null && key1.equals(key2));
+        return key1 == key2 || key1 != null && key1.equals(key2);
     }
 }
