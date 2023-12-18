@@ -2,15 +2,13 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import java.lang.reflect.Array;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_LEN = 10;
     @SuppressWarnings("unchecked")
     private final Entry[] entries = (Entry[]) Array.newInstance(Entry.class, ARRAY_LEN);
     private int size = 0;
-
-    public StorageImpl() {
-    }
 
     @Override
     public void put(K key, V value) {
@@ -29,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             Entry entry = entries[i];
 
-            if (areKeysEqual(key, entry.getKey())) {
+            if (Objects.equals(key, entry.getKey())) {
                 return entry.getValue();
             }
         }
@@ -46,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             Entry entry = entries[i];
 
-            if (areKeysEqual(key, entry.getKey())) {
+            if (Objects.equals(key, entry.getKey())) {
                 return entry;
             }
         }
@@ -59,11 +57,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("Storage is full. Maximum capacity of " + ARRAY_LEN
                     + " reached.");
         }
-    }
-
-    private boolean areKeysEqual(K one, K other) {
-        return one == null && other == null
-                || one != null && one.equals(other);
     }
 
     private class Entry {
