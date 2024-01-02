@@ -8,25 +8,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private K[] keys;
     private V[] values;
+    private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[]{};
-        values = (V[]) new Object[]{};
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         int index = indexOf(key);
         if (index == -1) {
-            if (keys.length + 1 > MAX_ITEMS_NUMBER) {
+            if (size + 1 > MAX_ITEMS_NUMBER) {
                 throw new RuntimeException("Cannot add more elements!"
                         + " The size of storage is " + MAX_ITEMS_NUMBER);
             }
-            keys = Arrays.copyOf(keys, keys.length + 1);
-            values = Arrays.copyOf(values, values.length + 1);
-            int size = keys.length;
-            keys[size - 1] = key;
-            values[size - 1] = value;
+            keys[size] = key;
+            values[size] = value;
+            size++;
         } else {
             values[index] = value;
         }
@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < size; i++) {
             if (compareKeys(key, keys[i])) {
                 return values[i];
             }
@@ -44,11 +44,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return keys.length;
+        return size;
     }
 
     private int indexOf(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < size; i++) {
             if (compareKeys(key, keys[i])) {
                 return i;
             }
