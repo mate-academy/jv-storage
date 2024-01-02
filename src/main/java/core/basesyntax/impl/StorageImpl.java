@@ -18,17 +18,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = indexOf(key);
-        if (index == -1) {
-            if (size + 1 > MAX_ITEMS_NUMBER) {
-                throw new RuntimeException("Cannot add more elements!"
-                        + " The size of storage is " + MAX_ITEMS_NUMBER);
-            }
-            keys[size] = key;
-            values[size] = value;
-            size++;
-        } else {
+        if (index != -1) {
             values[index] = value;
+            return;
         }
+        if (size >= MAX_ITEMS_NUMBER) {
+            throw new RuntimeException("Cannot add more elements!"
+                    + " The size of storage is " + MAX_ITEMS_NUMBER);
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
