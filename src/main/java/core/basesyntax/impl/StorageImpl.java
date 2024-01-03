@@ -30,20 +30,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void addKeyValue(K key, V value) {
         this.size++;
-        addKey(key);
-        addValue(value);
-    }
-
-    private void addKey(K key) {
         K[] newKeys = (K[]) new Object[this.size];
         for (int i = 0; i < this.keys.length; i++) {
             newKeys[i] = this.keys[i];
         }
         newKeys[newKeys.length - 1] = key;
         this.keys = newKeys;
-    }
 
-    private void addValue(V value) {
         V[] newValues = (V[]) new Object[this.size];
         for (int i = 0; i < this.values.length; i++) {
             newValues[i] = this.values[i];
