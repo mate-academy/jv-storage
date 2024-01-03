@@ -3,10 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private K[] keys;
+    private V[] values;
+    private int size;
 
-    private K[] keys = (K[]) new Object[this.size];
-    private V[] values = (V[]) new Object[this.size];
-    private int size = 0;
+    public StorageImpl() {
+        keys = (K[]) new Object[size];
+        values = (V[]) new Object[size];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -20,26 +24,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] != null && key != null && keys[i].equals(key)) {
-                return values[i];
-            }
-            if (keys[i] == key) {
-                return values[i];
-            }
-        }
-        return null;
+        int searchedIndex = checkKey(key);
+        return (searchedIndex == -1) ? null : values[searchedIndex];
     }
 
     private void addKeyValue(K key, V value) {
         this.size++;
+        addKey(key);
+        addValue(value);
+    }
+
+    private void addKey(K key) {
         K[] newKeys = (K[]) new Object[this.size];
-        System.arraycopy(this.keys, 0, newKeys, 0, this.keys.length);
+        for (int i = 0; i < this.keys.length; i++) {
+            newKeys[i] = this.keys[i];
+        }
         newKeys[newKeys.length - 1] = key;
         this.keys = newKeys;
+    }
 
+    private void addValue(V value) {
         V[] newValues = (V[]) new Object[this.size];
-        System.arraycopy(this.values, 0, newValues, 0, this.values.length);
+        for (int i = 0; i < this.values.length; i++) {
+            newValues[i] = this.values[i];
+        }
         newValues[newValues.length - 1] = value;
         this.values = newValues;
     }
