@@ -1,15 +1,18 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] keys;
-    private V[] values;
+    private static final int DEFAULT_SIZE = 10;
+    private final K[] keys;
+    private final V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[size];
-        values = (V[]) new Object[size];
+        keys = (K[]) new Object[DEFAULT_SIZE];
+        values = (V[]) new Object[DEFAULT_SIZE];
+        size = 0;
     }
 
     @Override
@@ -18,7 +21,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (replaceIndex != -1) {
             values[replaceIndex] = value;
         } else {
-            addKeyValue(key, value);
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
@@ -28,26 +33,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return (searchedIndex == -1) ? null : values[searchedIndex];
     }
 
-    private void addKeyValue(K key, V value) {
-        this.size++;
-        K[] newKeys = (K[]) new Object[this.size];
-        for (int i = 0; i < this.keys.length; i++) {
-            newKeys[i] = this.keys[i];
-        }
-        newKeys[newKeys.length - 1] = key;
-        this.keys = newKeys;
-
-        V[] newValues = (V[]) new Object[this.size];
-        for (int i = 0; i < this.values.length; i++) {
-            newValues[i] = this.values[i];
-        }
-        newValues[newValues.length - 1] = value;
-        this.values = newValues;
-    }
-
     private int checkKey(K wantedKey) {
-        for (int i = 0; i < this.keys.length; i++) {
-            if (keys[i] == wantedKey || keys[i] != null && keys[i].equals(wantedKey)) {
+        for (int i = 0; i < this.size; i++) {
+            if (Objects.equals(keys[i], wantedKey)) {
                 return i;
             }
         }
