@@ -5,13 +5,12 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
     private int size;
-    private final Object[] arrayOfKeys;
-    private final Object[] arrayOfValues;
+    private final K[] keys;
+    private final V[] values;
 
     public StorageImpl() {
-        arrayOfKeys = new Object[INITIAL_CAPACITY];
-        arrayOfValues = new Object[INITIAL_CAPACITY];
-        size = 0;
+        keys = (K[]) new Object[INITIAL_CAPACITY];
+        values = (V[]) new Object[INITIAL_CAPACITY];
     }
 
     @Override
@@ -21,25 +20,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         for (int i = 0; i < size; i++) {
-            if (arrayOfKeys[i].equals(key)) {
-                arrayOfValues[i] = value;
+            if (keys[i].equals(key)) {
+                values[i] = value;
                 return;
             }
         }
-        arrayOfKeys[size] = key;
-        arrayOfValues[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            key = (K) "null";
-        }
-
+        K searchKey = key != null ? key : (K) "null";
         for (int i = 0; i < size; i++) {
-            if (arrayOfKeys[i].equals(key)) {
-                return (V) arrayOfValues[i];
+            if (keys[i].equals(searchKey)) {
+                return (V) values[i];
             }
         }
         return null;
