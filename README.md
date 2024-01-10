@@ -6,7 +6,7 @@ You should be able to put new key-value pairs and get value by key.
 If you are given the key-value pair, and the storage already contains this key, you should replace the value.
 
 Example:
-```java
+```java/*
 Storage<Integer, Box> storage = new StorageImpl<>(); 
 Box box = new Box();
 storage.put(22, box); 
