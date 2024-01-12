@@ -4,31 +4,38 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = new Object[DEFAULT_CAPACITY];
-        this.values = new Object[DEFAULT_CAPACITY];
-        this.size = 0;
+        keys = (K[]) new Object[DEFAULT_CAPACITY];
+        values = (V[]) new Object[DEFAULT_CAPACITY];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        int index = indexOf(key);
-        if (index != -1) {
-            values[index] = value;
+        if (key == null) {
+            putNullKey(value);
         } else {
-            ensureCapacity();
-            keys[size] = key;
-            values[size] = value;
-            size++;
+            int index = indexOf(key);
+            if (index != -1) {
+                values[index] = value;
+            } else {
+                ensureCapacity();
+                keys[size] = key;
+                values[size] = value;
+                size++;
+            }
         }
     }
 
     @Override
     public V get(K key) {
+        if (key == null) {
+            return getNullKey();
+        }
         int index = indexOf(key);
         return (index != -1) ? (V) values[index] : null;
     }
@@ -40,7 +47,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (areKeysEqual(key, keys[i])) {
+            if (keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
@@ -55,8 +62,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void resizeArrays() {
         int newCapacity = keys.length * 2;
-        keys = resizeArray(keys, newCapacity);
-        values = resizeArray(values, newCapacity);
+        keys = (K[]) resizeArray(keys, newCapacity);
+        values = (V[]) resizeArray(values, newCapacity);
     }
 
     private Object[] resizeArray(Object[] array, int newCapacity) {
@@ -65,10 +72,29 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return newArray;
     }
 
-    private boolean areKeysEqual(K key1, Object key2) {
-        if (key1 == null) {
-            return key2 == null;
+    private void putNullKey(V value) {
+        int nullKeyIndex = indexOfNullKey();
+        if (nullKeyIndex != -1) {
+            values[nullKeyIndex] = value;
+        } else {
+            ensureCapacity();
+            keys[size] = null;
+            values[size] = value;
+            size++;
         }
-        return key1.equals(key2);
+    }
+
+    private V getNullKey() {
+        int nullKeyIndex = indexOfNullKey();
+        return (nullKeyIndex != -1) ? values[nullKeyIndex] : null;
+    }
+
+    private int indexOfNullKey() {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
