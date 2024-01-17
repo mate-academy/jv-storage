@@ -16,40 +16,38 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = getIndex(key);
-        keyStorage[index] = key;
-        valueStorage[index] = value;
-    }
-
-    @Override
-    public V get(K key) {
-        int index = getIndex(key);
-        return valueStorage[index];
-    }
-
-    @Override
-    public int size() {
-        int count = 0;
+        int index = 0;
         for (K keyInStorage: keyStorage) {
-            if (keyInStorage == null && valueStorage[count] == null) {
+            if (size <= 10 && keyInStorage == null && valueStorage[index] == null) {
+                keyStorage[index] = key;
+                valueStorage[index] = value;
+                size++;
                 break;
             }
-            count++;
-        }
-        this.size = count;
-        return size;
-    }
-
-    public int getIndex(K key) {
-        int index = 0;
-        for (K keyInStorage : keyStorage) {
-            if (keyInStorage == null && valueStorage[index] == null
-                    || (key == keyInStorage || (key != null && key.equals(keyInStorage)))) {
+            if (keyInStorage == key || keyInStorage != null && keyInStorage.equals(key)) {
+                keyStorage[index] = key;
+                valueStorage[index] = value;
                 break;
             }
             index++;
         }
-        return index;
+    }
+
+    @Override
+    public V get(K key) {
+        int index = 0;
+        for (K keyInStorage: keyStorage) {
+            if (keyInStorage == key || keyInStorage != null && keyInStorage.equals(key)) {
+                return valueStorage[index];
+            }
+            index++;
+        }
+        return null;
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 }
 
