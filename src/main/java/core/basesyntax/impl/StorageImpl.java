@@ -16,31 +16,32 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int index = 0;
-        for (K keyInStorage: keyStorage) {
-            if (size <= 10 && keyInStorage == null && valueStorage[index] == null) {
-                keyStorage[index] = key;
-                valueStorage[index] = value;
+        for (int i = 0;i < size;i++) {
+            if (keyStorage[i] == key || keyStorage[i] != null && keyStorage[i].equals(key)) {
+                keyStorage[i] = key;
+                valueStorage[i] = value;
+                return;
+            }
+        }
+        if (size >= STORAGE_ARRAY_LENGTH) {
+            throw new RuntimeException("Can not add element, array is full.");
+        }
+        for (int i = 0; i < keyStorage.length; i++) {
+            if (keyStorage[i] == null && valueStorage[i] == null) {
+                keyStorage[i] = key;
+                valueStorage[i] = value;
                 size++;
-                break;
+                return;
             }
-            if (keyInStorage == key || keyInStorage != null && keyInStorage.equals(key)) {
-                keyStorage[index] = key;
-                valueStorage[index] = value;
-                break;
-            }
-            index++;
         }
     }
 
     @Override
     public V get(K key) {
-        int index = 0;
-        for (K keyInStorage: keyStorage) {
-            if (keyInStorage == key || keyInStorage != null && keyInStorage.equals(key)) {
-                return valueStorage[index];
+        for (int i = 0;i < size;i++) {
+            if (keyStorage[i] == key || keyStorage[i] != null && keyStorage[i].equals(key)) {
+                return valueStorage[i];
             }
-            index++;
         }
         return null;
     }
