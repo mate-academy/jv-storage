@@ -9,8 +9,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     private int indexOfKey(K key) {
-        for(int i = 0; i < size; i++) {
-            if(key != null && key.equals(keys[i]) || key == null && keys[i] == null) {
+        for (int i = 0; i < size; i++) {
+            if (key != null && key.equals(keys[i]) || key == null && keys[i] == null) {
                 return i;
             }
         }
