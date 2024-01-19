@@ -3,16 +3,14 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = new Object[MAX_ITEMS_NUMBER];
-        this.values = new Object[MAX_ITEMS_NUMBER];
-        this.size = 0;
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
@@ -35,11 +33,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == null && keys[i] == null || key != null && key.equals(keys[i])) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return (V) values[i];
             }
         }
-        // Вернуть null, если ключ не найден
         return null;
     }
 
