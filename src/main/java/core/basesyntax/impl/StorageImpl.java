@@ -16,15 +16,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (size < MAX_ITEMS_NUMBER) {
-            for (int i = 0; i < size; i++) {
-                if (key == null && keys[i] == null || key != null && key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
+            int index = findKeyIndex(key);
+            if (index != -1) {
+                values[index] = value;
+            } else {
+                keys[size] = key;
+                values[size] = value;
+                size++;
             }
-            keys[size] = key;
-            values[size] = value;
-            size++;
         } else {
             System.out.println("The storage is full, it is impossible to make a new entry");
         }
@@ -32,16 +31,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
-                return (V) values[i];
-            }
-        }
-        return null;
+        int index = findKeyIndex(key);
+        return (index != -1) ? values[index] : null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (areKeysEqual(key, keys[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean areKeysEqual(K key1, K key2) {
+        return (key1 == null && key2 == null) || (key1 != null && key1.equals(key2));
     }
 }
