@@ -13,7 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         if (get(key) != null) {
             int currentArraySize = sizeCounter * 2 - 1;
-            for (int i = 0; i < currentArraySize; i+=2) {
+            for (int i = 0; i < currentArraySize; i += 2) {
                 if (key == array[i] || (key != null && key.equals(array[i]))) {
                     array[i + 1] = value;
                     break;
@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int currentArraySize = sizeCounter * 2 - 1;
-        for (int i = 0; i < currentArraySize; i+=2) {
+        for (int i = 0; i < currentArraySize; i += 2) {
             if (key == array[i] || (key != null && key.equals(array[i]))) {
                 return (V) array[i + 1];
             }
