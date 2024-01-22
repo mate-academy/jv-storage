@@ -3,10 +3,15 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_MOUNT_OF_OBJECTS = 10;
-    private K[] keys = (K[]) new Object[MAX_MOUNT_OF_OBJECTS];
-    private V[] values = (V[]) new Object[MAX_MOUNT_OF_OBJECTS];
-    private int size = 0;
+    private static final int MAX_SIZE = 10;
+    private K[] keys;
+    private V[] values;
+    private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -15,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[index] = value;
             return;
         }
-        if (size >= MAX_MOUNT_OF_OBJECTS) {
+        if (size >= MAX_SIZE) {
             throw new RuntimeException("The storage is full");
         }
         values[size] = value;
