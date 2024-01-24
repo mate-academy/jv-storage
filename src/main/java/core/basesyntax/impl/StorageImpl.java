@@ -10,24 +10,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private final Object[] storage = new Object[STORAGE_SIZE];
     private int size = 0;
-    private int indexOfKey;
 
     @Override
     public void put(K key, V value) {
-        indexOfKey = findKeyIndex(key);
+        int indexOfKey = findKeyIndex(key);
 
-        if (indexOfKey != KEY_NOT_FOUND) {
-            storage[indexOfKey + VALUE_INDEX_OFFSET] = value;
-        } else {
+        if (indexOfKey == KEY_NOT_FOUND) {
             storage[size] = key;
             storage[size + VALUE_INDEX_OFFSET] = value;
             size += ENTRIES_PER_ELEMENT;
+        } else {
+            storage[indexOfKey + VALUE_INDEX_OFFSET] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        indexOfKey = findKeyIndex(key);
+        int indexOfKey = findKeyIndex(key);
 
         if (indexOfKey != KEY_NOT_FOUND) {
             return (V) storage[indexOfKey + VALUE_INDEX_OFFSET];
