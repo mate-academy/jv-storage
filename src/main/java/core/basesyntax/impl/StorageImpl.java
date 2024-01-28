@@ -5,9 +5,14 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
     private static final int DEFAULT_ARRAY_INDEX = -1;
-    private int count = 0;
-    private K[] keyArray = (K[]) new Object[ARRAY_SIZE];
-    private V[] storageArray = (V[]) new Object[ARRAY_SIZE];
+    private int size = 0;
+    private K[] keyArray;
+    private V[] storageArray;
+
+    public StorageImpl() {
+        keyArray = (K[]) new Object[ARRAY_SIZE];
+        storageArray = (V[]) new Object[ARRAY_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -15,21 +20,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index != DEFAULT_ARRAY_INDEX) {
             storageArray[index] = value;
         } else {
-            keyArray[count] = key;
-            storageArray[count] = value;
-            count++;
+            keyArray[size] = key;
+            storageArray[size] = value;
+            size++;
         }
-    }
-
-    private int checkIfAlreadyInArray(K key) {
-        int keyOccurrenceIndex = DEFAULT_ARRAY_INDEX;
-        for (int i = 0; i < keyArray.length; i++) {
-            if (equals(key, keyArray[i]) && storageArray[i] != null) {
-                keyOccurrenceIndex = i;
-                return keyOccurrenceIndex;
-            }
-        }
-        return keyOccurrenceIndex;
     }
 
     @Override
@@ -46,7 +40,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return count;
+        return size;
+    }
+
+    private int checkIfAlreadyInArray(K key) {
+        int keyOccurrenceIndex = DEFAULT_ARRAY_INDEX;
+        for (int i = 0; i < keyArray.length; i++) {
+            if (equals(key, keyArray[i]) && storageArray[i] != null) {
+                keyOccurrenceIndex = i;
+                return keyOccurrenceIndex;
+            }
+        }
+        return keyOccurrenceIndex;
     }
 
     private boolean equals(K key, K arrayKey) {
@@ -54,5 +59,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 || key != null && key.equals(arrayKey);
     }
 }
-
-
