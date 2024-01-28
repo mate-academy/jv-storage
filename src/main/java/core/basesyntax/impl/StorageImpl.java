@@ -22,13 +22,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 size++;
                 break;
             }
-            if (((storageForKeys[i] != null && storageForKeys[i].equals(key))
-                    && storageForValue[i] != value)) {
-                storageForValue[i] = value;
-                break;
-            }
-            if (storageForKeys[i] == null && storageForKeys[i] == key
-                    && storageForValue != value) {
+            if (((storageForKeys[i] != null
+                    && storageForKeys[i].equals(key))
+                    && storageForValue[i] != value)
+                    || (storageForKeys[i] == null
+                    && storageForKeys[i] == key
+                    && storageForValue != value)) {
                 storageForValue[i] = value;
                 break;
             }
@@ -38,8 +37,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if ((storageForKeys[i] == null && storageForKeys[i] == key)
-                    || (storageForKeys[i] != null && storageForKeys[i].equals(key))) {
+            if ((storageForKeys[i] == key)
+                    || (storageForKeys[i] != null
+                    && storageForKeys[i].equals(key))) {
                 return storageForValue[i];
             }
         }
