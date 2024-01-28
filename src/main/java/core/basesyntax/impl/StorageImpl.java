@@ -3,17 +3,56 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int ARRAY_SIZE = 10;
+    private static final int DEFAULT_ARRAY_INDEX = -1;
+    private int count = 0;
+    private K[] keyArray = (K[]) new Object[ARRAY_SIZE];
+    private V[] storageArray = (V[]) new Object[ARRAY_SIZE];
+
     @Override
     public void put(K key, V value) {
+        int index = checkIfAlreadyInArray(key);
+        if (index != DEFAULT_ARRAY_INDEX) {
+            storageArray[index] = value;
+        } else {
+            keyArray[count] = key;
+            storageArray[count] = value;
+            count++;
+        }
+    }
+
+    private int checkIfAlreadyInArray(K key) {
+        int keyOccurrenceIndex = DEFAULT_ARRAY_INDEX;
+        for (int i = 0; i < keyArray.length; i++) {
+            if (equals(key, keyArray[i]) && storageArray[i] != null) {
+                keyOccurrenceIndex = i;
+                return keyOccurrenceIndex;
+            }
+        }
+        return keyOccurrenceIndex;
     }
 
     @Override
     public V get(K key) {
+        int index;
+        for (int i = 0; i < keyArray.length; i++) {
+            if (equals(key, keyArray[i])) {
+                index = i;
+                return storageArray[index];
+            }
+        }
         return null;
     }
 
     @Override
     public int size() {
-        return -1;
+        return count;
+    }
+
+    private boolean equals(K key, K arrayKey) {
+        return key == null && arrayKey == null
+                || key != null && key.equals(arrayKey);
     }
 }
+
+
