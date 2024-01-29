@@ -4,8 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private static final int DEFAULT_ARRAY_INDEX = -1;
-    private int size = 0;
+    private static final int NOT_FOUND_INDEX = -1;
+    private int size;
     private K[] keyArray;
     private V[] storageArray;
 
@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = checkIfAlreadyInArray(key);
-        if (index != DEFAULT_ARRAY_INDEX) {
+        if (index != NOT_FOUND_INDEX) {
             storageArray[index] = value;
         } else {
             keyArray[size] = key;
@@ -44,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int checkIfAlreadyInArray(K key) {
-        int keyOccurrenceIndex = DEFAULT_ARRAY_INDEX;
+        int keyOccurrenceIndex = NOT_FOUND_INDEX;
         for (int i = 0; i < keyArray.length; i++) {
             if (equals(key, keyArray[i]) && storageArray[i] != null) {
                 keyOccurrenceIndex = i;
@@ -55,7 +55,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean equals(K key, K arrayKey) {
-        return key == null && arrayKey == null
+        return key == arrayKey
                 || key != null && key.equals(arrayKey);
     }
 }
