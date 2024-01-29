@@ -9,7 +9,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         pairs = new Pair[STORAGE_CAPACITY];
-        size = 0;
     }
 
     @Override
