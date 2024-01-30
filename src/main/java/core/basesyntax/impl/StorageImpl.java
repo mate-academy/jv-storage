@@ -4,21 +4,22 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int CAPACITY = 10;
+    public static final int NOT_FOUND_INDEX = -1;
 
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = new Object[CAPACITY];
-        values = new Object[CAPACITY];
+        keys = (K[]) new Object[CAPACITY];
+        values = (V[]) new Object[CAPACITY];
         size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         int indexOfKey = getKeyIndex(key);
-        if (indexOfKey == -1) {
+        if (indexOfKey == NOT_FOUND_INDEX) {
             keys[size] = key;
             values[size] = value;
             size++;
@@ -30,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int indexOfKey = getKeyIndex(key);
-        return indexOfKey == -1 ? null : (V) values[indexOfKey];
+        return indexOfKey == NOT_FOUND_INDEX ? null : (V) values[indexOfKey];
     }
 
     @Override
@@ -44,6 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND_INDEX;
     }
 }
