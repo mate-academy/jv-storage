@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final StorageImpl[] array = new StorageImpl[MAX_SIZE];
+    private Pair pair = new Pair();
     private int counter = 0;
     private K key;
     private V value;
@@ -35,13 +35,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (counter >= 9) {
             throw new ArrayIndexOutOfBoundsException("Array already full");
         }
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
-                array[counter] = new StorageImpl(key, value);
+        for (int i = 0; i < pair.array.length; i++) {
+            if (pair.array[i] == null) {
+                pair.array[counter] = new StorageImpl(key, value);
                 counter++;
                 break;
-            } else if (array[i] != null && Objects.equals(array[i].getKey(), key)) {
-                array[i].setValue(value);
+            } else if (pair.array[i] != null && Objects.equals(pair.array[i].getKey(), key)) {
+                pair.array[i].setValue(value);
                 break;
             }
         }
@@ -49,12 +49,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
+        for (int i = 0; i < pair.array.length; i++) {
+            if (pair.array[i] == null) {
                 return null;
             }
-            if (Objects.equals(array[i].getKey(), key)) {
-                return (V) array[i].getValue();
+            if (Objects.equals(pair.array[i].getKey(), key)) {
+                return (V) pair.array[i].getValue();
             }
         }
         return null;
@@ -62,11 +62,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
+        for (int i = 0; i < pair.array.length; i++) {
+            if (pair.array[i] == null) {
                 return i;
             }
         }
         return 10;
+    }
+    static class Pair {
+        private final StorageImpl[] array = new StorageImpl[MAX_SIZE];
     }
 }
