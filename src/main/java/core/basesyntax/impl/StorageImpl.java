@@ -1,46 +1,29 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private final Pair[] elements = new Pair[MAX_SIZE];
-    private int counter = 0;
-    private K key;
-    private V value;
+    private int size = 0;
 
     public StorageImpl() {
     }
 
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
-    }
-
-    public void setValue(V value) {
-        this.value = value;
-    }
-
     @Override
     public void put(K key, V value) {
-        if (counter >= 9) {
+        if (size > MAX_SIZE) {
             throw new ArrayIndexOutOfBoundsException("Array already full");
         }
         for (int i = 0; i < elements.length; i++) {
             if (elements[i] == null) {
-                elements[counter] = new Pair(key, value);
-                counter++;
+                elements[size] = new Pair<>(key, value);
+                size++;
                 break;
-            } else if (elements[i] != null && Objects.equals(elements[i].getKey(), key)) {
+            } else if (elements[i].getKey() == null && key == null) {
+                elements[i].setValue(value);
+                break;
+            } else if (elements[i].getKey() != null && elements[i].getKey().equals(key)) {
                 elements[i].setValue(value);
                 break;
             }
@@ -53,7 +36,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (elements[i] == null) {
                 return null;
             }
-            if (Objects.equals(elements[i].getKey(), key)) {
+            if (elements[i].getKey() == null && key == null) {
+                return (V)elements[i].getValue();
+            }
+            if (elements[i].getKey() != null && elements[i].getKey().equals(key)) {
                 return (V) elements[i].getValue();
             }
         }
@@ -62,15 +48,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < elements.length; i++) {
-            if (elements[i] == null) {
-                return i;
-            }
-        }
-        return 10;
+        return size;
     }
 
-    private class Pair<K,V> {
+    private static class Pair<K,V> {
         private K key;
         private V value;
 
