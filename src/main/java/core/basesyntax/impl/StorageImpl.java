@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_SIZE];
         this.values = (V[]) new Object[MAX_SIZE];
-        this.size = 0;
     }
 
     @Override
@@ -19,24 +18,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = getIndex(key);
         if (index != -1) {
             values[index] = value;
-        } else {
-            if (size < MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            } else {
-                System.out.println("Storage is full. Can't add more elements.");
-            }
+            return;
         }
+        if (size >= MAX_SIZE) {
+            throw new IllegalStateException("Storage is full. Can't add more elements.");
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            int index = getIndex(null);
-            return (index != -1) ? values[index] : null;
-        }
-
         int index = getIndex(key);
         return (index != -1) ? values[index] : null;
     }
