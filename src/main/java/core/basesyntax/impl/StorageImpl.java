@@ -1,22 +1,18 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int DEFAULT_CURRENT_INDEX = 0;
-    private static final int DEFAULT_STORAGE = 1;
-    private static final int MAXIMUM_STORAGE = 10;
+    private static final int MAXIMUM_CAPACITY = 10;
     private static final int KEY_NOT_FOUND = -1;
 
-    private int currentIndex;
     private K[] keys;
     private V[] values;
+    private int size;
 
     public StorageImpl() {
-        currentIndex = DEFAULT_CURRENT_INDEX;
-        keys = (K[]) new Object[DEFAULT_STORAGE];
-        values = (V[]) new Object[DEFAULT_STORAGE];
+        keys = (K[]) new Object[MAXIMUM_CAPACITY];
+        values = (V[]) new Object[MAXIMUM_CAPACITY];
     }
 
     @Override
@@ -24,9 +20,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         boolean isValueReplaced = replaceIfKeyExists(key, value);
 
         if (!isValueReplaced) {
-            widenTheArrayIfNeeded();
-            keys[currentIndex] = key;
-            values[currentIndex++] = value;
+            keys[size] = key;
+            values[size++] = value;
         }
     }
 
@@ -41,15 +36,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return true;
     }
 
-    private void widenTheArrayIfNeeded() {
-        if (currentIndex > 0 && currentIndex < MAXIMUM_STORAGE) {
-            keys = Arrays.copyOf(keys, keys.length + 1);
-            values = Arrays.copyOf(values, values.length + 1);
-        }
-    }
-
     private int findIndexOfKey(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < size; i++) {
             if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 return i;
             }
@@ -60,11 +48,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int indexOfKey = findIndexOfKey(key);
-        return (indexOfKey == KEY_NOT_FOUND) ? null : (V) values[indexOfKey];
+        return (indexOfKey == KEY_NOT_FOUND) ? null : values[indexOfKey];
     }
 
     @Override
     public int size() {
-        return currentIndex;
+        return size;
     }
 }
