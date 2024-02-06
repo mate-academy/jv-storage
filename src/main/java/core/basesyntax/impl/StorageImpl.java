@@ -4,54 +4,33 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private Object[] keys = new Object[MAX_SIZE];
-    private Object[] values = new Object[MAX_SIZE];
+    private K[] keys = (K[]) new Object[MAX_SIZE];
+    private V[] values = (V[]) new Object[MAX_SIZE];
     private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i < size; i++) {
+            if ((key == keys[i]) || ((key != null) && key.equals(keys[i]))) {
+                values[i] = value;
+                return;
             }
-            keys[size] = null;
+        }
+        if (size < MAX_SIZE) {
+            keys[size] = key;
             values[size] = value;
             size++;
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
-            }
-            if (size < MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            }
         }
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return (V) values[i];
-                }
+        for (int i = 0; i < size; i++) {
+            if ((key == keys[i]) || ((key != null) && key.equals(keys[i]))) {
+                return values[i];
             }
-            return null;
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    return (V) values[i];
-                }
-            }
-            return null;
         }
+        return null;
     }
 
     @Override
