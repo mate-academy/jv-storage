@@ -21,9 +21,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 elements[size] = new Pair<>(key, value);
                 size++;
                 break;
-            } else if (elements[i].getKey() == key
-                    || elements[i].getKey() != null && elements[i].getKey().equals(key)) {
-                elements[i].setValue(value);
+            } else if (elements[i].key == key
+                    || elements[i].key != null && elements[i].key.equals(key)) {
+                elements[i].value = value;
                 break;
             }
         }
@@ -34,9 +34,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < elements.length; i++) {
             if (elements[i] == null) {
                 return null;
-            } else if (elements[i].getKey() == null && key == null
-                    || elements[i].getKey() != null && elements[i].getKey().equals(key)) {
-                return (V)elements[i].getValue();
+            } else if (key == elements[i].key || key != null && key.equals(elements[i].key)) {
+                return (V) elements[i].value; //There is a compile error without cast
             }
         }
         return null;
@@ -53,22 +52,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         private Pair(K key, V value) {
             this.key = key;
-            this.value = value;
-        }
-
-        private K getKey() {
-            return key;
-        }
-
-        private void setKey(K key) {
-            this.key = key;
-        }
-
-        private V getValue() {
-            return value;
-        }
-
-        private void setValue(V value) {
             this.value = value;
         }
     }
