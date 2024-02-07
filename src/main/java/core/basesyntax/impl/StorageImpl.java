@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private final Pair[] elements;
-    private int size = 0;
+    private int size;
 
     public StorageImpl() {
         elements = new Pair[MAX_SIZE];
@@ -22,7 +22,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 size++;
                 break;
             } else if (elements[i].getKey() == key
-            || elements[i].getKey() != null && elements[i].getKey().equals(key)) {
+                    || elements[i].getKey() != null && elements[i].getKey().equals(key)) {
                 elements[i].setValue(value);
                 break;
             }
@@ -34,10 +34,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < elements.length; i++) {
             if (elements[i] == null) {
                 return null;
-            }else if (elements[i].getKey() == null && key == null) {
+            } else if (elements[i].getKey() == null && key == null
+                    || elements[i].getKey() != null && elements[i].getKey().equals(key)) {
                 return (V)elements[i].getValue();
-            } else if (elements[i].getKey() != null && elements[i].getKey().equals(key)) {
-                return (V) elements[i].getValue();
             }
         }
         return null;
@@ -57,19 +56,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value = value;
         }
 
-        public K getKey() {
+        private K getKey() {
             return key;
         }
 
-        public void setKey(K key) {
+        private void setKey(K key) {
             this.key = key;
         }
 
-        public V getValue() {
+        private V getValue() {
             return value;
         }
 
-        public void setValue(V value) {
+        private void setValue(V value) {
             this.value = value;
         }
     }
