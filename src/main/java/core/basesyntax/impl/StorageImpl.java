@@ -4,15 +4,16 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final Pair[] elements = new Pair[MAX_SIZE];
+    private final Pair[] elements;
     private int size = 0;
 
     public StorageImpl() {
+        elements = new Pair[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (size > MAX_SIZE) {
+        if (size == MAX_SIZE) {
             throw new ArrayIndexOutOfBoundsException("Array already full");
         }
         for (int i = 0; i < elements.length; i++) {
@@ -20,10 +21,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 elements[size] = new Pair<>(key, value);
                 size++;
                 break;
-            } else if (elements[i].getKey() == null && key == null) {
-                elements[i].setValue(value);
-                break;
-            } else if (elements[i].getKey() != null && elements[i].getKey().equals(key)) {
+            } else if (elements[i].getKey() == key
+            || elements[i].getKey() != null && elements[i].getKey().equals(key)) {
                 elements[i].setValue(value);
                 break;
             }
@@ -35,11 +34,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < elements.length; i++) {
             if (elements[i] == null) {
                 return null;
-            }
-            if (elements[i].getKey() == null && key == null) {
+            }else if (elements[i].getKey() == null && key == null) {
                 return (V)elements[i].getValue();
-            }
-            if (elements[i].getKey() != null && elements[i].getKey().equals(key)) {
+            } else if (elements[i].getKey() != null && elements[i].getKey().equals(key)) {
                 return (V) elements[i].getValue();
             }
         }
