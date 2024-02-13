@@ -22,13 +22,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-        if (size < MAX_SIZE) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-        } else {
+        if (size >= MAX_SIZE) {
             throw new IllegalStateException("Storage is full");
         }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
