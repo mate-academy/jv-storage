@@ -3,27 +3,43 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_SIZE = 10;
+    private K[] keys;
+    private V[] values;
+    private int size;
 
-    public static final int MAX_SIZE = 10;
-    public static final int KEY_VALUE = 2;
-    private Object[][] storage = new Object[MAX_SIZE][KEY_VALUE];
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+        size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < MAX_SIZE; i++) {
-            if (storage[i][0] == null && storage[i][1] != null && key == null) {
-                storage[i][1] = value;
+            if (keys[i] == null && values[i] == null) {
+                values[i] = value;
                 break;
             }
-            if (storage[i][0] != null && storage[i][0].equals(key)) {
-                storage[i][1] = value;
+            if (keys[i] == null && values[i] != null && key == null) {
+                values[i] = value;
+                size--;
                 break;
             }
-            if ((storage[i][0] == null) && (storage[i][1] == null)) {
-                storage[i][0] = key;
-                storage[i][1] = value;
-                break;
+            if (keys[i] != null) {
+                if (keys[i] != null && values[i] != null && keys[i].equals(key)) {
+                    values[i] = value;
+                    size--;
+                    break;
+                }
             }
+        }
+        if (size < MAX_SIZE) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        } else {
+            throw new RuntimeException("ERROR");
         }
     }
 
@@ -34,11 +50,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return null;
         }
         for (int j = 0; j < MAX_SIZE; j++) {
-            if (storage[j][0] == null && storage[j][1] != null && key == null) {
-                return (V) storage[j][1];
+            if (keys[j] == null && values[j] == null) {
+                return null;
             }
-            if (storage[j][0] != null && storage[j][0].equals(key)) {
-                return (V) storage[j][1];
+            if (keys[j] != null && keys[j].equals(key)) {
+                return values[j];
+            }
+            if (key == null && keys[j] == null && values[j] != null) {
+                return values[j];
             }
         }
         return null;
@@ -46,12 +65,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int count = 0;
-        for (Object[] o : storage) {
-            if (o[1] != null) {
-                count++;
-            }
-        }
-        return count;
+        return size;
     }
 }
