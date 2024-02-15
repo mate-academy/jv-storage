@@ -22,6 +22,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
+        if (size == MAX_ITEMS_NUMBER) {
+            throw new RuntimeException("Storage capacity exceeded");
+        }
         keys[size] = key;
         values[size] = value;
         size++;
