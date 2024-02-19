@@ -28,10 +28,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private boolean isEqualKey(K key, int i) {
-        return key == keyArray[i] || key != null && key.equals(keyArray[i]);
-    }
-
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
@@ -46,4 +42,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
+    private boolean isEqualKey(K key, int i) {
+        return key == keyArray[i] || key != null && key.equals(keyArray[i]);
+    }
+
 }
