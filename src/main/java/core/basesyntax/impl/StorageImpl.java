@@ -4,7 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_LENGTH = 10;
-    private int size;
+    private static final int NO_INDEX = -1;
+    private int size = 0;
     private StorageObject<K, V>[] storage;
 
     public StorageImpl() {
@@ -19,20 +20,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.key = key;
             this.value = value;
         }
-
-        private boolean keyCheck(K key) {
-            return ((key == null && this.key == null)
-                    || (this.key != null && this.key.equals(key)));
-        }
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].keyCheck(key)) {
-                storage[i].value = value;
-                return;
-            }
+        int index = getIndexByKey(key);
+        if (index != NO_INDEX) {
+            storage[index].value = value;
+            return;
         }
         if (size < DEFAULT_LENGTH) {
             storage[size] = new StorageObject<>(key, value);
@@ -44,16 +39,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].keyCheck(key)) {
-                return storage[i].value;
-            }
-        }
-        return null;
+        int index = getIndexByKey(key);
+        return index != NO_INDEX ? storage[index].value : null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private int getIndexByKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keyCheck(key, storage[i].key)) {
+                return i;
+            }
+        }
+        return NO_INDEX;
+    }
+
+    private boolean keyCheck(K key, K storageObjectKey) {
+        return ((key == storageObjectKey)
+                || (storageObjectKey != null && storageObjectKey.equals(key)));
     }
 }
