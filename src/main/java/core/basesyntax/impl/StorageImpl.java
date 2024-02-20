@@ -4,40 +4,47 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENT = 10;
-    private K[] keyArray = (K[]) new Object[MAX_ELEMENT];
-    private V[] valueArray = (V[]) new Object[MAX_ELEMENT];
+    private static final int NO_INDEX = -1;
+    private K[] keyArray;
+    private V[] valueArray;
     private int size;
+
+    public StorageImpl() {
+        this.keyArray = (K[]) new Object[MAX_ELEMENT];
+        this.valueArray = (V[]) new Object[MAX_ELEMENT];
+    }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i] == null && valueArray[i] == null) {
-                keyArray[i] = key;
-                valueArray[i] = value;
-                size++;
-                return;
-            } else if (key != null && keyArray[i] != null && keyArray[i].equals(key)) {
-                valueArray[i] = value;
-                return;
-            } else if (key == null && keyArray[i] == key) {
-                valueArray[i] = value;
-                return;
-            }
+        int index = getIndexOf(key);
+        if (index != NO_INDEX) {
+            keyArray[index] = key;
+            valueArray[index] = value;
+            return;
         }
+        keyArray[size] = key;
+        valueArray[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (key != null && keyArray[i] != null ? key.equals(keyArray[i]) : key == keyArray[i]) {
-                return valueArray[i];
-            }
-        }
-        return null;
+        int index = getIndexOf(key);
+        return index != NO_INDEX ? valueArray[index] : null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private int getIndexOf(K key) {
+        for (int i = 0; i < size(); i++) {
+            if ((key == null && keyArray[i] == null)
+                    || (keyArray[i] != null && keyArray[i].equals(key))) {
+                return i;
+            }
+        }
+        return NO_INDEX;
     }
 }
