@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static int STOREGE_CAPACITY = 10;
@@ -13,13 +12,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[STOREGE_CAPACITY];
         values = (V[]) new Object[STOREGE_CAPACITY];
-        this.size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         if (size == STOREGE_CAPACITY) {
-            return;
+            throw new RuntimeException("Storage overflow");
         }
         if (get(key) == null) {
             keys[size] = key;
@@ -43,7 +41,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndex(K key) {
         for (int i = 0; i < STOREGE_CAPACITY; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if (keys[i] == key || (keys[i] != null
+                    && keys[i].equals(key))) {
                 return i;
             }
         }
