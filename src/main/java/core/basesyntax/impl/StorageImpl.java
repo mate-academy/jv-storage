@@ -9,6 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final String PREFIX = "[";
     private static final String SUFFIX = "]";
     private static final String STRING_FORMAT = "%s : %s";
+    private static final int RETURN_VALUE_IF_KEY_NOT_FOUND = -1;
 
     private final Pair<K, V>[] storage;
     private int size;
@@ -22,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = findPairByKey(key);
-        if (index == -1) {
+        if (index == RETURN_VALUE_IF_KEY_NOT_FOUND) {
             storage[size++] = new Pair<>(key, value);
         } else {
             storage[index] = new Pair<>(key, value);
@@ -32,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = findPairByKey(key);
-        if (index == -1) {
+        if (index == RETURN_VALUE_IF_KEY_NOT_FOUND) {
             return null;
         } else {
             return storage[index].value();
@@ -45,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return RETURN_VALUE_IF_KEY_NOT_FOUND;
     }
 
     @Override
