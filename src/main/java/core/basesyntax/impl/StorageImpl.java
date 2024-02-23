@@ -5,16 +5,17 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
     private static final int INCREASE_FACTOR = 2;
+    private static final int NOT_FOUND = -1;
 
     private Object[] keys;
     private Object[] values;
-    private int currentCapacity;
-    private int currentSize;
+    private int capacity;
+    private int size;
 
     public StorageImpl() {
         keys = new Object[DEFAULT_CAPACITY];
         values = new Object[DEFAULT_CAPACITY];
-        currentCapacity = DEFAULT_CAPACITY;
+        capacity = DEFAULT_CAPACITY;
     }
 
     @Override
@@ -30,20 +31,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = getIndexOfKey(key);
-        if (index >= 0) {
-            return (V) values[index];
+        if (index == NOT_FOUND) {
+            return null;
         }
-        return null;
+        return (V) values[index];
     }
 
     @Override
     public int size() {
-        return currentSize;
+        return size;
     }
 
     private int getIndexOfKey(K key) {
-        int index = -1;
-        for (int i = 0; i < currentSize; i++) {
+        int index = NOT_FOUND;
+        for (int i = 0; i < size; i++) {
             if ((key == null && keys[i] == key)
                     || (key != null && key.equals(keys[i]))) {
                 index = i;
@@ -54,24 +55,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void addNew(K key, V value) {
-        if (currentSize >= currentCapacity) {
+        if (size >= capacity) {
             increaseCapacity();
         }
-        keys[currentSize] = key;
-        values[currentSize] = value;
-        currentSize++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     private void increaseCapacity() {
         Object[] keysTemp = keys;
         Object[] valuesTemp = values;
 
-        currentCapacity *= INCREASE_FACTOR;
+        capacity *= INCREASE_FACTOR;
 
-        keys = new Object[currentCapacity];
-        values = new Object[currentCapacity];
+        keys = new Object[capacity];
+        values = new Object[capacity];
 
-        for (int i = 0; i < currentSize; i++) {
+        for (int i = 0; i < size; i++) {
             keys[i] = keysTemp[i];
             values[i] = valuesTemp[i];
         }
