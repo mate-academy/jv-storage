@@ -17,22 +17,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (!invalidSize()) {
+            throw new IllegalStateException("Max size is 10");
+        }
 
-        if (invalidSize()) {
-            for (int i = 0; i < size; i++) {
-                if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
-                    values[i] = value;
-                    return;
-                }
-            }
-
-            if (size < MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                ++size;
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+                values[i] = value;
+                return;
             }
         }
-        System.err.println("Maximum size is 10");
+
+        if (size < MAX_SIZE) {
+            keys[size] = key;
+            values[size] = value;
+            ++size;
+        }
     }
 
     @Override
@@ -51,6 +51,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean invalidSize() {
-        return size <= 10;
+        return size <= MAX_SIZE;
     }
 }
