@@ -15,7 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         keys = new Object[DEFAULT_CAPACITY];
         values = new Object[DEFAULT_CAPACITY];
         currentCapacity = DEFAULT_CAPACITY;
-        currentSize = 0;
     }
 
     @Override
@@ -30,13 +29,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        V value = null;
         int index = getIndexOfKey(key);
-
         if (index >= 0) {
-            value = (V) values[index];
+            return (V) values[index];
         }
-        return value;
+        return null;
     }
 
     @Override
