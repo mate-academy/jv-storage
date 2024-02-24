@@ -4,16 +4,19 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_MAX_CAPACITY = 10;
+    private int size = 0;
     private final StorageElement<K, V>[] storageElements = new StorageElement[STORAGE_MAX_CAPACITY];
 
     @Override
     public void put(K key, V value) {
         StorageElement<K, V> storageElement = new StorageElement<>(key, value);
         for (int i = 0; i < STORAGE_MAX_CAPACITY; i++) {
-            if (storageElements[i] == null || storageElements[i].isEmpty()) {
+            if (storageElements[i] == null) {
+                size++;
                 storageElements[i] = storageElement;
                 return;
-            } else if (storageElements[i].hasKey(storageElement.getKey())) {
+            } else if (storageElements[i].isEmpty()
+                    || storageElements[i].hasKey(storageElement.getKey())) {
                 storageElements[i] = storageElement;
                 return;
             }
@@ -25,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (StorageElement<K, V> storageElement : storageElements) {
             if (storageElement != null && !storageElement.isEmpty() && storageElement.hasKey(key)) {
-                return (V) storageElement.getValue();
+                return (V) storageElement.value;
             }
         }
         return null;
@@ -33,12 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < STORAGE_MAX_CAPACITY; i++) {
-            if (storageElements[i] == null) {
-                return i;
-            }
-        }
-        return STORAGE_MAX_CAPACITY;
+        return this.size;
     }
 
     private static class StorageElement<K, V> {
@@ -66,10 +64,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return false;
             }
             return this.key.equals(key);
-        }
-
-        public V getValue() {
-            return this.value;
         }
     }
 }
