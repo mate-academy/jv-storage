@@ -54,14 +54,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (isKeysEquals(key, keyArray[i])) {
+            if (areKeysEquals(key, keyArray[i])) {
                 return i;
             }
         }
         return -1;
     }
 
-    private boolean isKeysEquals(K key, K otherKey) {
+    private boolean areKeysEquals(K key, K otherKey) {
         return ((otherKey == null && key == null)
                 || (otherKey != null && otherKey.equals(key)));
     }
