@@ -4,39 +4,26 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private int size = 0;
-    private Pair<K, V>[] MAP = new Pair[10];
+    private final Pair<K, V>[] storageMap = new Pair[10];
 
     public void put(K key, V value) {
-        if (key == null && value != null) {
-            for (int i = 0; i < size; i++) {
-                if (MAP[i].getKey() == null && MAP[i].getValue() != null) {
-                    MAP[i].setValue(value);
-                    System.out.println(MAP[size] + " return");
-                    return;
-                }
-            }
-            MAP[size++] = new Pair<>(key, value);
-            System.out.println(MAP[size] + " key == null");
-            return;
-        }
         Pair<K, V> tempPair = findValue(key);
         if (tempPair == null) {
-            MAP[size++] = new Pair<>(key, value);
-            System.out.println(MAP[size] + " pair == null");
-        }
-        else {
+            storageMap[size++] = new Pair<>(key, value);
+        } else {
             tempPair.setValue(value);
-            System.out.println(key + " -key | value -" + value + " else");
         }
     }
 
     private Pair<K, V> findValue(K key) {
         for (int i = 0; i < size; i++) {
-            if (MAP[i].getKey() != null && MAP[i].getKey().equals(key) && MAP[i].getValue() != null) {
-                return MAP[i];
+            if (storageMap[i].getKey() != null
+                    && storageMap[i].getKey().equals(key)
+                    && storageMap[i].getValue() != null) {
+                return storageMap[i];
             }
-            if(MAP[i].getKey() == null) {
-                return MAP[i];
+            if (storageMap[i].getKey() == null && key == null) {
+                return storageMap[i];
             }
         }
         return null;
@@ -44,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return findValue(key).getValue();
+        return findValue(key) != null ? findValue(key).getValue() : null;
     }
 
     @Override

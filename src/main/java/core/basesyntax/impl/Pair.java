@@ -1,9 +1,13 @@
 package core.basesyntax.impl;
 
 class Pair<K, V> {
-    //write your code here
     private K key;
     private V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
 
     public V getValue() {
         return value;
@@ -12,12 +16,6 @@ class Pair<K, V> {
     public K getKey() {
         return key;
     }
-
-    public Pair(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-
 
     public int hashCode() {
         return (key == null ? 0 : key.hashCode()) + (value == null ? 0 : value.hashCode());
@@ -40,5 +38,13 @@ class Pair<K, V> {
                 || (pair.getKey() != null && pair.getKey().equals(key)))
                 && (pair.getValue() == value
                 || (pair.getValue() != null && pair.getValue().equals(value)));
+    }
+
+    @Override
+    public String toString() {
+        return "Pair{"
+                + "key=" + key
+                + ", value=" + value
+                + '}';
     }
 }
