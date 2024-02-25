@@ -4,8 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private K[] keyArray;
-    private V[] valueArray;
+
+    private final K[] keyArray;
+    private final V[] valueArray;
+
+    private int size;
 
     public StorageImpl() {
         keyArray = (K[]) new Object[MAX_SIZE];
@@ -14,34 +17,48 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if ((isKeysEquals(key, keyArray[i]))
-                    || (keyArray[i] == null && valueArray[i] == null)) {
-                keyArray[i] = key;
-                valueArray[i] = value;
-                break;
-            }
+        int index = indexOf(key);
+        if (index == -1) {
+            add(key, value);
+        } else {
+            replace(value, index);
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if (isKeysEquals(keyArray[i], key)) {
-                return valueArray[i];
-            }
-        }
-        return null;
+        int index = indexOf(key);
+        return index == -1
+                ? null
+                : valueArray[index];
     }
 
     @Override
     public int size() {
-        for (int i = MAX_SIZE - 1; i > 0; i--) {
-            if (keyArray[i] != null && valueArray[i] != null) {
-                return i + 1;
+        return size;
+    }
+
+    private void replace(V value, int index) {
+        valueArray[index] = value;
+    }
+
+    private void add(K key, V value) {
+        if (size == MAX_SIZE) {
+            throw new IllegalArgumentException();
+        }
+
+        valueArray[size] = value;
+        keyArray[size] = key;
+        size++;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (isKeysEquals(key, keyArray[i])) {
+                return i;
             }
         }
-        return 0;
+        return -1;
     }
 
     private boolean isKeysEquals(K key, K otherKey) {
