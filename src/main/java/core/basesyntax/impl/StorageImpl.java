@@ -1,26 +1,74 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_LENGTH = 10;
-    private Data[] storage;
-    private int freeIndex;
+    private Pair[] storage;
+    private int size = 0;
 
     public StorageImpl() {
-        this.storage = new Data[MAX_STORAGE_LENGTH];
-        this.freeIndex = 0;
+        this.storage = new Pair[MAX_STORAGE_LENGTH];
     }
 
-    public Data[] getStorage() {
+    public Pair[] getStorage() {
         return storage;
+    }
+
+    public static class Pair<K, V> {
+        private V value;
+        private K key;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Pair current = (Pair) o;
+            return Objects.equals(key, current.key)
+                    && Objects.equals(value, current.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
+
+        @Override
+        public String toString() {
+            return "Data{"
+                    + "key='" + key + '\''
+                    + ", value='" + value + '\''
+                    + '}';
+        }
     }
 
     @Override
     public void put(K key, V value) {
-        Data newData = new Data(key, value);
+        Pair newData = new Pair(key, value);
 
-        for (int i = 0; i < MAX_STORAGE_LENGTH; i++) {
+        for (int i = 0; i < size; i++) {
             if (key == null && storage[i] != null && storage[i].getKey() == null
                     || (storage[i] != null
                     && storage[i].getKey() != null
@@ -31,14 +79,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-        if (freeIndex == MAX_STORAGE_LENGTH) {
+        if (size == MAX_STORAGE_LENGTH) {
             throw new RuntimeException(
                     "The storage is totally filled - impossible to add new data"
             );
-        } else {
-            storage[freeIndex] = newData;
-            freeIndex++;
         }
+        storage[size] = newData;
+        size++;
     }
 
     @Override
@@ -57,12 +104,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = 0;
-        for (int i = 0; i < MAX_STORAGE_LENGTH; i++) {
-            if (storage[i] != null) {
-                size++;
-            }
-        }
         return size;
     }
 }

@@ -31,5 +31,6 @@ public class Main {
 
         System.out.println(storage.size());
         System.out.println(Arrays.toString(storage.getStorage()));
+        System.out.println(storage.get(10));
     }
 }
