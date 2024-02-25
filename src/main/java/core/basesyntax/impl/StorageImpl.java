@@ -5,40 +5,38 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
-        this.keys = new Object[MAX_SIZE];
-        this.values = new Object[MAX_SIZE];
-        this.size = 0;
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+        size = 0;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void put(K key, V value) {
+        if (size == keys.length) {
+            throw new RuntimeException("Storage is full");
+        }
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if (Objects.equals(key, keys[i])) {
                 values[i] = value;
                 return;
             }
         }
-        if (size < MAX_SIZE) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-        } else {
-            throw new RuntimeException("Storage is full");
-        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             if (Objects.equals(keys[i], key)) {
-                return (V) values[i];
+                return values[i];
             }
         }
         return null;
