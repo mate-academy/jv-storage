@@ -12,10 +12,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         for (int i = 0; i < STORAGE_MAX_CAPACITY; i++) {
             if (storageElements[i] == null) {
-                size++;
                 storageElements[i] = new StorageElement<>(key, value);
+                size++;
                 return;
-            } else if (storageElements[i].hasKey(key)) {
+            } else if (storageElements[i].isEqualToKey(key)) {
                 storageElements[i].value = value;
                 return;
             }
@@ -27,7 +27,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (StorageElement<K, V> storageElement : storageElements) {
-            if (storageElement != null && !storageElement.isEmpty() && storageElement.hasKey(key)) {
+            if (storageElement != null && !storageElement.isEmpty()
+                    && storageElement.isEqualToKey(key)) {
                 return storageElement.value;
             }
         }
@@ -52,7 +53,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return key == null && value == null;
         }
 
-        public boolean hasKey(K key) {
+        public boolean isEqualToKey(K key) {
             return key == this.key || key != null && key.equals(this.key);
         }
     }
