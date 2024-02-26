@@ -16,19 +16,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (size >= MAX_SIZE) {
+            throw new IllegalStateException("Storage is full");
+        }
+
         if (key == null) {
             for (int i = 0; i < size; i++) {
                 if (keys[i] == null) {
                     values[i] = value;
                     return;
                 }
-            }
-            if (size < MAX_SIZE) {
-                keys[size] = null;
-                values[size] = value;
-                size++;
-            } else {
-                throw new IllegalStateException("Storage is full");
             }
         } else {
             for (int i = 0; i < size; i++) {
@@ -37,14 +34,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     return;
                 }
             }
-            if (size < MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            } else {
-                throw new IllegalStateException("Storage is full");
-            }
         }
+
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
