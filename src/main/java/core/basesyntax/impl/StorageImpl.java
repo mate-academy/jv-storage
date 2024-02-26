@@ -5,10 +5,6 @@ import java.util.StringJoiner;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
-    private static final String DELIMITER = ", ";
-    private static final String PREFIX = "[";
-    private static final String SUFFIX = "]";
-    private static final String STRING_FORMAT = "%s : %s";
     private static final int RETURN_VALUE_IF_KEY_NOT_FOUND = -1;
 
     private final Pair<K, V>[] storage;
@@ -17,22 +13,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     public StorageImpl() {
         storage = new Pair[DEFAULT_CAPACITY];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        int index = findPairByKey(key);
+        int index = findPairIndexByKey(key);
+        Pair<K, V> pair = new Pair<>(key, value);
         if (index == RETURN_VALUE_IF_KEY_NOT_FOUND) {
-            storage[size++] = new Pair<>(key, value);
-        } else {
-            storage[index] = new Pair<>(key, value);
+            storage[size++] = pair;
+            return;
         }
+        storage[index] = pair;
     }
 
     @Override
     public V get(K key) {
-        int index = findPairByKey(key);
+        int index = findPairIndexByKey(key);
         if (index == RETURN_VALUE_IF_KEY_NOT_FOUND) {
             return null;
         } else {
@@ -40,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private int findPairByKey(K key) {
+    private int findPairIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
             if (key == storage[i].key() || (key != null && key.equals(storage[i].key()))) {
                 return i;
@@ -54,15 +50,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private record Pair<K, V>(K key, V value) {
-    }
-
     @Override
     public String toString() {
-        StringJoiner stringJoiner = new StringJoiner(DELIMITER, PREFIX, SUFFIX);
+        String delimiter = ", ";
+        String prefix = "[";
+        String suffix = "]";
+        String format = "%s : %s";
+        StringJoiner stringJoiner = new StringJoiner(delimiter, prefix, suffix);
         for (int i = 0; i < size; i++) {
-            stringJoiner.add(String.format(STRING_FORMAT, storage[i].key(), storage[i].value));
+            stringJoiner.add(String.format(format, storage[i].key(), storage[i].value));
         }
         return stringJoiner.toString();
+    }
+
+    private record Pair<K, V>(K key, V value) {
     }
 }
