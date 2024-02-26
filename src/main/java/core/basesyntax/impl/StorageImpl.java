@@ -4,26 +4,22 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private int size = 0;
-    private final Pair<K, V>[] storageMap = new Pair[10];
+    private final Pair<K, V>[] pairs = new Pair[10];
 
     public void put(K key, V value) {
-        Pair<K, V> tempPair = findValue(key);
+        Pair<K, V> tempPair = findPairByKey(key);
         if (tempPair == null) {
-            storageMap[size++] = new Pair<>(key, value);
-        } else {
-            tempPair.setValue(value);
+            pairs[size++] = new Pair<>(key, value);
+            return;
         }
+        tempPair.setValue(value);
     }
 
-    private Pair<K, V> findValue(K key) {
+    private Pair<K, V> findPairByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (storageMap[i].getKey() != null
-                    && storageMap[i].getKey().equals(key)
-                    && storageMap[i].getValue() != null) {
-                return storageMap[i];
-            }
-            if (storageMap[i].getKey() == null && key == null) {
-                return storageMap[i];
+            if (pairs[i].getKey() != null && pairs[i].getKey().equals(key)
+                    || pairs[i].getKey() == null && key == null) {
+                return pairs[i];
             }
         }
         return null;
@@ -31,11 +27,55 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        return findValue(key) != null ? findValue(key).getValue() : null;
+        Pair<K, V> resultOfGet = findPairByKey(key);
+        return resultOfGet != null ? resultOfGet.getValue() : null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private class Pair<K, V> {
+        private K key;
+        private V value;
+
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public int hashCode() {
+            return 31 * (key == null ? 0 : key.hashCode())
+                    + 17 * (value == null ? 0 : value.hashCode());
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) {
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+            Pair<K, V> pair = (Pair) obj;
+            return (pair.getKey() == key
+                    || (pair.getKey() != null && pair.getKey().equals(key)))
+                    && (pair.getValue() == value
+                    || (pair.getValue() != null && pair.getValue().equals(value)));
+        }
     }
 }
