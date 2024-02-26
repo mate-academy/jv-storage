@@ -17,12 +17,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private Pair<K, V> findPairByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (pairs[i].getKey() != null && pairs[i].getKey().equals(key)
-                    || pairs[i].getKey() == null && key == null) {
+            if (isConditionTrue(key, i)) {
                 return pairs[i];
             }
         }
         return null;
+    }
+
+    private boolean isConditionTrue(K key, int i) {
+        return pairs[i].getKey() != null && pairs[i].getKey().equals(key)
+                || pairs[i].getKey() == null && key == null;
     }
 
     @Override
@@ -72,6 +76,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return false;
             }
             Pair<K, V> pair = (Pair) obj;
+            return isKeyValueEquals(pair);
+        }
+
+        private <K, V> boolean isKeyValueEquals(Pair<K, V> pair) {
             return (pair.getKey() == key
                     || (pair.getKey() != null && pair.getKey().equals(key)))
                     && (pair.getValue() == value
