@@ -16,12 +16,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key == keyArray[i] || keyArray[i] != null && keyArray[i].equals(key)) {
+            if (isKeyMatch(key, i)) {
                 valueArray[i] = value;
                 return;
             }
         }
-
         keyArray[size] = key;
         valueArray[size] = value;
         size++;
@@ -30,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == keyArray[i] || keyArray[i] != null && keyArray[i].equals(key)) {
+            if (isKeyMatch(key, i)) {
                 return valueArray[i];
             }
         }
@@ -40,5 +39,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isKeyMatch(K key, int i) {
+        return key == keyArray[i] || keyArray[i] != null && keyArray[i].equals(key);
     }
 }
