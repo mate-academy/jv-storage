@@ -3,31 +3,47 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER = 10;
-    private final Object[] keys;
-    private final Object[] values;
-    private int size = 0;
+    private static final int MAX_SIZE = 10;
+    private static final int NOT_FOUND_INDEX = -1;
+
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        this.keys = new Object[MAX_ITEMS_NUMBER];
-        this.values = new Object[MAX_ITEMS_NUMBER];
+        this.keys = (K[]) new Object[MAX_SIZE];
+        this.values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         int keyIndex = getKeyIndex(key);
-        if (keyIndex != -1) {
+        if (keyIndex != NOT_FOUND_INDEX) {
             values[keyIndex] = value;
             return;
         }
 
-        if (size < MAX_ITEMS_NUMBER) {
+        if (size < MAX_SIZE) {
             keys[size] = key;
             values[size] = value;
             size++;
         } else {
-            throw new RuntimeException("Storage is full!");
+            throw new StorageIsFullException("Storage is full! Maximum size is: " + MAX_SIZE);
         }
+    }
+
+    @Override
+    public V get(K key) {
+        int index = getKeyIndex(key);
+        if (index == NOT_FOUND_INDEX) {
+            return null;
+        }
+        return values[index];
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 
     private int getKeyIndex(K keyToCompare) {
@@ -36,20 +52,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
-    }
-
-    @Override
-    public V get(K key) {
-        int index = getKeyIndex(key);
-        if (index == -1) {
-            return null;
-        }
-        return (V) values[index];
-    }
-
-    @Override
-    public int size() {
-        return size;
+        return NOT_FOUND_INDEX;
     }
 }
