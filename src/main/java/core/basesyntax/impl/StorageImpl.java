@@ -4,35 +4,40 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_SIZE = 10;
-    private static final String FULL_ARRAY_EXCEPTION_MESSAGE = "The storage is full";
+    private static final String FULL_ARRAY_EXCEPTION_MESSAGE = "The storage is full. "
+                                                             + "The max size is " + MAX_ARRAY_SIZE;
     private final K[] keys = (K[]) new Object[MAX_ARRAY_SIZE];
     private final V[] values = (V[]) new Object[MAX_ARRAY_SIZE];
     private int size;
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (compareProvidedKey(key, i)) {
-                return values[i];
-            }
-        }
-        return null;
+        int index = findKeyIndex(key);
+        return index != -1 ? values[index] : null;
     }
 
     @Override
     public void put(K key, V value) {
-        if (size == MAX_ARRAY_SIZE && !containsKey(key)) {
-            throw new IllegalStateException(FULL_ARRAY_EXCEPTION_MESSAGE);
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            values[index] = value;
+        } else {
+            if (size == MAX_ARRAY_SIZE) {
+                throw new IllegalStateException(FULL_ARRAY_EXCEPTION_MESSAGE);
+            }
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
+    }
+
+    private int findKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
             if (compareProvidedKey(key, i)) {
-                values[i] = value;
-                return;
+                return i;
             }
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
+        return -1;
     }
 
     @Override
