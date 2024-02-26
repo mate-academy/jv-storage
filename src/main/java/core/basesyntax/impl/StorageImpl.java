@@ -7,7 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private K[] keys;
     private V[] values;
-    private int currentSize;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
@@ -21,12 +21,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[index] = value;
             return;
         }
-        if (currentSize < MAX_SIZE) {
-            keys[currentSize] = key;
-            values[currentSize] = value;
-            currentSize++;
+        if (size < MAX_SIZE) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         } else {
-            throw new ArrayIndexOutOfBoundsException("The storage is full!!!");
+            throw new IndexOutOfBoundsException("The storage is full!!!");
         }
     }
 
@@ -41,11 +41,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return currentSize;
+        return size;
     }
 
     private int findIndexForKey(K key) {
-        for (int i = 0; i < currentSize; i++) {
+        for (int i = 0; i < size; i++) {
             if (keys[i] == null && key == null || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
