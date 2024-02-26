@@ -18,7 +18,8 @@ class Pair<K, V> {
     }
 
     public int hashCode() {
-        return (key == null ? 0 : key.hashCode()) + (value == null ? 0 : value.hashCode());
+        return 31 * (key == null ? 0 : key.hashCode())
+                + 17 * (value == null ? 0 : value.hashCode());
     }
 
     public void setValue(V value) {
@@ -38,13 +39,5 @@ class Pair<K, V> {
                 || (pair.getKey() != null && pair.getKey().equals(key)))
                 && (pair.getValue() == value
                 || (pair.getValue() != null && pair.getValue().equals(value)));
-    }
-
-    @Override
-    public String toString() {
-        return "Pair{"
-                + "key=" + key
-                + ", value=" + value
-                + '}';
     }
 }
