@@ -6,14 +6,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private static final int INDEX_NOT_FOUND = -1;
 
-    private final K[] keyArray;
-    private final V[] valueArray;
+    private final K[] keys;
+    private final V[] values;
 
     private int size;
 
     public StorageImpl() {
-        keyArray = (K[]) new Object[MAX_SIZE];
-        valueArray = (V[]) new Object[MAX_SIZE];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
@@ -21,9 +21,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = indexOf(key);
         if (index == INDEX_NOT_FOUND) {
             add(key, value);
-        } else {
-            replace(value, index);
+            return;
         }
+        replace(value, index);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = indexOf(key);
         return index == INDEX_NOT_FOUND
                 ? null
-                : valueArray[index];
+                : values[index];
     }
 
     @Override
@@ -40,22 +40,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void replace(V value, int index) {
-        valueArray[index] = value;
+        values[index] = value;
     }
 
     private void add(K key, V value) {
         if (size == MAX_SIZE) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "The size of storage is bigger than max size "
+                    + MAX_SIZE + "!");
         }
 
-        valueArray[size] = value;
-        keyArray[size] = key;
+        values[size] = value;
+        keys[size] = key;
         size++;
     }
 
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (areKeysEquals(key, keyArray[i])) {
+            if (areKeysEquals(key, keys[i])) {
                 return i;
             }
         }
