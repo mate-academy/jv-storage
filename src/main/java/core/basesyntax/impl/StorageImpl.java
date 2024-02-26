@@ -4,31 +4,31 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_MAX_CAPACITY = 10;
-    private int size = 0;
+    private int size;
     private final StorageElement<K, V>[] storageElements = new StorageElement[STORAGE_MAX_CAPACITY];
 
     @Override
     public void put(K key, V value) {
-        StorageElement<K, V> storageElement = new StorageElement<>(key, value);
+
         for (int i = 0; i < STORAGE_MAX_CAPACITY; i++) {
             if (storageElements[i] == null) {
                 size++;
-                storageElements[i] = storageElement;
+                storageElements[i] = new StorageElement<>(key, value);
                 return;
-            } else if (storageElements[i].isEmpty()
-                    || storageElements[i].hasKey(storageElement.getKey())) {
-                storageElements[i] = storageElement;
+            } else if (storageElements[i].hasKey(key)) {
+                storageElements[i].value = value;
                 return;
             }
         }
-        throw new RuntimeException("StorageImpl has no more space.");
+        throw new IllegalStateException("StorageImpl has no more space. Max space is"
+                + STORAGE_MAX_CAPACITY);
     }
 
     @Override
     public V get(K key) {
         for (StorageElement<K, V> storageElement : storageElements) {
             if (storageElement != null && !storageElement.isEmpty() && storageElement.hasKey(key)) {
-                return (V) storageElement.value;
+                return storageElement.value;
             }
         }
         return null;
@@ -36,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return this.size;
+        return size;
     }
 
     private static class StorageElement<K, V> {
@@ -52,18 +52,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return key == null && value == null;
         }
 
-        public K getKey() {
-            return key;
-        }
-
         public boolean hasKey(K key) {
-            if (key == this.key) {
-                return true;
-            }
-            if (key == null || this.key == null) {
-                return false;
-            }
-            return this.key.equals(key);
+            return key == this.key || key != null && key.equals(this.key);
         }
     }
 }
