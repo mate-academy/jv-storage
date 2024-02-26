@@ -45,12 +45,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean containsKey(K key) {
-        boolean result = false;
         for (K storedKey : this.keys) {
             if (storedKey.equals(key)) {
-                result = true;
+                return true;
             }
         }
-        return result;
+        return false;
     }
 }
