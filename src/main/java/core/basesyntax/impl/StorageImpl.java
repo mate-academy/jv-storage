@@ -48,13 +48,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private boolean compareProvidedKey(K key, int index) {
         return ((key == keys[index]) || (key != null && key.equals(keys[index])));
     }
-
-    private boolean containsKey(K key) {
-        for (K storedKey : this.keys) {
-            if (storedKey.equals(key)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
