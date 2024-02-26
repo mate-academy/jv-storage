@@ -37,12 +37,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-            int counter = 0;
-            for (V element : valueArray) {
-                if (element != null) {
-                    counter++;
-                }
+        int counter = 0;
+        for (V element : valueArray) {
+            if (element != null) {
+                counter++;
             }
-            return counter;
+        }
+        return counter;
     }
 }
