@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+
 import java.util.StringJoiner;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -31,9 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = findPairIndexByKey(key);
         if (index == RETURN_VALUE_IF_KEY_NOT_FOUND) {
             return null;
-        } else {
-            return storage[index].value();
         }
+        return storage[index].value();
     }
 
     private int findPairIndexByKey(K key) {
