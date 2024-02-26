@@ -3,15 +3,18 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int ARRAY_MAX_SIZE = 10;
+    private static final int MAX_SIZE = 10;
+    private static final int KEY_NOT_FOUND = -1;
 
     private final K[] keys;
     private final V[] values;
+
     private int size;
+    private int index;
 
     public StorageImpl() {
-        keys = (K[]) new Object[ARRAY_MAX_SIZE];
-        values = (V[]) new Object[ARRAY_MAX_SIZE];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     private int findIndexKey(K key) {
@@ -20,29 +23,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return KEY_NOT_FOUND;
     }
 
     @Override
     public void put(K key, V value) {
-        int index = findIndexKey(key);
-        try {
-            if (index != -1) {
-                values[index] = value;
-            } else if (size < ARRAY_MAX_SIZE) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            }
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Vault out of size" + e);
+        if (size > MAX_SIZE) {
+            throw new IllegalStateException("Storage is full");
+        }
+        index = findIndexKey(key);
+        if (index != KEY_NOT_FOUND) {
+            values[index] = value;
+        } else if (size < MAX_SIZE) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
         int index = findIndexKey(key);
-        return index == -1 ? null : (V) values[index];
+        return index == KEY_NOT_FOUND ? null : (V) values[index];
     }
 
     @Override
