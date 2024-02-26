@@ -3,35 +3,36 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int SIZE_ARR = 10;
-    private int size = 0;
-    private final Object[] keyArr = new Object[SIZE_ARR];
-    private final Object[] valueArr = new Object[SIZE_ARR];
+    private static final int MAX_SIZE = 10;
+    private int size;
+    private final Object[] keyArr = new Object[MAX_SIZE];
+    private final Object[] valueArr = new Object[MAX_SIZE];
 
     @Override
     public void put(K key, V value) {
-        int keyIndex = indexCheck(key);
+        int keyIndex = findIndexForKey(key);
 
-        if (keyIndex == -1) {
+        if (keyIndex < 0 && checkSize(size)) {
             keyArr[size] = key;
             valueArr[size] = value;
             size++;
-        } else {
-            valueArr[keyIndex] = value;
+            return;
         }
+        valueArr[keyIndex] = value;
+
     }
 
     @Override
     public V get(K key) {
-        int keyIndex = indexCheck(key);
+        int keyIndex = findIndexForKey(key);
 
-        if (keyIndex != -1) {
+        if (keyIndex > -1) {
             return (V) valueArr[keyIndex];
         }
         return null;
     }
 
-    private int indexCheck(K key) {
+    private int findIndexForKey(K key) {
         for (int i = 0; i < size; i++) {
             if ((key == null && keyArr[i] == null)
                     || (keyArr[i] != null && keyArr[i].equals(key))) {
@@ -39,6 +40,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return -1;
+    }
+
+    private boolean checkSize(int size) {
+        return size <= MAX_SIZE;
     }
 
     @Override
