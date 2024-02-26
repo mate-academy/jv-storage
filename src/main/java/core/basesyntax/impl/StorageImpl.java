@@ -4,15 +4,15 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_SIZE = 10;
-    private final Object[] keys = new Object[MAX_ARRAY_SIZE];
-    private final Object[] values = new Object[MAX_ARRAY_SIZE];
+    private final K[] keys = (K[]) new Object[MAX_ARRAY_SIZE];
+    private final V[] values = (V[]) new Object[MAX_ARRAY_SIZE];
     private int size;
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             if (compareProvidedKey(key, i)) {
-                return (V) values[i];
+                return values[i];
             }
         }
         return null;
