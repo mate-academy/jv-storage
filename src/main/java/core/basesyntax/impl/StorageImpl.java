@@ -4,25 +4,22 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private static final int INITIAL_SIZE = 0;
     private int size;
-    private Container<K, V>[] storage;
+    private Pair<K, V>[] storage;
 
     public StorageImpl() {
-        this.storage = new Container[MAX_STORAGE_SIZE];
-        this.size = INITIAL_SIZE;
+        this.storage = new Pair[MAX_STORAGE_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
             if (storage[i] == null) {
-                storage[i] = new Container<>(key, value);
+                storage[i] = new Pair<>(key, value);
                 size++;
                 return;
-            } else if (storage[i].getKey() == key
-                    || (storage[i].getKey() != null && storage[i].getKey().equals(key))) {
-                storage[i].setValue(value);
+            } else if (compareKeys(storage[i].key, key)) {
+                storage[i].value = value;
                 return;
             }
         }
@@ -31,9 +28,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].getKey() == key
-                    || (storage[i].getKey() != null && storage[i].getKey().equals(key))) {
-                return storage[i].getValue();
+            if (compareKeys(storage[i].key, key)) {
+                return storage[i].value;
             }
         }
         return null;
@@ -44,28 +40,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    static class Container<K, V> {
+    private boolean compareKeys(K storageKey, K inputKey) {
+        return (storageKey == inputKey
+            || (storageKey != null && storageKey.equals(inputKey)));
+    }
+
+    private static class Pair<K, V> {
         private K key;
         private V value;
 
-        Container(K key, V value) {
+        private Pair(K key, V value) {
             this.key = key;
-            this.value = value;
-        }
-
-        public K getKey() {
-            return key;
-        }
-
-        public void setKey(K key) {
-            this.key = key;
-        }
-
-        public V getValue() {
-            return value;
-        }
-
-        public void setValue(V value) {
             this.value = value;
         }
     }
