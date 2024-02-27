@@ -23,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getIndex(key);
         if (index != INVALID_INDEX) {
-            valueArray[index] =value;
+            valueArray[index] = value;
             return;
         }
         valueArray[size] = value;
