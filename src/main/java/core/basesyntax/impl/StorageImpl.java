@@ -10,13 +10,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (isKeyAtStorage(key, i)) {
-                valueArray[i] = value;
-                return;
-            }
+        if (findIndexByKey(key) != -1) {
+            valueArray[findIndexByKey(key)] = value;
+            return;
         }
-
         keyArray[size] = key;
         valueArray[size] = value;
         size++;
@@ -24,20 +21,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (isKeyAtStorage(key, i)) {
-                return valueArray[i];
-            }
+        if (findIndexByKey(key) != -1) {
+            return valueArray[findIndexByKey(key)];
         }
         return null;
     }
 
-    private boolean isKeyAtStorage(K key, int i) {
-        if ((keyArray[i] == null && key == null)
-                || (keyArray[i] != null && keyArray[i].equals(key))) {
-            return true;
+    private int findIndexByKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if ((keyArray[i] == null && key == null)
+                    || (keyArray[i] != null && keyArray[i].equals(key))) {
+                return i;
+            }
         }
-        return false;
+        return -1;
     }
 
     @Override
