@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keyArr[size] = key;
             size++;
         } else {
-            throw new RuntimeException("Can't write to array!");
+            throw new RuntimeException("Can't write to array! Index out of borders!");
         }
     }
 
