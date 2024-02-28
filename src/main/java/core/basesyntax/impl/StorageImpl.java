@@ -12,7 +12,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public int getIndexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keyArray[i], key)) {
+            if ((keyArray[i] == null && key == null) || (keyArray[i] != null
+                    && keyArray[i].equals(key))) {
                 return i;
             }
         }
