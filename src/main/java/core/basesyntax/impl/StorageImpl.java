@@ -5,20 +5,20 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS_COUNT = 10;
     private int size;
-    private Container<K, V>[] cont;
+    private Container<K, V>[] container;
 
     public StorageImpl() {
-        cont = new Container[MAX_ELEMENTS_COUNT];
+        container = new Container[MAX_ELEMENTS_COUNT];
     }
 
     @Override
     public void put(K key, V value) {
         Container<K, V> current = getCont(key);
         if (current != null) {
-            current.cvalue = value;
+            current.parametervalue = value;
             return;
         }
-        cont[size] = new Container<>(key, value);
+        container[size] = new Container<>(key, value);
         size++;
     }
 
@@ -26,7 +26,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         Container<K, V> current = getCont(key);
         if (current != null) {
-            return current.cvalue;
+            return current.parametervalue;
         }
         return null;
     }
@@ -38,21 +38,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private Container<K, V> getCont(K key) {
         for (int i = 0; i < size; i++) {
-            if ((cont[i].ckey == null && key == null)
-                    || (cont[i].ckey != null && cont[i].ckey.equals(key))) {
-                return cont[i];
+            if ((container[i].parameterkey == null && key == null)
+                    || (container[i].parameterkey != null
+                    && container[i].parameterkey.equals(key))) {
+                return container[i];
             }
         }
         return null;
     }
 
     private static class Container<K, V> {
-        private K ckey;
-        private V cvalue;
+        private K parameterkey;
+        private V parametervalue;
 
         public Container(K key, V value) {
-            ckey = key;
-            cvalue = value;
+            parameterkey = key;
+            parametervalue = value;
         }
     }
 }
