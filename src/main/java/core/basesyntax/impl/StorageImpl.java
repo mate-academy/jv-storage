@@ -2,7 +2,6 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
     private Object[] keyArray = new Object[MAX_CAPACITY];
@@ -31,10 +30,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     @Override
-    public int size () {
+    public int size() {
         return size;
     }
-    public int counter (K key) {
+
+    public int counter(K key) {
         int count = -1;
         if (key == null) {
             for (int i = 0; i < size; i++) {
@@ -43,12 +43,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         } else {
-                for (int i = 0; i < size; i++) {
-                    if (key.equals(keyArray[i])) {
-                        count = i;
-                    }
+            for (int i = 0; i < size; i++) {
+                if (key.equals(keyArray[i])) {
+                    count = i;
                 }
             }
-            return count;
         }
+        return count;
+    }
 }
