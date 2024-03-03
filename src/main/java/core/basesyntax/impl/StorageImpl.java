@@ -12,10 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.storage = new Pair[MAX_STORAGE_LENGTH];
     }
 
-    public Pair[] getStorage() {
-        return storage;
-    }
-
     public static class Pair<K, V> {
         private V value;
         private K key;
@@ -53,14 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         @Override
         public int hashCode() {
             return Objects.hash(key, value);
-        }
-
-        @Override
-        public String toString() {
-            return "Data{"
-                    + "key='" + key + '\''
-                    + ", value='" + value + '\''
-                    + '}';
         }
     }
 
