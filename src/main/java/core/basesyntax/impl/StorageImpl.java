@@ -1,7 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
+import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_LENGTH = 10;
@@ -55,7 +55,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private static class Pair<K, V> {
+    private static class Pair<K, V> implements core.basesyntax.impl.Pair {
         private V value;
         private K key;
 
@@ -75,23 +75,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         public void setValue(V value) {
             this.value = value;
         }
+    }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Pair current = (Pair) o;
-            return Objects.equals(key, current.key)
-                    && Objects.equals(value, current.value);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(key, value);
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
+        StorageImpl<?, ?> storage1 = (StorageImpl<?, ?>) o;
+        return size == storage1.size && Arrays.equals(storage, storage1.storage);
     }
 }
