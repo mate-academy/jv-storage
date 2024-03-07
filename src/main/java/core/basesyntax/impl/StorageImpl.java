@@ -10,7 +10,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         this.storage = new Pair[MAX_STORAGE_LENGTH];
-        this.size = 0;
     }
 
     @Override
