@@ -55,6 +55,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        StorageImpl<?, ?> storage1 = (StorageImpl<?, ?>) o;
+        return size == storage1.size && Arrays.equals(storage, storage1.storage);
+    }
+
     private static class Pair<K, V> implements core.basesyntax.impl.Pair {
         private V value;
         private K key;
@@ -75,17 +87,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         public void setValue(V value) {
             this.value = value;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        StorageImpl<?, ?> storage1 = (StorageImpl<?, ?>) o;
-        return size == storage1.size && Arrays.equals(storage, storage1.storage);
     }
 }
