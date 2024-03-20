@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (keyCondition(key, keys[i])) {
+            if (hasKeyOnIndex(key, i)) {
                 values[i] = value;
                 return;
             }
@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (keyCondition(key, keys[i])) {
+            if (hasKeyOnIndex(key, i)) {
                 return (V) values[i];
             }
         }
@@ -46,8 +46,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean keyCondition(K key, K secondKey) {
-        return (key == null && secondKey == null)
-                || (secondKey != null && secondKey.equals(key));
+    private boolean hasKeyOnIndex(K key, int index) {
+        return (key == null && keys[index] == null)
+                || (keys[index] != null && keys[index].equals(key));
     }
 }
