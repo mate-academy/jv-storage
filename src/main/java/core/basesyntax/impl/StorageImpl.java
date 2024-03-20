@@ -4,21 +4,20 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = new Object[MAX_SIZE];
-        values = new Object[MAX_SIZE];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
         size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key == null && keys[i] == null
-                    || key != null && key.equals(keys[i])) {
+            if (keyCondition(key, keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -27,14 +26,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keys[size] = key;
             values[size] = value;
             size++;
+        } else {
+            throw new RuntimeException("size is too long");
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null)
-                    || (keys[i] != null && keys[i].equals(key))) {
+            if (keyCondition(key, keys[i])) {
                 return (V) values[i];
             }
         }
@@ -44,5 +44,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean keyCondition(K key, K secondKey) {
+        return (key == null && secondKey == null)
+                || (secondKey != null && secondKey.equals(key));
     }
 }
