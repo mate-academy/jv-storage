@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_ELEMENTS = 10;
-    public static final int WRONG_INDEX = 10;
+    public static final int WRONG_INDEX = -1;
     private final Object[] keys;
     private final Object[] values;
     private int storageSize = 0;
