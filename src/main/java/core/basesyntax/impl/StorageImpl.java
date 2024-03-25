@@ -8,9 +8,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Object[] values;
     private int size;
 
-    public StorageImpl () {
+    public StorageImpl() {
         keys = new Object[MAX_SIZE];
-        values =  new Object[MAX_SIZE];
+        values = new Object[MAX_SIZE];
     }
 
     @Override
