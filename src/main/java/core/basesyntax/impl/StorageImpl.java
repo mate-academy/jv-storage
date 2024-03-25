@@ -14,11 +14,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         arrayValue = (V[]) new Object[ARRAY_MAX_SIZE];
     }
 
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && arrayKey[i] == null) || (arrayKey[i] != null && arrayKey[i].equals(key))) {
+            if ((key == null && arrayKey[i] == null)
+                    || (arrayKey[i] != null && arrayKey[i].equals(key))) {
                 arrayValue[i] = value;
                 return;
             }
