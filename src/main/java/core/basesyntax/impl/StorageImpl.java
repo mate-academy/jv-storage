@@ -2,42 +2,43 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import core.basesyntax.exeptions.StorageException;
+
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_STORAGE_LENGTH = 10;
-    private Pair<K, V>[] storage;
+    private int lastItemIndex = 0;
+    private final Pair<K, V>[] storage;
 
     public StorageImpl() {
-        this.storage = new Pair[0];
+        this.storage = new Pair[MAXIMUM_STORAGE_LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
         for (Pair pair : storage) {
+            if (pair == null) {
+                continue;
+            }
             Object pairKey = pair.getKey();
             if (Objects.equals(pairKey, key)) {
                 pair.setValue(value);
                 return;
             }
         }
-        if (storage.length >= MAXIMUM_STORAGE_LENGTH) {
+        if (storage.length > MAXIMUM_STORAGE_LENGTH) {
             throw new StorageException("Storage is out of capacity");
         }
-        Pair<K, V>[] newStorage = createCopyOfStorageWithIncreasedCapacity(storage);
-        newStorage[newStorage.length - 1] = new Pair<>(key, value);
-        this.storage = newStorage;
-    }
-
-    private Pair<K, V>[] createCopyOfStorageWithIncreasedCapacity(Pair<K, V>[] previousStorage) {
-        Pair<K, V>[] newStorage = new Pair[previousStorage.length + 1];
-        System.arraycopy(previousStorage, 0, newStorage, 0, previousStorage.length);
-        return newStorage;
+        storage[lastItemIndex] = new Pair<>(key, value);
+        lastItemIndex++;
     }
 
     @Override
     public V get(K key) {
         for (Pair<K, V> pair : storage) {
+            if (pair == null) {
+                continue;
+            }
             K pairKey = pair.getKey();
             if (Objects.equals(pairKey, key)) {
                 return pair.getValue();
@@ -48,6 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return storage.length;
+        return lastItemIndex;
     }
 }
