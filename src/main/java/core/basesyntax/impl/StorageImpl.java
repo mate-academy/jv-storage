@@ -3,20 +3,24 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 import core.basesyntax.model.Pair;
 import java.lang.reflect.Array;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
+    private static final int INITIAL_STORAGE_SIZE = 0;
+    private int size;
     private Pair<K, V>[] pairs;
 
     public StorageImpl() {
         pairs = (Pair<K,V>[]) Array.newInstance(Pair.class, MAX_ITEMS_NUMBER);
+        size = INITIAL_STORAGE_SIZE;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < pairs.length; i++) {
             if (isExistKey(pairs[i], key)) {
-                rewritePair(value, i);
+                updatePair(value, i);
                 return;
             }
         }
@@ -35,21 +39,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int count = 0;
-        for (Pair<K, V> pair : pairs) {
-            if (pair != null) {
-                count++;
-            }
-        }
-        return count;
+        return size;
     }
 
-    private boolean isExistKey(Pair<K, V> pair,K key) {
-        return pair != null && (key == null
-                ? pair.getKey() == null : pair.getKey() != null && pair.getKey().equals(key));
+    private boolean isExistKey(Pair<K, V> pair, K key) {
+        return pair != null && Objects.equals(pair.getKey(), key);
     }
 
-    private void rewritePair(V newValue, int index) {
+    private void updatePair(V newValue, int index) {
         pairs[index].setValue(newValue);
     }
 
@@ -58,6 +55,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < pairs.length; i++) {
             if (pairs[i] == null) {
                 pairs[i] = pair;
+                size++;
                 break;
             }
         }
