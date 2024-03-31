@@ -20,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < pairs.length; i++) {
             if (isExistKey(pairs[i], key)) {
-                updatePair(value, i);
+                pairs[i].setValue(value);
                 return;
             }
         }
@@ -46,19 +46,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return pair != null && Objects.equals(pair.getKey(), key);
     }
 
-    private void updatePair(V newValue, int index) {
-        pairs[index].setValue(newValue);
-    }
-
     private void addNewPair(Pair<K, V> pair) {
         checkFreeSpaceInPairs();
-        for (int i = 0; i < pairs.length; i++) {
-            if (pairs[i] == null) {
-                pairs[i] = pair;
-                size++;
-                break;
-            }
-        }
+        pairs[size++] = pair;
     }
 
     private void checkFreeSpaceInPairs() {
