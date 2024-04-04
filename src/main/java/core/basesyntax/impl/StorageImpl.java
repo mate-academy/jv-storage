@@ -8,38 +8,30 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values = (V[]) new Object[ARRAY_SIZE];
     private int index;
     private int size;
-    private K key;
 
     @Override
     public void put(K key, V value) {
-        boolean isDuplicated = false;
-        if (this.key == null && key == null) {
-            size++;
+        if (size >= ARRAY_SIZE) {
+            throw new RuntimeException("Size is full");
         }
         for (int i = 0; i < keys.length; i++) {
-            if ((keys[i] == null && key == null) || (key != null && key.equals(keys[i]))) {
+            key = checkForNull(key);
+            if (keys[i] != null && keys[i].equals(key)) {
                 values[i] = value;
-                isDuplicated = true;
+                return;
             }
         }
-        if (isDuplicated == false) {
-            keys[index] = key;
-            values[index] = value;
-            index++;
-            size++;
-        }
-        this.key = key;
+        keys[index] = key;
+        values[index] = value;
+        index++;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            key = (K) "null";
-        }
         for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null) {
-                keys[i] = (K) "null";
-            }
+            key = checkForNull(key);
+            keys[i] = checkForNull(keys[i]);
             if (keys[i].equals(key)) {
                 return (V) values[i];
             }
@@ -50,5 +42,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    public K checkForNull(K value) {
+        if (value == null) {
+            value = (K) "null";
+        }
+        return value;
     }
 }
