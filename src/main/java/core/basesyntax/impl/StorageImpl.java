@@ -46,4 +46,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return elementsAdded;
     }
+
+    private boolean equals(K first, K second) {
+        if (first == null) {
+            return second == null;
+        }
+        return first.equals(second);
+    }
 }
