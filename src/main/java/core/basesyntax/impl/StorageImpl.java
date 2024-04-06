@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
@@ -8,6 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values = (V[]) new Object[ARRAY_SIZE];
     private int index;
     private int size;
+    private K key;
 
     @Override
     public void put(K key, V value) {
@@ -15,9 +17,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("Size is full");
         }
         for (int i = 0; i < keys.length; i++) {
-            key = checkForNull(key);
-            if (keys[i] != null && keys[i].equals(key)) {
+            if (this.key == null && key == null && i > 0) {
                 values[i] = value;
+                return;
+            }
+            if (Objects.equals(keys[i], key) && key != null) {
+                values[i] = value;
+                this.key = key;
                 return;
             }
         }
@@ -25,14 +31,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values[index] = value;
         index++;
         size++;
+        this.key = key;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            key = checkForNull(key);
-            keys[i] = checkForNull(keys[i]);
-            if (keys[i].equals(key)) {
+            if (Objects.equals(keys[i], key)) {
                 return (V) values[i];
             }
         }
@@ -42,12 +47,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
-    }
-
-    public K checkForNull(K value) {
-        if (value == null) {
-            value = (K) "null";
-        }
-        return value;
     }
 }
