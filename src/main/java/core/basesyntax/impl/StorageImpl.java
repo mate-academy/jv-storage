@@ -14,14 +14,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size >= MAX_CAPACITY) {
-            throw new RuntimeException("The maximum capacity is 10");
-        }
         for (Pair<K, V> element : pairs) {
             if (element != null && equals(element.getKey(), key)) {
                 element.setValue(value);
                 return;
             }
+        }
+        if (size >= MAX_CAPACITY) {
+            throw new RuntimeException("The maximum capacity is 10");
         }
         for (int i = 0; i < pairs.length; i++) {
             if (pairs[i] == null) {
