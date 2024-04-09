@@ -19,9 +19,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 pairs[i].setValue(value);
                 return;
             }
-            if (size >= MAX_CAPACITY) {
-                throw new RuntimeException("The maximum capacity is 10");
-            }
+        }
+        if (size >= MAX_CAPACITY) {
+            throw new RuntimeException("The maximum capacity is 10");
+        }
+        for (int i = 0; i < pairs.length; i++) {
             if (pairs[i] == null) {
                 pairs[i] = new Pair<>(key, value);
                 size++;
