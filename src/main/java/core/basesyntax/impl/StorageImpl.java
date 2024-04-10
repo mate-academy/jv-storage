@@ -4,23 +4,20 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
-    private Object[] keys;
-    private Object[] values;
+    private K [] keys;
+    private V [] values;
     private int size;
+    private int index;
 
     public StorageImpl() {
-        keys = new Object[MAX_ELEMENTS];
-        values = new Object[MAX_ELEMENTS];
+        keys = (K[]) new Object[MAX_ELEMENTS];
+        values = (V[]) new Object[MAX_ELEMENTS];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key != null && keys[i] != null && key.equals(keys[i])) {
-                values[i] = value;
-                return;
-            }
-            if (key == null && keys[i] == null) {
+            if (consistIndex(i, key)) {
                 values[i] = value;
                 return;
             }
@@ -33,15 +30,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if ((keys[i] == null && key == null) || (key != null && key.equals(keys[i]))) {
+            if (consistIndex(i, key)) {
                 return (V) values[i];
             }
         }
         return null;
     }
 
+    private boolean consistIndex(int i, K key) {
+        return key == keys[i] || key != null && key.equals(keys[i]);
+    }
+
     @Override
     public int size() {
         return size;
+    }
+
+    public int getIndex(int index) {
+        if (index >= 0 && index <= MAX_ELEMENTS) {
+            return index;
+        }
+        return -1;
     }
 }
