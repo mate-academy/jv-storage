@@ -5,16 +5,20 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final Object[] keys = new Object[MAX_SIZE];
-    private final Object[] values = new Object[MAX_SIZE];
-    private int size = 0;
+    private static final int INDEX_NOT_FOUND = -1;
+    private final K[] keys = (K[]) new Object[MAX_SIZE];
+    private final V[] values = (V[]) new Object[MAX_SIZE];
+    private int size;
 
     @Override
     public void put(K key, V value) {
         int index = findKeyIndex(key);
-        if (index != -1) {
+        if (index != INDEX_NOT_FOUND) {
             values[index] = value;
-        } else if (size < MAX_SIZE) {
+        } else {
+            if (size >= MAX_SIZE) {
+                throw new IllegalStateException("Cannot add more elements, storage is full");
+            }
             keys[size] = key;
             values[size] = value;
             size++;
@@ -25,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     public V get(K key) {
         int index = findKeyIndex(key);
-        return index != -1 ? (V) values[index] : null;
+        return index != INDEX_NOT_FOUND ? values[index] : null;
     }
 
     @Override
@@ -39,7 +43,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return INDEX_NOT_FOUND;
     }
 }
-
