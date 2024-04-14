@@ -1,19 +1,63 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.lang.reflect.Array;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private K[] keys;
+    private V[] values;
+    private int size = 0;
+    private boolean nullKeyExists = false;
+
     @Override
     public void put(K key, V value) {
+        if (size == 0) {
+            keys = (K[]) Array.newInstance(key.getClass(), 10);
+            values = (V[]) Array.newInstance(value.getClass(), 10);
+        }
+
+        boolean keyExists = false;
+        for (int i = 0; i < 10; i++) {
+            if (Objects.equals(keys[i], key)) {
+                keyExists = true;
+                break;
+            }
+        }
+        if (!keyExists) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        } else {
+            values[findIndex(keys, key)] = value;
+            if (key == null && !nullKeyExists) {
+                size++;
+                nullKeyExists = true;
+            }
+        }
     }
 
     @Override
     public V get(K key) {
-        return null;
+        int index = findIndex(keys, key);
+        if (index != -1) {
+            return values[index];
+        } else {
+            return null;
+        }
     }
 
     @Override
     public int size() {
+        return size;
+    }
+
+    private int findIndex(K[] keys, K key) {
+        for (int i = 0; i < 10; i++) {
+            if (Objects.equals(keys[i], key)) {
+                return i;
+            }
+        }
         return -1;
     }
 }
