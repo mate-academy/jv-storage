@@ -1,46 +1,33 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private final int maxStorage = 10;
-    private int currentSize = 0;
-    private int currentIndex = 0;
+    private static final int MAX_STORAGE_VALUE = 10;
+    private int size = 0;
 
-    private final V[] valueArray = (V[]) new Object [maxStorage];
-    private final K[] keyArray = (K[]) new Object [maxStorage];
-    private V valueForKeyNullCase = null;
-
-    @Override
-    public int size() {
-        return currentSize;
-    }
+    private final V[] valueArray = (V[]) new Object [MAX_STORAGE_VALUE];
+    private final K[] keyArray = (K[]) new Object [MAX_STORAGE_VALUE];
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            if (valueForKeyNullCase == null) {
-                currentSize++;
-                currentIndex++;
+        if (!keyExists(key)) {
+            keyArray[size] = key;
+            valueArray[size] = value;
+            size++;
+        }
+        for (int i = 0; i < keyArray.length; i++) {
+            if (Objects.equals(key, keyArray[i])) {
+                valueArray[i] = value;
             }
-            valueForKeyNullCase = value;
-
-        } else if (!isKeyExist(key)) {
-            valueArray[currentIndex] = value;
-            keyArray[currentIndex] = key;
-            currentSize++;
-            currentIndex++;
-        } else if (isKeyExist(key)) {
-            valueArray[currentIndex] = value;
-            keyArray[currentIndex] = key;
-            currentIndex++;
         }
     }
 
-    public boolean isKeyExist(K key) {
+    public boolean keyExists(K key) {
         for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i] != null && keyArray[i].equals(key)) {
+            if (Objects.equals(key, keyArray[i]) && valueArray[i] != null) {
                 return true;
             }
         }
@@ -49,15 +36,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            return valueForKeyNullCase;
-        }
         V output = null;
         for (int i = 0; i < keyArray.length; i++) {
-            if (key.equals(keyArray[i])) {
+            if (Objects.equals(key, keyArray[i])) {
                 output = valueArray[i];
             }
         }
         return output;
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 }
