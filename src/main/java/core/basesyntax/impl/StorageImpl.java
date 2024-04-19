@@ -34,6 +34,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
+    @Override
+    public V get(K key) {
+        if (key == null) {
+            return getNullKey();
+        }
+        int index = indexOf(key);
+        if (index != -1) {
+            return (V) values[index];
+        }
+        return null;
+    }
+
+    @Override
+    public int size() {
+        return this.size;
+    }
+
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
             if (keys[i] != null && keys[i].equals(key)) {
@@ -59,18 +76,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    @Override
-    public V get(K key) {
-        if (key == null) {
-            return getNullKey();
-        }
-        int index = indexOf(key);
-        if (index != -1) {
-            return (V) values[index];
-        }
-        return null;
-    }
-
     private V getNullKey() {
         for (int i = 0; i < size; i++) {
             if (keys[i] == null) {
@@ -78,10 +83,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return null;
-    }
-
-    @Override
-    public int size() {
-        return this.size;
     }
 }
