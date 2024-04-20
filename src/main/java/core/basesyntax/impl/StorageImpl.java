@@ -9,9 +9,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int lastElementIndex;
 
     public <K, V> StorageImpl() {
-        keysArray = (K[]) (new Object[baseArraySize]);
-        valuesArray = (V[]) (new Object[baseArraySize]);
-        lastElementIndex = -1;
+        keysArray = (K[]) new Object[baseArraySize];
+        valuesArray = (V[]) new Object[baseArraySize];
     }
 
     public <K, V> StorageImpl(K key, V value) {
