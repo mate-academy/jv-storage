@@ -5,41 +5,41 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private static final int MAX_STORAGE_VALUE = 10;
+    private static final int MAX_SIZE = 10;
     private int size = 0;
 
-    private final V[] valueArray = (V[]) new Object [MAX_STORAGE_VALUE];
-    private final K[] keyArray = (K[]) new Object [MAX_STORAGE_VALUE];
+    private final V[] storageContents = (V[]) new Object [MAX_SIZE];
+    private final K[] storageNames = (K[]) new Object [MAX_SIZE];
 
     @Override
     public void put(K key, V value) {
-        if (!keyExists(key)) {
-            keyArray[size] = key;
-            valueArray[size] = value;
-            size++;
-        }
-        for (int i = 0; i < keyArray.length; i++) {
-            if (Objects.equals(key, keyArray[i])) {
-                valueArray[i] = value;
-            }
-        }
-    }
 
-    public boolean keyExists(K key) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (Objects.equals(key, keyArray[i]) && valueArray[i] != null) {
-                return true;
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(key, storageNames[i])) {
+                storageContents[i] = value;
+                size--;
             }
         }
-        return false;
+
+        try {
+            storageNames[size] = key;
+            storageContents[size] = value;
+            size++;
+        } catch (Exception e) {
+            if (size >= MAX_SIZE) {
+                throw new StorageSizeException("Can't put value to storage, "
+                        + "because storage is full");
+            }
+        }
+
     }
 
     @Override
     public V get(K key) {
         V output = null;
-        for (int i = 0; i < keyArray.length; i++) {
-            if (Objects.equals(key, keyArray[i])) {
-                output = valueArray[i];
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(key, storageNames[i])) {
+                output = storageContents[i];
             }
         }
         return output;
@@ -49,4 +49,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
 }
