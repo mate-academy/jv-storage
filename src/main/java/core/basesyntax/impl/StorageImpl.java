@@ -9,13 +9,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object [DEFAULT_CAPACITY];
-        values = (V[]) new Object [DEFAULT_CAPACITY];
+        keys = (K[]) new Object[DEFAULT_CAPACITY];
+        values = (V[]) new Object[DEFAULT_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        int index = findIndex(keys, key);
+        int index = findIndex(key);
         if (index != -1) {
             values[index] = value;
         } else {
@@ -27,12 +27,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int index = findIndex(keys, key);
-        if (index != -1) {
-            return values[index];
-        }
-
-        return null;
+        int index = findIndex(key);
+        return index == -1 ? null : values[index];
     }
 
     @Override
@@ -40,9 +36,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private int findIndex(K[] keys, K key) {
+    private int findIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
