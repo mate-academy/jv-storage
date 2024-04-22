@@ -8,41 +8,34 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private int size = 0;
 
-    private final V[] storageContents = (V[]) new Object [MAX_SIZE];
-    private final K[] storageNames = (K[]) new Object [MAX_SIZE];
+    private final V[] values = (V[]) new Object [MAX_SIZE];
+    private final K[] keys = (K[]) new Object [MAX_SIZE];
 
     @Override
     public void put(K key, V value) {
-
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(key, storageNames[i])) {
-                storageContents[i] = value;
-                size--;
+            if (Objects.equals(key, keys[i])) {
+                values[i] = value;
+                return;
             }
         }
-
-        try {
-            storageNames[size] = key;
-            storageContents[size] = value;
-            size++;
-        } catch (Exception e) {
-            if (size >= MAX_SIZE) {
-                throw new StorageSizeException("Can't put value to storage, "
-                        + "because storage is full");
-            }
+        if (size >= MAX_SIZE) {
+            throw new StorageSizeException("Can't put value to storage, "
+                    + "because storage is full");
         }
-
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        V output = null;
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(key, storageNames[i])) {
-                output = storageContents[i];
+            if (Objects.equals(key, keys[i])) {
+                return values[i];
             }
         }
-        return output;
+        return null;
     }
 
     @Override
