@@ -5,9 +5,14 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE = 10;
     private static final int NULL_PLACEHOLDER = 99;
-    private Object[] valueArr = new Object[MAX_STORAGE];
-    private Object[] keyArr = new Object[MAX_STORAGE];
-    private int itemsNumber = 0;
+    private Object[] valueArr;
+    private Object[] keyArr;
+    private int itemsNumber;
+
+    public StorageImpl() {
+        valueArr = new Object[MAX_STORAGE];
+        keyArr = new Object[MAX_STORAGE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -18,7 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return;
         }
 
-        if (duplicateCheck(key,value)) {
+        if (duplicateCheck(key, value)) {
             return;
         }
 
