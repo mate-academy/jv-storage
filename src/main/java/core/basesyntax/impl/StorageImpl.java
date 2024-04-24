@@ -1,58 +1,47 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final Object[] keys = new Object[MAX_SIZE];
-    private final Object[] values = new Object[MAX_SIZE];
+    private final K[] keys;
+    private final V[] values;
+    private int size = 0;
 
-    private static Object[] removeNull(Object[] arr1, Object[] arr2) {
-        int newSize = 0;
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if (arr1[i] != null || arr2[i] != null) {
-                arr1[newSize++] = arr1[i];
-            }
-        }
-
-        return Arrays.copyOf(arr1, newSize);
-    }
-
-    private Object indexOf(Object[] keys, Object key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
-                return i;
-            }
-        }
-        return null;
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
-                values[i] = value;
-                break;
-            } else if (keys[i] == null && values[i] == null) {
-                keys[i] = key;
-                values[i] = value;
-                break;
-            }
+        int idx = getKeyIdx(key);
+        if (idx == -1) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        } else {
+            values[idx] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        Object[] trimmedKeys = removeNull(keys, values);
-        Object[] trimmedValues = removeNull(values, keys);
-        Object index = indexOf(trimmedKeys, key);
-        return index == null ? null : (V) trimmedValues[(int) index];
+        int idx = getKeyIdx(key);
+        return idx == -1 ? null : values[idx];
     }
 
     @Override
     public int size() {
-        Object[] trimmedKeys = removeNull(keys, values);
-        return trimmedKeys.length;
+        return size;
+    }
+
+    private int getKeyIdx(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
