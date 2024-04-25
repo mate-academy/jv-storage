@@ -1,4 +1,5 @@
 package core.basesyntax.impl;
+
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -19,13 +20,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 values[i] = value;
                 return;
             }
-            }
-            if (MAX_ARRAY_SIZE <= size) {
-                throw new RuntimeException("Storage is full !");
-            }
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        }
+        if (MAX_ARRAY_SIZE <= size) {
+            throw new RuntimeException("Storage is full !");
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
