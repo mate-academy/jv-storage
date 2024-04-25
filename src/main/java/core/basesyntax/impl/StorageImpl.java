@@ -3,76 +3,56 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] keysStorage;
-    private V[] valuesStorage;
-
-    @SuppressWarnings("unchecked")
+    private static final int MAX_NUMBER_OF_ELEMENTS = 10;
+    private final K[] keysStorage = (K[]) new Object[MAX_NUMBER_OF_ELEMENTS];
+    private final V[] valuesStorage = (V[]) new Object[MAX_NUMBER_OF_ELEMENTS];
+    private int index = 0;
+    private boolean isNullKeyPresent = false;
 
     @Override
     public void put(K key, V value) {
-        if (findSameKey(key, this.keysStorage)) {
-            changeValueBySameKey(key, this.keysStorage, value, this.valuesStorage);
+        if (key == null) {
+            if (!isNullKeyPresent) {
+                this.keysStorage[index] = key;
+                this.valuesStorage[index] = value;
+                index++;
+                isNullKeyPresent = true;
+            } else {
+                changeValueBySameKey(key, value);
+            }
         } else {
-            this.keysStorage = resizeKeyStorage(key, this.keysStorage);
-            this.valuesStorage = resizeValueStorage(value, this.valuesStorage);
+            if (findSameKey(key, this.keysStorage)) {
+                changeValueBySameKey(key, value);
+            } else {
+                this.keysStorage[index] = key;
+                this.valuesStorage[index] = value;
+                index++;
+            }
         }
     }
 
     @Override
     public V get(K key) {
         int index = findValueIndexByKey(key, this.keysStorage);
-        if (index == -1) {
-            return null;
-        }
-        return this.valuesStorage[index];
+        return index == -1 ? null : this.valuesStorage[index];
     }
 
     @Override
     public int size() {
-        return this.keysStorage == null ? 0 : this.keysStorage.length;
+        return index;
     }
 
-    public K[] resizeKeyStorage(K key, K[] storage) {
-        if (storage == null || storage.length == 0) {
-            storage = (K[]) new Object[1];
-            storage[0] = key;
-        } else {
-            K[] tempArray = storage;
-            storage = (K[]) new Object[tempArray.length + 1];
-            for (int i = 0; i < tempArray.length; i++) {
-                storage[i] = tempArray[i];
-            }
-            storage[tempArray.length] = key;
-        }
-        return storage;
-    }
-
-    public V[] resizeValueStorage(V value, V[] storage) {
-        if (storage == null || storage.length == 0) {
-            storage = (V[]) new Object[1];
-            storage[0] = value;
-        } else {
-            V[] tempArray = storage;
-            storage = (V[]) new Object[tempArray.length + 1];
-            for (int i = 0; i < tempArray.length; i++) {
-                storage[i] = tempArray[i];
-            }
-            storage[tempArray.length] = value;
-        }
-        return storage;
-    }
-
-    public V[] changeValueBySameKey(K key, K[] keysStorage, V value, V[] valuesStoragestorage) {
+    private void changeValueBySameKey(K key, V value) {
         for (int i = 0; i < this.keysStorage.length; i++) {
             if (Objects.equals(this.keysStorage[i], key)) {
                 this.valuesStorage[i] = value;
             }
         }
-        return this.valuesStorage;
     }
 
-    public boolean findSameKey(K key, K[] keysStorage) {
+    private boolean findSameKey(K key, K[] keysStorage) {
         if (keysStorage == null) {
             return false;
         }
@@ -84,13 +64,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return false;
     }
 
-    public int findValueIndexByKey(K key, K[] keysStorage) {
-        for (int i = 0; i < keysStorage.length; i++) {
-            if (keysStorage[i] == null && key == null) {
-                return i;
-            } else if (keysStorage[i] != null && keysStorage[i].equals(key)) {
-                return i;
+    private int findValueIndexByKey(K key, K[] keysStorage) {
+        int index = 0;
+        for (K currentKey : keysStorage) {
+            if (Objects.equals(currentKey, key)) {
+                return index;
             }
+            index++;
         }
         return -1;
     }
