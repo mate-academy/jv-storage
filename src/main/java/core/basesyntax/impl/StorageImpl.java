@@ -16,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int idx = getKeyIdx(key);
-        if(idx != -1) {
+        if (idx != -1) {
             values[idx] = value;
             return;
         }
