@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -73,7 +72,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return false;
         }
         StorageImpl<?, ?> other = (StorageImpl<?, ?>) obj;
-        return size == other.size && Arrays.equals(keys, other.keys) && Arrays.equals(values, other.values);
+        return size == other.size && Arrays.equals(keys, other.keys)
+                && Arrays.equals(values, other.values);
     }
 
     @Override
