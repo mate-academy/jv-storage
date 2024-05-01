@@ -1,6 +1,8 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
@@ -9,38 +11,60 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_SIZE];
-        values = (V[]) new Object[MAX_SIZE];
+        this.keys = (K[]) new Object[MAX_SIZE];
+        this.values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        if (MAX_SIZE <= size) {
-            throw new IllegalStateException("Storage is full");
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            values[index] = value;
+        } else if (size < MAX_SIZE) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
-                values[i] = value;
-                return;
-            }
-        }
-        values[size] = value;
-        keys[size] = key;
-        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
-                return values[i];
-            }
-        }
-        return null;
+        int index = findKeyIndex(key);
+        return index != -1 ? values[index] : null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        StorageImpl<?, ?> other = (StorageImpl<?, ?>) obj;
+        return size == other.size && Arrays.equals(keys, other.keys)
+                && Arrays.equals(values, other.values);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(size);
+        result = 31 * result + Arrays.hashCode(keys);
+        result = 31 * result + Arrays.hashCode(values);
+        return result;
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
