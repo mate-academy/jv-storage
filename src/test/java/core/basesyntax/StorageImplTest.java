@@ -166,5 +166,3 @@ public class StorageImplTest {
                 3, storage.size());
     }
 }
-
-
