@@ -44,5 +44,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 }
-
-// Add a newline at the end of the file

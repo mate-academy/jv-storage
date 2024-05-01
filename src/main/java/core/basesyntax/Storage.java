@@ -7,5 +7,3 @@ public interface Storage<K, V> {
 
     int size();
 }
-
-// Add a newline at the end of the file

@@ -166,5 +166,3 @@ public class StorageImplTest {
                 3, storage.size());
     }
 }
-
-// Add a newline at the end of the file
