@@ -3,34 +3,22 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K key;
-    private V value;
-    private final StorageImpl<K, V>[] storageArray = new StorageImpl[10];
 
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
+    private static final int MAX_ARRAY_SIZE = 10;
+    private final K[] keys;
+    private final V[] values;
 
     public StorageImpl() {
-
+        keys = (K[]) new Object[MAX_ARRAY_SIZE];
+        values = (V[]) new Object[MAX_ARRAY_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        this.key = key;
-        this.value = value;
-        StorageImpl<K, V> element = new StorageImpl<>(key, value);
-        if (storageArray[0] == null) {
-            storageArray[0] = element;
-        }
-        for (int i = 0; i < storageArray.length; i++) {
-            if (storageArray[i] == null || (storageArray[i].getKey() == null && key == null)) {
-                storageArray[i] = element;
-                break;
-            }
-            if (storageArray[i].getKey() != null && storageArray[i].getKey().equals(key)) {
-                storageArray[i] = element;
+        for (int i = 0; i < MAX_ARRAY_SIZE; i++) {
+            if (keys[i] == key || values[i] == null || (keys[i] != null && keys[i].equals(key))) {
+                keys[i] = key;
+                values[i] = value;
                 break;
             }
         }
@@ -38,13 +26,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (StorageImpl<K, V> element : storageArray) {
-            if (element == null) {
-                return null;
-            }
-            if (element.getKey() == null && key == null
-                    || (element.getKey() != null && element.getKey().equals(key))) {
-                return element.getValue();
+        for (int i = 0; i < MAX_ARRAY_SIZE; i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
+                return values[i];
             }
         }
         return null;
@@ -53,19 +37,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         int size = 0;
-        for (StorageImpl<K, V> element : storageArray) {
-            if (element != null) {
+        for (int i = 0; i < MAX_ARRAY_SIZE; i++) {
+            if (values[i] != null) {
                 size++;
             }
         }
         return size;
     }
-
-    public K getKey() {
-        return key;
-    }
-
-    public V getValue() {
-        return value;
-    }
 }
+
