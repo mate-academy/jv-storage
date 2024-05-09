@@ -1,20 +1,19 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
     private static final int KEY_NOT_EXIST_MARKER_INDEX = -1;
-    private K[] keys;
-    private V[] values;
+    private final K[] keys;
+    private final V[] values;
     private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-        this.keys = (K[]) new Object[0];
-        this.values = (V[]) new Object[0];
+        this.keys = (K[]) new Object[MAX_STORAGE_SIZE];
+        this.values = (V[]) new Object[MAX_STORAGE_SIZE];
     }
 
     @Override
@@ -22,8 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size <= MAX_STORAGE_SIZE) {
             int index = indexOfKey(key);
             if (keyDoesNotExist(index)) {
-                index = size;
-                resizeArrays();
+                index = size++;
             }
             keys[index] = key;
             values[index] = value;
@@ -43,16 +41,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private void resizeArrays() {
-        K[] tempKeys = keys;
-        V[] tempValues = values;
-        keys = Arrays.copyOf(tempKeys, tempKeys.length + 1);
-        values = Arrays.copyOf(tempValues, tempValues.length + 1);
-        size++;
-    }
-
     private int indexOfKey(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < size; i++) {
             if (Objects.equals(keys[i], key)) {
                 return i;
             }
