@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private static final int KEY_NOT_EXIST_MARKER_INDEX = -1;
+    private static final int NO_INDEX = -1;
     private final K[] keys;
     private final V[] values;
     private int size;
@@ -46,10 +46,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return KEY_NOT_EXIST_MARKER_INDEX;
+        return NO_INDEX;
     }
 
     private boolean keyDoesNotExist(int index) {
-        return index == KEY_NOT_EXIST_MARKER_INDEX;
+        return index == NO_INDEX;
     }
 }
