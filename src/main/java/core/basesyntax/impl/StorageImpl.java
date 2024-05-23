@@ -11,11 +11,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private Node<K, V>[] store;
 
     private class Node<K, V> {
-        public K key;
-        public V value;
+        private K key;
+        private V value;
 
         public Node(K key, V value) {
             this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
             this.value = value;
         }
 
