@@ -9,6 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int capasity;
     private int index;
     private Node<K, V>[] store;
+
     private class Node<K, V> {
         public K key;
         public V value;
