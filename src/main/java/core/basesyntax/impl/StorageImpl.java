@@ -14,6 +14,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         private K key;
         private V value;
 
+        public Node() {
+        }
+
         public Node(K key, V value) {
             this.key = key;
             this.value = value;
@@ -33,9 +36,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         public void setValue(V value) {
             this.value = value;
-        }
-
-        public Node() {
         }
     }
 
