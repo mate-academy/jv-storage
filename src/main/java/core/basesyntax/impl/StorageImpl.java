@@ -59,7 +59,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return NO_INDEX;
     }
 
-    private class Node<K, V> {
+    private static class Node<K, V> {
         private K key;
         private V value;
 
