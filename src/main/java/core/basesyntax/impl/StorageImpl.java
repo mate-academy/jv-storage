@@ -4,26 +4,36 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 2;
-    private static final int NOT_FOUND = -1;
+    private static final int NO_INDEX = -1;
     private static final int SCALE = 2;
     private int capasity;
     private int size;
     private Node<K, V>[] store;
 
     public StorageImpl() {
-        this.size = 0;
         this.capasity = DEFAULT_CAPACITY;
         this.store = new Node[capasity];
     }
 
     @Override
     public void put(K key, V value) {
-        int id = find(key);
-        if (id == NOT_FOUND) {
+        int id = findIndex(key);
+        if (id == NO_INDEX) {
             add(key, value);
             return;
         }
         replace(id, value);
+    }
+
+    @Override
+    public V get(K key) {
+        int index = findIndex(key);
+        return index == NO_INDEX ? null : store[index].value;
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 
     private void replace(int id, V value) {
@@ -57,28 +67,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return newStore;
     }
 
-    private int find(K key) {
+    private int findIndex(K key) {
         for (int i = 0; i < size; i++) {
             K curKey = store[i].key;
             if (key == curKey || key != null && key.equals(curKey)) {
                 return i;
             }
-            if (curKey == null || key == null) {
-                continue;
-            }
         }
-        return NOT_FOUND;
-    }
-
-    @Override
-    public V get(K key) {
-        int index = find(key);
-        return index == NOT_FOUND ? null : store[index].value;
-    }
-
-    @Override
-    public int size() {
-        return size;
+        return NO_INDEX;
     }
 
     private class Node<K, V> {
