@@ -3,23 +3,21 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int DEFAULT_CAPACITY = 2;
+    private static final int DEFAULT_CAPACITY = 10;
     private static final int NO_INDEX = -1;
     private static final int SCALE = 2;
-    private int capasity;
     private int size;
     private Node<K, V>[] store;
 
     public StorageImpl() {
-        this.capasity = DEFAULT_CAPACITY;
-        this.store = new Node[capasity];
+        this.store = new Node[DEFAULT_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
         int id = findIndex(key);
         if (id == NO_INDEX) {
-            add(key, value);
+            addNewNode(new Node<>(key, value));
             return;
         }
         replace(id, value);
@@ -40,16 +38,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         store[id].value = value;
     }
 
-    private void add(K key, V value) {
-        Node<K, V> newNode = new Node<>(key, value);
-        if (size >= capasity) {
-            Node<K, V>[] tmp = resize();
-            copy(tmp, store);
-            store = tmp;
-        }
-        addNewNode(newNode);
-    }
-
     private void addNewNode(Node<K,V> newNode) {
         store[size] = newNode;
         ++size;
@@ -59,12 +47,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             dest[i] = src[i];
         }
-    }
-
-    private Node<K, V>[] resize() {
-        capasity *= SCALE;
-        Node<K, V>[] newStore = new Node[capasity];
-        return newStore;
     }
 
     private int findIndex(K key) {
