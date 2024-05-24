@@ -7,7 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NO_INDEX = -1;
     private static final int SCALE = 2;
     private int size;
-    private Node<K, V>[] store;
+    private final Node<K, V>[] store;
 
     public StorageImpl() {
         this.store = new Node[DEFAULT_CAPACITY];
