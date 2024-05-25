@@ -5,7 +5,6 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_CAPACITY = 10;
     private static final int NO_INDEX = -1;
-    private static final int SCALE = 2;
     private int size;
     private final Node<K, V>[] store;
 
@@ -15,12 +14,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        int id = findIndex(key);
-        if (id == NO_INDEX) {
+        int index = findIndex(key);
+        if (index == NO_INDEX) {
             addNewNode(new Node<>(key, value));
             return;
         }
-        replace(id, value);
+        replace(index, value);
     }
 
     @Override
@@ -60,13 +59,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private static class Node<K, V> {
-        private K key;
-        private V value;
+        K key;
+        V value;
 
-        public Node() {
+        Node() {
         }
 
-        public Node(K key, V value) {
+        Node(K key, V value) {
             this.key = key;
             this.value = value;
         }
