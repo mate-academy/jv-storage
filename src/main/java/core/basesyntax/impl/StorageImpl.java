@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             addNewNode(new Node<>(key, value));
             return;
         }
-        replace(index, value);
+        store[index].value = value;
     }
 
     @Override
@@ -33,25 +33,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private void replace(int id, V value) {
-        store[id].value = value;
-    }
-
     private void addNewNode(Node<K,V> newNode) {
         store[size] = newNode;
         ++size;
     }
 
-    private void copy(Node<K,V>[] dest, Node<K,V>[] src) {
-        for (int i = 0; i < size; i++) {
-            dest[i] = src[i];
-        }
-    }
-
     private int findIndex(K key) {
         for (int i = 0; i < size; i++) {
-            K curKey = store[i].key;
-            if (key == curKey || key != null && key.equals(curKey)) {
+            K currentKey = store[i].key;
+            if (key == currentKey || key != null && key.equals(currentKey)) {
                 return i;
             }
         }
