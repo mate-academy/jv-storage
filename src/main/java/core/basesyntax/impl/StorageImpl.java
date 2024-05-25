@@ -59,8 +59,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private static class Node<K, V> {
-        K key;
-        V value;
+        private K key;
+        private V value;
 
         Node() {
         }
