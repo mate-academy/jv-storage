@@ -6,30 +6,29 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_INDEX = 10;
     private int size;
     private final K[] keys;
-    private final V[] value;
+    private final V[] values;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ARRAY_INDEX];
-        value = (V[]) new Object[MAX_ARRAY_INDEX];
+        values = (V[]) new Object[MAX_ARRAY_INDEX];
     }
 
     @Override
     public void put(K key, V value) {
-        if (indexOf(key) != -1) {
-            this.value[indexOf(key)] = value;
-            return;
+        int index = indexOf(key);
+        if (index != -1) {
+            this.values[indexOf(key)] = value;
+        } else if (index == -1) {
+            this.keys[size] = key;
+            this.values[size] = value;
+            size++;
         }
-        this.keys[size] = key;
-        this.value[size] = value;
-        size++;
     }
 
     @Override
     public V get(K key) {
-        if (indexOf(key) != -1) {
-            return this.value[indexOf(key)];
-        }
-        return null;
+        int index = indexOf(key);
+        return index == -1 ? null : values[index];
     }
 
     @Override
