@@ -4,23 +4,22 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private final Object[] keys;
-    private final Object[] values;
+    private final K[] keys;
+    private final V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = new Object[MAX_CAPACITY];
-        values = new Object[MAX_CAPACITY];
-        size = 0;
+        keys = (K[]) new Object[MAX_CAPACITY];
+        values = (V[]) new Object[MAX_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
-                values[i] = value;
-                return;
-            }
+        int index = findKeyIndex(key);
+
+        if (index != -1) {
+            values[index] = value;
+            return;
         }
 
         if (size < MAX_CAPACITY) {
@@ -32,22 +31,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
-                return castValue(values[i]);
-            }
-        }
-        return null;
+        int index = findKeyIndex(key);
+
+        return index == -1 ? null : values[index];
     }
 
     @Override
     public int size() {
         return size;
-    }
-
-    @SuppressWarnings("unchecked")
-    private V castValue(Object obj) {
-        return (V) obj;
     }
 
     private int findKeyIndex(K key) {
