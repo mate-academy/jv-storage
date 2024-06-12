@@ -7,6 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_SIZE = 10;
     private final K[] keys;
     private final V[] values;
+    private int size;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ARRAY_SIZE];
@@ -36,7 +37,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int size = 0;
         for (int i = 0; i < MAX_ARRAY_SIZE; i++) {
             if (values[i] != null) {
                 size++;
