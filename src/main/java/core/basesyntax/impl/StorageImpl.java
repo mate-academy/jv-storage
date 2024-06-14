@@ -34,13 +34,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        V getValue = null;
+        V foundValueByKey = null;
         for (int i = 0; i < size; i++) {
             if (Objects.equals(keys[i], key)) {
-                getValue = values[i];
+                return values[i];
             }
         }
-        return getValue;
+        return foundValueByKey;
     }
 
     @Override
