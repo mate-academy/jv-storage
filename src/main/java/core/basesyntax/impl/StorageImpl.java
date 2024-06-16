@@ -1,40 +1,41 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int INITIAL_CAPACITY = 10;
-    private Object[] keys;
-    private Object[] values;
-    private int size;
+    private static final int MAX_SIZE = 10;
+    private ArrayList<K> keys;
+    private ArrayList<V> values;
 
     public StorageImpl() {
-        keys = new Object[INITIAL_CAPACITY];
-        values = new Object[INITIAL_CAPACITY];
-        size = 0;
+        keys = new ArrayList<>(MAX_SIZE);
+        values = new ArrayList<>(MAX_SIZE);
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
-                values[i] = value;
+        for (int i = 0; i < keys.size(); i++) {
+            if ((keys.get(i) == null && key == null)
+                    || (keys.get(i) != null && keys.get(i).equals(key))) {
+                values.set(i, value);
                 return;
             }
         }
-        if (size == keys.length) {
-            expandCapacity();
+        if (keys.size() < MAX_SIZE) {
+            keys.add(key);
+            values.add(value);
+        } else {
+            throw new IllegalStateException("Storage is full");
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
-                return (V) values[i];
+        for (int i = 0; i < keys.size(); i++) {
+            if ((keys.get(i) == null && key == null)
+                    || (keys.get(i) != null && keys.get(i).equals(key))) {
+                return values.get(i);
             }
         }
         return null;
@@ -42,15 +43,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return size;
-    }
-
-    private void expandCapacity() {
-        Object[] newKeys = new Object[keys.length * 2];
-        Object[] newValues = new Object[values.length * 2];
-        System.arraycopy(keys, 0, newKeys, 0, keys.length);
-        System.arraycopy(values, 0, newValues, 0, values.length);
-        keys = newKeys;
-        values = newValues;
+        return keys.size();
     }
 }
