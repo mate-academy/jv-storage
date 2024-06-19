@@ -4,45 +4,48 @@ import core.basesyntax.Storage;
 import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 10;
-    private ArrayList<K> keys;
-    private ArrayList<V> values;
+    private static final int MAX_CAPACITY = 10;
+    private ArrayList<K> keyList;
+    private ArrayList<V> valueList;
 
     public StorageImpl() {
-        keys = new ArrayList<>(MAX_SIZE);
-        values = new ArrayList<>(MAX_SIZE);
+        keyList = new ArrayList<>(MAX_CAPACITY);
+        valueList = new ArrayList<>(MAX_CAPACITY);
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.size(); i++) {
-            if ((keys.get(i) == null && key == null)
-                    || (keys.get(i) != null && keys.get(i).equals(key))) {
-                values.set(i, value);
-                return;
-            }
-        }
-        if (keys.size() < MAX_SIZE) {
-            keys.add(key);
-            values.add(value);
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            valueList.set(index, value);
         } else {
-            throw new IllegalStateException("Storage is full");
+            if (keyList.size() < MAX_CAPACITY) {
+                keyList.add(key);
+                valueList.add(value);
+            } else {
+                throw new IllegalStateException("Storage is full");
+            }
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.size(); i++) {
-            if ((keys.get(i) == null && key == null)
-                    || (keys.get(i) != null && keys.get(i).equals(key))) {
-                return values.get(i);
-            }
-        }
-        return null;
+        int index = findKeyIndex(key);
+        return (index != -1) ? valueList.get(index) : null;
     }
 
     @Override
     public int size() {
-        return keys.size();
+        return keyList.size();
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < keyList.size(); i++) {
+            if ((keyList.get(i) == null && key == null)
+                    || (keyList.get(i) != null && keyList.get(i).equals(key))) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
