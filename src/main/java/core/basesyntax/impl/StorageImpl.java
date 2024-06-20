@@ -1,19 +1,17 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
     private K[] keys;
     private V[] values;
-    private int currentSize;
+    private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
         keys = (K[]) new Object[MAX_CAPACITY];
         values = (V[]) new Object[MAX_CAPACITY];
-        currentSize = 0;
     }
 
     @Override
@@ -21,10 +19,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = findKeyIndex(key);
         if (index != -1) {
             values[index] = value;
-        } else if (currentSize < MAX_CAPACITY) {
-            keys[currentSize] = key;
-            values[currentSize] = value;
-            currentSize++;
+        } else if (size < MAX_CAPACITY) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         } else {
             throw new RuntimeException("Storage is full");
         }
@@ -38,12 +36,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return currentSize;
+        return size;
     }
 
     private int findKeyIndex(K key) {
-        for (int i = 0; i < currentSize; i++) {
-            if (Objects.equals(keys[i], key)) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null ? key == null : keys[i].equals(key)) {
                 return i;
             }
         }
