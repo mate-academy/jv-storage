@@ -1,8 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_LENGTH = 5;
     private int size;
@@ -17,12 +15,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keyArray.length; i++) {
-            if (key == null && keyArray[i] == null && valueArray[i] == null) {
+            if (isNull(key, i)) {
                 valueArray[i] = value;
                 size++;
                 return;
-            } else if ((key == null && keyArray[i] == null && valueArray[i] != null)
-                    || (key != null && key.equals(keyArray[i]))) {
+            } else if (isAlreadyExistKey(key, i)) {
                 valueArray[i] = value;
                 return;
             }
@@ -51,24 +48,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        StorageImpl<K, V> storage = (StorageImpl<K, V>) obj;
-        return (keyArray != null ? Arrays.equals(keyArray, storage.keyArray)
-                : storage.keyArray == null)
-                && (valueArray != null ? Arrays.equals(valueArray, storage.valueArray)
-                : storage.valueArray == null);
+    private boolean isNull(K key, int index) {
+        return key == null && keyArray[index] == null && valueArray[index] == null;
     }
 
-    @Override
-    public int hashCode() {
-        int result = keyArray != null ? Arrays.hashCode(keyArray) : 0;
-        return 31 * result + (valueArray != null ? Arrays.hashCode(valueArray) : 0);
+    private boolean isAlreadyExistKey(K key, int index) {
+        return (key == null && keyArray[index] == null && valueArray[index] != null)
+                || (key != null && key.equals(keyArray[index]));
     }
 }
