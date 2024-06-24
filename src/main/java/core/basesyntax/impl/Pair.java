@@ -1,8 +1,8 @@
 package core.basesyntax.impl;
 
 public class Pair<K, V> {
-    private final K key;
-    private final V value;
+    private K key;
+    private V value;
 
     public Pair(K key, V value) {
         this.key = key;
