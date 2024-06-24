@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_LENGTH = 5;
     private int size;
