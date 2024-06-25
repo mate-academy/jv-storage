@@ -16,8 +16,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size == MAX_STORAGE_LENGTH) {
             throw new ArrayIndexOutOfBoundsException("Array already full");
         }
-        if (getIndexByKey(key) >= 0) {
-            storage[getIndexByKey(key)] = new Pair<>(key, value);
+        int index = getIndexByKey(key);
+        if (index >= 0) {
+            storage[index] = new Pair<>(key, value);
             return;
         }
         storage[size] = new Pair<>(key, value);
@@ -35,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    public int getIndexByKey(K key) {
+    private int getIndexByKey(K key) {
         int i = 0;
         for (Pair<K, V> pair : storage) {
             if (pair != null && key == pair.getKey() || pair != null
