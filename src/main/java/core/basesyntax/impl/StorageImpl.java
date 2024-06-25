@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[MAX_CAPACITY];
         values = (V[]) new Object[MAX_CAPACITY];
-        size = 0;
     }
 
     @Override
@@ -39,8 +38,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null
-                    || keys[i] != null && keys[i].equals(key)) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
