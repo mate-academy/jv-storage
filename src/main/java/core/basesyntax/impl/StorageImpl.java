@@ -1,27 +1,29 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private ArrayList<K> keyList;
-    private ArrayList<V> valueList;
+    private K[] keys;
+    private V[] values;
+    private int size;
 
     public StorageImpl() {
-        keyList = new ArrayList<>(MAX_CAPACITY);
-        valueList = new ArrayList<>(MAX_CAPACITY);
+        keys = (K[]) new Object[MAX_CAPACITY];
+        values = (V[]) new Object[MAX_CAPACITY];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         int index = findKeyIndex(key);
         if (index != -1) {
-            valueList.set(index, value);
+            values[index] = value;
         } else {
-            if (keyList.size() < MAX_CAPACITY) {
-                keyList.add(key);
-                valueList.add(value);
+            if (size < MAX_CAPACITY) {
+                keys[size] = key;
+                values[size] = value;
+                size++;
             } else {
                 throw new IllegalStateException("Storage is full");
             }
@@ -31,18 +33,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = findKeyIndex(key);
-        return (index != -1) ? valueList.get(index) : null;
+        return (index != -1) ? values[index] : null;
     }
 
     @Override
     public int size() {
-        return keyList.size();
+        return size;
     }
 
     private int findKeyIndex(K key) {
-        for (int i = 0; i < keyList.size(); i++) {
-            if ((keyList.get(i) == null && key == null)
-                    || (keyList.get(i) != null && keyList.get(i).equals(key))) {
+        for (int i = 0; i < size; i++) {
+            if ((keys[i] == null && key == null)
+                    || (keys[i] != null && keys[i].equals(key))) {
                 return i;
             }
         }
