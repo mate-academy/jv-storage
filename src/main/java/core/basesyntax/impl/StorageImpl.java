@@ -15,13 +15,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (size == ARRAY_LENGTH) {
+            throw new ArrayIndexOutOfBoundsException("Storage is full");
+        }
         int index = getIndex(key);
         if (index != -1) {
             values[index] = value;
         } else {
-            if (size == ARRAY_LENGTH) {
-                throw new ArrayIndexOutOfBoundsException("Storage is full");
-            }
             keys[size] = key;
             values[size] = value;
             size++;
@@ -42,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
