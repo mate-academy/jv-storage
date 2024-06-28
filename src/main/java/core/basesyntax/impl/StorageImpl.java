@@ -15,25 +15,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (indexOfKey(key) != -1) {
-            values[indexOfKey(key)] = value;
-            return;
-        }
         if (size > MAX_SIZE) {
             throw new IndexOutOfBoundsException("Storage is full");
         }
-
-        keys[size] = key;
-        values[size] = value;
-        size++;
+        int index = indexOfKey(key);
+        if (index != -1) {
+            values[index] = value;
+        } else if (index == -1) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
     }
 
     @Override
     public V get(K key) {
-        if (indexOfKey(key) == -1) {
-            return null;
-        }
-        return values[indexOfKey(key)];
+        int index = indexOfKey(key);
+        return index == -1 ? null : values[index];
     }
 
     private int indexOfKey(K key) {
