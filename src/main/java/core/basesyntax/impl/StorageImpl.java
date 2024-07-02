@@ -3,6 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int CAPACITY = 10;
     private int size;
     private K[] keys;
     private V[] values;
@@ -10,8 +11,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     public StorageImpl() {
         size = 0;
-        keys = (K[]) new Object[10];
-        values = (V[]) new Object[10];
+        keys = (K[]) new Object[CAPACITY];
+        values = (V[]) new Object[CAPACITY];
     }
 
     @Override
@@ -29,9 +30,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < size; i++) {
             if (keys[i] == null && key == null || (keys[i] != null && keys[i].equals(key))) {
-                return (V) values[i];
+                return values[i];
             }
         }
         return null;
