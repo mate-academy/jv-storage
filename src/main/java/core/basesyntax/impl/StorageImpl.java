@@ -10,7 +10,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-        size = 0;
         keys = (K[]) new Object[CAPACITY];
         values = (V[]) new Object[CAPACITY];
     }
@@ -18,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null || (keys[i] != null && keys[i].equals(key))) {
+            if (isEqual(keys[i], key)) {
                 values[i] = value;
                 return;
             }
@@ -31,8 +30,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null || (keys[i] != null && keys[i].equals(key))) {
-                return values[i];
+            if (isEqual(keys[i], key)) {
+                return (V) values[i];
             }
         }
         return null;
@@ -41,5 +40,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isEqual(Object a, Object b) {
+        return (a == null && b == null) || (a != null && a.equals(b));
     }
 }
