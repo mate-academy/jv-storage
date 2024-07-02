@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_NUMBER_OF_ELEMENTS = 10;
-    private StorageItem[] storageItems;
+    private StorageItem<K, V>[] storageItems;
     private int size;
 
     public StorageImpl() {
@@ -14,8 +14,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (storageItems[i].key == null && key == null
-                    || storageItems[i].key != null && storageItems[i].key.equals(key)) {
+            if (areKeysEqual(storageItems[i].key, key)) {
                 storageItems[i].key = key;
                 storageItems[i].value = value;
                 return;
@@ -29,9 +28,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (storageItems[i].key == null && key == null
-                    || storageItems[i].key != null && storageItems[i].key.equals(key)) {
-                return (V) storageItems[i].value;
+            if (areKeysEqual(storageItems[i].key, key)) {
+                return storageItems[i].value;
             }
         }
         return null;
@@ -40,6 +38,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean areKeysEqual(K key1, K key2) {
+        return key1 == null && key2 == null
+                || key1 != null && key1.equals(key2);
     }
 
     private static class StorageItem<K, V> {
