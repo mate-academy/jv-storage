@@ -1,18 +1,15 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
     private final Object[] keys = new Object[MAX_ELEMENTS];
     private final Object[] values = new Object[MAX_ELEMENTS];
     private int size;
 
-    public StorageImpl() {
-        this.size = 0;
-    }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (keys[i] == null && key == null || keys[i] != null && keys[i].equals(key)) {
@@ -21,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-        if (size < 10) {
+        if (size < MAX_ELEMENTS) {
             keys[size] = key;
             values[size] = value;
             size++;
