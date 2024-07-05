@@ -11,30 +11,34 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     @SuppressWarnings("unchecked")
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null || keys[i] != null && keys[i].equals(key)) {
-                values[i] = value;
-                return;
-            }
-        }
+        int index = indexOf(key);
 
-        if (size < MAX_ELEMENTS) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        if (index != -1) {
+            values[index] = value;
         } else {
-            throw new IllegalStateException("Storage is full");
+            if (size < MAX_ELEMENTS) {
+                keys[size] = key;
+                values[size] = value;
+                size++;
+            } else {
+                System.err.println("Storage is full");
+            }
         }
     }
 
     @Override
     public V get(K key) {
+        int index = indexOf(key);
+        return (index != -1) ? (V) values[index] : null;
+    }
+
+    private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null || keys[i] != null && keys[i].equals(key)) {
-                return (V)values[i];
+            if (keys[i] == null ? key == null : keys[i].equals(key)) {
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     @Override
