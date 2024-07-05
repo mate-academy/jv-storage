@@ -34,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index = indexOf(key);
         if (index != -1) {
-            return (V) values[index];
+            return values[index];
         }
         return null;
     }
