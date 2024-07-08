@@ -4,32 +4,37 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
-    private final Object[] keys = new Object[MAX_ELEMENTS];
-    private final Object[] values = new Object[MAX_ELEMENTS];
+    private final K[] keys;
+    private final V[] values;
     private int size;
 
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_ELEMENTS];
+        values = (V[]) new Object[MAX_ELEMENTS];
+    }
+
     @Override
-    @SuppressWarnings("unchecked")
     public void put(K key, V value) {
         int index = indexOf(key);
 
         if (index != -1) {
             values[index] = value;
         } else {
-            if (size < MAX_ELEMENTS) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            } else {
-                System.err.println("Storage is full");
-            }
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
         int index = indexOf(key);
-        return (index != -1) ? (V) values[index] : null;
+        return (index != -1) ? values[index] : null;
+    }
+
+    @Override
+    public int size() {
+        return size;
     }
 
     private int indexOf(K key) {
@@ -39,10 +44,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return -1;
-    }
-
-    @Override
-    public int size() {
-        return size;
     }
 }
