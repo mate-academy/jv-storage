@@ -46,11 +46,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean checkKey(K key, Pair<K, V> pair) {
-        return (key == pair.getKey())
+        return key == pair.getKey()
                 || key != null && key.equals(pair.getKey());
     }
 
-    public class Pair<K, V> {
+    private class Pair<K, V> {
         private K key;
         private V value;
 
