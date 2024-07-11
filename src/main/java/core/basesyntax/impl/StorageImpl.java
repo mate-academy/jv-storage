@@ -13,9 +13,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = (V[]) new Object[MAX_SIZE];
     }
 
-    private int indexOf(K key) {
+    public int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+            if ((key == keys[i] || (key != null && key.equals(keys[i])))) {
                 return i;
             }
         }
