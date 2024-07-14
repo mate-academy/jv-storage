@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private int size = 0;
+    private int size;
     private K[] keyArray;
     private V[] valueArray;
 
@@ -15,8 +15,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (checkKey(key, value)) {
-            return;
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keyArray[i] == null) || (key != null && key.equals(keyArray[i]))) {
+                valueArray[i] = value;
+                return;
+            }
         }
         keyArray[size] = key;
         valueArray[size] = value;
@@ -25,17 +28,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (key == keyArray[i]) {
-                    return valueArray[i];
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keyArray[i])) {
-                    return valueArray[i];
-                }
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keyArray[i] == null) || (key != null && key.equals(keyArray[i]))) {
+                return valueArray[i];
             }
         }
         return null;
@@ -44,24 +39,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
-    }
-
-    public boolean checkKey(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (key == keyArray[i]) {
-                    valueArray[i] = value;
-                    return true;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keyArray[i])) {
-                    valueArray[i] = value;
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }
