@@ -16,18 +16,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (elementIsExist(key) == ELEMENT_NOT_EXIST) {
+        int index = indexOfKey(key);
+        if (index == ELEMENT_NOT_EXIST) {
             keyArray[arraySize] = key;
             valueArray[arraySize] = value;
             arraySize++;
         } else {
-            valueArray[elementIsExist(key)] = value;
+            valueArray[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        return (elementIsExist(key) == ELEMENT_NOT_EXIST) ? null : valueArray[elementIsExist(key)];
+        int index = indexOfKey(key);
+        return (index == ELEMENT_NOT_EXIST) ? null : valueArray[index];
     }
 
     @Override
@@ -35,11 +37,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return arraySize;
     }
 
-    private int elementIsExist(K key) {
-
+    private int indexOfKey(K key) {
         for (int i = 0; i < keyArray.length; i++) {
             if ((key == null && keyArray[i] == null && valueArray[i] != null)
-                    || (key != null && valueArray[i] != null && key.equals(keyArray[i]))) {
+                    || (key != null && key.equals(keyArray[i]))) {
                 return i;
             }
         }
