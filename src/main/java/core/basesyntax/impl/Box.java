@@ -1,13 +1,13 @@
 package core.basesyntax.impl;
 
 public class Box {
-    private String color;
+    private BoxColors color;
 
-    private Box(String color) {
+    private Box(BoxColors color) {
         this.color = color;
     }
 
-    public static Box createNewBox(String color) {
+    public static Box createNewBox(BoxColors color) {
         return new Box(color);
     }
 
@@ -15,7 +15,7 @@ public class Box {
     public String toString() {
         return "Box{"
                 + "color='"
-                + color
+                + color.name().toLowerCase()
                 + '\''
                 + '}';
     }
