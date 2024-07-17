@@ -1,6 +1,7 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
@@ -20,19 +21,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         try {
             for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
+                if (Objects.equals(keys[i], key)) {
                     values[i] = value;
                     return;
                 }
             }
-
-            if (size < MAX_ARRAY_LENGTH) {
-                keys[size] = key;
-                values[size] = value;
-                size++;
-            }
         } catch (NullPointerException e) {
-            throw new RuntimeException("Can't be null", e);
+            throw new RuntimeException("Key is null", e);
+        }
+
+        if (size < MAX_ARRAY_LENGTH) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
@@ -51,3 +52,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 }
+
