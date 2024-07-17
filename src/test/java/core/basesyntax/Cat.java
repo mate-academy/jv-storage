@@ -36,13 +36,16 @@ public class Cat {
             return false;
         }
         Cat cat = (Cat) o;
-        return Objects.equals(name, cat.name)
-                && Objects.equals(color, cat.color);
+        return Objects.equals(this.name, cat.name)
+                && Objects.equals(this.color, cat.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, color);
+        int result = 17;
+        result = 31 * result + (name == null ? 0 : name.hashCode());
+        result = 31 * result + (color == null ? 0 : color.hashCode());
+        return result;
     }
 
     @Override
