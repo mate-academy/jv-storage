@@ -3,6 +3,9 @@ package core.basesyntax;
 import java.util.Objects;
 
 public class Cat {
+    private final int specNum17 = 17;
+    private final int specNum31 = 31;
+    private final int fieldNullNum = 0;
     private String name;
     private String color;
 
@@ -42,9 +45,9 @@ public class Cat {
 
     @Override
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + (name == null ? 0 : name.hashCode());
-        result = 31 * result + (color == null ? 0 : color.hashCode());
+        int result = specNum17;
+        result = specNum31 * result + (name == null ? fieldNullNum : name.hashCode());
+        result = specNum31 * result + (color == null ? fieldNullNum : color.hashCode());
         return result;
     }
 

@@ -6,14 +6,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS = 10;
     private int nextIndex = 0;
     private int indexKey;
-    private final KeyValueBox<K, V>[] boxArray = new KeyValueBox[MAX_ITEMS];
+    private final KeyValuePair<K, V>[] pairsArray = new KeyValuePair[MAX_ITEMS];
 
-    private boolean checkTheKey(KeyValueBox<K, V> box) {
-        for (int i = 0; i < boxArray.length; i++) {
-            if (boxArray[i] != null && boxArray[i].getKey() == null) {
-                return boxArray[i].getKey() == box.getKey();
+    private boolean findKeyIndex(KeyValuePair<K, V> pair) {
+        for (int i = 0; i < pairsArray.length; i++) {
+            if (pairsArray[i] != null && pairsArray[i].getKey() == null) {
+                indexKey = i;
+                return pairsArray[i].getKey() == pair.getKey();
             }
-            if (boxArray[i] != null && boxArray[i].getKey().equals(box.getKey())) {
+            if (pairsArray[i] != null && pairsArray[i].getKey().equals(pair.getKey())) {
                 indexKey = i;
                 return true;
             }
@@ -23,23 +24,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        KeyValueBox<K, V> newBox = new KeyValueBox<>(key, value);
-        if (checkTheKey(newBox)) {
-            boxArray[indexKey] = newBox;
+        KeyValuePair<K, V> newPair = new KeyValuePair<>(key, value);
+        if (findKeyIndex(newPair)) {
+            pairsArray[indexKey].setValue(newPair.getValue());
         } else {
-            boxArray[nextIndex] = newBox;
+            pairsArray[nextIndex] = newPair;
             nextIndex++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (KeyValueBox<K, V> box: boxArray) {
+        for (KeyValuePair<K, V> box: pairsArray) {
             if (box != null) {
                 if (box.getKey() == null && key == null) {
                     return box.getValue();
-                } else if (box.getKey() == null && key != null) {
-                    continue;
                 } else if (box.getKey() != null && box.getKey().equals(key)) {
                     return box.getValue();
                 }
@@ -51,7 +50,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         int lengthCounter = 0;
-        for (KeyValueBox<K, V> box: boxArray) {
+        for (KeyValuePair<K, V> box: pairsArray) {
             if (box != null) {
                 lengthCounter++;
             }

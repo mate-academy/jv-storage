@@ -1,11 +1,15 @@
 package core.basesyntax.impl;
 
-public class KeyValueBox<T, S> {
+public class KeyValuePair<T, S> {
     private T key;
     private S value;
 
-    public KeyValueBox(T key, S value) {
+    public KeyValuePair(T key, S value) {
         this.key = key;
+        this.value = value;
+    }
+
+    public void setValue(S value) {
         this.value = value;
     }
 
