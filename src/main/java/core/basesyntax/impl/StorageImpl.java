@@ -16,18 +16,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean isKeyFound = false;
         int index = indexOf(key);
         if (index != -1) {
             keys[index] = key;
             values[index] = value;
-            isKeyFound = true;
-        }
-        if (!isKeyFound && size < MAX_ARRAY_SIZE) {
+        } else if (size < MAX_ARRAY_SIZE) {
             keys[size] = key;
             values[size] = value;
             size++;
-        } else if (size > MAX_ARRAY_SIZE) {
+        } else {
             throw new IllegalStateException("Array is full");
         }
     }
