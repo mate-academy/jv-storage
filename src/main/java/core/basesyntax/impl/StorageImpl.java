@@ -4,7 +4,6 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static final int MAX_ARRAY_LENGTH = 10;
 
     private K[] keys;
@@ -12,22 +11,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        size = 0;
         keys = (K[]) new Object[MAX_ARRAY_LENGTH];
         values = (V[]) new Object[MAX_ARRAY_LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
-        try {
-            for (int i = 0; i < size; i++) {
-                if (Objects.equals(keys[i], key)) {
-                    values[i] = value;
-                    return;
-                }
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(keys[i], key)) {
+                values[i] = value;
+                return;
             }
-        } catch (NullPointerException e) {
-            throw new RuntimeException("Key is null", e);
         }
 
         if (size < MAX_ARRAY_LENGTH) {
@@ -40,7 +34,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i].equals(key)) {
+            if (Objects.equals(keys[i], key)) {
                 return values[i];
             }
         }
@@ -52,4 +46,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 }
-
