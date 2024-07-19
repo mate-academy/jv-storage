@@ -4,22 +4,16 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS = 10;
-    private int nextIndex = 0;
+    private int nextIndex;
     private int indexKey;
-    private final KeyValuePair<K, V>[] pairsArray = new KeyValuePair[MAX_ITEMS];
+    private int sizeOfStorage;
+    private KeyValuePair<K, V>[] pairsArray;
 
-    private boolean findKeyIndex(KeyValuePair<K, V> pair) {
-        for (int i = 0; i < pairsArray.length; i++) {
-            if (pairsArray[i] != null && pairsArray[i].getKey() == null) {
-                indexKey = i;
-                return pairsArray[i].getKey() == pair.getKey();
-            }
-            if (pairsArray[i] != null && pairsArray[i].getKey().equals(pair.getKey())) {
-                indexKey = i;
-                return true;
-            }
-        }
-        return false;
+    public StorageImpl() {
+        this.nextIndex = 0;
+        this.indexKey = 0;
+        this.sizeOfStorage = 0;
+        this.pairsArray = new KeyValuePair[MAX_ITEMS];
     }
 
     @Override
@@ -30,6 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         } else {
             pairsArray[nextIndex] = newPair;
             nextIndex++;
+            sizeOfStorage++;
         }
     }
 
@@ -49,12 +44,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int lengthCounter = 0;
-        for (KeyValuePair<K, V> box: pairsArray) {
-            if (box != null) {
-                lengthCounter++;
+        return sizeOfStorage;
+    }
+
+    private boolean findKeyIndex(KeyValuePair<K, V> pair) {
+        for (int i = 0; i < pairsArray.length; i++) {
+            if (pairsArray[i] != null) {
+                if (pairsArray[i].getKey() == null && pairsArray[i].getKey() == pair.getKey()) {
+                    indexKey = i;
+                    return true;
+                } else if (pairsArray[i].getKey() != null && pair.getKey() != null
+                        && pairsArray[i].getKey().equals(pair.getKey())) {
+                    indexKey = i;
+                    return true;
+                }
             }
         }
-        return lengthCounter;
+        return false;
     }
 }
+
+
