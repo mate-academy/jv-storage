@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (KeyValuePair<K, V> box: pairsArray) {
             if (box != null) {
-                if (box.getKey() == null && key == null
+                if (box.getKey() == key
                         || box.getKey() != null && box.getKey().equals(key)) {
                     return box.getValue();
                 }
@@ -46,10 +46,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private boolean findKeyIndex(KeyValuePair<K, V> pair) {
         for (int i = 0; i < pairsArray.length; i++) {
             if (pairsArray[i] != null) {
-                if (pairsArray[i].getKey() == null && pairsArray[i].getKey() == pair.getKey()) {
-                    indexKey = i;
-                    return true;
-                } else if (pairsArray[i].getKey() != null && pair.getKey() != null
+                if (pairsArray[i].getKey() == pair.getKey()
+                        || pairsArray[i].getKey() != null
                         && pairsArray[i].getKey().equals(pair.getKey())) {
                     indexKey = i;
                     return true;
@@ -59,5 +57,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return false;
     }
 }
-
-
