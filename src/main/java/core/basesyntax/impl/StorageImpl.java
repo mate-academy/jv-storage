@@ -15,8 +15,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (indexOf(key) != -1) {
-            values[indexOf(key)] = value;
+        int index = indexOf(key);
+        if (index != -1) {
+            values[index] = value;
         } else {
             if (size >= MAX_ARRAY_SIZE) {
                 throw new RuntimeException("Storage is full");
@@ -29,8 +30,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (indexOf(key) != -1) {
-            return values[indexOf(key)];
+        int index = indexOf(key);
+        if (index != -1) {
+            return values[index];
         }
         return null;
     }
