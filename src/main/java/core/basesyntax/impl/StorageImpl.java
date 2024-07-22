@@ -15,17 +15,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean keyExists = false;
-
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
-                values[i] = value;
-                keyExists = true;
-                break;
-            }
-        }
-
-        if (!keyExists) {
+        if (indexOf(key) != -1) {
+            values[indexOf(key)] = value;
+        } else {
             if (size >= MAX_ARRAY_SIZE) {
                 throw new RuntimeException("Storage is full");
             }
@@ -37,10 +29,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
-                return values[i];
-            }
+        if (indexOf(key) != -1) {
+            return values[indexOf(key)];
         }
         return null;
     }
@@ -48,5 +38,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key != null && key.equals(keys[i])
+                    || key == null && keys[i] == null) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
