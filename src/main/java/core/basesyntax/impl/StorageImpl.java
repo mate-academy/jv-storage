@@ -2,12 +2,13 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+@SuppressWarnings("ALL")
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_SIZE = 10;
     private static final int ELEMENT_NOT_EXIST = -1;
     private int arraySize;
-    private K[] keyArray;
-    private V[] valueArray;
+    private final K[] keyArray;
+    private final V[] valueArray;
 
     public StorageImpl() {
         keyArray = (K[]) new Object[MAX_ARRAY_SIZE];
