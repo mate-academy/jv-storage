@@ -18,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (arraySize >= MAX_ARRAY_LENGTH) {
             throw new IllegalStateException("Storage is full. Maximum size is "
                     + MAX_ARRAY_LENGTH + " .");
-        } else if (!addValueByKey(key, value)) {
+        } else if (!updateValueByKey(key, value)) {
             addKeyPair(key, value);
         }
     }
@@ -51,12 +51,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private boolean addValueByKey(K key, V value) {
+    private boolean updateValueByKey(K key, V value) {
         for (int i = 0; i < keyArray.length; i++) {
             if (keyArray[i] != null && keyArray[i].equals(key)) {
                 valueArray[i] = value;
                 return true;
-            } else if (keyArray[i] == null & valueArray[i] != null & key == null) {
+            } else if (keyArray[i] == null && valueArray[i] != null && key == null) {
                 valueArray[i] = value;
                 return true;
             }
