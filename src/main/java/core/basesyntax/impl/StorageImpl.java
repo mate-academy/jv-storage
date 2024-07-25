@@ -4,13 +4,13 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_LENGTH = 10;
-    private final Object[] keyArray;
-    private final Object[] valueArray;
-    private int arraySize = 0;
+    private final K[] keyArray;
+    private final V[] valueArray;
+    private int arraySize;
 
     public StorageImpl() {
-        keyArray = new Object[MAX_ARRAY_LENGTH];
-        valueArray = new Object[MAX_ARRAY_LENGTH];
+        keyArray = (K[]) new Object[MAX_ARRAY_LENGTH];
+        valueArray = (V[]) new Object[MAX_ARRAY_LENGTH];
     }
 
     @Override
@@ -18,7 +18,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (arraySize >= MAX_ARRAY_LENGTH) {
             throw new IllegalStateException("Storage is full. Maximum size is "
                     + MAX_ARRAY_LENGTH + " .");
-        } else if (!updateValueByKey(key, value)) {
+        }
+        if (!updateValueByKey(key, value)) {
             addKeyPair(key, value);
         }
     }
@@ -27,9 +28,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < keyArray.length; i++) {
             if (keyArray[i] != null && keyArray[i].equals(key)) {
-                return (V) valueArray[i];
-            } else if (key == null && keyArray[i] == null && valueArray[i] != null) {
-                return (V) valueArray[i];
+                return valueArray[i];
+            } else if (keyArray[i] == key && valueArray[i] != null) {
+                return valueArray[i];
             }
         }
         return null;
@@ -42,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void addKeyPair(K key, V value) {
         for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i] == null && valueArray[i] == null) {
+            if (keyArray[i] == valueArray[i]) {
                 keyArray[i] = key;
                 valueArray[i] = value;
                 arraySize++;
@@ -56,7 +57,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (keyArray[i] != null && keyArray[i].equals(key)) {
                 valueArray[i] = value;
                 return true;
-            } else if (keyArray[i] == null && valueArray[i] != null && key == null) {
+            } else if (keyArray[i] == key && valueArray[i] != null) {
                 valueArray[i] = value;
                 return true;
             }
