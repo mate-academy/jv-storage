@@ -4,53 +4,49 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_LENGTH = 10;
-    private final K[] keyArray;
-    private final V[] valueArray;
-    private int arraySize;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        keyArray = (K[]) new Object[MAX_ARRAY_LENGTH];
-        valueArray = (V[]) new Object[MAX_ARRAY_LENGTH];
+        keys = (K[]) new Object[MAX_ARRAY_LENGTH];
+        values = (V[]) new Object[MAX_ARRAY_LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
-        if (arraySize >= MAX_ARRAY_LENGTH) {
+        if (size >= MAX_ARRAY_LENGTH) {
             throw new IllegalStateException("Storage is full. Maximum size is "
                     + MAX_ARRAY_LENGTH + " .");
         }
-        saveOrUpdate(key, value);
+        int index = indexOf(key);
+        if (index != -1) {
+            values[index] = value;
+        } else if (index == -1) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i] != null && keyArray[i].equals(key)) {
-                return valueArray[i];
-            } else if (keyArray[i] == key && valueArray[i] != null) {
-                return valueArray[i];
-            }
-        }
-        return null;
+        int index = indexOf(key);
+        return index == -1 ? null : values[index];
     }
 
     @Override
     public int size() {
-        return arraySize;
+        return size;
     }
 
-    private void saveOrUpdate(K key, V value) {
-        for (int i = 0; i < keyArray.length; i++) {
-            if (keyArray[i] == valueArray[i]) {
-                keyArray[i] = key;
-                valueArray[i] = value;
-                arraySize++;
-                return;
-            } else if (keyArray[i] == key || keyArray[i] != null
-                    && keyArray[i].equals(key)) {
-                valueArray[i] = value;
-                return;
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null
+                    && key.equals(keys[i])) {
+                return i;
             }
         }
+        return -1;
     }
 }
