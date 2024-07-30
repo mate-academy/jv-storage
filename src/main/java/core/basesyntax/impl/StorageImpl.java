@@ -4,8 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS = 10;
-    private final K[] keys;
-    private final V[] values;
+    private K[] keys;
+    private V[] values;
     private int count;
 
     public StorageImpl() {
@@ -46,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKeyIndex(K key) {
         for (int i = 0; i < count; i++) {
-            if (keys[i].equals(key)) {
+            if (keys != null && keys[i].equals(key)) {
                 return i;
             }
         }
