@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS = 10;
-    private static final int KEY_NOT_FOUND = -1;
+    private static final int ARRAY_SIZE = -1;
     private K[] keys;
     private V[] values;
     private int count;
@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int indexKey = findKeyIndex(key);
-        if (indexKey != KEY_NOT_FOUND) {
+        if (indexKey != ARRAY_SIZE) {
             values[indexKey] = value;
         } else {
             if (count < MAX_ITEMS) {
@@ -33,7 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int indexKey = findKeyIndex(key);
-        if (indexKey != KEY_NOT_FOUND) {
+        if (indexKey != ARRAY_SIZE) {
             return values[indexKey];
         } else {
             return null;
@@ -47,16 +47,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findKeyIndex(K key) {
         for (int i = 0; i < count; i++) {
-            if (key == null) {
-                if (keys[i] == null) {
-                    return i;
-                }
-            } else {
-                if (keys[i] != null && keys[i].equals(key)) {
-                    return i;
-                }
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+                return i;
             }
         }
-        return KEY_NOT_FOUND;
+        return ARRAY_SIZE;
     }
 }
