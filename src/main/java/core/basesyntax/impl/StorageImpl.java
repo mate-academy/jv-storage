@@ -2,8 +2,8 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-public class StorageImpl<K,V> implements Storage<K,V> {
-    private Pair<K,V>[] storageArray;
+public class StorageImpl<K, V> implements Storage<K, V> {
+    private Pair<K, V>[] storageArray;
 
     public StorageImpl() {
         storageArray = new Pair[] {};
@@ -14,7 +14,7 @@ public class StorageImpl<K,V> implements Storage<K,V> {
         if (hasKey(key)) {
             replacePair(new Pair<>(key, value));
         } else {
-            Pair<K,V>[] newStorageArray = getNewStorageArray();
+            Pair<K, V>[] newStorageArray = getNewStorageArray();
             newStorageArray[newStorageArray.length - 1] = new Pair<>(key, value);
             setStorageArray(newStorageArray);
         }
@@ -33,7 +33,7 @@ public class StorageImpl<K,V> implements Storage<K,V> {
         return storageArray.length;
     }
 
-    private void replacePair(Pair<K,V> newPair) {
+    private void replacePair(Pair<K, V> newPair) {
         for (int i = 0; i < storageArray.length; i++) {
             if ((storageArray[i].getKey() != null
                     && storageArray[i].getKey().equals(newPair.getKey()))
@@ -44,14 +44,14 @@ public class StorageImpl<K,V> implements Storage<K,V> {
         }
     }
 
-    private Pair<K,V>[] getNewStorageArray() {
-        Pair<K,V>[] newStorageArray = new Pair[storageArray.length + 1];
+    private Pair<K, V>[] getNewStorageArray() {
+        Pair<K, V>[] newStorageArray = new Pair[storageArray.length + 1];
         System.arraycopy(storageArray, 0, newStorageArray, 0, storageArray.length);
         return newStorageArray;
     }
 
-    private Pair<K,V> findPair(K key) {
-        for (Pair<K,V> pair: storageArray) {
+    private Pair<K, V> findPair(K key) {
+        for (Pair<K, V> pair: storageArray) {
             if ((pair.getKey() != null && pair.getKey().equals(key)) || pair.getKey() == key) {
                 return pair;
             }
@@ -59,12 +59,12 @@ public class StorageImpl<K,V> implements Storage<K,V> {
         return null;
     }
 
-    private void setStorageArray(Pair<K,V>[] storageArray) {
+    private void setStorageArray(Pair<K, V>[] storageArray) {
         this.storageArray = storageArray;
     }
 
     private boolean hasKey(K key) {
-        for (Pair<K,V> pair: storageArray) {
+        for (Pair<K, V> pair: storageArray) {
             if ((pair.getKey() != null && pair.getKey().equals(key)) || pair.getKey() == key) {
                 return true;
             }
@@ -72,7 +72,7 @@ public class StorageImpl<K,V> implements Storage<K,V> {
         return false;
     }
 
-    private class Pair<K,V> {
+    private class Pair<K, V> {
         private final K key;
         private final V value;
 
