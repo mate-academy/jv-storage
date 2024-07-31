@@ -3,8 +3,12 @@ package core.basesyntax.impl;
 import core.basesyntax.Pair;
 import core.basesyntax.Storage;
 
-public class StorageImpl<K, V> implements Storage<K, V> {
-    private Pair<K,V>[] storageArray = new Pair[] {};
+public class StorageImpl<K,V> implements Storage<K,V> {
+    private Pair<K,V>[] storageArray;
+
+    public StorageImpl() {
+        storageArray = new Pair[] {};
+    }
 
     @Override
     public void put(K key, V value) {
