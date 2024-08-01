@@ -1,10 +1,10 @@
 package core.basesyntax.impl;
 
-public class Entity<K, V> {
+public class EntityOfStorageImpl<K, V> {
     private K key;
     private V value;
 
-    public Entity(K key, V value) {
+    public EntityOfStorageImpl(K key, V value) {
         this.key = key;
         this.value = value;
     }
@@ -27,6 +27,6 @@ public class Entity<K, V> {
 
     @Override
     public String toString() {
-        return "StorageImpl{" + "key=" + key + ", value=" + value + '}';
+        return "EntityOfStorageImpl{" + "key=" + key + ", value=" + value + '}';
     }
 }
