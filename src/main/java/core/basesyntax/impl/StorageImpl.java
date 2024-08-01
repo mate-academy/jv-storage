@@ -20,47 +20,48 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             size++;
         } else {
             for (int i = 0; i < size; i++) {
-                if (entityOfStorageArr[i].getKey() == null || entityOfStorageArr[i].getKey().equals(key)) {
+                if (entityOfStorageArr[i].getKey() == null
+                        || entityOfStorageArr[i].getKey().equals(key)) {
                     entityOfStorageArr[i].setValue(value);
                 }
-
-
             }
         }
     }
 
-        @Override
-        public V get (K key){
-            V result = null;
-            for (int i = 0; i < size; i++) {
-                if (entityOfStorageArr[i].getKey() == null && key != null) {
-                    continue;
-                }
-                if (entityOfStorageArr[i].getKey() == key || entityOfStorageArr[i].getKey().equals(key)) {
-                    result = entityOfStorageArr[i].getValue();
-                }
-
+    @Override
+    public V get(K key) {
+        V result = null;
+        for (int i = 0; i < size; i++) {
+            if (entityOfStorageArr[i].getKey() == null && key != null) {
+                continue;
             }
-            return result;
-        }
-
-        @Override
-        public int size () {
-            return size;
-        }
-
-        public boolean checkIfKeyPresent (K key){
-            for (int i = 0; i < size; i++) {
-                if (entityOfStorageArr[i].getKey() == null && key != null) {
-                    continue;
-                }
-                if (entityOfStorageArr[i].getKey() == key || entityOfStorageArr[i].getKey().equals(key)) {
-                    return true;
-                }
+            if (entityOfStorageArr[i].getKey() == key
+                    || entityOfStorageArr[i].getKey().equals(key)) {
+                result = entityOfStorageArr[i].getValue();
             }
-            return false;
-        }
 
+        }
+        return result;
     }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    public boolean checkIfKeyPresent(K key) {
+        for (int i = 0; i < size; i++) {
+            if (entityOfStorageArr[i].getKey() == null && key != null) {
+                continue;
+            }
+            if (entityOfStorageArr[i].getKey() == key
+                    || entityOfStorageArr[i].getKey().equals(key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+}
 
 
