@@ -27,10 +27,6 @@ public class Entity<K, V> {
 
     @Override
     public String toString() {
-        return "StorageImpl{" +
-                "key=" + key +
-                ", value=" + value +
-                '}';
+        return "StorageImpl{" + "key=" + key + ", value=" + value + '}';
     }
-
 }
