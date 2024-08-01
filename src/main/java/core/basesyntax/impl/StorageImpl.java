@@ -13,17 +13,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         if (hasKey(key)) {
             replacePair(new Pair<>(key, value));
-        } else {
-            Pair<K, V>[] newStorageArray = getNewStorageArray();
-            newStorageArray[newStorageArray.length - 1] = new Pair<>(key, value);
-            setStorageArray(newStorageArray);
+            return;
         }
+        Pair<K, V>[] newStorageArray = getNewStorageArray();
+        newStorageArray[newStorageArray.length - 1] = new Pair<>(key, value);
+        setStorageArray(newStorageArray);
     }
 
     @Override
     public V get(K key) {
         if (hasKey(key)) {
-            return findPair(key).getValue();
+            return findPair(key).value;
         }
         return null;
     }
@@ -35,9 +35,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void replacePair(Pair<K, V> newPair) {
         for (int i = 0; i < storageArray.length; i++) {
-            if ((storageArray[i].getKey() != null
-                    && storageArray[i].getKey().equals(newPair.getKey()))
-                    || storageArray[i].getKey() == newPair.getKey()) {
+            if ((storageArray[i].key != null
+                    && storageArray[i].key.equals(newPair.key))
+                    || storageArray[i].key == newPair.key) {
                 storageArray[i] = newPair;
                 return;
             }
@@ -52,7 +52,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private Pair<K, V> findPair(K key) {
         for (Pair<K, V> pair: storageArray) {
-            if ((pair.getKey() != null && pair.getKey().equals(key)) || pair.getKey() == key) {
+            if ((pair.key != null && pair.key.equals(key)) || pair.key == key) {
                 return pair;
             }
         }
@@ -65,28 +65,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean hasKey(K key) {
         for (Pair<K, V> pair: storageArray) {
-            if ((pair.getKey() != null && pair.getKey().equals(key)) || pair.getKey() == key) {
+            if ((pair.key != null && pair.key.equals(key)) || pair.key == key) {
                 return true;
             }
         }
         return false;
     }
 
-    private class Pair<K, V> {
+    private static class Pair<K, V> {
         private final K key;
         private final V value;
 
         private Pair(K key, V value) {
             this.key = key;
             this.value = value;
-        }
-
-        private K getKey() {
-            return key;
-        }
-
-        private V getValue() {
-            return value;
         }
     }
 }
