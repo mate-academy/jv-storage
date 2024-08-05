@@ -8,38 +8,35 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private EntityOfStorageImpl<K, V>[] entityOfStorageArr;
 
     public StorageImpl() {
-        this.entityOfStorageArr = new EntityOfStorageImpl[DEFAULT_SIZE_OF_ARRAY];
+        entityOfStorageArr = new EntityOfStorageImpl[DEFAULT_SIZE_OF_ARRAY];
     }
 
     @Override
-    public void put(K key, V value) {
+    public void put(K key, V value) throws StorageFullException {
+        if (size + 1 > DEFAULT_SIZE_OF_ARRAY) {
+            throw new StorageFullException("The storage is full");
+        }
         EntityOfStorageImpl<K, V> entity;
-        if (!checkIfKeyPresent(key)) {
-            entity = new EntityOfStorageImpl<>(key, value);
-            entityOfStorageArr[size] = entity;
-            size++;
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (entityOfStorageArr[i].getKey() == null
-                        || entityOfStorageArr[i].getKey().equals(key)) {
-                    entityOfStorageArr[i].setValue(value);
-                }
+        for (int i = 0; i < size; i++) {
+            if (entityOfStorageArr[i].getKey() == key || (entityOfStorageArr[i].getKey() != null
+                    && entityOfStorageArr[i].getKey().equals(key))) {
+                entityOfStorageArr[i].setValue(value);
+                return;
             }
         }
+        entity = new EntityOfStorageImpl<>(key, value);
+        entityOfStorageArr[size] = entity;
+        size++;
     }
 
     @Override
     public V get(K key) {
         V result = null;
         for (int i = 0; i < size; i++) {
-            if (entityOfStorageArr[i].getKey() == null && key != null) {
-                continue;
-            }
-            if (entityOfStorageArr[i].getKey() == key
-                    || entityOfStorageArr[i].getKey().equals(key)) {
+            if (entityOfStorageArr[i].getKey() == key || (entityOfStorageArr[i].getKey() != null
+                    && entityOfStorageArr[i].getKey().equals(key))) {
                 result = entityOfStorageArr[i].getValue();
             }
-
         }
         return result;
     }
@@ -47,19 +44,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
-    }
-
-    public boolean checkIfKeyPresent(K key) {
-        for (int i = 0; i < size; i++) {
-            if (entityOfStorageArr[i].getKey() == null && key != null) {
-                continue;
-            }
-            if (entityOfStorageArr[i].getKey() == key
-                    || entityOfStorageArr[i].getKey().equals(key)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }
