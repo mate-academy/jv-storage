@@ -1,10 +1,10 @@
 package core.basesyntax.impl;
 
-public class EntityOfStorageImpl<K, V> {
+public class Entity<K, V> {
     private K key;
     private V value;
 
-    public EntityOfStorageImpl(K key, V value) {
+    public Entity(K key, V value) {
         this.key = key;
         this.value = value;
     }

@@ -5,18 +5,18 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_SIZE_OF_ARRAY = 10;
     private int size;
-    private EntityOfStorageImpl<K, V>[] entityOfStorageArr;
+    private Entity<K, V>[] entityOfStorageArr;
 
     public StorageImpl() {
-        entityOfStorageArr = new EntityOfStorageImpl[DEFAULT_SIZE_OF_ARRAY];
+        entityOfStorageArr = new Entity[DEFAULT_SIZE_OF_ARRAY];
     }
 
     @Override
-    public void put(K key, V value) throws StorageFullException {
+    public void put(K key, V value) throws FullStorageException {
         if (size + 1 > DEFAULT_SIZE_OF_ARRAY) {
-            throw new StorageFullException("The storage is full");
+            throw new FullStorageException("The storage is full");
         }
-        EntityOfStorageImpl<K, V> entity;
+        Entity<K, V> entity;
         for (int i = 0; i < size; i++) {
             if (entityOfStorageArr[i].getKey() == key || (entityOfStorageArr[i].getKey() != null
                     && entityOfStorageArr[i].getKey().equals(key))) {
@@ -24,7 +24,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        entity = new EntityOfStorageImpl<>(key, value);
+        entity = new Entity<>(key, value);
         entityOfStorageArr[size] = entity;
         size++;
     }
@@ -45,7 +45,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
-
 }
 
 
