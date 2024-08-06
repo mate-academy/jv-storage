@@ -5,10 +5,10 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_SIZE_OF_ARRAY = 10;
     private int size;
-    private Entity<K, V>[] entityOfStorageArr;
+    private Node<K, V>[] table;
 
     public StorageImpl() {
-        entityOfStorageArr = new Entity[DEFAULT_SIZE_OF_ARRAY];
+        table = new Node[DEFAULT_SIZE_OF_ARRAY];
     }
 
     @Override
@@ -16,16 +16,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size + 1 > DEFAULT_SIZE_OF_ARRAY) {
             throw new FullStorageException("The storage is full");
         }
-        Entity<K, V> entity;
+        Node<K, V> entity;
         for (int i = 0; i < size; i++) {
-            if (entityOfStorageArr[i].getKey() == key || (entityOfStorageArr[i].getKey() != null
-                    && entityOfStorageArr[i].getKey().equals(key))) {
-                entityOfStorageArr[i].setValue(value);
+            if (table[i].getKey() == key || table[i].getKey() != null
+                    && table[i].getKey().equals(key)) {
+                table[i].setValue(value);
                 return;
             }
         }
-        entity = new Entity<>(key, value);
-        entityOfStorageArr[size] = entity;
+        entity = new Node<>(key, value);
+        table[size] = entity;
         size++;
     }
 
@@ -33,9 +33,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         V result = null;
         for (int i = 0; i < size; i++) {
-            if (entityOfStorageArr[i].getKey() == key || (entityOfStorageArr[i].getKey() != null
-                    && entityOfStorageArr[i].getKey().equals(key))) {
-                result = entityOfStorageArr[i].getValue();
+            if (table[i].getKey() == key || table[i].getKey() != null
+                    && table[i].getKey().equals(key)) {
+                result = table[i].getValue();
             }
         }
         return result;
