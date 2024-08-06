@@ -7,12 +7,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keys;
     private final V[] values;
     private int size;
-    private int type;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
         values = (V[]) new Object[MAX_SIZE];
-        int type = 0;
     }
 
     @Override
