@@ -1,9 +1,7 @@
 package core.basesyntax;
 
-import core.basesyntax.impl.FullStorageException;
-
 public interface Storage<K, V> {
-    void put(K key, V value) throws FullStorageException;
+    void put(K key, V value);
 
     V get(K key);
 
