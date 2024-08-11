@@ -15,13 +15,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < STORAGE_VOLUME; i++) {
-            if (arrayKey[i] == null && arrayValue[i] == null) {
+            if (areBothKeyValueNull((K) arrayKey[i], (V) arrayValue[i])) {
                 arrayKey[i] = key;
                 arrayValue[i] = value;
                 break;
             }
 
-            if (arrayKey[i] == key || arrayKey[i] != null && arrayKey[i].equals(key)) {
+            if (isArrayKeyEqualKey((K) arrayKey[i], key)) {
                 arrayValue[i] = value;
                 break;
             }
@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < STORAGE_VOLUME; i++) {
-            if (arrayKey[i] == key || arrayKey[i] != null && arrayKey[i].equals(key)) {
+            if (isArrayKeyEqualKey((K) arrayKey[i], key)) {
                 return (V) arrayValue[i];
             }
         }
@@ -41,10 +41,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         for (int i = 0; i < STORAGE_VOLUME; i++) {
-            if (arrayKey[i] == null && arrayValue[i] == null) {
+            if (areBothKeyValueNull((K) arrayKey[i], (V) arrayValue[i])) {
                 return i;
             }
         }
-        return 10;
+        return STORAGE_VOLUME;
+    }
+
+    private boolean areBothKeyValueNull(K key, V value) {
+        return key == null && value == null;
+    }
+
+    private boolean isArrayKeyEqualKey(K stored, K next) {
+        return stored == next || stored != null && stored.equals(next);
     }
 }
