@@ -1,12 +1,10 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private static final int WRONG_INDEX = -1;
-    private static final int START_ITERATION = 0;
+    private static final int NO_INDEX = -1;
     private K[] keys;
     private V[] values;
     private int size;
@@ -20,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = getIndex(key);
-        if (index != WRONG_INDEX) {
+        if (index != NO_INDEX) {
             values[index] = value;
         } else if (size < MAX_SIZE) {
             keys[size] = key;
@@ -32,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = getIndex(key);
-        return index != WRONG_INDEX ? values[index] : null;
+        return index != NO_INDEX ? values[index] : null;
     }
 
     @Override
@@ -41,11 +39,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndex(K key) {
-        for (int i = START_ITERATION; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
-        return WRONG_INDEX;
+        return NO_INDEX;
     }
 }
