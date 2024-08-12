@@ -4,55 +4,51 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_VOLUME = 10;
-    private final Object[] arrayKey;
-    private final Object[] arrayValue;
+    private static final int NO_INDEX = -1;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
-        arrayKey = new Object[STORAGE_VOLUME];
-        arrayValue = new Object[STORAGE_VOLUME];
+        keys = (K[]) new Object[STORAGE_VOLUME];
+        values = (V[]) new Object[STORAGE_VOLUME];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < STORAGE_VOLUME; i++) {
-            if (areBothKeyValueNull((K) arrayKey[i], (V) arrayValue[i])) {
-                arrayKey[i] = key;
-                arrayValue[i] = value;
-                break;
+        int index = indexOf(key);
+        if (index == NO_INDEX) {
+            try {
+                keys[size] = key;
+                values[size] = value;
+                size++;
+            } catch (RuntimeException e) {
+                throw new ArrayIndexOutOfBoundsException("This Storage is full");
             }
-
-            if (isArrayKeyEqualKey((K) arrayKey[i], key)) {
-                arrayValue[i] = value;
-                break;
-            }
+        } else {
+            values[index] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < STORAGE_VOLUME; i++) {
-            if (isArrayKeyEqualKey((K) arrayKey[i], key)) {
-                return (V) arrayValue[i];
-            }
-        }
-        return null;
+        int index = indexOf(key);
+        return index == NO_INDEX ? null : values[index];
     }
 
     @Override
     public int size() {
-        for (int i = 0; i < STORAGE_VOLUME; i++) {
-            if (areBothKeyValueNull((K) arrayKey[i], (V) arrayValue[i])) {
+        return size;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null && key == null || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
-        return STORAGE_VOLUME;
-    }
-
-    private boolean areBothKeyValueNull(K key, V value) {
-        return key == null && value == null;
-    }
-
-    private boolean isArrayKeyEqualKey(K stored, K next) {
-        return stored == next || stored != null && stored.equals(next);
+        return NO_INDEX;
     }
 }
