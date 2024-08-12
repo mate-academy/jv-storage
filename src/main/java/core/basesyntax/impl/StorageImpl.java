@@ -13,7 +13,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[STORAGE_VOLUME];
         values = (V[]) new Object[STORAGE_VOLUME];
-        size = 0;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null || keys[i] != null && keys[i].equals(key)) {
+            if (keys[i] == key || keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
