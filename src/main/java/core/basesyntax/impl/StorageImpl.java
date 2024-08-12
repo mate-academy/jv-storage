@@ -32,11 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         int index = findIndex(key);
 
-        if (index == NO_SUCH_INDEX) {
-            return null;
-        }
-
-        return values[index];
+        return index == NO_SUCH_INDEX ? null : values[index];
     }
 
     @Override
@@ -46,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if ((key == keys[i] || key != null && key.equals(keys[i]))) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
