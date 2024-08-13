@@ -24,13 +24,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         Node<K, V> currentNode = table[index];
         while (currentNode.hasNext()) {
-            if (keyAndNodeKeyEquals(key, currentNode)) {
+            if (keysEqual(key, currentNode.key)) {
                 currentNode.value = value;
                 return;
             }
             currentNode = currentNode.next;
         }
-        if (keyAndNodeKeyEquals(key, currentNode)) {
+        if (keysEqual(key, currentNode.key)) {
             currentNode.value = value;
             return;
         }
@@ -43,7 +43,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = getIndexByHashCode(key);
         Node<K, V> node = table[index];
         while (node != null) {
-            if (keyAndNodeKeyEquals(key, node)) {
+            if (keysEqual(key, node.key)) {
                 return node.value;
             }
             node = node.next;
@@ -51,13 +51,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return null;
     }
 
-    private boolean keyAndNodeKeyEquals(K key, Node<K, V> node) {
-        return (node.key == null && key == null) || (node.key != null && node.key.equals(key));
-    }
-
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean keysEqual(K firstKey, K secondKey) {
+        return (firstKey == null && secondKey == null)
+                || (firstKey != null && firstKey.equals(secondKey));
     }
 
     private int getIndexByHashCode(K key) {
