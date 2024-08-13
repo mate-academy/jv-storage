@@ -1,10 +1,10 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int DEFAULT_SIZE = 10;
+    private static final int NULL_KEY_INDEX = 0;
     private final Node<K, V>[] table;
     private int size;
 
@@ -24,13 +24,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         Node<K, V> currentNode = table[index];
         while (currentNode.hasNext()) {
-            if (Objects.equals(key, currentNode.key)) {
+            if (keyAndNodeKeyEquals(key, currentNode)) {
                 currentNode.value = value;
                 return;
             }
             currentNode = currentNode.next;
         }
-        if (Objects.equals(key, currentNode.key)) {
+        if (keyAndNodeKeyEquals(key, currentNode)) {
             currentNode.value = value;
             return;
         }
@@ -43,12 +43,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = getIndexByHashCode(key);
         Node<K, V> node = table[index];
         while (node != null) {
-            if (Objects.equals(key, node.key)) {
+            if (keyAndNodeKeyEquals(key, node)) {
                 return node.value;
             }
             node = node.next;
         }
         return null;
+    }
+
+    private boolean keyAndNodeKeyEquals(K key, Node<K, V> node) {
+        return (node.key == null && key == null) || (node.key != null && node.key.equals(key));
     }
 
     @Override
@@ -57,7 +61,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndexByHashCode(K key) {
-        return key == null ? 0 : Math.abs(key.hashCode() % table.length);
+        return key == null ? NULL_KEY_INDEX : Math.abs(key.hashCode() % table.length);
     }
 
     public static class Node<K, V> {
