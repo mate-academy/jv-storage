@@ -10,7 +10,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public StorageImpl() {
         this.table = new Node[DEFAULT_SIZE];
-        this.size = 0;
     }
 
     @Override
@@ -57,8 +56,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean keysEqual(K firstKey, K secondKey) {
-        return (firstKey == null && secondKey == null)
-                || (firstKey != null && firstKey.equals(secondKey));
+        return firstKey == secondKey
+                || firstKey != null && firstKey.equals(secondKey);
     }
 
     private int getIndexByHashCode(K key) {
