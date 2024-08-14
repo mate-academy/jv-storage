@@ -23,14 +23,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     store[i] = new KeyValue<>(key, value);
                     size++;
                     return;
-                }
-                if (store[i] != null && Objects.equals(store[i].getKey(), key)) {
-                    store[i].setValue(value);
-                    return;
+                } else {
+                    if (Objects.equals(store[i].getKey(), key)) {
+                        store[i].setValue(value);
+                        return;
+                    }
                 }
             }
         } else {
-            System.out.println("Full storage!");
+            throw new RuntimeException("The storage is full!");
         }
     }
 
