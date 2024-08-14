@@ -6,14 +6,13 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_SIZE = 10;
-    public static final int ZERO = 0;
     private final KeyValue<K, V>[] store;
     private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
         this.store = new KeyValue[MAX_SIZE];
-        this.size = ZERO;
+        this.size = 0;
     }
 
     @Override
