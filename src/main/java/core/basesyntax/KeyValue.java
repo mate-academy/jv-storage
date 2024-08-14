@@ -1,7 +1,7 @@
 package core.basesyntax;
 
 public class KeyValue<K, V> {
-    private K key;
+    private final K key;
     private V value;
 
     public KeyValue(K key, V value) {
