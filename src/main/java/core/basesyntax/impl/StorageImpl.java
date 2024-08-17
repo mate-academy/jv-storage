@@ -5,12 +5,12 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_SIZE = 10;
-    @SuppressWarnings("unchecked")
-    private final KeyValue<K, V>[] store = new KeyValue[MAX_SIZE];
-    private int size;
+    private final KeyValue<K, V>[] store;
+    private int size = 0;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
-        this.size = 0;
+        this.store = new KeyValue[MAX_SIZE];
     }
 
     @Override
@@ -40,7 +40,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             if (element != null) {
                 K storeKey = element.getKey();
                 if (isStoreKeyEqual(storeKey, key)) {
-                return element.getValue();
+                    return element.getValue();
                 }
             }
         }
@@ -53,7 +53,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isStoreKeyEqual(K storeKey, K key) {
-       return ((storeKey == key) || storeKey != null
+        return ((storeKey == key) || storeKey != null
                 && storeKey.equals(key));
     }
 }
