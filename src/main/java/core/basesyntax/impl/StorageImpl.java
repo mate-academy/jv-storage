@@ -22,8 +22,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                     size++;
                     return;
                 } else {
-                    if ((store[i].getKey() == key) || store[i].getKey() != null
-                            && store[i].getKey().equals(key)) {
+                    K storeKey = store[i].getKey();
+                    if (isStoreKeyEqual(storeKey, key)) {
                         store[i].setValue(value);
                         return;
                     }
@@ -37,10 +37,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (KeyValue<K, V> element : store) {
-            if (element != null && ((element.getKey() == key)
-                    || element.getKey() != null
-                    && element.getKey().equals(key))) {
+            if (element != null) {
+                K storeKey = element.getKey();
+                if (isStoreKeyEqual(storeKey, key)) {
                 return element.getValue();
+                }
             }
         }
         return null;
@@ -49,5 +50,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isStoreKeyEqual(K storeKey, K key) {
+       return ((storeKey == key) || storeKey != null
+                && storeKey.equals(key));
     }
 }
