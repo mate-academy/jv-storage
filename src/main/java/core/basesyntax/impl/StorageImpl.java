@@ -1,36 +1,42 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_VALUE = 10;
-    private final List<K> keys;
-    private final List<V> values;
+    private static final int START_SIZE_VALUE = 0;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
-        keys = new ArrayList<>(MAX_ARRAY_VALUE);
-        values = new ArrayList<>(MAX_ARRAY_VALUE);
+        keys = (K[]) new Object[MAX_ARRAY_VALUE];
+        values = (V[]) new Object[MAX_ARRAY_VALUE];
+        size = START_SIZE_VALUE;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.size(); i++) {
-            if (keys.get(i) == null ? key == null : keys.get(i).equals(key)) {
-                values.set(i, value);
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(keys[i], key)) {
+                values[i] = value;
                 return;
             }
         }
-        keys.add(key);
-        values.add(value);
+        if (size < keys.length) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.size(); i++) {
-            if (keys.get(i) == null ? key == null : keys.get(i).equals(key)) {
-                return values.get(i);
+        for (int i = 0; i < keys.length; i++) {
+            if (Objects.equals(keys[i], key)) {
+                return values[i];
             }
         }
         return null;
@@ -38,6 +44,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return keys.size();
+        return size;
     }
 }
