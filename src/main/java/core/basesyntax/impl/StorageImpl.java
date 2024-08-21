@@ -3,33 +3,33 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 10;
-    private StorageArray[] storageArray;
+    private static final int MAX_STORAGE_ELEMENTS = 10;
+
+    private final K[] keys;
+    private final V[] values;
 
     public StorageImpl() {
-        this.storageArray = new StorageArray[MAX_SIZE];
-        for (int i = 0; i < MAX_SIZE; i++) {
-            storageArray[i] = new StorageArray<>(null,null);
-        }
+        this.keys = (K[]) new Object[MAX_STORAGE_ELEMENTS];
+        this.values = (V[]) new Object[MAX_STORAGE_ELEMENTS];
     }
 
-    public boolean nullCheck(K key, int i) {
-        if (key != null && storageArray[i].getKey() != null) {
-            return (storageArray[i].getKey().equals(key));
+    public boolean isEqualCheck(K key, int i) {
+        if (key != null && keys[i] != null) {
+            return (keys[i].equals(key));
         }
-        return (storageArray[i].getKey() == key);
+        return (keys[i] == key);
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if (storageArray[i].getKey() == null && storageArray[i].getValue() == null) {
-                storageArray[i].setKey(key);
-                storageArray[i].setValue(value);
+        for (int i = 0; i < MAX_STORAGE_ELEMENTS; i++) {
+            if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
                 break;
             }
-            if (nullCheck(key,i)) {
-                storageArray[i].setValue(value);
+            if (isEqualCheck(key,i)) {
+                values[i] = value;
                 break;
             }
         }
@@ -37,9 +37,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if (nullCheck(key,i)) {
-                return (V) storageArray[i].getValue();
+        for (int i = 0; i < MAX_STORAGE_ELEMENTS; i++) {
+            if (isEqualCheck(key,i)) {
+                return values[i];
             }
         }
         return null;
@@ -47,11 +47,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for (int i = 0; i < MAX_SIZE; i++) {
-            if (storageArray[i].getKey() == null && storageArray[i].getValue() == null) {
+        for (int i = 0; i < MAX_STORAGE_ELEMENTS; i++) {
+            if (keys[i] == null && values[i] == null) {
                 return i;
             }
         }
-        return MAX_SIZE;
+        return MAX_STORAGE_ELEMENTS;
     }
 }
