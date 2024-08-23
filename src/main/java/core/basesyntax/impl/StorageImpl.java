@@ -11,33 +11,32 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[INITIAL_CAPACITY];
         values = (V[]) new Object[INITIAL_CAPACITY];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
-                values[i] = value;
-                return;
+        int index = indexOf(key);
+        if (index != -1) {
+            values[index] = value;
+        } else {
+            if (size == keys.length) {
+                K[] newKeys = (K[]) new Object[keys.length * 2];
+                V[] newValues = (V[]) new Object[values.length * 2];
+                System.arraycopy(keys, 0, newKeys, 0, keys.length);
+                System.arraycopy(values, 0, newValues, 0, values.length);
+                keys = newKeys;
+                values = newValues;
             }
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
-        if (size == keys.length) {
-            resize();
-        }
-        keys[size] = key;
-        values[size] = value;
-        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
-                return values[i];
-            }
-        }
-        return null;
+        int index = indexOf(key);
+        return index != -1 ? values[index] : null;
     }
 
     @Override
@@ -45,12 +44,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private void resize() {
-        K[] newKeys = (K[]) new Object[keys.length * 2];
-        V[] newValues = (V[]) new Object[values.length * 2];
-        System.arraycopy(keys, 0, newKeys, 0, keys.length);
-        System.arraycopy(values, 0, newValues, 0, values.length);
-        keys = newKeys;
-        values = newValues;
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
