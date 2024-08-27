@@ -4,30 +4,31 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final Object[][] storageArray;
+    private final K[] keys;
+    private final V[] values;
     private int size;
 
     public StorageImpl() {
-        storageArray = new Object[MAX_SIZE][2];
-        size = 0;
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (key == null) {
-                if (storageArray[i][0] == null) {
-                    storageArray[i][1] = value;
+                if (keys[i] == null) {
+                    values[i] = value;
                     return;
                 }
-            } else if (storageArray[i][0] != null && storageArray[i][0].equals(key)) {
-                storageArray[i][1] = value;
+            } else if (keys[i] != null && keys[i].equals(key)) {
+                values[i] = value;
                 return;
             }
         }
         if (size < MAX_SIZE) {
-            storageArray[size][0] = key;
-            storageArray[size][1] = value;
+            keys[size] = key;
+            values[size] = value;
             size++;
         } else {
             throw new RuntimeException("Storage is full");
@@ -38,11 +39,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             if (key == null) {
-                if (storageArray[i][0] == null) {
-                    return (V) storageArray[i][1];
+                if (keys[i] == null) {
+                    return (V) values[i];
                 }
-            } else if (storageArray[i][0] != null && storageArray[i][0].equals(key)) {
-                return (V) storageArray[i][1];
+            } else if (keys[i] != null && keys[i].equals(key)) {
+                return (V) values[i];
             }
         }
         return null;
