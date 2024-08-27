@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
@@ -17,7 +16,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < count; i++) {
-            if (keysAreEqual(key, keys[i])) {
+            if (keysAreEqual(key, (K) keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -27,21 +26,21 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[count] = value;
             count++;
         } else {
-            throw new RuntimeException("Massive is full. Max capacity is 10");
+            throw new RuntimeException("Massive is full!");
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < count; i++) {
-            if (keysAreEqual(key, keys[i])) {
+            if (keysAreEqual(key, (K) keys[i])) {
                 return (V) values[i];
             }
         }
         return null;
     }
 
-    private boolean keysAreEqual(K key, Object key2) {
+    private boolean keysAreEqual(K key, K key2) {
         return (key == null && key2 == null) || (key != null && key.equals(key2));
     }
 
@@ -52,11 +51,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public String toString() {
-        return "StorageImpl{"
-                + "keys="
-                + Arrays.toString(keys)
-                + ", values="
-                + Arrays.toString(values)
-                + '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("keys:[");
+        for (int i = 0; i < count; i++) {
+            sb.append(keys[i]);
+            if (i < count - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("], values[");
+        for (int i = 0; i < count; i++) {
+            sb.append(values[i]);
+            if (i < count - 1) {
+                sb.append(", ");
+            }
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
