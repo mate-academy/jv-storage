@@ -4,63 +4,60 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ELEMENTS = 10;
-    private K[] keys;
-    private V[] values;
-    private K key;
-    private V value;
-    private int sizeStorage = 0;
+    private final K[] keys;
+    private final V[] values;
+    private int size;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_ELEMENTS];
-        this.values = (V[]) new Object[MAX_ELEMENTS];
+        keys = (K[]) new Object[MAX_ELEMENTS];
+        values = (V[]) new Object[MAX_ELEMENTS];
     }
 
     public K getKey() {
-        return key;
+        return null;
     }
 
     public V getValue() {
-        return value;
+        return null;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < sizeStorage; i++) {
-            if (key == null) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
-                values[i] = value;
-                return;
-            }
+        int index = indexOf(key);
+        if (index != -1) {
+            values[index] = value;
+            return;
         }
-        if (sizeStorage < MAX_ELEMENTS) {
-            keys[sizeStorage] = key;
-            values[sizeStorage] = value;
-            sizeStorage++;
+        if (size < MAX_ELEMENTS) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < sizeStorage; i++) {
-            if (key == null) {
-                if (keys[i] == null) {
-                    return values[i];
-                }
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
-                return values[i];
-            }
+        int index = indexOf(key);
+        if (index != -1) {
+            return values[index];
         }
         return null;
     }
 
     @Override
     public int size() {
-        return sizeStorage;
+        return size;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keys[i] == null) {
+                return i;
+            }
+            if (key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
