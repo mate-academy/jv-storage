@@ -3,70 +3,48 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_ITEMS_NUMBER = 10;
-    private int count = 0;
-    private Object[] keys;
-    private Object[] values;
+    private static final int MAX_SIZE = 10;
+    private static final int NO_INDEX = -1;
+    private int size;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        keys = new Object[MAX_ITEMS_NUMBER];
-        values = new Object[MAX_ITEMS_NUMBER];
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < count; i++) {
-            if (keysAreEqual(key, (K) keys[i])) {
-                values[i] = value;
-                return;
-            }
-        }
-        if (count < keys.length) {
-            keys[count] = key;
-            values[count] = value;
-            count++;
+        int index = indexOf(key);
+        if (index != NO_INDEX) {
+            values[index] = value;
+        } else if (index == NO_INDEX) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         } else {
-            throw new RuntimeException("Massive is full!");
+            throw new RuntimeException("Storage is full!");
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < count; i++) {
-            if (keysAreEqual(key, (K) keys[i])) {
-                return (V) values[i];
-            }
-        }
-        return null;
+        int index = indexOf(key);
+        return index == NO_INDEX ? null : values[index];
     }
 
-    private boolean keysAreEqual(K key, K key2) {
-        return (key == null && key2 == null) || (key != null && key.equals(key2));
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return NO_INDEX;
     }
 
     @Override
     public int size() {
-        return count;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("keys:[");
-        for (int i = 0; i < count; i++) {
-            sb.append(keys[i]);
-            if (i < count - 1) {
-                sb.append(", ");
-            }
-        }
-        sb.append("], values[");
-        for (int i = 0; i < count; i++) {
-            sb.append(values[i]);
-            if (i < count - 1) {
-                sb.append(", ");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
+        return size;
     }
 }
