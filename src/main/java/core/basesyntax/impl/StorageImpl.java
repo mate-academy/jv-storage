@@ -3,10 +3,11 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int DEFAULT_CAPACITY = 10;
     // Initialize an array of fixed size (10 elements) to store key-value pairs of type Entry<K, V>.
-    private Entry<K, V>[] entries = (Entry<K, V>[]) new Entry[10];
+    private Entry<K, V>[] entries = (Entry<K, V>[]) new Entry[DEFAULT_CAPACITY];
     // The (Entry<K, V>[]) cast is used to remove type incompatibility warnings.
-    private int size = 0;
+    private int size;
 
     @Override
     public void put(K key, V value) {
@@ -39,14 +40,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean keyComparison(K key1, K key2) {
-        if (key1 == key2) {
-            return true;
-        }
-        if (key1 == null || key2 == null) {
-            return false;
-        }
-        return key1.equals(key2);
+    private boolean keyComparison(K keyA, K keyB) {
+        return keyA == keyB || (keyA != null && keyA.equals(keyB));
     }
 
     private class Entry<K, E> {
