@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     // Initialize an array of fixed size (10 elements) to store key-value pairs of type Entry<K, V>.
