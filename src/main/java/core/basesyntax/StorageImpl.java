@@ -61,7 +61,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void expandCapacity() {
         int newSize = keys.length * 2;
-        keys = Arrays.copyOf(keys, newSize);
-        values = Arrays.copyOf(values, newSize);
+        K[] newKeys = (K[]) new Object[newSize];
+        V[] newValues = (V[]) new Object[newSize];
+        System.arraycopy(keys, 0, newKeys, 0, size);
+        System.arraycopy(values, 0, newValues, 0, size);
+        keys = newKeys;
+        values = newValues;
     }
 }
