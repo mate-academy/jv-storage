@@ -1,55 +1,38 @@
 package core.basesyntax;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int INITIAL_CAPACITY = 10;
-    private Object[] keys = new Object[INITIAL_CAPACITY];
-    private Object[] values = new Object[INITIAL_CAPACITY];
+    private static final int MAX_SIZE = 10;
+    private K[] keys;
+    private V[] values;
     private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
+        int index = indexOf(key);
+        if (index >= 0) {
+            values[index] = value;
         } else {
-            for (int i = 0; i < size; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
+            if (size >= keys.length) {
+                expandCapacity();
             }
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
-
-        if (size >= keys.length) {
-            expandCapacity();
-        }
-
-        keys[size] = key;
-        values[size] = value;
-        size++;
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return (V) values[i];
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (Objects.equals(keys[i], key)) {
-                    return (V) values[i];
-                }
-            }
+        int index = indexOf(key);
+        if (index >= 0) {
+            return values[index];
         }
         return null;
     }
@@ -57,6 +40,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private int indexOf(K key) {
+        if (key == null) {
+            for (int i = 0; i < size; i++) {
+                if (keys[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (key.equals(keys[i])) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     private void expandCapacity() {
