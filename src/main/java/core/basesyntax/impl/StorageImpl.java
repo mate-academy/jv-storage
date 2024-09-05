@@ -4,45 +4,46 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_CAPACITY = 10;
-    private int putCounter;
-    private Object[] keyData;
-    private Object[] valueData;
+    private int size;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        valueData = new Object[STORAGE_CAPACITY];
-        keyData = new Object[STORAGE_CAPACITY];
-        putCounter = 0;
+        keys = (K[]) new Object[STORAGE_CAPACITY];
+        values = (V[]) new Object[STORAGE_CAPACITY];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < putCounter; i++) {
-            if (key == keyData[i]
-                    || (key != null
-                    && (key == keyData[i] || key.equals(keyData[i])))) {
-                valueData[i] = value;
-                return;
-            }
+        if (indexOf(key) != -1) {
+            values[indexOf(key)] = value;
+            return;
         }
-        keyData[putCounter] = key;
-        valueData[putCounter] = value;
-        putCounter++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < STORAGE_CAPACITY; i++) {
-            if (key == keyData[i]
-                    || (key != null
-                    && (key == keyData[i] || key.equals(keyData[i])))) {
-                return (V) valueData[i];
-            }
+        if (indexOf(key) == -1) {
+            return null;
         }
-        return null;
+        return values[indexOf(key)];
     }
 
     @Override
     public int size() {
-        return putCounter;
+        return size;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
