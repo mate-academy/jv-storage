@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[STORAGE_CAPACITY];
         values = (V[]) new Object[STORAGE_CAPACITY];
-        size = 0;
     }
 
     @Override
