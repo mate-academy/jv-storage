@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = indexOf(key);
         if (index != -1) {
-            values[indexOf(key)] = value;
+            values[index] = value;
             return;
         }
         keys[size] = key;
@@ -28,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = indexOf(key);
-        return index == -1 ? null : values[indexOf(key)];
+        return index == -1 ? null : values[index];
     }
 
     @Override
