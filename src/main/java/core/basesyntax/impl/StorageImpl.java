@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Objects;
@@ -62,7 +61,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int getKeyIndex(K key) {
         for (int i = 0; i < this.keys.length; i += 1) {
             if (keys[i] != null
-                    &&  keys[i] == (key != null ? key.hashCode() : 0)
+                    && keys[i] == (key != null ? key.hashCode() : 0)
             ) {
                 return i;
             }
