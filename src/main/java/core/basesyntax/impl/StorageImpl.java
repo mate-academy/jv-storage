@@ -14,14 +14,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         @Override
         public boolean equals(Object obj) {
-          if (this == obj) {
-              return true;
-          }
-          if (obj == null || getClass() != obj.getClass()) {
-              return false;
-          }
-          Entry<?, ?> current = (Entry<?, ?>)obj;
-          return (key == null && current.key == null) || (key != null && key.equals(current.key));
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || getClass() != obj.getClass()) {
+                return false;
+            }
+            Entry<?, ?> current = (Entry<?, ?>)obj;
+            return (key == null && current.key == null)
+                        || (key != null && key.equals(current.key));
         }
 
         @Override
@@ -33,8 +34,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
+    private static final int MAX_ARRAY_SIZE = 10;
     private int entrySize = 0;
-    private Entry[] box = new Entry[10];
+    private Entry[] box = new Entry[MAX_ARRAY_SIZE];
 
     @Override
     public void put(K key, V value) {
@@ -53,7 +55,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < entrySize; i++) {
             if ((box[i] != null && box[i].key == null && key == null)
-            || (box[i] != null && key != null && key.equals(box[i].key))) {
+                    || (box[i] != null && key != null && key.equals(box[i].key))) {
                 return (V) box[i].value;
             }
         }
