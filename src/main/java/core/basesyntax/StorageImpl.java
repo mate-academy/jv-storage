@@ -1,14 +1,16 @@
 package core.basesyntax;
 
+import java.util.Arrays;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 10;
+    private static final int INITIAL_CAPACITY = 10;
     private K[] keys;
     private V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_SIZE];
-        values = (V[]) new Object[MAX_SIZE];
+        keys = (K[]) new Object[INITIAL_CAPACITY];
+        values = (V[]) new Object[INITIAL_CAPACITY];
     }
 
     @Override
@@ -59,11 +61,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void expandCapacity() {
         int newSize = keys.length * 2;
-        K[] newKeys = (K[]) new Object[newSize];
-        V[] newValues = (V[]) new Object[newSize];
-        System.arraycopy(keys, 0, newKeys, 0, size);
-        System.arraycopy(values, 0, newValues, 0, size);
-        keys = newKeys;
-        values = newValues;
+        keys = Arrays.copyOf(keys, newSize);
+        values = Arrays.copyOf(values, newSize);
     }
 }
