@@ -36,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private static class Entry<K, V> {
-        private K key;
+        private final K key;
         private V value;
 
         public Entry(K key, V value) {
