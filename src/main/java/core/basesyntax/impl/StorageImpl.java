@@ -4,27 +4,27 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_SIZE = 10;
-    private int entrySize;
-    private Entry[] box = new Entry[MAX_ARRAY_SIZE];
+    private int size;
+    private Entry<K, V>[] box = new Entry[MAX_ARRAY_SIZE];
 
     @Override
     public void put(K key, V value) {
-        Entry entry = new Entry(key, value);
-        for (int i = 0; i < entrySize; i++) {
+        Entry<K, V> entry = new Entry(key, value);
+        for (int i = 0; i < size; i++) {
             if (box[i].equals(entry)) {
                 box[i].value = value;
                 return;
             }
         }
-        box[entrySize] = entry;
-        entrySize++;
+        box[size] = entry;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < entrySize; i++) {
+        for (int i = 0; i < size; i++) {
             if (box[i].key == key || key != null && key.equals(box[i].key)) {
-                return (V) box[i].value;
+                return box[i].value;
             }
         }
         return null;
@@ -32,10 +32,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return entrySize;
+        return size;
     }
 
-    private class Entry<K, V> {
+    private static class Entry<K, V> {
         private K key;
         private V value;
 
