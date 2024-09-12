@@ -4,36 +4,36 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAYS_LENGTH = 10;
-    private K[] arrayOfKeys;
-    private V[] arrayOfValues;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        arrayOfKeys = (K[]) new Object[ARRAYS_LENGTH];
-        arrayOfValues = (V[]) new Object[ARRAYS_LENGTH];
+        keys = (K[]) new Object[ARRAYS_LENGTH];
+        values = (V[]) new Object[ARRAYS_LENGTH];
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key == arrayOfKeys[i] || (key != null && key.equals(arrayOfKeys[i]))) {
-                if (arrayOfValues[i] == null) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                if (values[i] == null) {
                     size++;
                 }
-                arrayOfValues[i] = value;
+                values[i] = value;
                 return;
             }
         }
-        arrayOfKeys[size] = key;
-        arrayOfValues[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == arrayOfKeys[i] || (key != null && key.equals(arrayOfKeys[i]))) {
-                return arrayOfValues[i];
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return values[i];
             }
         }
         return null;
