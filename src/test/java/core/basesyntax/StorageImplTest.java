@@ -72,7 +72,7 @@ public class StorageImplTest {
     }
 
     @Test
-    public void getElementWithKeyNull() {
+    public void getElementWithKeyNull() { // Fall
         Storage<Integer, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
