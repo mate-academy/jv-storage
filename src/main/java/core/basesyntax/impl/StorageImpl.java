@@ -23,28 +23,26 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < originalKeys.length; i++) {
             if (key == originalKeys[i]) {
-                this.value = value;
-                count++;
+                newValues = (V[]) new Object[originalValues.length + 1];
+                for (int j = 0; j < originalValues.length; j++) {
+                    newValues[j] = originalValues[j];
+                }
             } else {
-                this.key = key;
-                this.value = value;
-                count++;
+                newKeys = (K[]) new Object[originalKeys.length + 1];
+
+                for (int c = 0; c < originalKeys.length; c++) {
+                    newKeys[c] = originalKeys[c];
+                }
+                newKeys[originalKeys.length] = key;
+
+                newValues = (V[]) new Object[originalValues.length + 1];
+
+                for (int j = 0; j < originalValues.length; j++) {
+                    newValues[j] = originalValues[j];
+                }
+                newValues[originalValues.length] = value;
             }
         }
-
-        newKeys = (K[]) new Object[originalKeys.length + 1];
-
-        for (int i = 0; i < originalKeys.length; i++) {
-            newKeys[i] = originalKeys[i];
-        }
-        newKeys[originalKeys.length] = key;
-
-        newValues = (V[]) new Object[originalValues.length + 1];
-
-        for (int i = 0; i < originalValues.length; i++) {
-            newValues[i] = originalValues[i];
-        }
-        newValues[originalValues.length] = value;
     }
 
     @Override
@@ -52,16 +50,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         V value2 = null;
         for (int i = 0; i < newKeys.length; i++) {
             if(Objects.equals(newKeys[i], key)) {
-                value2 = value;
+                value2 = newValues[i];
             } else {
+                value2 = null;
                 System.out.println("There is no such key");
             }
         }
-        return value;
+        return value2;
     }
 
     @Override
     public int size() {
-        return count;
+        return newValues.length;
     }
 }
