@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = indexOf(key);
         if (index != -1) {
-            values[index] = value; // Replace existing value
+            values[index] = value;
         } else {
             if (size < MAX_CAPACITY) {
                 keys[size] = key;
@@ -46,10 +46,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
         }
-        return -1; // Return -1 if key is not found
+        return -1;
     }
 }
