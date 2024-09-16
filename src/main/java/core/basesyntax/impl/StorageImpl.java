@@ -4,40 +4,37 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private final Object[] keys;
-    private final Object[] values;
+    private final K[] keys;
+    private final V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = new Object[MAX_CAPACITY];
-        values = new Object[MAX_CAPACITY];
+        keys = (K[]) new Object[MAX_CAPACITY];
+        values = (V[]) new Object[MAX_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (keysAreEqual((K) keys[i], key)) {
-                values[i] = value;
-                return;
-            }
-        }
-
-        if (size < MAX_CAPACITY) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        int index = indexOf(key);
+        if (index != -1) {
+            values[index] = value; // Replace existing value
         } else {
-            throw new ArrayIndexOutOfBoundsException("Storage capacity exceeded");
+            if (size < MAX_CAPACITY) {
+                keys[size] = key;
+                values[size] = value;
+                size++;
+            } else {
+                throw new ArrayIndexOutOfBoundsException("Storage capacity exceeded");
+            }
         }
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keysAreEqual((K) keys[i], key)) {
-                return (V) values[i];
-            }
+        int index = indexOf(key);
+        if (index != -1) {
+            return values[index];
         }
         return null;
     }
@@ -47,7 +44,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean keysAreEqual(K key1, K key2) {
-        return key1 == key2 || (key1 != null && key1.equals(key2));
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
+                return i;
+            }
+        }
+        return -1; // Return -1 if key is not found
     }
 }
