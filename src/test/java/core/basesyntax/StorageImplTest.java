@@ -101,6 +101,23 @@ public class StorageImplTest {
     }
 
     @Test
+    public void replaceElementByNull() {
+        Storage<Integer, String> storage = new StorageImpl<>();
+        String elementOne = "Element 1";
+        String elementTwo = "Element 2";
+        String elementTree = "Element 3";
+        String elementFour = "Element 4";
+        storage.put(1, elementOne);
+        storage.put(null, elementTwo);
+        storage.put(3, elementTree);
+        storage.put(4, elementFour);
+        storage.put(null, elementFour);
+
+        Assert.assertEquals("Test failed! Method get(key) should return value",
+                elementFour, storage.get(null));
+    }
+
+    @Test
     public void getElementWhenKeyIsObject() {
         Storage<Cat, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
