@@ -11,14 +11,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = new Object[MAX_CAPACITY];
         values = new Object[MAX_CAPACITY];
-        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((keys[i] == null && key == null)
-                    || (keys[i] != null && keys[i].equals(key))) {
+            if (keysAreEqual((K) keys[i], key)) {
                 values[i] = value;
                 return;
             }
@@ -37,8 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (((keys[i] == null && key == null)
-                    || (keys[i] != null && keys[i].equals(key)))) {
+            if (keysAreEqual((K) keys[i], key)) {
                 return (V) values[i];
             }
         }
@@ -48,5 +45,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean keysAreEqual(K key1, K key2) {
+        return key1 == key2 || (key1 != null && key1.equals(key2));
     }
 }
