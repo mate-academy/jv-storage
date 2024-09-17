@@ -2,63 +2,36 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.Objects;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
     @SuppressWarnings("unchecked")
-    private K[] originalKeys = (K[]) new Object[1];
+    private K[] keys = (K[]) new Object[1];
     @SuppressWarnings("unchecked")
-    private K[] newKeys = (K[]) new Object[0];
-
-    @SuppressWarnings("unchecked")
-    private V[] originalValues = (V[]) new Object[1];
-
-    @SuppressWarnings("unchecked")
-    private V[] newValues = (V[]) new Object[0];
-    private int count = 0;
+    private V[] values = (V[]) new Object[1];
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < count; i++) {
-            if (key == originalKeys[i]) {
-                originalValues[i] = value;
-                break;
+        for (int i = 0; i < size; i++) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+                values[i] = value;
+                return;
             }
         }
-
-        newKeys = (K[]) new Object[newKeys.length + 1];
-        for (int c = 0; c < originalKeys.length; c++) {
-            newKeys[c] = originalKeys[c];
+        if (size == keys.length) {
+            resize();
         }
-        newKeys[newKeys.length - 1] = key;
-
-        originalKeys = (K[]) new Object[newKeys.length];
-        for (int c = 0; c < originalKeys.length; c++) {
-            originalKeys[c] = newKeys[c];
-        }
-
-        newValues = (V[]) new Object[newValues.length + 1];
-
-        for (int j = 0; j < originalValues.length; j++) {
-            newValues[j] = originalValues[j];
-        }
-        newValues[newValues.length - 1] = value;
-
-        originalValues = (V[]) new Object[newValues.length];
-
-        for (int j = 0; j < originalValues.length; j++) {
-            originalValues[j] = newValues[j];
-        }
-        count++;
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < newKeys.length; i++) {
-            if (Objects.equals(newKeys[i], key)) {
-                return newValues[i];
+        for (int i = 0; i < keys.length; i++) {
+            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+                return values[i];
             }
         }
         System.out.println("There is no such key");
@@ -67,6 +40,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return newValues.length;
+        return size;
+    }
+
+    private void resize() {
+        @SuppressWarnings("unchecked")
+        K[] newKeys = (K[]) new Object[keys.length + 1];
+        @SuppressWarnings("unchecked")
+        V[] newValues = (V[]) new Object[values.length + 1];
+        System.arraycopy(keys, 0, newKeys, 0, size);
+        System.arraycopy(values, 0, newValues, 0, size);
+        keys = newKeys;
+        values = newValues;
     }
 }
