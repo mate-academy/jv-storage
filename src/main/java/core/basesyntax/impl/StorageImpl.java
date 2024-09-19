@@ -3,35 +3,31 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_NUMBER_OF_ELEMENTS = 10;
+    private static final int STORAGE_CAPACITY = 10;
     private int size;
-    private K[] keysArray;
-    private V[] valuesArray;
+    private K[] keys;
+    private V[] values;
 
     public StorageImpl() {
-        this.keysArray = (K[]) new Object[MAX_NUMBER_OF_ELEMENTS];
-        this.valuesArray = (V[]) new Object[MAX_NUMBER_OF_ELEMENTS];
+        this.keys = (K[]) new Object[STORAGE_CAPACITY];
+        this.values = (V[]) new Object[STORAGE_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (key == keysArray[i] || (key != null && key.equals(keysArray[i]))) {
-                valuesArray[i] = value;
-                return;
-            }
+        if (isStorageContainsKey(key)) {
+            values[indexOf(key)] = value;
+            return;
         }
-        keysArray[size] = key;
-        valuesArray[size] = value;
+        keys[size] = key;
+        values[size] = value;
         size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == keysArray[i] || (key != null && key.equals(keysArray[i]))) {
-                return valuesArray[i];
-            }
+        if (isStorageContainsKey(key)) {
+            return values[indexOf(key)];
         }
         return null;
     }
@@ -39,5 +35,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean isStorageContainsKey(K key) {
+        return indexOf(key) >= 0;
     }
 }
