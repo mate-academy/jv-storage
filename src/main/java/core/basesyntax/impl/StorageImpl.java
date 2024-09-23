@@ -31,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -44,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         } catch (ArrayIndexOutOfBoundsException e) {
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
         return null;
     }
