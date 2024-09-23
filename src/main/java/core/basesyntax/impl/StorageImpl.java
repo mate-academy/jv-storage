@@ -15,28 +15,36 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (keys[i] == key || (keys[i] == null && values[i] == null)) {
-                keys[i] = key;
-                if (values[i] == null) {
-                    size++;
+        try {
+            for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
+                if (key == null && keys[i] == key || (keys[i] == null && values[i] == null)) {
+                    keys[i] = key;
+                    if (values[i] == null) {
+                        size++;
+                    }
+                    values[i] = value;
+                    return;
                 }
-                values[i] = value;
-                return;
+                if (keys[i] != null && keys[i].equals(key)) {
+                    values[i] = value;
+                    return;
+                }
             }
-            if (keys[i] != null && keys[i].equals(key)) {
-                values[i] = value;
-                return;
-            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw  new RuntimeException(e);
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < MAX_ITEMS_NUMBER; i++) {
-            if (keys[i] != null && keys[i].equals(key) || key == keys[i]) {
-                return values[i];
+        try {
+            for (int i = 0; i < size; i++) {
+                if (keys[i] != null && keys[i].equals(key) || key == keys[i]) {
+                    return values[i];
+                }
             }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw  new RuntimeException(e);
         }
         return null;
     }
