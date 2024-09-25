@@ -1,7 +1,7 @@
 package core.basesyntax.impl;
 
 public class Pair<K, V> {
-    private K key;
+    private final K key;
     private V value;
 
     public Pair(K key, V value) {
@@ -17,18 +17,8 @@ public class Pair<K, V> {
         return value;
     }
 
-    public void setKey(K key) {
-        this.key = key;
-    }
-
     public void setValue(V value) {
         this.value = value;
-    }
-
-    @Override
-    public int hashCode() {
-        return (key == null ? 0 : key.hashCode() << 16)
-                & (value == null ? 0 : value.hashCode());
     }
 
     @Override

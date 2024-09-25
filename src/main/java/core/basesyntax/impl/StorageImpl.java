@@ -4,42 +4,39 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_NUMBER_ELEMENTS_IN_STORAGE = 10;
-    private int index = 0;
+    private int size;
     private final Pair<K, V>[] pairStorage = new Pair[MAXIMUM_NUMBER_ELEMENTS_IN_STORAGE];
 
     @Override
     public void put(K key, V value) {
         boolean flag = true;
 
-        for (int i = 1; i <= index; i++) {
+        for (int i = 0; i < size; i++) {
 
-            if (index > 0 && pairStorage[i - 1].getKey() == null && key == null
-                    || pairStorage[i - 1].getKey() != null
-                    && pairStorage[i - 1].getKey().equals(key)) {
-                pairStorage[i - 1].setValue(value);
+            if (pairStorage[i].getKey() == null && key == null
+                    || size > 0 && pairStorage[i].getKey() != null
+                    && pairStorage[i].getKey().equals(key)) {
+                pairStorage[i].setValue(value);
                 flag = false;
             }
         }
 
         if (flag) {
-            pairStorage[index] = new Pair<>(key, value);
-            index++;
+            pairStorage[size] = new Pair<>(key, value);
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> storage: pairStorage) {
-            if (storage == null) {
-                return null;
+        for (int i = 0; i < size; i++) {
+            
+            if (pairStorage[i].getKey() == null && key == null) {
+                return pairStorage[i].getValue();
             }
 
-            if (storage.getKey() == null && key == null) {
-                return storage.getValue();
-            }
-
-            if (storage.getKey() != null && storage.getKey().equals(key)) {
-                return storage.getValue();
+            if (pairStorage[i].getKey() != null && pairStorage[i].getKey().equals(key)) {
+                return pairStorage[i].getValue();
             }
         }
         return null;
@@ -47,7 +44,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return index;
+        return size;
     }
 }
 
