@@ -5,7 +5,11 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAXIMUM_NUMBER_ELEMENTS_IN_STORAGE = 10;
     private int size;
-    private final Pair<K, V>[] pairStorage = new Pair[MAXIMUM_NUMBER_ELEMENTS_IN_STORAGE];
+    private final Pair<K, V>[] pairStorage;
+
+    public StorageImpl() {
+        this.pairStorage = new Pair[MAXIMUM_NUMBER_ELEMENTS_IN_STORAGE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -13,9 +17,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         for (int i = 0; i < size; i++) {
 
-            if (pairStorage[i].getKey() == null && key == null
-                    || size > 0 && pairStorage[i].getKey() != null
-                    && pairStorage[i].getKey().equals(key)) {
+            if (getKeyOfPair(i) == null && key == null
+                    || getKeyOfPair(i) != null
+                    && getKeyOfPair(i).equals(key)) {
                 pairStorage[i].setValue(value);
                 flag = false;
             }
@@ -27,15 +31,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
+    private K getKeyOfPair(int i) {
+        return pairStorage[i].getKey();
+    }
+
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             
-            if (pairStorage[i].getKey() == null && key == null) {
+            if (getKeyOfPair(i) == null && key == null) {
                 return pairStorage[i].getValue();
             }
 
-            if (pairStorage[i].getKey() != null && pairStorage[i].getKey().equals(key)) {
+            if (getKeyOfPair(i) != null && getKeyOfPair(i).equals(key)) {
                 return pairStorage[i].getValue();
             }
         }
