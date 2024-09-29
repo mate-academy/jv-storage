@@ -48,8 +48,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         K[] newKeys = (K[]) new Object[keys.length + 1];
         @SuppressWarnings("unchecked")
         V[] newValues = (V[]) new Object[values.length + 1];
-        System.arraycopy(keys, 0, newKeys, 0, size);
-        System.arraycopy(values, 0, newValues, 0, size);
+        System.arraycopy(keys, 0, newKeys, 0, size());
+        System.arraycopy(values, 0, newValues, 0, size());
         keys = newKeys;
         values = newValues;
     }
