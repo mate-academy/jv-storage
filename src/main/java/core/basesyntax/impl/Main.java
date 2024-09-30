@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         Integer[] keys = new Integer[10];
         String[] values = new String[10];
-        Storage<Integer, String> storage = new StorageImpl<>(keys, values);
+        Storage<Integer, String> storage = new StorageImpl<>();
         String elementOne = "One";
         String elementTwo = "Two";
         String elementThree = "Three";

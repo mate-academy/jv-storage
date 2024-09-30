@@ -8,13 +8,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values;
     private int size;
 
-    public StorageImpl(K[] keys, V[] values) {
-        this.keys = keys;
-        this.values = values;
-        @SuppressWarnings("unchecked")
-        K[] keys2 = (K[]) new Object[MAX_SIZE];
-        @SuppressWarnings("unchecked")
-        V[] values2 = (V[]) new Object[MAX_SIZE];
+    public StorageImpl() {
+        this.keys = (K[]) new Object[MAX_SIZE];
+        this.values = (V[]) new Object[MAX_SIZE];
         size = 0;
     }
 
