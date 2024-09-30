@@ -49,7 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-
     private void resize() {
         @SuppressWarnings("unchecked")
         K[] newKeys = (K[]) new Object[keys.length + 1];
