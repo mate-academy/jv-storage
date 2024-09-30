@@ -4,7 +4,9 @@ import core.basesyntax.Storage;
 
 public class Main {
     public static void main(String[] args) {
-        Storage<Integer, String> storage = new StorageImpl<>();
+        Integer[] keys = new Integer[10];
+        String[] values = new String[10];
+        Storage<Integer, String> storage = new StorageImpl<>(keys, values);
         String elementOne = "One";
         String elementTwo = "Two";
         String elementThree = "Three";

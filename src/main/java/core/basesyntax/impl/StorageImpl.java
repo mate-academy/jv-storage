@@ -3,18 +3,25 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K key;
-    private V value;
-    @SuppressWarnings("unchecked")
-    private K[] keys = (K[]) new Object[1];
-    @SuppressWarnings("unchecked")
-    private V[] values = (V[]) new Object[1];
-    private int size = 0;
+    private static final int MAX_SIZE = 10;
+    private K[] keys;
+    private V[] values;
+    private int size;
+
+    public StorageImpl(K[] keys, V[] values) {
+        this.keys = keys;
+        this.values = values;
+        @SuppressWarnings("unchecked")
+        K[] keys2 = (K[]) new Object[1];
+        @SuppressWarnings("unchecked")
+        V[] values2 = (V[]) new Object[1];
+        size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 values[i] = value;
                 return;
             }
@@ -30,11 +37,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < keys.length; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return values[i];
             }
         }
-        System.out.println("There is no such key");
         return null;
     }
 
@@ -42,6 +48,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
+
 
     private void resize() {
         @SuppressWarnings("unchecked")
