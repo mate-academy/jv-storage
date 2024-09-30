@@ -12,9 +12,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.keys = keys;
         this.values = values;
         @SuppressWarnings("unchecked")
-        K[] keys2 = (K[]) new Object[1];
+        K[] keys2 = (K[]) new Object[MAX_SIZE];
         @SuppressWarnings("unchecked")
-        V[] values2 = (V[]) new Object[1];
+        V[] values2 = (V[]) new Object[MAX_SIZE];
         size = 0;
     }
 
