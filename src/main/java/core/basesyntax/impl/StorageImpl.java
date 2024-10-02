@@ -7,41 +7,60 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keys;
     private final V[] values;
 
-    private StorageImpl(K[] keys,V[] values) {
-        this.keys = keys;
-        this.values = values;
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_STORAGE_ELEMENTS];
+        values = (V[]) new Object[MAX_STORAGE_ELEMENTS];
     }
 
     @Override
     public void put(K key, V value) {
-        int numberOfObjects = 0;
         int ifItWasFound = 0;
 
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < size(); i++) {
             ifItWasFound = 0;
-            if (keys[i].equals(key)) {
+            if (key != null && keys[i].equals(key)) {
                 values[i] = value;
                 ifItWasFound++;
+            } else if (key == null && key == keys[i]) {
+                values[i] = value;
             }
         }
-
         if (ifItWasFound == 0) {
-            keys[numberOfObjects] = key;
-            values[numberOfObjects] = value;
-            numberOfObjects++;
+            keys[size()] = key;
+            values[size()] = value;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i].equals(key)) {
+        for (int i = 0; i < size(); i++) {
+            if (keys[i] != null && keys[i].equals(key)) {
                 return values[i];
-            } else {throw new RuntimeException("don't find given key");
+            } else if (keys == null) {
+                if (keys[i] == key) {
+                    return values[i];
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public int size() {
-        return keys.length;
+        int sizeKeys = 0;
+        int sizeValue = 0;
+        for (K currentKey : keys) {
+            if (currentKey != null) {
+                sizeKeys++;
+            }
+        }
+
+        for (V currentKey : values) {
+            if (currentKey != null) {
+                sizeValue++;
+            }
+        }
+
+        return sizeKeys >= sizeValue ? sizeKeys : sizeValue;
     }
 }
