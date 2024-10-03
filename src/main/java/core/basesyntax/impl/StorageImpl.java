@@ -10,13 +10,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        try {
+        if (cursor <= MAX_ITEMS_NUMBER) {
             items[findIndexToPut(key)] = new Item<>(key, value);
-        } catch (IndexOutOfBoundsException e) {
+        } else {
             System.out.println("There is no space left"
                     + " in the warehouse, and the item has not been added to storage");
         }
-
     }
 
     @Override
