@@ -1,39 +1,39 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private Object[] keyObjects = new Object[10];
-    private Object[] storageObjects = new Object[10];
+    public static final int ARRAY_SIZE = 10;
+    private int resultOfNullFinder = 0;
+    private int resultOfEqualFinder = 0;
+    private Object[] keyObjects = new Object[ARRAY_SIZE];
+    private Object[] storageObjects = new Object[ARRAY_SIZE];
 
     public Object[] getKeyObjects() {
-        return keyObjects;
-    }
-
-    public void setKeyObjects(Object[] keyObjects) {
-        this.keyObjects = keyObjects;
+        return Arrays.copyOf(keyObjects, keyObjects.length);
     }
 
     public Object[] getStorageObjects() {
-        return storageObjects;
-    }
-
-    public void setStorageObjects(Object[] storageObjects) {
-        this.storageObjects = storageObjects;
+        return Arrays.copyOf(storageObjects, storageObjects.length);
     }
 
     @Override
     public void put(K key, V value) {
-        if (findElementAtNullIndex(key, keyObjects) >= 0) {
-            storageObjects[findElementAtNullIndex(key, keyObjects)] = value;
-        } else if (hasEquals(key, keyObjects) >= 0) {
-            storageObjects[hasEquals(key, keyObjects)] = value;
+        resultOfNullFinder = findElementAtNullIndex(key, keyObjects);
+        if (resultOfNullFinder >= 0) {
+            storageObjects[resultOfNullFinder] = value;
         } else {
-            for (int i = 0; i < keyObjects.length; i++) {
-                if (keyObjects[i] == null && storageObjects[i] == null) {
-                    keyObjects[i] = key;
-                    storageObjects[i] = value;
-                    break;
+            resultOfEqualFinder = hasEquals(key, keyObjects);
+            if (resultOfEqualFinder >= 0) {
+                storageObjects[resultOfEqualFinder] = value;
+            } else {
+                for (int i = 0; i < keyObjects.length; i++) {
+                    if (keyObjects[i] == null && storageObjects[i] == null) {
+                        keyObjects[i] = key;
+                        storageObjects[i] = value;
+                        break;
+                    }
                 }
             }
         }
@@ -41,23 +41,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (findElementAtNullIndex(key, keyObjects) >= 0) {
-            return (V) (storageObjects[findElementAtNullIndex(key, keyObjects)]);
-        } else if (hasEquals(key, keyObjects) >= 0) {
-            return (V) (storageObjects[hasEquals(key, keyObjects)]);
+        resultOfNullFinder = findElementAtNullIndex(key, keyObjects);
+        if (resultOfNullFinder >= 0) {
+            return (V) (storageObjects[resultOfNullFinder]);
+        } else {
+            resultOfEqualFinder = hasEquals(key, keyObjects);
+            return resultOfEqualFinder >= 0 ? (V) (storageObjects[resultOfEqualFinder]) : null;
         }
-        return null;
     }
 
     @Override
     public int size() {
         int index = 0;
         for (int i = 0; i < storageObjects.length; i++) {
-            if (keyObjects[i] == null
-                    && storageObjects[i] == null) {
+            if (keyObjects[i] == null && storageObjects[i] == null) {
                 return i;
             }
-            index = 10;
+            index = ARRAY_SIZE;
         }
         return index;
     }
