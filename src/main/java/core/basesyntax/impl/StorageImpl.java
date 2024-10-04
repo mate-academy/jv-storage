@@ -1,17 +1,19 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private K[] keys = (K[]) new Object[10];
-    private V[] values = (V[]) new Object[10];
+    public static final int INITIAL_SIZE = 10;
+    public static final int LAST_INDEX_NUMBER = 9;
+
+    private K[] keys = (K[]) new Object[INITIAL_SIZE];
+    private V[] values = (V[]) new Object[INITIAL_SIZE];
     private int index = 0;
 
     @Override
     public void put(K key, V value) {
-        if (index > 9) {
+        if (index > LAST_INDEX_NUMBER) {
             throw new RuntimeException("Too many!");
         }
         for (int i = 0; i < keys.length; i++) {
@@ -52,27 +54,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return index;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object == null || getClass() != object.getClass()) {
-            return false;
-        }
-
-        StorageImpl<?, ?> storage = (StorageImpl<?, ?>) object;
-        return index == storage.index && Arrays.equals(keys, storage.keys)
-            && Arrays.equals(values, storage.values);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = Arrays.hashCode(keys);
-        result = 31 * result + Arrays.hashCode(values);
-        result = 31 * result + index;
-        return result;
     }
 }
