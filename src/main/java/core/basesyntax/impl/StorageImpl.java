@@ -5,8 +5,6 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int ARRAY_SIZE = 10;
-    private int resultOfNullFinder = 0;
-    private int resultOfEqualFinder = 0;
     private Object[] keyObjects = new Object[ARRAY_SIZE];
     private Object[] storageObjects = new Object[ARRAY_SIZE];
 
@@ -20,11 +18,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        resultOfNullFinder = findElementAtNullIndex(key, keyObjects);
+        int resultOfNullFinder = 0;
+        int resultOfEqualFinder = 0;
+        resultOfNullFinder = findFirstNullIndex(key, keyObjects);
         if (resultOfNullFinder >= 0) {
             storageObjects[resultOfNullFinder] = value;
         } else {
-            resultOfEqualFinder = hasEquals(key, keyObjects);
+            resultOfEqualFinder = findIndexOfKey(key, keyObjects);
             if (resultOfEqualFinder >= 0) {
                 storageObjects[resultOfEqualFinder] = value;
             } else {
@@ -41,11 +41,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        resultOfNullFinder = findElementAtNullIndex(key, keyObjects);
+        int resultOfNullFinder = 0;
+        int resultOfEqualFinder = 0;
+        resultOfNullFinder = findFirstNullIndex(key, keyObjects);
         if (resultOfNullFinder >= 0) {
             return (V) (storageObjects[resultOfNullFinder]);
         } else {
-            resultOfEqualFinder = hasEquals(key, keyObjects);
+            resultOfEqualFinder = findIndexOfKey(key, keyObjects);
             return resultOfEqualFinder >= 0 ? (V) (storageObjects[resultOfEqualFinder]) : null;
         }
     }
@@ -62,7 +64,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return index;
     }
 
-    private int findElementAtNullIndex(K key, Object[] objects) {
+    private int findFirstNullIndex(K key, Object[] objects) {
         if (key == null) {
             for (int i = 0; i < objects.length; i++) {
                 if (objects[i] == null) {
@@ -73,7 +75,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 
-    private int hasEquals(K key, Object [] objects) {
+    private int findIndexOfKey(K key, Object [] objects) {
         for (int i = 0; i < objects.length; i++) {
             if (key.equals((objects[i]))) {
                 return i;
