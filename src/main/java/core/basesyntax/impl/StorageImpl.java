@@ -30,7 +30,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keyObjects[resultOfIndexFinder] = key;
             storageObjects[resultOfIndexFinder] = value;
         }
-
     }
 
     @Override
