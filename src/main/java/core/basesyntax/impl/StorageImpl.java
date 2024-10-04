@@ -5,7 +5,6 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     public static final int INITIAL_SIZE = 10;
-    public static final int LAST_INDEX_NUMBER = 9;
 
     private K[] keys = (K[]) new Object[INITIAL_SIZE];
     private V[] values = (V[]) new Object[INITIAL_SIZE];
@@ -13,7 +12,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (index > LAST_INDEX_NUMBER) {
+        if (index > INITIAL_SIZE - 1) {
             throw new RuntimeException("Too many!");
         }
         for (int i = 0; i < keys.length; i++) {
