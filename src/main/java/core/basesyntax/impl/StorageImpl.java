@@ -10,7 +10,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (cursor <= MAX_ITEMS_NUMBER) {
+        if (cursor < MAX_ITEMS_NUMBER) {
             items[findIndexToPut(key)] = new Item<>(key, value);
         } else {
             System.out.println("There is no space left"
@@ -21,10 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (Item<K, V> item : items) {
-            if (item != null && key == null && item.getKey() == null) {
-                return item.getValue();
-            }
-            if (item != null && item.getKey() != null && item.getKey().equals(key)) {
+            if (!isObjectsEquals(item, null) && isObjectsEquals(item.getKey(), key)) {
                 return item.getValue();
             }
         }
@@ -38,16 +35,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndexToPut(K key) {
         for (int i = 0; i < items.length; i++) {
-            if (items[i] == null) {
-                return cursor++;
-            }
-            if (items[i] != null && items[i].getKey() == null && key == null) {
-                return i;
-            }
-            if (items[i] != null && items[i].getKey() != null && items[i].getKey().equals(key)) {
+            if (!isObjectsEquals(items[i], null) && isObjectsEquals(items[i].getKey(), key)) {
                 return i;
             }
         }
         return cursor++;
+    }
+
+    private boolean isObjectsEquals(Object object1, Object object2) {
+        return (object1 == object2) || (object1 != null && object1.equals(object2));
     }
 }
