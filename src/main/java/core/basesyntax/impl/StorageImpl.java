@@ -17,49 +17,66 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (key == null) {
-            for (int i = 0; i < currentSize; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-            if (currentSize < MAX_SIZE) {
-                keys[currentSize] = null;
-                values[currentSize] = value;
-                currentSize++;
-            } else {
-                throw new RuntimeException("Storage is full");
-            }
+            putNullKey(value);
         } else {
-            for (int i = 0; i < currentSize; i++) {
-                if (key.equals(keys[i])) {
-                    values[i] = value;
-                    return;
-                }
+            putNonNullKey(key, value);
+        }
+    }
+
+    private void putNullKey(V value) {
+        for (int i = 0; i < currentSize; i++) {
+            if (keys[i] == null) {
+                values[i] = value;
+                return;
             }
-            if (currentSize < MAX_SIZE) {
-                keys[currentSize] = key;
-                values[currentSize] = value;
-                currentSize++;
-            } else {
-                throw new RuntimeException("Storage is full");
+        }
+        if (currentSize < MAX_SIZE) {
+            keys[currentSize] = null;
+            values[currentSize] = value;
+            currentSize++;
+        } else {
+            throw new RuntimeException("Storage is full");
+        }
+    }
+
+    private void putNonNullKey(K key, V value) {
+        for (int i = 0; i < currentSize; i++) {
+            if (key.equals(keys[i])) {
+                values[i] = value;
+                return;
             }
+        }
+        if (currentSize < MAX_SIZE) {
+            keys[currentSize] = key;
+            values[currentSize] = value;
+            currentSize++;
+        } else {
+            throw new RuntimeException("Storage is full");
         }
     }
 
     @Override
     public V get(K key) {
         if (key == null) {
-            for (int i = 0; i < currentSize; i++) {
-                if (keys[i] == null) {
-                    return values[i];
-                }
-            }
+            return getNullKey();
         } else {
-            for (int i = 0; i < currentSize; i++) {
-                if (key.equals(keys[i])) {
-                    return values[i];
-                }
+            return getNonNullKey(key);
+        }
+    }
+
+    private V getNullKey() {
+        for (int i = 0; i < currentSize; i++) {
+            if (keys[i] == null) {
+                return values[i];
+            }
+        }
+        return null;
+    }
+
+    private V getNonNullKey(K key) {
+        for (int i = 0; i < currentSize; i++) {
+            if (key.equals(keys[i])) {
+                return values[i];
             }
         }
         return null;
