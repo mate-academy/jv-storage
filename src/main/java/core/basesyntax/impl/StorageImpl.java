@@ -42,12 +42,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int findKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
             if (key == null && keys[i] == null) {
-                return i;  // Якщо обидва ключі null, повертаємо індекс
+                return i;
             }
             if (key != null && key.equals(keys[i])) {
-                return i;  // Якщо ключі рівні, повертаємо індекс
+                return i;
             }
         }
-        return -1;  // Якщо ключ не знайдений
+        return -1;
     }
 }
