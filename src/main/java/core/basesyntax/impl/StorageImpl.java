@@ -15,30 +15,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    values[i] = value;
-                    return;
-                }
-            }
-
-            if (size < MAX_SIZE) {
-                keys[size] = null;
-                values[size] = value;
-                size++;
-            }
-            return;
-        }
-
-        for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
-                values[i] = value;
-                return;
-            }
-        }
-
-        if (size < MAX_SIZE) {
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            values[index] = value;
+        } else if (size < MAX_SIZE) {
             keys[size] = key;
             values[size] = value;
             size++;
@@ -47,19 +27,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            for (int i = 0; i < size; i++) {
-                if (keys[i] == null) {
-                    return (V) values[i];
-                }
-            }
-            return null;
-        }
-
-        for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
-                return (V) values[i];
-            }
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            return (V) values[index];
         }
         return null;
     }
@@ -67,5 +37,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && keys[i] == null) {
+                return i;  // Якщо обидва ключі null, повертаємо індекс
+            }
+            if (key != null && key.equals(keys[i])) {
+                return i;  // Якщо ключі рівні, повертаємо індекс
+            }
+        }
+        return -1;  // Якщо ключ не знайдений
     }
 }
