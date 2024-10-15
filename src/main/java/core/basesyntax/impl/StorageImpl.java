@@ -1,10 +1,11 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_DEFAULT_CAPACITY = 10;
+    private static final int INDEX_OF_ABSENT_KEY = -1;
+    private static final int ARRAY_SIZE_MULTIPLICATOR = 2;
     private int size;
     private Pair<K, V>[] items;
 
@@ -14,31 +15,25 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (areBothKeysNull(items[i].getKey(), key)) {
-                items[i].setValue(value);
-                return;
+        if (findIndexOfItemByKey(key) == INDEX_OF_ABSENT_KEY) {
+            try {
+                items[size] = new Pair<>(key, value);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                increaseStorageSize();
+                items[size] = new Pair<>(key, value);
+            } finally {
+                size++;
             }
-            if (areKeysEqual(key, items[i].getKey())) {
-                items[i] = new Pair<>(key, value);
-                return;
-            }
+        } else {
+            items[findIndexOfItemByKey(key)] = new Pair<>(key, value);
         }
-        if (size == STORAGE_DEFAULT_CAPACITY - 1) {
-            increaseStorageSize();
-        }
-        items[size] = new Pair<>(key, value);
-        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (areKeysEqual(key, items[i].getKey()) || areBothKeysNull(items[i].getKey(), key)) {
-                return items[i].getValue();
-            }
-        }
-        return null;
+        return findIndexOfItemByKey(key) == -1
+                ? null
+                : items[findIndexOfItemByKey(key)].getValue();
     }
 
     @Override
@@ -55,6 +50,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void increaseStorageSize() {
-        items = Arrays.copyOf(items, items.length * 2);
+        Pair<K, V>[] doubleSizedArray = new Pair[items.length * ARRAY_SIZE_MULTIPLICATOR];
+        System.arraycopy(items, 0, doubleSizedArray, 0, items.length);
+        items = doubleSizedArray;
+    }
+
+    private int findIndexOfItemByKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (areKeysEqual(key, items[i].getKey()) || areBothKeysNull(items[i].getKey(), key)) {
+                return i;
+            }
+        }
+        return INDEX_OF_ABSENT_KEY;
     }
 }

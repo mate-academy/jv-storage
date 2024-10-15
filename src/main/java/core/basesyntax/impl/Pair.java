@@ -17,10 +17,6 @@ public class Pair<K, V> {
         return value;
     }
 
-    public void setValue(V value) {
-        this.value = value;
-    }
-
     @Override
     public boolean equals(Object pair) {
         if (this == pair) {
