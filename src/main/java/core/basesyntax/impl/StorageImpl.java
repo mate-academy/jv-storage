@@ -15,25 +15,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (findIndexOfItemByKey(key) == INDEX_OF_ABSENT_KEY) {
-            try {
-                items[size] = new Pair<>(key, value);
-            } catch (ArrayIndexOutOfBoundsException e) {
+        int indexOfItemByKey = findIndexOfItemByKey(key);
+        if (indexOfItemByKey == INDEX_OF_ABSENT_KEY) {
+            if (size == items.length) {
                 increaseStorageSize();
-                items[size] = new Pair<>(key, value);
-            } finally {
-                size++;
             }
+            items[size] = new Pair<>(key, value);
+            size++;
         } else {
-            items[findIndexOfItemByKey(key)] = new Pair<>(key, value);
+            items[indexOfItemByKey] = new Pair<>(key, value);
         }
     }
 
     @Override
     public V get(K key) {
-        return findIndexOfItemByKey(key) == -1
+        int indexOfItemByKey = findIndexOfItemByKey(key);
+        return indexOfItemByKey == INDEX_OF_ABSENT_KEY
                 ? null
-                : items[findIndexOfItemByKey(key)].getValue();
+                : items[indexOfItemByKey].getValue();
     }
 
     @Override
@@ -41,12 +40,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean areBothKeysNull(K firstKey, K secondKey) {
-        return secondKey == null && firstKey == null;
-    }
-
     private boolean areKeysEqual(K firstKey, K secondKey) {
-        return secondKey != null && secondKey.equals(firstKey);
+        return secondKey != null && secondKey.equals(firstKey) || firstKey == secondKey;
     }
 
     private void increaseStorageSize() {
@@ -57,7 +52,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndexOfItemByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (areKeysEqual(key, items[i].getKey()) || areBothKeysNull(items[i].getKey(), key)) {
+            if (areKeysEqual(key, items[i].getKey())) {
                 return i;
             }
         }
