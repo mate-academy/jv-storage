@@ -73,7 +73,7 @@ public class StorageImplTest {
 
     @Test
     public void getElementWithKeyNull() {
-        Storage<Object, String> storage = new StorageImpl<>();
+        Storage<Integer, String> storage = new StorageImpl<>();
         String elementOne = "Element 1";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
