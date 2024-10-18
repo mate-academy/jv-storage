@@ -40,10 +40,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean areKeysEqual(K firstKey, K secondKey) {
-        return secondKey != null && secondKey.equals(firstKey) || firstKey == secondKey;
-    }
-
     private void increaseStorageSize() {
         Pair<K, V>[] doubleSizedArray = new Pair[items.length * ARRAY_SIZE_MULTIPLICATOR];
         System.arraycopy(items, 0, doubleSizedArray, 0, items.length);
@@ -52,7 +48,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int findIndexOfItemByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (areKeysEqual(key, items[i].getKey())) {
+            if (items[i].areKeysEqual(key, items[i].getKey())) {
                 return i;
             }
         }

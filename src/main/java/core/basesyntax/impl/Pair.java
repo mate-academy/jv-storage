@@ -26,13 +26,23 @@ public class Pair<K, V> {
             return false;
         }
         Pair<K,V> current = (Pair<K,V>) pair;
-        if (getKey() != null ? !getKey().equals(current.getKey()) : current.getKey() != null) {
+        if (areObjectsEqual(getKey(), current.getKey())) {
             return false;
         }
-        if (getValue() != null ? !getValue().equals(current.getValue()) :
-                current.getValue() != null) {
+        if (areObjectsEqual(getValue(), current.getValue())) {
             return false;
         }
         return true;
+    }
+
+    private boolean areObjectsEqual(Object forComparison, Object currentObject) {
+        if (forComparison != null ? !forComparison.equals(currentObject) : currentObject != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean areKeysEqual(K firstKey, K secondKey) {
+        return secondKey != null && secondKey.equals(firstKey) || firstKey == secondKey;
     }
 }
