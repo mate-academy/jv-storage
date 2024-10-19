@@ -17,9 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int indexOfItemByKey = findIndexOfItemByKey(key);
         if (indexOfItemByKey == INDEX_OF_ABSENT_KEY) {
-            if (size == items.length) {
-                increaseStorageSize();
-            }
+            increaseStorageSizeIfFilled();
             items[size] = new Pair<>(key, value);
             size++;
         } else {
@@ -30,9 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int indexOfItemByKey = findIndexOfItemByKey(key);
-        return indexOfItemByKey == INDEX_OF_ABSENT_KEY
-                ? null
-                : items[indexOfItemByKey].getValue();
+        return indexOfItemByKey == INDEX_OF_ABSENT_KEY ? null : items[indexOfItemByKey].getValue();
     }
 
     @Override
@@ -40,15 +36,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private void increaseStorageSize() {
-        Pair<K, V>[] doubleSizedArray = new Pair[items.length * ARRAY_SIZE_MULTIPLICATOR];
-        System.arraycopy(items, 0, doubleSizedArray, 0, items.length);
-        items = doubleSizedArray;
+    private void increaseStorageSizeIfFilled() {
+        if (size == items.length) {
+            Pair<K, V>[] doubleSizedArray = new Pair[items.length * ARRAY_SIZE_MULTIPLICATOR];
+            System.arraycopy(items, 0, doubleSizedArray, 0, items.length);
+            items = doubleSizedArray;
+        }
     }
 
     private int findIndexOfItemByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (items[i].areKeysEqual(key, items[i].getKey())) {
+            if (!items[i].areObjectsNotEqual(key, items[i].getKey())) {
                 return i;
             }
         }

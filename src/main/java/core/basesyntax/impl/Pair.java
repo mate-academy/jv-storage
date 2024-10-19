@@ -25,24 +25,17 @@ public class Pair<K, V> {
         if (pair == null || !pair.getClass().equals(Pair.class)) {
             return false;
         }
-        Pair<K,V> current = (Pair<K,V>) pair;
-        if (areObjectsEqual(getKey(), current.getKey())) {
+        Pair<K, V> current = (Pair<K, V>) pair;
+        if (areObjectsNotEqual(getKey(), current.getKey())) {
             return false;
         }
-        if (areObjectsEqual(getValue(), current.getValue())) {
+        if (areObjectsNotEqual(getValue(), current.getValue())) {
             return false;
         }
         return true;
     }
 
-    private boolean areObjectsEqual(Object forComparison, Object currentObject) {
-        if (forComparison != null ? !forComparison.equals(currentObject) : currentObject != null) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean areKeysEqual(K firstKey, K secondKey) {
-        return secondKey != null && secondKey.equals(firstKey) || firstKey == secondKey;
+    public boolean areObjectsNotEqual(Object forComparison, Object currentObject) {
+        return forComparison != null ? !forComparison.equals(currentObject) : currentObject != null;
     }
 }
