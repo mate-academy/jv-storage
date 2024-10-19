@@ -5,8 +5,13 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_SIZE = 10;
     private int size = 0;
-    private Object[] keys = new Object[STORAGE_SIZE];
-    private Object[] values = new Object[STORAGE_SIZE];
+    private final K[] keys;
+    private final V[] values;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[STORAGE_SIZE];
+        values = (V[]) new Object[STORAGE_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -37,8 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (index == -1) {
             return null;
         }
-        V value = (V) values[index];
-        return value;
+        return (V) values[index];
     }
 
     @Override
