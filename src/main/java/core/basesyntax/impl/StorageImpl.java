@@ -2,31 +2,45 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.*;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private HashMap<K, V> kvMap = new HashMap<>();
+    private final int ARRAY_SIZE = 10;
+    private final int KEY = 0;
+    private final int VALUE = 1;
+    private Object[][] pairArray = new Object[ARRAY_SIZE][2];
+    private int currentSize = 0;
 
     @Override
     public void put(K key, V value) {
-        kvMap.put(key, value);
+        for (int i = 0; i < currentSize; i++) {
+            if ((pairArray[i][KEY] == null && key == null)
+                    || (pairArray[i][KEY] != null && pairArray[i][KEY].equals(key))) {
+                pairArray[i][VALUE] = value;
+                return;
+            }
+        }
+
+        if (currentSize < ARRAY_SIZE) {
+            pairArray[currentSize][KEY] = key;
+            pairArray[currentSize][VALUE] = value;
+            currentSize++;
+        } else {
+            throw new RuntimeException("Storage is full");
+        }
     }
 
     @Override
     public V get(K key) {
-        return kvMap.get(key);
+        for (int i = 0; i < currentSize; i++) {
+            if ((pairArray[i][KEY] == null && key == null)
+                    || (pairArray[i][KEY] != null && pairArray[i][KEY].equals(key))) {
+                return (V) pairArray[i][VALUE];
+            }
+        }
+        return null;
     }
 
     @Override
     public int size() {
-        return kvMap.size();
-    }
-
-    public Map<K, V> getKvMap() {
-        return kvMap;
-    }
-
-    public void setKvMap(HashMap<K, V> kvMap) {
-        this.kvMap = kvMap;
+        return currentSize;
     }
 }
