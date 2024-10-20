@@ -3,9 +3,9 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final int ARRAY_SIZE = 10;
-    private final int KEY = 0;
-    private final int VALUE = 1;
+    private static final int ARRAY_SIZE = 10;
+    private static final int KEY = 0;
+    private static final int VALUE = 1;
     private Object[][] pairArray = new Object[ARRAY_SIZE][2];
     private int currentSize = 0;
 
