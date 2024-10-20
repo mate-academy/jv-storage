@@ -1,81 +1,42 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private Object[] keyObjects = new Object[ARRAY_SIZE];
-    private Object[] storageObjects = new Object[ARRAY_SIZE];
-
-    @Override
-    public Object[] getKeyObjects() {
-        return Arrays.copyOf(keyObjects, keyObjects.length);
-    }
-
-    @Override
-    public Object[] getStorageObjects() {
-        return Arrays.copyOf(storageObjects, storageObjects.length);
-    }
+    private K [] keys = (K[]) new Object[ARRAY_SIZE];
+    private V[] values = (V[]) new Object[ARRAY_SIZE];
+    private int size;
 
     @Override
     public void put(K key, V value) {
-        int resultOfIndexFinder = 0;
-        resultOfIndexFinder = findByIndex(key, keyObjects);
-
-        if (resultOfIndexFinder >= 0) {
-            storageObjects[resultOfIndexFinder] = value;
-        } else {
-            resultOfIndexFinder = defineEmptyCell();
-            keyObjects[resultOfIndexFinder] = key;
-            storageObjects[resultOfIndexFinder] = value;
+        if (size == ARRAY_SIZE) {
+            return;
+        }
+        int index = indexOf(key);
+        if (index != -1) {
+            values[index] = value;
+        } else if (index == -1) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        int resultOfIndexFinder = 0;
-        resultOfIndexFinder = findByIndex(key, keyObjects);
-        return resultOfIndexFinder >= 0 ? (V) (storageObjects[resultOfIndexFinder]) : null;
+        int index = indexOf(key);
+        return index == -1 ? null : values[index];
     }
 
     @Override
     public int size() {
-        int index = 0;
-        for (int i = 0; i < storageObjects.length; i++) {
-            if (keyObjects[i] == null && storageObjects[i] == null) {
-                return i;
-            }
-            index = ARRAY_SIZE;
-        }
-        return index;
+        return size;
     }
 
-    private int findByIndex(K key, Object[] objects) {
-        int index = 0;
-        if (key == null) {
-            for (int i = 0; i < objects.length; i++) {
-                if (objects[i] == null) {
-                    return i;
-                }
-            }
-        }
-        index = findIndexOfKey(key, objects);
-        return index >= 0 ? index : -1;
-    }
-
-    private int findIndexOfKey(K key, Object [] objects) {
-        for (int i = 0; i < objects.length; i++) {
-            if (key.equals((objects[i]))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    private int defineEmptyCell() {
-        for (int i = 0; i < keyObjects.length; i++) {
-            if (keyObjects[i] == null && storageObjects[i] == null) {
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
                 return i;
             }
         }

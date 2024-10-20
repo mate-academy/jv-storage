@@ -1,9 +1,6 @@
 package core.basesyntax;
 
 public interface Storage<K, V> {
-    Object[] getKeyObjects();
-
-    Object[] getStorageObjects();
 
     void put(K key, V value);
 
