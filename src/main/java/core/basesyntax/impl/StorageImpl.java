@@ -4,60 +4,52 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_CAPACITY = 10;
-    private final Object[] keyStorage;
-    private final Object[] valueStorage;
+    private final K[] keyStorage;
+    private final V[] valueStorage;
     private int storageCapacity;
-    private V nullKeyStorage;
+    private int indexOfValue;
     private boolean hasNullKey;
 
     public StorageImpl() {
-        keyStorage = new Object[MAX_STORAGE_CAPACITY];
-        valueStorage = new Object[MAX_STORAGE_CAPACITY];
-        storageCapacity = 0;
-        hasNullKey = false;
+        keyStorage = (K[]) new Object[MAX_STORAGE_CAPACITY];
+        valueStorage = (V[]) new Object[MAX_STORAGE_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            if (!hasNullKey) {
+        indexOfValue = getIndexOfValue(keyStorage, key);
+        if (indexOfValue >= 0) {
+            valueStorage[indexOfValue] = value;
+            if (!hasNullKey && key == null) {
+                hasNullKey = true;
                 storageCapacity++;
             }
-            nullKeyStorage = value;
-            hasNullKey = true;
             return;
-        }
-        for (int i = 0; i < storageCapacity; i++) {
-            if (keyStorage[i] != null && keyStorage[i].equals(key)) {
-                valueStorage[i] = value;
-                return;
-            }
         }
         if (storageCapacity < MAX_STORAGE_CAPACITY) {
             keyStorage[storageCapacity] = key;
             valueStorage[storageCapacity] = value;
             storageCapacity++;
-        } else {
-            System.out.println("Out of storage capacity");
         }
     }
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            return hasNullKey ? nullKeyStorage : null;
-        }
-        for (int i = 0; i < keyStorage.length; i++) {
-            if (keyStorage[i] != null && keyStorage[i].equals(key)) {
-                return (V) valueStorage[i];
-            }
-        }
-        return null;
+        indexOfValue = getIndexOfValue(keyStorage, key);
+        return indexOfValue >= 0 ? valueStorage[indexOfValue] : null;
     }
 
     @Override
     public int size() {
         return storageCapacity;
     }
-}
 
+    private int getIndexOfValue(K[] keyStorage, K key) {
+        for (int i = 0; i < keyStorage.length; i++) {
+            if ((keyStorage[i] == key) || (keyStorage[i] != null && keyStorage[i].equals(key))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
