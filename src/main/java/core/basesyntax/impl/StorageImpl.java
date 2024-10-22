@@ -1,27 +1,25 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_CAPACITY = 10;
 
-    private final Object[] keys;
-    private final Object[] values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = new Object[STORAGE_CAPACITY];
-        this.values = new Object[STORAGE_CAPACITY];
+        this.keys = (K[]) new Object[STORAGE_CAPACITY];
+        this.values = (V[]) new Object[STORAGE_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                values[i] = value;
-                return;
-            }
+        int index = getIndex(key);
+        if (index != -1) {
+            values[index] = value;
+            return;
         }
         keys[size] = key;
         values[size++] = value;
@@ -29,16 +27,28 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                return (V) values[i];
-            }
-        }
-        return null;
+        int index = getIndex(key);
+        return index == -1
+                ? null
+                : values[index];
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean checkEquals(K key1, K key2) {
+        return key1 == key2
+                || (key1 != null && key1.equals(key2));
+    }
+
+    private int getIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (checkEquals(keys[i], key)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
