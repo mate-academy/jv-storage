@@ -38,14 +38,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean checkEquals(K key1, K key2) {
-        return key1 == key2
-                || (key1 != null && key1.equals(key2));
-    }
-
     private int getIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (checkEquals(keys[i], key)) {
+            if (key == keys[i] || (key != null && key.equals(keys[i]))) {
                 return i;
             }
         }
