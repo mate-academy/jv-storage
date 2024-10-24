@@ -8,7 +8,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
 
-    {
+    @SuppressWarnings("unchecked")
+    public StorageImpl() {
         keys = (K[]) new Object[CAPACITY];
         values = (V[]) new Object[CAPACITY];
     }
@@ -17,6 +18,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int numberOfKey = findKey(key);
         if (numberOfKey < 0) {
+            if (index >= CAPACITY) {
+                throw new IllegalStateException("Storage capacity exceeded");
+            }
             keys[index] = key;
             values[index] = value;
             index++;
