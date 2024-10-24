@@ -6,8 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_CAPACITY = 10;
     private final K[] keyStorage;
     private final V[] valueStorage;
-    private int storageCapacity;
-    private int indexOfValue;
+    private int size;
     private boolean hasNullKey;
 
     public StorageImpl() {
@@ -17,36 +16,36 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        indexOfValue = getIndexOfValue(keyStorage, key);
+        int indexOfValue = getIndexOfValue(key);
         if (indexOfValue >= 0) {
             valueStorage[indexOfValue] = value;
             if (!hasNullKey && key == null) {
                 hasNullKey = true;
-                storageCapacity++;
+                size++;
             }
             return;
         }
-        if (storageCapacity < MAX_STORAGE_CAPACITY) {
-            keyStorage[storageCapacity] = key;
-            valueStorage[storageCapacity] = value;
-            storageCapacity++;
+        if (size < MAX_STORAGE_CAPACITY) {
+            keyStorage[size] = key;
+            valueStorage[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        indexOfValue = getIndexOfValue(keyStorage, key);
+        int indexOfValue = getIndexOfValue(key);
         return indexOfValue >= 0 ? valueStorage[indexOfValue] : null;
     }
 
     @Override
     public int size() {
-        return storageCapacity;
+        return size;
     }
 
-    private int getIndexOfValue(K[] keyStorage, K key) {
+    private int getIndexOfValue(K key) {
         for (int i = 0; i < keyStorage.length; i++) {
-            if ((keyStorage[i] == key) || (keyStorage[i] != null && keyStorage[i].equals(key))) {
+            if (keyStorage[i] == key || keyStorage[i] != null && keyStorage[i].equals(key)) {
                 return i;
             }
         }
