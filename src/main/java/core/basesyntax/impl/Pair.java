@@ -24,4 +24,13 @@ public class Pair<K, V> {
     public void setValue(V value) {
         this.value = value;
     }
+
+    @Override
+    public int hashCode() {
+        int base = 13;
+        int hashKey = key == null ? 0 : key.hashCode();
+        int hashValue = value == null ? 0 : value.hashCode();
+        return base * (hashValue + hashKey);
+
+    }
 }
