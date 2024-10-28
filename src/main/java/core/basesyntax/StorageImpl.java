@@ -1,7 +1,5 @@
 package core.basesyntax;
 
-import java.util.Arrays;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
     private K[] keys;
@@ -46,4 +44,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return -1;
     }
 }
+
+
 
