@@ -32,11 +32,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         int index = indexOf(key);
-        if (index >= 0) {
-            return values[index];
+        return index >= 0 ? values[index] : null;
         }
-        return null;
-    }
 
     @Override
     public int size() {
