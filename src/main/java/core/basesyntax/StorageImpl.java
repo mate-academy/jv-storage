@@ -1,5 +1,7 @@
 package core.basesyntax;
 
+import java.util.Arrays;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
     private K[] keys;
@@ -15,18 +17,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = indexOf(key);
-        if (index != -1) {
+        if (index >= 0) {
             values[index] = value;
-            return;
+        } else {
+            if (size >= keys.length) {
+                expandCapacity();
+            }
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
-        keys[size] = key;
-        values[size] = value;
     }
 
     @Override
     public V get(K key) {
         int index = indexOf(key);
-        return index == -1 ? null : values[index];
+        return index >= 0 ? values[index] : null;
     }
 
     @Override
@@ -36,14 +42,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOf(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys == keys[i] || (key != null
-                    && key.equals(keys[i]))) {
+            if (keys[i] == null && key == null) {
+                return i;
+            }
+            if (keys[i] != null && keys[i].equals(key)) {
                 return i;
             }
         }
         return -1;
     }
+
+    private void expandCapacity() {
+        int newSize = keys.length * 2;
+        keys = Arrays.copyOf(keys, newSize);
+        values = Arrays.copyOf(values, newSize);
+    }
 }
-
-
-
