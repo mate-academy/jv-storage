@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int SIZE = 5;
+    private static final int SIZE = 10;
     private Object[] keys = new Object[SIZE];
     private Object[] values = new Object[SIZE];
     private int arrayIndex = 0;
@@ -18,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 addToArray(key, value);
             }
         } else {
-            throw new RuntimeException("You can't add data because array is fully!");
+            throw new RuntimeException("You can't add data because array is full!");
         }
     }
 
@@ -30,7 +30,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private boolean isKeyExist(K key, V value) {
         for (int i = 0; i < arrayIndex; i++) {
-            if (Objects.equals(keys[i], key)) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 this.keys[i] = key;
                 this.values[i] = value;
                 return true;
@@ -41,8 +41,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (Objects.equals(keys[i], key)) {
+        for (int i = 0; i < arrayIndex; i++) {
+            if (keys[i] == key || (keys[i] != null && keys[i].equals(key))) {
                 return (V) values[i];
             }
         }
