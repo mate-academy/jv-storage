@@ -1,39 +1,41 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private final K[] keys;
-    private final V[] values;
-    private int size = 0;
+    private final List<K> keys;
+    private final List<V> values;
 
-    @SuppressWarnings("unchecked")
     public StorageImpl() {
-        keys = (K[]) new Object[MAX_SIZE];
-        values = (V[]) new Object[MAX_SIZE];
+        keys = new ArrayList<>();
+        values = new ArrayList<>();
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
-                values[i] = value; // Заміна значення для існуючого ключа
+        for (int i = 0; i < keys.size(); i++) {
+            if ((key == null && keys.get(i) == null) || (key != null && key.equals(keys.get(i)))) {
+                values.set(i, value); // Заміна значення для існуючого ключа
                 return;
             }
         }
-        if (size < MAX_SIZE) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        if (keys.size() < MAX_SIZE) {
+            keys.add(key);
+            values.add(value);
+        } else {
+            throw new IllegalStateException("Storage has reached its maximum capacity of "
+                    + MAX_SIZE);
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
-                return values[i];
+        for (int i = 0; i < keys.size(); i++) {
+            if ((key == null && keys.get(i) == null) || (key != null && key.equals(keys.get(i)))) {
+                return values.get(i);
             }
         }
         return null;
@@ -41,6 +43,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return size;
+        return keys.size();
     }
 }
