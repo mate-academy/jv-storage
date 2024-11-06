@@ -18,12 +18,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = getKeyPlaceIfContains(key);
-        if (index != -1) { // Якщо ключ вже існує, просто оновлюємо значення
+        if (index != -1) {
             putDirectly(key, value, index);
-        } else if (isFull()) { // Якщо сховище повне, оновлюємо за курсором
+        } else if (isFull()) {
             putDirectly(key, value, cursor);
             updateCursor();
-        } else { // Якщо додається новий ключ
+        } else {
             putDirectly(key, value, size);
             size++;
         }
