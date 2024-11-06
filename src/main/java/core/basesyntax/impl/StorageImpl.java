@@ -17,14 +17,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        validateKey(key);
         int index = getKeyPlaceIfContains(key);
-        if (index != -1) {
+        if (index != -1) { // Якщо ключ вже існує, просто оновлюємо значення
             putDirectly(key, value, index);
-        } else if (isFull()) {
+        } else if (isFull()) { // Якщо сховище повне, оновлюємо за курсором
             putDirectly(key, value, cursor);
             updateCursor();
-        } else {
+        } else { // Якщо додається новий ключ
             putDirectly(key, value, size);
             size++;
         }
@@ -43,7 +42,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getKeyPlaceIfContains(K key) {
         for (int i = 0; i < size; i++) {
-            if (key.equals(keyArr[i])) {
+            if ((key == null && keyArr[i] == null) || (key != null && key.equals(keyArr[i]))) {
                 return i;
             }
         }
@@ -61,11 +60,5 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private void updateCursor() {
         cursor = (cursor + 1) % STORAGE_MAX_SIZE;
-    }
-
-    private void validateKey(K key) {
-        if (key == null) {
-            throw new RuntimeException("Key cannot be null!");
-        }
     }
 }
