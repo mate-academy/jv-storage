@@ -17,6 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        validateKey(key);
         if (getKeyPlaceIfContains(key) != -1) {
             putDirectly(key, value, getKeyPlaceIfContains(key));
         } else if (isFull()) {
@@ -62,5 +63,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         } else {
             cursor++;
         }
+    }
+
+    private boolean validateKey (K key){
+        if(key == null){
+            throw new RuntimeException("Key cannot be null!");
+        }
+        return true;
     }
 }
