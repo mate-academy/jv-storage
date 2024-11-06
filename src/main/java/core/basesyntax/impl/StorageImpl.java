@@ -4,8 +4,8 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int STORAGE_MAX_SIZE = 9;
-    private static int size = 0;
-    private static int cursor = 0;
+    private int size = 0;
+    private int cursor = 0;
     private K[] keyArr;
     private V[] valueArr;
 
@@ -18,20 +18,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         validateKey(key);
-        if (getKeyPlaceIfContains(key) != -1) {
-            putDirectly(key, value, getKeyPlaceIfContains(key));
+        int index = getKeyPlaceIfContains(key);
+        if (index != -1) {
+            putDirectly(key, value, index);
         } else if (isFull()) {
             putDirectly(key, value, cursor);
             updateCursor();
         } else {
-            putDirectly(key, value, size());
+            putDirectly(key, value, size);
             size++;
         }
     }
 
     @Override
     public V get(K key) {
-        return valueArr[getKeyPlaceIfContains(key)];
+        int index = getKeyPlaceIfContains(key);
+        return index != -1 ? valueArr[index] : null;
     }
 
     @Override
@@ -40,8 +42,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getKeyPlaceIfContains(K key) {
-        for (int i = 0; i < size(); i++) {
-            if (keyArr[i] == key) {
+        for (int i = 0; i < size; i++) {
+            if (key.equals(keyArr[i])) {
                 return i;
             }
         }
@@ -54,21 +56,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private boolean isFull() {
-        return size() == STORAGE_MAX_SIZE;
+        return size == STORAGE_MAX_SIZE;
     }
 
     private void updateCursor() {
-        if (cursor == STORAGE_MAX_SIZE) {
-            cursor = 0;
-        } else {
-            cursor++;
-        }
+        cursor = (cursor + 1) % STORAGE_MAX_SIZE;
     }
 
-    private boolean validateKey(K key) {
+    private void validateKey(K key) {
         if (key == null) {
             throw new RuntimeException("Key cannot be null!");
         }
-        return true;
     }
 }
