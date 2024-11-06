@@ -65,8 +65,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private boolean validateKey (K key){
-        if(key == null){
+    private boolean validateKey(K key) {
+        if (key == null) {
             throw new RuntimeException("Key cannot be null!");
         }
         return true;
