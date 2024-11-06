@@ -20,12 +20,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         validateKey(key);
         if (getKeyPlaceIfContains(key) != -1) {
             putDirectly(key, value, getKeyPlaceIfContains(key));
-            size++;
         } else if (isFull()) {
             putDirectly(key, value, cursor);
             updateCursor();
         } else {
             putDirectly(key, value, size());
+            size++;
         }
     }
 
