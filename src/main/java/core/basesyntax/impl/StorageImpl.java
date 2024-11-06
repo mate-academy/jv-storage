@@ -20,6 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         validateKey(key);
         if (getKeyPlaceIfContains(key) != -1) {
             putDirectly(key, value, getKeyPlaceIfContains(key));
+            size++;
         } else if (isFull()) {
             putDirectly(key, value, cursor);
             updateCursor();
@@ -50,7 +51,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private void putDirectly(K key, V value, int place) {
         keyArr[place] = key;
         valueArr[place] = value;
-        size++;
     }
 
     private boolean isFull() {
