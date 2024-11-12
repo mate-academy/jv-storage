@@ -7,3 +7,4 @@ public interface Storage<K, V> {
 
     int size();
 }
+
