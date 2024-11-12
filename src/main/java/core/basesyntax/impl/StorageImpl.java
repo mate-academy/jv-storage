@@ -15,12 +15,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = createValueArray();
     }
 
-    @SuppressWarnings("uncheked")
+    @SuppressWarnings("unchecked")
     private K[] createKeyArray() {
         return (K[]) new Object[StorageImpl.MAX_SIZE];
     }
 
-    @SuppressWarnings("uncheked")
+    @SuppressWarnings("unchecked")
     private V[] createValueArray() {
         return (V[]) new Object[StorageImpl.MAX_SIZE];
     }
