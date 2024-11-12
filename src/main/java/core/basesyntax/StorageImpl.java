@@ -1,5 +1,6 @@
 package core.basesyntax;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -9,8 +10,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size;
 
     public StorageImpl() {
-        keys = (K[]) new Object[INITIAL_CAPACITY];
-        values = (V[]) new Object[INITIAL_CAPACITY];
+        keys = (K[]) Array.newInstance(Object.class, INITIAL_CAPACITY);
+        values = (V[]) Array.newInstance(Object.class, INITIAL_CAPACITY);
         size = 0;
     }
 
@@ -49,7 +50,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return size;
     }
 
     private void expandCapacity() {
