@@ -1,61 +1,50 @@
 package core.basesyntax;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
     private K[] keys;
     private V[] values;
-    private int size;
+    private int size = 0;
 
     public StorageImpl() {
-        keys = (K[]) Array.newInstance(Object.class, INITIAL_CAPACITY);
-        values = (V[]) Array.newInstance(Object.class, INITIAL_CAPACITY);
-        size = 0;
+        keys = (K[]) new Object[INITIAL_CAPACITY];
+        values = (V[]) new Object[INITIAL_CAPACITY];
     }
 
     @Override
     public void put(K key, V value) {
-        int index = indexOf(key);
-        if (index >= 0) {
-            values[index] = value;
-        } else {
-            if (size >= keys.length) {
-                expandCapacity();
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null && key == null) {
+                values[i] = value;
+                return;
+            } else if (keys[i] != null && keys[i].equals(key)) {
+                values[i] = value;
+                return;
             }
+        }
+        if (size < keys.length) {
             keys[size] = key;
             values[size] = value;
             size++;
+        } else {
+            throw new RuntimeException("Storage is completely full");
         }
     }
 
     @Override
     public V get(K key) {
-        int index = indexOf(key);
-        return index >= 0 ? values[index] : null;
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null && key == null) {
+                return values[i];
+            } else if (keys[i] != null && keys[i].equals(key)) {
+                return values[i];
+            }
+        }
+        return null;
     }
 
     @Override
     public int size() {
         return size;
-    }
-
-    private int indexOf(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null) {
-                return i;
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
-                return i;
-            }
-        }
-        return size;
-    }
-
-    private void expandCapacity() {
-        int newSize = keys.length * 2;
-        keys = Arrays.copyOf(keys, newSize);
-        values = Arrays.copyOf(values, newSize);
     }
 }
