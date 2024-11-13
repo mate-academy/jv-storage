@@ -7,7 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int size = 0;
 
     public StorageImpl() {
-       this.keys = (K[]) new Object[INITIAL_CAPACITY];
+        this.keys = (K[]) new Object[INITIAL_CAPACITY];
         this.values = (V[]) new Object[INITIAL_CAPACITY];
     }
 
