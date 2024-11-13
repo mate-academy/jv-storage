@@ -4,11 +4,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
     private K[] keys;
     private V[] values;
-    private int size = 0;
+    private int size;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
         this.keys = (K[]) new Object[INITIAL_CAPACITY];
         this.values = (V[]) new Object[INITIAL_CAPACITY];
+        size = 0;
     }
 
     @Override
