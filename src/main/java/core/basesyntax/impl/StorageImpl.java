@@ -1,66 +1,52 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_HASH_RANGE = 25;
-    private final ArrayList<ArrayList<K>> keys = new ArrayList<>();
-    private final ArrayList<ArrayList<V>> values = new ArrayList<>();
+    private static final int MAX_STORAGE_SIZE = 10;
+    private boolean haveNull = false;
+    private V nullValue;
+    private int size = 0;
+    private final Object[] keys = new Object[MAX_STORAGE_SIZE];
+    private final Object[] values = new Object[MAX_STORAGE_SIZE];
 
     public StorageImpl() {
-        keys.add(new ArrayList<>());
-        values.add(new ArrayList<>());
+
     }
 
     @Override
     public void put(K key, V value) {
-
-        int place = key == null ? 0 : Math.abs(key.hashCode() % MAX_HASH_RANGE);
-        while (keys.size() <= place) {
-            keys.add(new ArrayList<>());
-            values.add(new ArrayList<>());
+        if (key == null) {
+            nullValue = value;
+            haveNull = true;
+            return;
         }
-        List<K> keysColumn = keys.get(place);
-        int x = -1;
-        for (int i = 0; i < keysColumn.size(); i++) {
-            if (keysColumn.get(i) == key
-                    || (keysColumn.get(i) != null && keysColumn.get(i).equals(key))) {
-                x = i;
+        for (int i = 0; i < MAX_STORAGE_SIZE - (haveNull ? 1 : 0); i++) {
+            if (keys[i] == null || keys[i].equals(key)) {
+                size += keys[i] == null ? 1 : 0;
+                keys[i] = key;
+                values[i] = value;
+                break;
             }
-        }
-        if (x == -1) {
-            keys.get(place).add(key);
-            values.get(place).add(value);
-        } else {
-            keys.get(place).set(x, key);
-            values.get(place).set(x, value);
         }
     }
 
     @Override
     public V get(K key) {
-        int place = key == null ? 0 : Math.abs(key.hashCode() % MAX_HASH_RANGE);
-        if (place >= keys.size()) {
-            return null;
+        if (key == null && haveNull) {
+            return nullValue;
         }
-        List<K> keysColumn = keys.get(place);
-        int x = -1;
-        for (int i = 0; i < keysColumn.size(); i++) {
-            if (keysColumn.get(i) == key
-                    || (keysColumn.get(i) != null && keysColumn.get(i).equals(key))) {
-                x = i;
+        for (int i = 0; i < MAX_STORAGE_SIZE; i++) {
+            if (Objects.equals(key, keys[i])) {
+                return (V) values[i];
             }
         }
-        if (x == -1) {
-            return null;
-        }
-        return values.get(place).get(x);
+        return null;
     }
 
     @Override
     public int size() {
-        return keys.stream().mapToInt(ArrayList::size).sum();
+        return size + (haveNull ? 1 : 0);
     }
 }
