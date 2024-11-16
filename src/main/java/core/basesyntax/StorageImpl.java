@@ -1,50 +1,39 @@
 package core.basesyntax;
 
-import java.util.Arrays;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
-    private static final int MULTIPLIER = 2;
     private K[] keys;
     private V[] values;
     private int size;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
-        keys = createKeyArray();
-        values = createValueArray();
-    }
-
-    @SuppressWarnings("unchecked")
-    private K[] createKeyArray() {
-        return (K[]) new Object[StorageImpl.INITIAL_CAPACITY];
-    }
-
-    @SuppressWarnings("unchecked")
-    private V[] createValueArray() {
-        return (V[]) new Object[StorageImpl.INITIAL_CAPACITY];
+        keys = (K[]) new Object[INITIAL_CAPACITY];
+        values = (V[]) new Object[INITIAL_CAPACITY];
+        size = 0;
     }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
+            if ((keys[i] == key) || (key != null && key.equals(keys[i]))) {
                 values[i] = value;
                 return;
             }
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
-        if (size == keys.length) {
-            keys = Arrays.copyOf(keys, size * MULTIPLIER);
-            values = Arrays.copyOf(values, size * MULTIPLIER);
+        if (size < INITIAL_CAPACITY) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        } else {
+            throw new IllegalStateException("Storage is full, cannot add more elements");
         }
     }
 
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
+            if ((keys[i] == key) || (key != null && key.equals(keys[i]))) {
                 return values[i];
             }
         }
