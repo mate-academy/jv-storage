@@ -1,4 +1,6 @@
-package core.basesyntax;
+package core.basesyntax.impl;
+
+import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int INITIAL_CAPACITY = 10;
@@ -10,7 +12,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public StorageImpl() {
         keys = (K[]) new Object[INITIAL_CAPACITY];
         values = (V[]) new Object[INITIAL_CAPACITY];
-        size = 0;
     }
 
     @Override
