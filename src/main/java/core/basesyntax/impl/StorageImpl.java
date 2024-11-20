@@ -6,33 +6,51 @@ import java.security.Key;
 import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    ArrayList<K> keys = new ArrayList<>();
-    ArrayList<V> values = new ArrayList<>();
+    public static final int length = 10;
+    Object[] keys = new Object[length];
+    Object[] values = new Object[length];
+
     private int count = 0;
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            values.add(count,value);
-        }
-        keys.add(count, key);
-        values.add(count,value);
-        count++;
+       keys[count] = key;
+       values[count] = value;
+       count++;
 
 
     }
 
     @Override
     public V get(K key) {
-        try {
-            return values.get(keys.indexOf(key));
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
 
+        Object[] keys1 = new Object[count];
+        Object[] values1 = new Object[count];
+        V keyNull = null;
+        for (int i = 0; i < keys1.length; i++) {
+            keys1[i] = keys[i];
+            values1[i] = values[i];
+
+        }
+        for (int i = 0; i < keys1.length; i++) {
+            if (keys1[i] == null) {
+                keyNull = (V) values1[i];
+            }
+        }
+        V value = null;
+
+        for (int i = 0; i < keys1.length; i++) {
+            if (keys1[i] == null && key == null) {
+                value = keyNull;
+            } else if (keys1[i] != null && keys1[i].equals(key)) {
+                value = (V) values1[i];
+            }
+        }
+        return value;
     }
 
     @Override
     public int size() {
-        return values.size();
+
+        return count;
     }
 }
