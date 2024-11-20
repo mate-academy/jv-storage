@@ -6,6 +6,6 @@ public class Main {
         storage.put(22,"XAX");
         storage.put(45,"Yea");
         storage.put(78,"KEK");
-        System.out.println( storage.get(22));;
+
     }
 }
