@@ -1,9 +1,7 @@
 package core.basesyntax;
 
-public interface Storage<K, V> {
-    void put(K key, V value);
-
-    V get(K key);
-
-    int size();
+public abstract class Storage<K, V> {
+    protected abstract void put(K key, V value);
+    public abstract V get(K key);
+    protected abstract int size();
 }
