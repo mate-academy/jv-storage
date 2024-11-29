@@ -10,9 +10,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0;i < x;i++) {
-            if (storageK[i].equals(key)) {
-                storageV[i] = value;
-                return;
+            if (storageK[i] != null) {
+                if (storageK[i].equals(key)) {
+                    storageV[i] = value;
+                    return;
+                }
             }
         }
         if (x < 10) {
@@ -24,9 +26,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storageK.length; i++) {
-            if (storageK[i].equals(key)) {
-                return storageV[i];  // Повертаємо значення за знайденим індексом
+        for (int i = 0; i < x; i++) {
+            if (storageK[i] != null) {
+                if (storageK[i].equals(key)) {
+                    return storageV[i];  // Повертаємо значення за знайденим індексом
+                }
             }
         }
         return null;  // Якщо ключ не знайдено, повертаємо null
