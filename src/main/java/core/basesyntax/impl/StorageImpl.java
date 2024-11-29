@@ -5,11 +5,11 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] storageK = (K[]) new Object[10];
     private V[] storageV = (V[]) new Object[10];
-    private int x = 0;
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0;i < x;i++) {
+        for (int i = 0; i < size; i++) {
             if (storageK[i] != null) {
                 if (storageK[i].equals(key)) {
                     storageV[i] = value;
@@ -17,16 +17,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 }
             }
         }
-        if (x < 10) {
-            storageK[x] = key;
-            storageV[x] = value;
-            x++;
+        if (size < 10) {
+            storageK[size] = key;
+            storageV[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < x; i++) {
+        for (int i = 0; i < size; i++) {
             if (storageK[i] != null) {
                 if (storageK[i].equals(key)) {
                     return storageV[i];  // Повертаємо значення за знайденим індексом
@@ -38,6 +38,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return x;
+        return size;
     }
 }
