@@ -65,16 +65,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         for (int i = 0; i < size; i++) {
-            boolean mathFound = false;
+            boolean matchFound = false;
             for (int j = 0; j < other.size; j++) {
                 if (Objects.equals(this.keys[i], other.keys[j])
                         && Objects.equals(this.values[i], other.values[j])) {
-                    mathFound = true;
+                    matchFound = true;
                     break;
                 }
             }
 
-            if (!mathFound) {
+            if (!matchFound) {
                 return false;
             }
         }
