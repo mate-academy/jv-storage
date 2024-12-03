@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY = 10;
@@ -12,7 +11,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size == 10) {
+        if (size == MAX_ARRAY) {
             System.out.println("Maximum size reached");
             return;
         }
