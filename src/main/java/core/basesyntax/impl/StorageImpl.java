@@ -4,13 +4,13 @@ import core.basesyntax.Storage;
 import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    ArrayList<K> keys = new ArrayList<K>();
-    ArrayList<V> data = new ArrayList<V>();
+    private ArrayList<K> keys = new ArrayList<K>();
+    private ArrayList<V> data = new ArrayList<V>();
 
     @Override
     public void put(K key, V value) {
-        for(int i = 0; i < keys.size(); i++) {
-            if(keys.get(i).equals(key)) {
+        for (int i = 0; i < keys.size(); i++) {
+            if (keys.get(i).equals(key)) {
                 data.set(i, value);
                 return;
             }
@@ -21,8 +21,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for(int i = 0; i < keys.size(); i++) {
-            if(keys.get(i).equals(key)) {
+        for (int i = 0; i < keys.size(); i++) {
+            if (keys.get(i).equals(key)) {
                 return data.get(i);
             }
         }
