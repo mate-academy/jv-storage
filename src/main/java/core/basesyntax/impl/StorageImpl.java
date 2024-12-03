@@ -4,7 +4,7 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY = 10;
-    private static int size = 0;
+    private int size = 0;
 
     private Object[] keys = new Object[MAX_ARRAY];
     private Object[] data = new Object[MAX_ARRAY];
@@ -15,8 +15,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             System.out.println("Maximum size reached");
             return;
         }
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i <= size; i++) {
             if (keys[i] != null && keys[i].equals(key)) {
+                data[i] = value;
+                return;
+            }
+            if (keys[i] == null && key == null) {
+                if (data[i] == null) {
+                    size++;
+                }
                 data[i] = value;
                 return;
             }
@@ -30,6 +37,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             if (keys[i] != null && keys[i].equals(key)) {
+                return (V) data[i];
+            }
+            if (keys[i] == null && key == null) {
                 return (V) data[i];
             }
         }
