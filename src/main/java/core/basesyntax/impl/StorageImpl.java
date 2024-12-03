@@ -4,26 +4,34 @@ import core.basesyntax.Storage;
 import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private ArrayList<K> keys = new ArrayList<K>();
-    private ArrayList<V> data = new ArrayList<V>();
+    private static final int MAX_ARRAY = 10;
+    private static int size = 0;
+
+    private Object[] keys = new Object[MAX_ARRAY];
+    private Object[] data = new Object[MAX_ARRAY];
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.size(); i++) {
-            if (keys.get(i).equals(key)) {
-                data.set(i, value);
+        if (size == 10) {
+            System.out.println("Maximum size reached");
+            return;
+        }
+        for (int i = 0; i < size; i++) {
+            if (keys[i] != null && keys[i].equals(key)) {
+                data[i] = value;
                 return;
             }
         }
-        keys.add(key);
-        data.add(value);
+        data[size] = value;
+        keys[size] = key;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.size(); i++) {
-            if (keys.get(i).equals(key)) {
-                return data.get(i);
+        for (int i = 0; i < size; i++) {
+            if (keys[i] != null && keys[i].equals(key)) {
+                return (V) data[i];
             }
         }
         return null;
@@ -31,6 +39,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return keys.size();
+        return size;
     }
 }
