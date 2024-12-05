@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_STORAGE_SIZE = 10;
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int currentSize;
 
     public StorageImpl() {
-        this.keys = new Object[MAX_STORAGE_SIZE];
-        this.values = new Object[MAX_STORAGE_SIZE];
+        this.keys = (K[]) new Object[MAX_STORAGE_SIZE];
+        this.values = (V[]) new Object[MAX_STORAGE_SIZE];
         currentSize = 0;
     }
 
@@ -36,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < currentSize; i++) {
             if (Objects.equals(keys[i], key)) {
-                return (V) values[i];
+                return values[i];
             }
         }
         return null;
