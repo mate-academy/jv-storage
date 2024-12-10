@@ -27,15 +27,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return false;
     }
 
-    public boolean containsValue(K addingValue) {
-        for (V value : values) {
-            if (Objects.equals(value, addingValue)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private <T> T[] resizeArray(T[] array) {
         T[] newArray = (T[]) new Object[capacity];
         System.arraycopy(array, 0, newArray, 0, size);
@@ -49,30 +40,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return size;
-    }
-
-    public int indexOfValue(V value) {
-        for (int i = 0; i < size; i++) {
-            if (value.equals(values[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public void delete(K key) {
-        if (key == null && !nullKeyExists) {
-            return;
-        }
-        int index = indexOfKey(key);
-        if (index != -1) {
-            System.arraycopy(keys, index + 1, keys, index, size - index - 1);
-            System.arraycopy(values, index + 1, values, index, size - index - 1);
-            if (key == null) {
-                nullKeyExists = false;
-            }
-            size--;
-        }
     }
 
     @Override
