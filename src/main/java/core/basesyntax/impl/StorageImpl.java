@@ -29,6 +29,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[currentSize] = value;
             currentSize++;
         }
+        if (currentSize >= MAX_CAPACITY) {
+            throw new RuntimeException("Storage is full");
+        }
     }
 
     @Override
