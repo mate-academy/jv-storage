@@ -27,8 +27,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (currentSize < Capacity) {
             keys[currentSize] = key;
             values[currentSize] = value;
+            size++;
         }
-        size++;
     }
 
     @Override
