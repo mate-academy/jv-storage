@@ -1,46 +1,58 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private List<K> keyList = new ArrayList<>();
-    private List<V> valueList = new ArrayList<>();
+    public static final int maxSize = 10;
+    private K[] keys;
+    private V[] values;
+    private int size;
 
-    protected boolean equalsCheck(K item, K key) {
-        return item == null ? item == key : item.equals(key);
+    public StorageImpl() {
+        this.keys = (K[]) new Object[maxSize];
+        this.values = (V[]) new Object[maxSize];
     }
 
     @Override
     public void put(K key, V value) {
-        boolean add = false;
-        for (int i = 0; i < this.keyList.size(); i++) {
-            if (equalsCheck(this.keyList.get(i), key)) {
-                this.valueList.set(i, value);
-                add = true;
-                break;
+        for (int i = 0; i < size; i++) {
+            if (equalsKey((keys[i]), key)) {
+                values[i] = value;
+                return;
             }
         }
-        if (!add) {
-            this.keyList.add(key);
-            this.valueList.add(value);
+        if (size >= maxSize) {
+            throw new IllegalStateException("Storage is full");
         }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < this.keyList.size(); i++) {
-            if (equalsCheck(this.keyList.get(i), key)) {
-                return this.valueList.get(i);
+        for (int i = 0; i < size; i++) {
+            if (equalsKey((keys[i]), key)) {
+                return values[i];
             }
         }
         return null;
     }
 
+    private boolean equalsKey(K key, Object object) {
+        if (key == object) {
+            return true;
+        }
+        if (object == null || key == null || !key.getClass().equals(object.getClass())) {
+            return false;
+        }
+        K secondKey = (K) object;
+        return key.equals(secondKey);
+    }
+
     @Override
     public int size() {
-        return keyList.size();
+        return size;
     }
 }
