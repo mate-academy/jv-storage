@@ -22,10 +22,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[existingIndex] = value;
             return;
         }
-        int currentSize = size();
-        if (currentSize < CAPACITY) {
-            keys[currentSize] = key;
-            values[currentSize] = value;
+        if (size < CAPACITY) {
+            keys[size] = key;
+            values[size] = value;
             size++;
         }
     }
@@ -35,9 +34,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int indexToFind = indexOfExistingKey(key);
         if (indexToFind != NOT_FOUND) {
             return values[indexToFind];
-        } else {
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -51,6 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return i;
             }
         }
-        return -1;
+        return NOT_FOUND;
     }
 }
