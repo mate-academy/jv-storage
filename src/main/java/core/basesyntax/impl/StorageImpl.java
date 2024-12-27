@@ -26,6 +26,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
+        if (size >= STORAGE_MAX_SIZE) {
+            System.out.println("The storage is full. " +
+                    "Try to resize the Storage object or replace the existing element.");
+            return;
+        }
         size++;
         keys[size - 1] = key;
         values[size - 1] = value;
