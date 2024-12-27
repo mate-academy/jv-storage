@@ -30,9 +30,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             System.out.println("The storage is full.");
             return;
         }
+        keys[size] = key;
+        values[size] = value;
         size++;
-        keys[size - 1] = key;
-        values[size - 1] = value;
     }
 
     @Override
