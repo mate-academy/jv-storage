@@ -1,18 +1,18 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int MAX_SIZE = 10;
-    private K[] keys;
-    private V[] values;
-    private int size;
+    private List<K> keys;
+    private List<V> values;
 
     public StorageImpl() {
-        this.keys = (K[]) new Object[MAX_SIZE];
-        this.values = (V[]) new Object[MAX_SIZE];
-        this.size = 0;
+        this.keys = new ArrayList<>(MAX_SIZE);
+        this.values = new ArrayList<>(MAX_SIZE);
     }
 
     @Override
@@ -21,25 +21,24 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new IllegalStateException("Storage is full, cannot add more items.");
         }
 
-        for (int i = 0; i < size; i++) {
-            if ((keys[i] == null && key == null) || (keys[i] != null && keys[i].equals(key))) {
-                values[i] = value;
+        for (int i = 0; i < size(); i++) {
+            if ((keys.get(i) == null && key == null)
+                    || (keys.get(i) != null && keys.get(i).equals(key))) {
+                values.set(i, value);
                 return;
             }
         }
 
-        if (size < MAX_SIZE) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
-        }
+        keys.add(key);
+        values.add(value);
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if ((keys[i] == null && key == null) || (keys[i] != null && keys[i].equals(key))) {
-                return values[i];
+        for (int i = 0; i < size(); i++) {
+            if ((keys.get(i) == null && key == null)
+                    || (keys.get(i) != null && keys.get(i).equals(key))) {
+                return values.get(i);
             }
         }
         return null;
@@ -47,6 +46,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return size;
+        return keys.size();
     }
 }
