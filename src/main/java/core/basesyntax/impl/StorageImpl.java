@@ -17,6 +17,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (size() >= MAX_SIZE) {
+            throw new IllegalStateException("Storage is full, cannot add more items.");
+        }
+
         for (int i = 0; i < size; i++) {
             if ((keys[i] == null && key == null) || (keys[i] != null && keys[i].equals(key))) {
                 values[i] = value;
