@@ -3,6 +3,7 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private CustomNode<K, V>[] table = new CustomNode[0];
@@ -14,15 +15,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         if (table.length < MAX_CAPACITY) {
             for (int i = 0; i < table.length; i++) {
-                if (inputNode.getKey() == null ? table[i].getKey() == null
-                        : inputNode.getKey() == table[i].getKey()) {
+                if (Objects.equals(key, table[i].getKey())) {
                     table[i] = inputNode;
                     return;
                 }
             }
             putValue(inputNode);
         } else {
-            throw new IllegalStateException("The array already full");
+            throw new RuntimeException("The array already full");
         }
     }
 
@@ -36,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < table.length; i++) {
-            if (table[i].getKey() == key) {
+            if (Objects.equals(key, table[i].getKey())) {
                 return table[i].getValue();
             }
         }
