@@ -1,13 +1,12 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Arrays;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private CustomNode<K, V>[] table = new CustomNode[0];
     private static final int MAX_CAPACITY = 10;
+    private CustomNode<K, V>[] table = new CustomNode[0];
 
     @Override
     public void put(K key, V value) {
@@ -49,8 +48,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private static class CustomNode<K, V> {
-        final K key;
-        V value;
+        private final K key;
+        private final V value;
 
         CustomNode(K key, V value) {
             this.key = key;
