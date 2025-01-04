@@ -1,10 +1,12 @@
 package core.basesyntax;
 
+import java.security.Key;
+
 public interface Storage<K, V> {
 
     void put(K key, V value);
 
-    V get(K key);
+    Key get(K key);
 
     int size();
 }
