@@ -1,8 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +11,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < keyStorage.size(); i++) {
-            if ((key == null && keyStorage.get(i) == null) ||
-                    (key != null && key.equals(keyStorage.get(i)))) {
+            if ((key == null && keyStorage.get(i) == null)
+                    || (key != null && key.equals(keyStorage.get(i)))) {
                 valueStorage.set(i, value);
                 return;
             }
@@ -26,8 +24,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < keyStorage.size(); i++) {
-            if ((key == null && keyStorage.get(i) == null) ||
-                    (key != null && key.equals(keyStorage.get(i)))) {
+            if ((key == null && keyStorage.get(i) == null)
+                    || (key != null && key.equals(keyStorage.get(i)))) {
                 return valueStorage.get(i);
             }
         }
