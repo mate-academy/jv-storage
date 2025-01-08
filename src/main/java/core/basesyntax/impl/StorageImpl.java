@@ -4,47 +4,48 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
-    private K[] dataOfKeys;
-    private V[] dataOfValues;
-    private int counter;
+    private K[] keys;
+    private V[] values;
+    private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-        dataOfKeys = (K[]) new Object[MAX_ITEMS_NUMBER];
-        dataOfValues = (V[]) new Object[MAX_ITEMS_NUMBER];
-        counter = 0;
+        keys = (K[]) new Object[MAX_ITEMS_NUMBER];
+        values = (V[]) new Object[MAX_ITEMS_NUMBER];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < counter; i++) {
-            if (key == dataOfKeys[i]) {
-                dataOfValues[i] = value;
-                return;
-            } else if (key != null && key.equals(dataOfKeys[i])) {
-                dataOfValues[i] = value;
-                return;
-            }
+        if (indexOf(key) != -1) {
+            values[indexOf(key)] = value;
+        } else {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
-        dataOfKeys[counter] = key;
-        dataOfValues[counter] = value;
-        counter++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < counter; i++) {
-            if (key == dataOfKeys[i]) {
-                return dataOfValues[i];
-            } else if (key != null && key.equals(dataOfKeys[i])) {
-                return dataOfValues[i];
-            }
+        if (indexOf(key) != -1) {
+            return values[indexOf(key)];
         }
         return null;
     }
 
     @Override
     public int size() {
-        return counter;
+        return size;
+    }
+
+    private int indexOf(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i]) {
+                return i;
+            } else if (key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
