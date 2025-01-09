@@ -24,9 +24,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        this.key[size] = key;
-        this.value[size] = value;
-        size++;
+        if (size < MAX_LENGTH) {
+            this.key[size] = key;
+            this.value[size] = value;
+            size++;
+        }
     }
 
     @Override
