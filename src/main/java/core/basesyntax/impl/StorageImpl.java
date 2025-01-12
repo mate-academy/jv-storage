@@ -15,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if(map.size() <= 10 || map.containsKey(key)) {
+        if (map.size() <= 10 || map.containsKey(key)) {
             map.put(key,value);
             return;
         }
