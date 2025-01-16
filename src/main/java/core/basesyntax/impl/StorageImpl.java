@@ -13,6 +13,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = (V[]) new Object[INITIAL_CAPACITY];
         freeCellIndex = 0;
     }
+
     @Override
     public void put(K key, V value) {
         int indexOfKeyExisted = searchByKey(key);
