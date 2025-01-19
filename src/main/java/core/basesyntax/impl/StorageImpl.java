@@ -32,7 +32,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < size; i++) {
             if ((key == null && keys[i] == null) || (key != null && key.equals(keys[i]))) {
                 return values[i];
             }
@@ -46,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private void expandCapacity() {
-        int newCapacity = defaultCapacity * 2;
+        int newCapacity = keys.length * 2;
         K[] newKeys = (K[]) new Object[newCapacity];
         V[] newValues = (V[]) new Object[newCapacity];
         for (int i = 0; i < size; i++) {
