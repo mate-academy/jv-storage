@@ -2,7 +2,6 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_VALUE = 10;
@@ -22,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         if (key == null) {
-            nullKeyPresent = true; // Установлюємо прапорець
+            nullKeyPresent = true;
             for (int i = 0; i < size; i++) {
                 if (keys[i] == null) {
                     values[i] = value; // Заміна значення для ключа null
@@ -80,13 +79,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (this == obj) {
             return true;
         }
+        if (!(obj instanceof StorageImpl)) {
+            return false;
+        }
         StorageImpl<K, V> storage = (StorageImpl<K, V>) obj;
-        return Objects.deepEquals(keys, storage.keys)
-                && Objects.deepEquals(values, storage.values);
+        return Arrays.equals(keys, storage.keys) && Arrays.equals(values, storage.values);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Arrays.hashCode(keys), Arrays.hashCode(values));
+        return Arrays.hashCode(keys) ^ Arrays.hashCode(values);
     }
 }
