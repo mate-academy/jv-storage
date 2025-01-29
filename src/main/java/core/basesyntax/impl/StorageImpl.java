@@ -5,33 +5,36 @@ import java.util.ArrayList;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
 
-    private final ArrayList<K> listK = new ArrayList<>();
-    private final ArrayList<V> listV = new ArrayList<>();
+    private final ArrayList<KeyValueObject<K, V>> listKeyValue = new ArrayList<>();
 
     @Override
     public void put(K key, V value) {
-        if (listK.size() >= 10) {
-            if (!listK.contains(key)) {
-                listK.add(key);
-                listV.add(value);
-            } else if (listK.contains(key)) {
-                int index = listK.indexOf(key);
-                listV.set(index, value);
+
+        for (KeyValueObject<K, V> object : listKeyValue) {
+            if (object.getKey() == null ? key == null : object.getKey().equals(key)) {
+                object.setValue(value);
+                return;
             }
+        }
+
+        if (listKeyValue.size() < 10) {
+            listKeyValue.add(new KeyValueObject<>(key, value));
         }
     }
 
     @Override
     public V get(K key) {
-        int index = listK.indexOf(key);
-        if (index == (-1)) {
-            return null;
+
+        for (KeyValueObject<K, V> object : listKeyValue) {
+            if (object.getKey() == null ? key == null : object.getKey().equals(key)) {
+                return object.getValue();
+            }
         }
-        return listV.get(index);
+        return null;
     }
 
     @Override
     public int size() {
-        return listK.size();
+        return listKeyValue.size();
     }
 }
