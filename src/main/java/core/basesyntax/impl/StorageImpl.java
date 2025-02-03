@@ -4,14 +4,14 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int capasity = 10;
+    private static final int capacity = 10;
     private Object[] keys;
     private Object[] values;
     private int size;
 
     public StorageImpl() {
-        this.keys = new Object[capasity];
-        this.values = new Object[capasity];
+        this.keys = new Object[capacity];
+        this.values = new Object[capacity];
         this.size = 0;
     }
 
@@ -24,12 +24,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-        if (size < capasity) {
+        if (size < capacity) {
             this.keys[size] = key;
             this.values[size] = value;
             size++;
         } else {
-            System.out.println("Storage is full");
+            throw new RuntimeException("Storage is full");
         }
     }
 
