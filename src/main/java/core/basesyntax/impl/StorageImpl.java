@@ -20,7 +20,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             if (Objects.equals(keys[i], key)) {
                 values[i] = value;
-                size = size - 1;
             }
         }
         keys[size] = key;
