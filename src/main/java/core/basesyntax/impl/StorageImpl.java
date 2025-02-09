@@ -1,11 +1,10 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final int MAX_ITEMS = 10;
+    private final int maxItems = 10;
     private boolean flag = false;
     private K[] keys;
     private V[] values;
