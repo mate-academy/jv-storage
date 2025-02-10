@@ -24,6 +24,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         K[] tempKeys = (K[]) new Object[keys.length + 1];
         V[] tempValues = (V[]) new Object[values.length + 1];
 
+        if (keys.length + 1 > maxItems) {
+            System.out.println("You reached items limit");
+            return;
+        }
+
         for (int i = 0; i < keys.length; i++) {
             tempKeys[i] = keys[i];
             tempValues[i] = values[i];
@@ -76,8 +81,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         if (pair instanceof StorageImpl) {
             StorageImpl current = (StorageImpl) pair;
-            return (values == null ? current.values == null : values.equals(current.values))
-                    && (keys == null ? current.keys == null : keys.equals(current.keys));
+            return (values == null ? current.values == null : Arrays.equals(values, current.values))
+                    && (keys == null ? current.keys == null : Arrays.equals(keys, current.keys));
         }
         return false;
     }
