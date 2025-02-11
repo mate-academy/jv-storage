@@ -9,6 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int index = 0;
     private Object[] keyValues = new Object[11];
     private Object[] valueValues = new Object[11];
+
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < index; i++) {
