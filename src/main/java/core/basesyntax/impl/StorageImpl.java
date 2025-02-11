@@ -1,15 +1,22 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
-    private static int index = 0;
-    private K[] keyValues = new K[10];
-    private V[] valueValues = new V[10];
+    private int index = 0;
+    private Object[] keyValues = new Object[11];
+    private Object[] valueValues = new Object[11];
     @Override
     public void put(K key, V value) {
+        for (int i = 0; i < index; i++) {
+            if (Objects.equals(keyValues[i], key)) {
+                valueValues[i] = value;
+                return;
+            }
+        }
         this.key = key;
         this.value = value;
         keyValues[index] = key;
@@ -19,17 +26,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        int keyIndex = 0;
-        for (int i = 0; i < keyValues.length; i++) {
-            if (keyValues[i].equals(key)) {
-                keyIndex = i;
+        for (int i = 0; i < index; i++) {
+            if (Objects.equals(keyValues[i], key)) {
+                return (V) valueValues[i];
             }
         }
-        return valueValues[keyIndex];
+        return null;
     }
 
     @Override
     public int size() {
-        return -1;
+        return index;
     }
 }
