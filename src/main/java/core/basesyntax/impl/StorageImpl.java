@@ -19,7 +19,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        if (size < MAX_CAPACITY) {
+        if (size < MAX_CAPACITI) {
             entries[size++] = new Entry<>(key, value);
         }
     }
