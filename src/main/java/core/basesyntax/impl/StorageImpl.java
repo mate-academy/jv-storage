@@ -19,7 +19,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         int index = indexOf(key);
         if (index != -1) {
             values[index] = value;
-        } else if (size < STORAGE_SIZE) {
+        } else {
+            if (size >= STORAGE_SIZE) {
+                throw new IllegalStateException("Storage is full, cannot insert new element.");
+            }
             keys[size] = key;
             values[size] = value;
             size++;
