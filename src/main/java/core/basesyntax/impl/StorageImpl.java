@@ -41,8 +41,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 
-    private boolean equality(K e, K l) {
-        return e == l || e != null && e.equals(l);
+    private <T> boolean equality(K elementOne, K elementSecond) {
+        return elementOne == elementSecond
+                || elementOne != null && elementOne.equals(elementSecond);
     }
 
     private class Element<K, V> {
