@@ -12,7 +12,7 @@ public class Main {
         Box box2 = new Box("Banana");
         storage.put(2, box2);
 
-        Box value = storage.get(1); // Zwróci "Apple"
+        Box value = storage.get(1);
         System.out.println(value.getContent());
 
         int size = storage.size();
