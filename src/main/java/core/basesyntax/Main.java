@@ -1,8 +1,9 @@
 package core.basesyntax;
 
-import core.basesyntax.Storage;
+import core.basesyntax.StorageImpl;
 
 public class Main {
+
     public static void main(String[] args) {
         Storage<Integer, Box> storage = new StorageImpl<>();
 
@@ -17,5 +18,6 @@ public class Main {
         System.out.println("Size: " + size);
     }
 }
+
 class Box {
 }
