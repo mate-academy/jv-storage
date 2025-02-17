@@ -1,6 +1,6 @@
 import core.basesyntax.Box;
 import core.basesyntax.Storage;
-import core.basesyntax.StorageImpl;
+import core.basesyntax.impl.StorageImpl;
 
 public class Main {
 
