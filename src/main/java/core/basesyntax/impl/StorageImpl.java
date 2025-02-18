@@ -23,6 +23,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
+
         if (size < MAX_SIZE) {
             keys[size] = key;
             values[size] = value;
@@ -46,10 +47,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         return size;
     }
-}
-
-interface Storage<K, V> {
-    void put(K key, V value);
-    V get(K key);
-    int size();
 }
