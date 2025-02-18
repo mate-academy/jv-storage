@@ -1,5 +1,4 @@
-package core.basesyntax.impl;
-
+import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -19,17 +18,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             if (Objects.equals(keys[i], key)) {
-                values[i] = value; // Замінюємо значення, якщо ключ вже існує
+                values[i] = value;
                 return;
             }
         }
-
         if (size < MAX_SIZE) {
             keys[size] = key;
             values[size] = value;
             size++;
-        } else {
-            throw new IllegalStateException("Storage is full");
         }
     }
 
