@@ -2,19 +2,21 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
+import java.util.Arrays;
+
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int ARRAY_LENGTH = 10;
-    private K[] keys;
-    private V[] values;
+    private Object[] keys;
+    private Object[] values;
     private int size = 0;
 
     public StorageImpl() {
-        keys = (K[]) new Object[ARRAY_LENGTH];
-        values = (V[]) new Object[ARRAY_LENGTH];
+        keys = new Object[ARRAY_LENGTH];
+        values = new Object[ARRAY_LENGTH];
     }
 
     @Override
-    public void put(K key, V value) {
+    public void put(Object key, Object value) {
         for (int i = 0; i < size; i++) {
             if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 values[i] = value;
@@ -22,15 +24,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-        if (size < ARRAY_LENGTH) {
-            keys[size] = key;
-            values[size] = value;
-            size++;
+        if (size == keys.length) {
+            resize();
         }
+
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
-    public V get(K key) {
+    public Object get(Object key) {
         for (int i = 0; i < size; i++) {
             if ((keys[i] == key) || (keys[i] != null && keys[i].equals(key))) {
                 return values[i];
@@ -42,5 +46,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private void resize() {
+        int newCapacity = keys.length * 2;
+        keys = Arrays.copyOf(keys, newCapacity);
+        values = Arrays.copyOf(values, newCapacity);
     }
 }
