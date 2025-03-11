@@ -18,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < keys.size(); i++) {
             if ((key == null && keys.get(i) == null) || (key != null && key.equals(keys.get(i)))) {
-                values.set(i, value); // Заміна значення для існуючого ключа
+                values.set(i, value);
                 return;
             }
         }
