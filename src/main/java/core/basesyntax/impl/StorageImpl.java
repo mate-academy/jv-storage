@@ -15,23 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     @Override
-    public void put(K key, V value) {
-        for (int i = 0; i < keys.size(); i++) {
-            if ((key == null && keys.get(i) == null) || (key != null && key.equals(keys.get(i)))) {
-                values.set(i, value);
-                return;
-            }
-        }
-        if (keys.size() < MAX_SIZE) {
-            keys.add(key);
-            values.add(value);
-        } else {
-            throw new IllegalStateException("Storage has reached its maximum capacity of "
-                    + MAX_SIZE);
-        }
-    }
-
-    @Override
     public V get(K key) {
         for (int i = 0; i < keys.size(); i++) {
             if ((key == null && keys.get(i) == null) || (key != null && key.equals(keys.get(i)))) {
