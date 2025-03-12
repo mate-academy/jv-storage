@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int MAX_SIZE = 100;
+    private static final int MAX_SIZE = 10;
     private final List<K> keys;
     private final List<V> values;
 
