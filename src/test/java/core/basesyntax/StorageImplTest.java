@@ -1,6 +1,6 @@
 package core.basesyntax;
 
-import core.basesyntax.impl.StorageImpl;
+import StorageImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
