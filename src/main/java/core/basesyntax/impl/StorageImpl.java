@@ -1,24 +1,47 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+
     private static final int MAX_SIZE = 10;
-    private final List<K> keys;
-    private final List<V> values;
+    private final Object[] keys;
+    private final Object[] values;
+    private int size;
 
     public StorageImpl() {
-        keys = new ArrayList<>();
-        values = new ArrayList<>();
+        keys = new Object[MAX_SIZE];
+        values = new Object[MAX_SIZE];
+        size = 0;
+    }
+
+
+    @Override
+    public void put(K key, V value) {
+        for (int i = 0; i < size; i++) {
+            if ((keys[i] == null && key == null)
+                    || keys[i] != null && keys[i].equals(key)) {
+                values[i] = value;
+                return;
+            }
+        }
+        if (size < MAX_SIZE) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        } else {
+            throw new IllegalArgumentException("Storage full");
+        }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.size(); i++) {
-            if ((key == null && keys.get(i) == null) || (key != null && key.equals(keys.get(i)))) {
-                return values.get(i);
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null && key == null) {
+                return (V) values[i];
+            }
+            if (keys[i] != null && keys[i].equals(key)) {
+                return (V) values[i];
             }
         }
         return null;
@@ -26,6 +49,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return keys.size();
+        return size;
     }
 }
