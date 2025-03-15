@@ -2,40 +2,45 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.Arrays;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_STORAGE_CAPACITY = 10;
     private K[] keys;
     private V[] values;
+    private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_STORAGE_CAPACITY];
+        values = (V[]) new Object[MAX_STORAGE_CAPACITY];
+        size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
-
+        for (int i = 0; i < size; i++) {
+            if ((keys[i] == null && key == null) || (keys[i] != null && keys[i].equals(key))) {
+                values[i] = value;
+                return;
+            }
+        }
+        if (size < MAX_STORAGE_CAPACITY) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
     }
 
     @Override
     public V get(K key) {
-        int index = 0;
-        for (int i = 0; i < keys.length; i++) {
-           if (keys[i].equals(key)) {
-               index = i;
-           }
+        for (int i = 0; i < size; i++) {
+            if ((keys[i] == null && key == null) || (keys[i] != null && keys[i].equals(key))) {
+                return values[i];
+            }
         }
-        return values[index];
+        return null;
     }
 
     @Override
     public int size() {
-        return keys.length;
-    }
-
-    public static void main(String[] args) {
-        Storage<Integer, Box> storage = new StorageImpl<>();
-        Box box = new Box();
-        storage.put(22, box);
-        Box value = storage.get(22); // returns the Box
-        int size = storage.size(); // returns storage size
-        System.out.println(size);
-        System.out.println(value);
+        return size;
     }
 }
