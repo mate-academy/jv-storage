@@ -20,7 +20,6 @@ Your code should be easy to read. Let's move all hardcoded values to constant fi
     ```java
     public class Shelf {
         private Object[] items;
-    
         public Shelf() {
             items = new Object[6];
         }
