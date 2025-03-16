@@ -24,7 +24,7 @@ public class StorageImplTest {
     @Test
     public void addElementsToStorage() {
         Storage<Integer, String> storage = new StorageImpl<>();
-        String elementOne = "Element 1";
+        String elementOne = "null";
         String elementTwo = "Element 2";
         String elementTree = "Element 3";
 
