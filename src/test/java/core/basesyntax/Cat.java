@@ -3,6 +3,9 @@ package core.basesyntax;
 import java.util.Objects;
 
 public class Cat {
+    private final int specNum17 = 17;
+    private final int specNum31 = 31;
+    private final int fieldNullNum = 0;
     private String name;
     private String color;
 
@@ -36,13 +39,16 @@ public class Cat {
             return false;
         }
         Cat cat = (Cat) o;
-        return Objects.equals(name, cat.name)
-                && Objects.equals(color, cat.color);
+        return Objects.equals(this.name, cat.name)
+                && Objects.equals(this.color, cat.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, color);
+        int result = specNum17;
+        result = specNum31 * result + (name == null ? fieldNullNum : name.hashCode());
+        result = specNum31 * result + (color == null ? fieldNullNum : color.hashCode());
+        return result;
     }
 
     @Override
