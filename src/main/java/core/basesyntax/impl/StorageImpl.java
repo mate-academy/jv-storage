@@ -17,11 +17,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            throw new IllegalArgumentException("Can't be null");
-        }
         for (int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
+            if (isEqual(key, keys[i])) {
                 // Replace existing value
                 values[i] = value;
                 return;
@@ -38,11 +35,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (key == null) {
-            return null;
-        }
-        for ( int i = 0; i < size; i++) {
-            if (key.equals(keys[i])) {
+        for (int i = 0; i < size; i++) {
+            if (isEqual(key, keys[i])) {
                 return (V) values[i];
             }
         }
@@ -52,5 +46,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private boolean isEqual(Object obj1, Object obj2) {
+        if (obj1 == null) {
+            return obj2 == null;
+        }
+        return obj1.equals(obj2);
     }
 }
