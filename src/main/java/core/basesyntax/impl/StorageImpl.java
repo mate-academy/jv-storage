@@ -6,11 +6,12 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
-    StorageImpl<K, V>[] storage = (StorageImpl<K, V>[]) new StorageImpl[10];
+    public final int MAX_ARR_SIZE = 10;
+    StorageImpl<K, V>[] storage = (StorageImpl<K, V>[]) new StorageImpl[MAX_ARR_SIZE];
 
-    public StorageImpl(K key, V value) {
-        this.key = key;
-        this.value = value;
+    public StorageImpl() {
+        this.key = null;
+        this.value = null;
     }
 
     public K getKey() {
@@ -31,32 +32,33 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        for (int i = 0; i < storage.length; i++) {
 
-        for(int i = 0; i<storage.length; i++) {
-
-            if (storage[i].getKey() == key) {
+            if (storage[i] == null) {
+                storage[i] = new StorageImpl<>();
+                storage[i].setKey(key);
                 storage[i].setValue(value);
                 return;
             }
 
-            if(storage[i] == null) {
-                storage[i] = new StorageImpl<>(key, value);
+            if ((key == null && storage[i].getKey() == null) || (key != null && key.equals(storage[i].getKey()))) {
+                storage[i].setValue(value);
                 return;
             }
         }
-
         System.out.println("Array full.");
     }
 
     @Override
     public V get(K key) {
-      for (StorageImpl<K, V> kvStorage : storage) {
-
-        if (kvStorage.getKey() == key) {
-          return kvStorage.getValue();
+        for (StorageImpl<K, V> kvStorage : storage) {
+            if (kvStorage != null && kvStorage.getKey() != null && kvStorage.getKey().equals(key)) {
+                return kvStorage.getValue();
+            }
+            if (kvStorage != null && kvStorage.getKey() == null && key == null) {
+                return kvStorage.getValue();
+            }
         }
-      }
-
         return null;
     }
 
