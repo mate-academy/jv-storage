@@ -6,8 +6,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K key;
     private V value;
-    public final int MAX_ARR_SIZE = 10;
-    StorageImpl<K, V>[] storage = (StorageImpl<K, V>[]) new StorageImpl[MAX_ARR_SIZE];
+    private StorageImpl<K, V>[] storage = (StorageImpl<K, V>[]) new StorageImpl[10];
 
     public StorageImpl() {
         this.key = null;
