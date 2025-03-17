@@ -40,7 +40,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
 
-            if ((key == null && storage[i].getKey() == null) || (key != null && key.equals(storage[i].getKey()))) {
+            if ((key == null && storage[i].getKey() == null)
+                    || (key != null && key.equals(storage[i].getKey()))) {
+
                 storage[i].setValue(value);
                 return;
             }
@@ -63,9 +65,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        for(int i = 0; i<storage.length; i++) {
+        for (int i = 0; i < storage.length; i++) {
 
-            if(storage[i] == null) {
+            if (storage[i] == null) {
                 return i;
             }
         }
