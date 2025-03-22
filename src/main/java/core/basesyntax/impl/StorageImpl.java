@@ -30,10 +30,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             arrayOfValues[size] = value;
             size++;
         } else {
-            throw new IllegalStateException
-                    ("Provided size is to big, the maximum size is 10");
+            throw new IllegalStateException("Provided size is to big, the maximum size is 10");
         }
-
     }
 
     @Override
