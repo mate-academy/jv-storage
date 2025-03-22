@@ -30,7 +30,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             arrayOfValues[size] = value;
             size++;
         } else {
-            throw new IllegalStateException("Storage is  full");
+            throw new IllegalStateException
+                    ("Provided size is to big, the maximum size is 10");
         }
 
     }
