@@ -24,11 +24,7 @@ Your code should be easy to read. Let's move all hardcoded values to constant fi
         public Shelf() {
             items = new Object[6];
         }
-    }
-    ```
-- Refactored code:
-    ```java
-    public class Shelf {
+    }public class Shelf {
         private static final int MAX_ITEMS_NUMBER = 6;
         private Object[] items;
     
@@ -36,6 +32,10 @@ Your code should be easy to read. Let's move all hardcoded values to constant fi
             items = new Object[MAX_ITEMS_NUMBER];
         }
     }
+    ```
+- Refactored code:
+    ```java
+    
     ```
 #### Don't use any kind of List, Set or Map
 We will soon learn how these collections work.
