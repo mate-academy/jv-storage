@@ -4,28 +4,27 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] keys = (K[]) new Object[10];
-    private V[] values = (V[]) new Object[10];
-
-    private int sizer = 0;
+    private static final int ARRAY_SIZE = 10;
+    private K[] keys = (K[]) new Object[ARRAY_SIZE];
+    private V[] values = (V[]) new Object[ARRAY_SIZE];
     private int count = 0;
 
     @Override
     public void put(K key, V value) {
-
+        boolean isTheSameKey = false;
         for (int j = 0; j < count; j++) {
-
             if (Objects.equals(key, keys[j]) && values[j] != null) {
                 values[j] = value;
-                sizer--;
+                isTheSameKey = true;
                 break;
             }
         }
 
-        keys[count] = key;
-        values[count] = value;
-        count++;
-        sizer++;
+        if (!isTheSameKey) {
+            keys[count] = key;
+            values[count] = value;
+            count++;
+        }
     }
 
     @Override
@@ -34,12 +33,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < keys.length; i++) {
             if (Objects.equals(key, keys[i])) {
                 result = values[i];
-
-                if (key == null) {
-                    result = values[i];
-                    break;
-                }
-
+                break;
             }
         }
         return result;
@@ -47,8 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return sizer;
+        return count;
     }
 }
-
 
