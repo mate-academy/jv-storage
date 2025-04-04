@@ -3,32 +3,33 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static final int storageMaxSize = 10;
+    private static final int STORAGE_MAX_SIZE = 10;
     private final Object[] keys;
     private final Object[] values;
     private int size;
+
+    public StorageImpl() {
+        keys = new Object[STORAGE_MAX_SIZE];
+        values = new Object[STORAGE_MAX_SIZE];
+        size = 0;
+    }
 
     public int getSize() {
         return size;
     }
 
-    public StorageImpl() {
-        this.keys = new Object[storageMaxSize];
-        this.values = new Object[storageMaxSize];
-        this.size = 0;
-    }
-
     @Override
     public void put(K key, V value) {
-        for (int k = 0; k <= size; k++) {
-            if(keys[k] == null && values[k] == null){
-                keys[k] = key;
-                values[k] = value;
+        for (int i = 0; i < STORAGE_MAX_SIZE; i++) {
+            if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
                 size++;
                 return;
-            } else if((keys[k] != null && keys[k].equals(key))
-                    || (keys[k] == null && key == null)) {
-                values[k] = value;
+            }
+            if ((keys[i] != null && keys[i].equals(key))
+                    || (keys[i] == null && key == null)) {
+                values[i] = value;
                 return;
             }
         }
@@ -36,18 +37,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-       for (int k = 0; k < storageMaxSize; k++) {
-           if((keys[k] != null) && (keys[k].equals(key))) {
-               return (V) values[k];
-           } else if(keys[k] == null && key == null) {
-               return (V) values[k];
-           }
-       }
-       return null;
+        for (int i = 0; i < STORAGE_MAX_SIZE; i++) {
+            if ((keys[i] != null && keys[i].equals(key))
+                    || (keys[i] == null && key == null)) {
+                return (V) values[i];
+            }
+        }
+        return null;
     }
 
     @Override
     public int size() {
-        return getSize();
+        return size;
     }
 }
