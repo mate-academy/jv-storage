@@ -11,6 +11,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     protected V[] values = (V[]) new Object[MAX_SIZE];
     private int size;
 
+    public StorageImpl() {
+        this.size = 0;
+    }
+
     @Override
     public void put(K key, V value) {
         if (key == null) {
