@@ -27,7 +27,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[size] = value;
             size++;
         } else {
-            System.out.println("storage is full");
+            throw new IllegalArgumentException("the storage full");
         }
     }
 
