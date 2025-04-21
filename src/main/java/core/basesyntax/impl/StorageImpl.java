@@ -1,7 +1,4 @@
-
 public class StorageImpl<K, V> implements Storage<K, V> {
-
-
     private K[] keys;
     private V[] values;
     private int size;
@@ -11,7 +8,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values = (V[]) new Object[10];
         size = 0;
     }
-
 
     @Override
     public void put(K key, V value) {
@@ -27,7 +23,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             size++;
         } else {
             throw new IllegalStateException("State is full");
-
         }
     }
 
@@ -39,7 +34,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return null;
-
     }
 
     @Override
@@ -47,3 +41,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return size;
     }
 }
+
