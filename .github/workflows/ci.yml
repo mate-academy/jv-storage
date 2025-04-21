@@ -13,9 +13,9 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'adoptopenjdk'  # Тепер AdoptOpenJDK є частиною Adoptium
+          distribution: 'temurin'  # Заміна adoptopenjdk на temurin
 
-      # Кешування залежностей Maven
+      # Оновлена версія кешування Maven
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -26,5 +26,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn --batch-mode --update-snapshots verify
+
 
 
