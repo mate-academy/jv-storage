@@ -1,0 +1,350 @@
+[33mcommit 7b4f62d88925b2954229f4ad98ce632cc6570645[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mjv-storage-branch[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/jv-storage-branch[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 9346a74 734dfa6
+Author: Sergii Nosachenko <54940595+sergii-nosachenko@users.noreply.github.com>
+Date:   Wed Mar 12 18:48:38 2025 +0200
+
+    Merge pull request #1718 from mate-academy/sergii-nosachenko-patch-1
+    
+    Create .reviewrelatedfiles
+
+[33mcommit 734dfa60ac24681681fbf054e0d63060cf331127[m
+Author: Sergii Nosachenko <54940595+sergii-nosachenko@users.noreply.github.com>
+Date:   Wed Mar 12 18:48:15 2025 +0200
+
+    Create .reviewrelatedfiles
+
+[33mcommit 9346a7411b4f1679d6f428c03969de8953eb6d26[m
+Author: Bohdan Chupika <boroda4436@users.noreply.github.com>
+Date:   Mon Nov 13 13:06:05 2023 +0200
+
+    remove encoding config from checkstyle plugin
+
+[33mcommit 295e5f892d799d31c49baa6a760d42fa7101cc17[m
+Author: Bohdan Chupika <boroda4436@users.noreply.github.com>
+Date:   Thu Oct 12 16:21:15 2023 +0300
+
+    update JDK and checkstyle plugin versions
+
+[33mcommit 5262f656e54275014a2c99927b703701c530332f[m
+Author: Bohdan Chupika <boroda4436@users.noreply.github.com>
+Date:   Thu Oct 12 16:20:04 2023 +0300
+
+    update checklist.md reference
+
+[33mcommit 8708a3225b2820c73a6840479fcfb1a8de37a61e[m
+Merge: 34e2600 f9d4865
+Author: Vladyslav Boholii <58032907+hronograf@users.noreply.github.com>
+Date:   Tue Aug 8 16:36:28 2023 +0300
+
+    Merge pull request #1202 from Rommelua/leonid-test
+    
+    added test with custom object as a value
+
+[33mcommit f9d4865977ce72a35b4a12c57350880e80283dc5[m
+Author: Rommelua <rommel@ukr.net>
+Date:   Tue Aug 8 12:46:05 2023 +0300
+
+    Method name fixed
+
+[33mcommit a47ec236822a02eaedb212b978ddefdee701ed19[m
+Author: Rommelua <rommel@ukr.net>
+Date:   Tue Aug 8 12:37:32 2023 +0300
+
+    Test case added
+
+[33mcommit 34e2600e0749ece97ef7a71b5c03d9c582fb3063[m
+Author: Mykyta Oleksin <32339836+nacenik@users.noreply.github.com>
+Date:   Fri May 12 10:35:20 2023 +0300
+
+    Update ci.yml to java 17
+
+[33mcommit 9ab116554f2d8c1cf59309e8a701f9529982d898[m
+Author: Kseniia <59459757+KseniiaMakarova@users.noreply.github.com>
+Date:   Mon May 1 18:14:29 2023 +0300
+
+    Create checklist.md
+
+[33mcommit 277a7e05b6c64d9ed5dd1cbaac75f5225fcf4a40[m
+Merge: 4a2920a 7d0b588
+Author: Leonid Sivko <rommel@ukr.net>
+Date:   Mon Nov 7 16:15:17 2022 +0200
+
+    Merge pull request #823 from Rommelua/leonid-test
+    
+    Leonid test
+
+[33mcommit 7d0b588bdbce9a4a96aebb40319c51fa6ac4949d[m
+Merge: 07c9cdd 4a2920a
+Author: Leonid Sivko <rommel@ukr.net>
+Date:   Sun Nov 6 19:45:40 2022 +0200
+
+    Merge branch 'master' into leonid-test
+
+[33mcommit 07c9cdde3fba3952ed957d2d3b3add18dfef05b3[m
+Author: Rommelua <rommel@ukr.net>
+Date:   Sun Nov 6 19:35:55 2022 +0200
+
+    Test cases updated
+
+[33mcommit 09893ce77cf277cdf60ae03b0461f45ef045a34f[m
+Author: Rommelua <rommel@ukr.net>
+Date:   Sun Nov 6 19:33:05 2022 +0200
+
+    Test cases updated
+
+[33mcommit 02a0ecac4ed9e4f0226db4ef7c376736a59265fc[m
+Author: Rommelua <rommel@ukr.net>
+Date:   Sun Nov 6 19:30:00 2022 +0200
+
+    Test cases updated
+
+[33mcommit 4a2920a2fb6582fe0e80f4c9243945d25ae4b4bb[m
+Merge: 6ee4a8f b0e605f
+Author: Liliia Ponomarenko <96740815+liliia-ponomarenko@users.noreply.github.com>
+Date:   Fri Oct 21 16:25:02 2022 +0300
+
+    Merge pull request #777 from mate-academy/CU-313hxjc_jv-storage-tests
+    
+    [tests]: fixed addTwoElementsWithSameKey() test case
+
+[33mcommit b0e605fa647f9589db5e3ed60d4b2e5d6a21dbda[m
+Author: Liliia Ponomarenko <liliya97ua@gmail.com>
+Date:   Mon Oct 10 15:31:37 2022 +0300
+
+    fixed checkstyle
+
+[33mcommit 45ce477cc0e4ee5129c6a4c2d7a81ff6d27f76b0[m
+Author: Liliia Ponomarenko <liliya97ua@gmail.com>
+Date:   Mon Oct 10 15:28:28 2022 +0300
+
+    fixed addTwoElementsWithSameKey() test case
+
+[33mcommit 6ee4a8f53a6654a07d672e934b780638a3f34b23[m
+Author: resci <vlad.evdockimov.062@gmail.com>
+Date:   Tue Nov 23 08:35:38 2021 +0200
+
+    Update CI config
+
+[33mcommit 8dcacd16da28bf136056b23ba7f391950bfae345[m
+Author: resci <vlad.evdockimov.062@gmail.com>
+Date:   Mon Nov 22 19:36:29 2021 +0200
+
+    Migrate from Travis to Github Actions
+
+[33mcommit d830f67d21158186090ff378db6d7410672db776[m
+Author: KseniiaMakarova <59459757+KseniiaMakarova@users.noreply.github.com>
+Date:   Thu Nov 4 11:38:32 2021 +0200
+
+    added information about replacing value to README.md (#433)
+
+[33mcommit 72aa7298f7661bc1cc997e091ab4c57014b70f17[m
+Author: Bohdan Chupika <boroda4436@users.noreply.github.com>
+Date:   Wed Jun 16 07:30:57 2021 +0300
+
+    Update .travis.yml
+
+[33mcommit 51dd251e6e5cc79ca22cbe50176b3232cad19a33[m
+Author: KseniiaMakarova <59459757+KseniiaMakarova@users.noreply.github.com>
+Date:   Tue Jun 8 16:31:52 2021 +0300
+
+    fixed indentation in tests (#291)
+
+[33mcommit 488639b38dd1e51af050ce0f26223c9019e85dcc[m
+Author: KseniiaMakarova <59459757+KseniiaMakarova@users.noreply.github.com>
+Date:   Mon Jun 7 18:19:26 2021 +0300
+
+    removed redundant empty lines and fixed README (#286)
+
+[33mcommit 3a93ceba4dd62fc7e2b9f0865de6c6d4444c24a4[m
+Author: RomanDubovskyi <58385506+RomanDubovskyi@users.noreply.github.com>
+Date:   Mon Apr 12 15:13:11 2021 +0300
+
+    added test for static size variable (#283)
+    
+    * added test for static size variable
+    
+    * Update src/test/java/core/basesyntax/StorageImplTest.java
+
+[33mcommit 531b0bcd8503b18b67f6acba93a617398e636842[m
+Author: KseniiaMakarova <59459757+KseniiaMakarova@users.noreply.github.com>
+Date:   Tue Dec 15 09:08:11 2020 +0200
+
+    added `size()` method and refactored tests (#222)
+
+[33mcommit c2dc5272db20362e5cec03599f25d41cec09e4f7[m
+Merge: b1913a4 f7bd6cb
+Author: KseniiaMakarova <59459757+KseniiaMakarova@users.noreply.github.com>
+Date:   Tue Nov 17 11:49:20 2020 +0200
+
+    Merge pull request #177 from mate-academy/translate-task-add-link-to-checklist
+    
+    translated the task and added link to the common mistakes
+
+[33mcommit f7bd6cbeac26753e4a4a9d0dd8f4e51dfc962245[m
+Author: kseniia_makarova <kseniia.makarova.kyiv@gmail.com>
+Date:   Mon Nov 16 20:53:50 2020 +0200
+
+    translated the task and added link to the common mistakes
+
+[33mcommit eb123e5514a7348dc18d4ab82614a449544ed3ef[m
+Author: Leonid <rommel@ukr.net>
+Date:   Wed Aug 5 18:10:15 2020 +0300
+
+    if in put() fixed
+
+[33mcommit 649dccf89034e088e14bc8bd18360530423f3114[m
+Author: Leonid <rommel@ukr.net>
+Date:   Wed Aug 5 18:08:56 2020 +0300
+
+    if in put() fixed
+
+[33mcommit 5cfe7e9d0d17fb37ba0d6eb5e561f82693887d12[m
+Author: Leonid <rommel@ukr.net>
+Date:   Wed Aug 5 18:05:21 2020 +0300
+
+    if in put() fixed
+
+[33mcommit ec3ab6166cd0725d7229727997123dc96e110c7b[m
+Author: Leonid <rommel@ukr.net>
+Date:   Wed Aug 5 15:13:51 2020 +0300
+
+    if in put() fixed
+
+[33mcommit 76eb8981d4a5c4bbe3988b715dc5e7ff081eb300[m
+Author: Leonid <rommel@ukr.net>
+Date:   Wed Aug 5 11:52:30 2020 +0300
+
+    comments fixed
+
+[33mcommit 628499fe6ab2cfe93f6c2fc8e1ef01a0cc346b97[m
+Author: Leonid <rommel@ukr.net>
+Date:   Tue Aug 4 21:54:15 2020 +0300
+
+    hashCode() changed
+
+[33mcommit 27bd93e5573041f4b7f1cbddb8984d5bfe0ca133[m
+Author: Leonid <rommel@ukr.net>
+Date:   Tue Aug 4 21:46:04 2020 +0300
+
+    equals() changed
+
+[33mcommit f2bada45b7ee40d36ce3a103c691c0faf12a117b[m
+Author: Leonid <rommel@ukr.net>
+Date:   Tue Aug 4 18:07:17 2020 +0300
+
+    put() fix
+
+[33mcommit 4917783b17babd6e02fd258f880aac0a878fcea3[m
+Author: Leonid <rommel@ukr.net>
+Date:   Tue Aug 4 15:22:49 2020 +0300
+
+    useless methods removed
+
+[33mcommit 02aab2147c5efe347ea5e2dc2138e4088804fba6[m
+Author: Leonid <rommel@ukr.net>
+Date:   Tue Aug 4 15:21:23 2020 +0300
+
+    size variable added
+
+[33mcommit 20f6320acd6aa2d7cde7336b523cc9153063459f[m
+Author: Leonid <rommel@ukr.net>
+Date:   Tue Aug 4 14:35:01 2020 +0300
+
+    equels() changed
+
+[33mcommit 1664ab88e3a90e42c079e2027cad4e1ee02cf6eb[m
+Author: Leonid <rommel@ukr.net>
+Date:   Mon Aug 3 17:03:21 2020 +0300
+
+    task done
+
+[33mcommit b1913a4c2392df463bfe3700959a79f7e4219aa4[m
+Author: Sofia Diakonova <36365171+Sofasmile@users.noreply.github.com>
+Date:   Thu Mar 26 11:48:46 2020 +0200
+
+    Update pom.xml
+
+[33mcommit e95173cf05b1b4baf74eddeffeb3346700375b4b[m
+Author: Sofia Diakonova <36365171+Sofasmile@users.noreply.github.com>
+Date:   Fri Feb 7 16:58:08 2020 +0200
+
+    Fix test (#75)
+    
+    * fixed some bags, added new tests
+    
+    * fixed some bags
+
+[33mcommit 521bed39d86c523e62eb971de9b8bc2d09760c3d[m
+Merge: ad37199 442d005
+Author: Pavel Kurilyuk <50627236+Tarabarnik@users.noreply.github.com>
+Date:   Tue Dec 31 11:32:55 2019 +0200
+
+    Merge pull request #74 from mate-academy/fixTest
+    
+    fixed test for add with key null
+
+[33mcommit 442d00508308c222fdb9e3bff5d3a8e1608b831c[m
+Author: pavelkurilyuk <pavelkurilyuk97@gmail.com>
+Date:   Thu Dec 26 13:11:54 2019 +0200
+
+    fixed test for add with key null
+
+[33mcommit ad3719952275b9992c623259bc7ffe16f1d885ec[m
+Author: Sofia Diakonova <36365171+Sofasmile@users.noreply.github.com>
+Date:   Mon Sep 23 17:28:27 2019 +0300
+
+    removed dot
+
+[33mcommit e235804c7ce950596dadf4044e093b5b26c695ec[m
+Author: Sofia Diakonova <36365171+Sofasmile@users.noreply.github.com>
+Date:   Thu Sep 12 13:49:02 2019 +0300
+
+    fixed some bags, added new tests (#46)
+
+[33mcommit 23bb94fded779ccb032e0277c2d80f5fd4312f87[m
+Merge: 930b7e8 eb5381b
+Author: Sofia Diakonova <36365171+Sofasmile@users.noreply.github.com>
+Date:   Mon Sep 9 13:30:55 2019 +0300
+
+    Merge pull request #45 from boroda4436/patch-3
+    
+    Update README.md
+
+[33mcommit eb5381b50c54740de898af56c7e44d554b866444[m
+Author: Bohdan Chupika <boroda4436@users.noreply.github.com>
+Date:   Mon Sep 9 12:55:30 2019 +0300
+
+    Update README.md
+
+[33mcommit 930b7e857579b087e93809a4deb54181b096306c[m
+Merge: 29adafd 82792f9
+Author: Sofia Diakonova <36365171+Sofasmile@users.noreply.github.com>
+Date:   Tue Aug 27 09:40:59 2019 +0300
+
+    Merge pull request #1 from Vitiatte/testForStorage
+    
+    Added test for StorageImpl
+
+[33mcommit 82792f95619b6d6411b0e510c2c2d8466f631e1d[m
+Author: Vlad <wald.pavliuk@icloud.com>
+Date:   Sat Aug 24 21:46:04 2019 +0300
+
+    change readme
+
+[33mcommit 2824a489bcc5118b1640e162526e5040fbe7589a[m
+Author: Vlad <wald.pavliuk@icloud.com>
+Date:   Sat Aug 24 21:36:03 2019 +0300
+
+    small fix
+
+[33mcommit aaf9c23e81c6a7420990115694072a067b017367[m
+Author: Vlad <wald.pavliuk@icloud.com>
+Date:   Sat Aug 24 14:46:27 2019 +0300
+
+    Add test for StorageImpl
+
+[33mcommit 29adafdbe84fc0c9e3ed740546f4bc2ee4a85dbc[m
+Author: Sofia Diakonova <36365171+Sofasmile@users.noreply.github.com>
+Date:   Tue Aug 20 13:53:11 2019 +0000
+
+    Initial commit
