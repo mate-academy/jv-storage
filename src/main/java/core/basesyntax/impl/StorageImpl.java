@@ -1,6 +1,7 @@
-import java.sql.Array;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+
+
     private K[] keys;
     private V[] values;
     private int size;
@@ -20,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 return;
             }
         }
-        if (size < 10 ) {
+        if (size < 10) {
             keys[size] = key;
             values[size] = value;
             size++;
