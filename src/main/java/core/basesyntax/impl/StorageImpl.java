@@ -20,6 +20,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             if (keys[i] != null && keys[i].equals(key) || keys[i] == key) {
                 values[i] = value;
+
+            if (key == null ? keys[i] == null : key.equals(keys[i])) {
+                values[i] = value;
+
                 return;
             }
         }
@@ -36,6 +40,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             if (keys[i] != null && keys[i].equals(key) || keys[i] == key) {
+                return values[i];
+            }
+        }
+        return null;
+
+            if (key == null ? keys[i] == null : key.equals(keys[i])) {
                 return values[i];
             }
         }
