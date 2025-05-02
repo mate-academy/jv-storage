@@ -6,6 +6,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private final K[] keys;
     private final V[] values;
+    private int size;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_ITEMS_NUMBER];
@@ -14,38 +15,38 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == null && values[i] == null) {
-                keys[i] = key;
-                values[i] = value;
-                break;
-            }
-
-            if ((keys[i] == key && values[i] != null) || (key != null && key.equals(keys[i]))) {
-                values[i] = value;
-                break;
-            }
+        int index = -1;
+        index = findKeyIndex(key);
+        if (index > -1) {
+            keys[index] = key;
+            values[index] = value;
+        } else if (size < MAX_ITEMS_NUMBER) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keys[i] == key || (key != null && key.equals(keys[i]))) {
-                return values[i];
-            }
+        int index = findKeyIndex(key);
+        if (index > -1) {
+            return values[index];
         }
         return null;
     }
 
     @Override
     public int size() {
-        int count = 0;
-        for (Object value : values) {
-            if (value != null) {
-                count++;
+        return size;
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < keys.length; i++) {
+            if ((keys[i] == key && values[i] != null) || (key != null && key.equals(keys[i]))) {
+                return i;
             }
         }
-        return count;
+        return -1;
     }
 }
