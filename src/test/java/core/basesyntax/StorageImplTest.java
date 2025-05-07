@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class StorageImplTest {
+
     @Test
     public void checkSizeIsNonStatic() {
         Storage<Integer, String> firstInstance = new StorageImpl<>();
