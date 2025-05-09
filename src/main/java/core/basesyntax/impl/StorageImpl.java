@@ -20,7 +20,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         boolean isContaincKey = false;
 
         for (int i = 0; i < getKees().length; i++) {
-            if (key != null &&  kees[i].equals(key)) {
+            if (key != null && getKees()[i].equals(key)) {
                 getValue()[i] = value;
                 isContaincKey = true;
             }
