@@ -9,6 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     public K[] getKees() {
         return kees;
+
     }
 
     public V[] getValue() {
