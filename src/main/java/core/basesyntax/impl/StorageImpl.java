@@ -5,7 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEM = 10;
     private final Object[][] storage;
-    private int countFillItems = 0;
+    private int size = 0;
 
     public StorageImpl() {
         this.storage = new Object[MAX_ITEM][2];
@@ -15,9 +15,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int itemIndex = getItemIndex(key);
         if (itemIndex == -1) {
-            int nextEmptyIndex = countFillItems;
+            int nextEmptyIndex = size;
             storage[nextEmptyIndex] = new Object[]{key, value};
-            countFillItems++;
+            size++;
             return;
         }
 
@@ -37,13 +37,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return countFillItems;
+        return size;
     }
 
     private int getItemIndex(K key) {
-        for (int i = 0; i < countFillItems; i++) {
-            if ((key == null && storage[i][0] == null)
-                    || (key != null && key.equals(storage[i][0]))) {
+        for (int i = 0; i < size; i++) {
+            if (key == null && storage[i][0] == null
+                    || key != null && key.equals(storage[i][0])) {
                 return i;
             }
         }
