@@ -17,7 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (itemIndex == -1) {
             int nextEmptyIndex = countFillItems;
             storage[nextEmptyIndex] = new Object[]{key, value};
-            countFillItems ++;
+            countFillItems++;
             return;
         }
 
