@@ -17,6 +17,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        if (size >= MAX_ITEMS_NUMBER) {
+            return;
+        }
         boolean isRepeted = false;
         for (int i = 0; i < size; i++) {
             if (Objects.equals(key, keyArray[i])) {
