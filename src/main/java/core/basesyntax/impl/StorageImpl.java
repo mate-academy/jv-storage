@@ -6,23 +6,23 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private Object[] keys = new Object[10];
     private Object[] values = new Object[10];
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < keys.length; i++) {
-            if (key == null && keys[i] == null) {
-                keys[i] = key;
+        boolean wasChange = false;
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null && key == null || (keys[i] != null
+                    && key != null) && key.equals(keys[i])) {
                 values[i] = value;
-                break;
-            } else if ((key != null && keys[i] != null) && key.equals(keys[i])) {
-                keys[i] = key;
-                values[i] = value;
-                break;
-            } else if (keys[i] == null && values[i] == null) {
-                keys[i] = key;
-                values[i] = value;
+                wasChange = true;
                 break;
             }
+        }
+        if (wasChange == false) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
     }
 
@@ -43,12 +43,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int arraysSize = 0;
-        for (int i = 0; i < values.length; i++) {
-            if (values[i] != null || keys[i] != null) {
-                arraysSize++;
-            }
-        }
-        return arraysSize;
+        return size;
     }
 }
