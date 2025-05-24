@@ -3,33 +3,24 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K keyClasses;
-    private V valueClasses;
 
-    private StorageImpl[] storages = new StorageImpl[10];
-
-    public StorageImpl() {
-    }
-
-    public StorageImpl(K keyClasses, V valueClasses) {
-        this.keyClasses = keyClasses;
-        this.valueClasses = valueClasses;
-    }
+    private Object[] keys = new Object[10];
+    private Object[] values = new Object[10];
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < storages.length; i++) {
-            if (storages[i] != null) {
-                if (storages[i].keyClasses == null && key != null) {
-                    continue;
-                }
-                if (storages[i].keyClasses == key || storages[i].keyClasses.equals(key)) {
-                    storages[i] = new StorageImpl(key, value);
-                    break;
-                }
-            }
-            if (storages[i] == null) {
-                storages[i] = new StorageImpl(key, value);
+        for (int i = 0; i < keys.length; i++) {
+            if (key == null && keys[i] == null) {
+                keys[i] = key;
+                values[i] = value;
+                break;
+            } else if ((key != null && keys[i] != null) && key.equals(keys[i])) {
+                keys[i] = key;
+                values[i] = value;
+                break;
+            } else if (keys[i] == null && values[i] == null) {
+                keys[i] = key;
+                values[i] = value;
                 break;
             }
         }
@@ -37,21 +28,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < storages.length; i++) {
-            if (storages[i] == null) {
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i] == null && key == null) {
+                return (V) values[i];
+            } else if (keys[i] == null && key != null) {
                 continue;
             }
-            if (storages[i].keyClasses == null && key != null) {
-                continue;
-            }
-            if (storages[i].keyClasses == null && key == null) {
-                return (V) storages[i].valueClasses;
-            }
-            if (storages[i] == null) {
-                continue;
-            }
-            if (storages[i].keyClasses.equals(key)) {
-                return (V) storages[i].valueClasses;
+            if (keys[i].equals(key)) {
+                return (V) values[i];
             }
         }
         return null;
@@ -59,13 +43,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int counter = 0;
-        for (StorageImpl storage : storages) {
-            if (storage == null) {
-                break;
+        int arraysSize = 0;
+        for (int i = 0; i < values.length; i++) {
+            if (values[i] != null || keys[i] != null) {
+                arraysSize++;
             }
-            counter++;
         }
-        return counter;
+        return arraysSize;
     }
 }
