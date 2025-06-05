@@ -5,20 +5,23 @@ import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int ARRAY_SIZE = 10;
-    private K[] keys = (K[]) new Object[ARRAY_SIZE];
-    private V[] values = (V[]) new Object[ARRAY_SIZE];
+
+    @SuppressWarnings("unchecked")
+    private final K[] keys = (K[]) new Object[ARRAY_SIZE];
+
+    @SuppressWarnings("unchecked")
+    private final V[] values = (V[]) new Object[ARRAY_SIZE];
+
     private int count = 0;
 
     @Override
     public void put(K key, V value) {
-        // Sprawdź, czy klucz już istnieje
         for (int i = 0; i < count; i++) {
             if (Objects.equals(key, keys[i])) {
-                values[i] = value; // nadpisz wartość
+                values[i] = value;
                 return;
             }
         }
-        // Jeśli nie istnieje i jest miejsce – dodaj nową parę
         if (count < ARRAY_SIZE) {
             keys[count] = key;
             values[count] = value;
