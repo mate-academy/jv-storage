@@ -16,7 +16,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
 
-        // Додаємо новий ключ-значення
         for (int i = 0; i < keysStorage.length; i++) {
             if (keysStorage[i] == null && itemsStorage[i] == null) {
                 keysStorage[i] = key;
