@@ -17,6 +17,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = indexOf(key);
         if (index == -1) {
+            if (size == MAXIMUM_NUMBER_OF_ELEMENTS) {
+                return;
+            }
             keys[size] = key;
             values[size] = value;
             size++;
