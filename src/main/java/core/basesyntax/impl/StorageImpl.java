@@ -33,8 +33,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (size >= MAX_LENGTH_ITEMS) {
             throw new IllegalStateException("Storage is full");
         }
-        if (findKeyIndex(key) != -1) {
-            values[findKeyIndex(key)] = value;
+
+        int index = findKeyIndex(key);
+
+        if (index != -1) {
+            values[index] = value;
         } else {
             keys[size] = key;
             values[size] = value;
@@ -45,10 +48,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        if (findKeyIndex(key) == -1) {
-            return null;
-        }
-        return values[findKeyIndex(key)];
+        int index = findKeyIndex(key);
+        return index == -1 ? null : values[index];
     }
 
     @Override
