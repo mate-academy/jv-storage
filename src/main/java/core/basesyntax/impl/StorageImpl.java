@@ -6,48 +6,49 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_LENGTH_ITEMS = 10;
 
     private int size;
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
-        keys = new Object[MAX_LENGTH_ITEMS];
-        values = new Object[MAX_LENGTH_ITEMS];
+        keys = (K[]) new Object[MAX_LENGTH_ITEMS];
+        values = (V[]) new Object[MAX_LENGTH_ITEMS];
         size = 0;
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null && key == null) {
+                return i;
+            }
+            if (keys[i] != null && keys[i].equals(key)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null) { // оба null → значит это тот же ключ
-                values[i] = value;
-                return;
-            }
-            if (keys[i] != null && keys[i].equals(key)) { // обычное сравнение
-                values[i] = value;
-                return;
-            }
-        }
-
         if (size >= MAX_LENGTH_ITEMS) {
             throw new IllegalStateException("Storage is full");
         }
+        if (findKeyIndex(key) != -1) {
+            values[findKeyIndex(key)] = value;
+        } else {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        }
 
-        keys[size] = key;
-        values[size] = value;
-        size++;
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i] == null && key == null) {
-                return (V) values[i];
-            }
-            if (keys[i] != null && keys[i].equals(key)) {
-                return (V) values[i];
-            }
+        if (findKeyIndex(key) == -1) {
+            return null;
         }
-        return null;
+        return values[findKeyIndex(key)];
     }
 
     @Override
