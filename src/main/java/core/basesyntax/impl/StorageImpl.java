@@ -1,13 +1,21 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int PAIRS_MAX_LEN = 10;
 
-    private final K[] keys = (K[])(new Object[PAIRS_MAX_LEN]);
-    private final V[] values = (V[])(new Object[PAIRS_MAX_LEN]);
-    private int size = 0;
+    private final List<K> keys;
+    private final List<V> values;
+    private int size;
+
+    public StorageImpl() {
+        this.keys = new ArrayList<>();
+        this.values = new ArrayList<>();
+        this.size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
@@ -28,7 +36,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return null;
         }
 
-        return this.values[keyIndex];
+        return this.values.get(keyIndex);
     }
 
     @Override
@@ -38,7 +46,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getPairIndexByKey(K key) {
         for (int i = 0; i < this.size; i++) {
-            K currentKey = this.keys[i];
+            K currentKey = this.keys.get(i);
 
             if (key == null ? currentKey == key : key.equals(currentKey)) {
                 return i;
@@ -55,12 +63,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             throw new RuntimeException("You cannot add new pair! An array is full.");
         }
 
-        this.keys[len] = key;
-        this.values[len] = value;
+        this.keys.add(key);
+        this.values.add(value);
         this.size++;
     }
 
     private void changeValue(int index, V value) {
-        this.values[index] = value;
+        this.values.set(index, value);
     }
 }
