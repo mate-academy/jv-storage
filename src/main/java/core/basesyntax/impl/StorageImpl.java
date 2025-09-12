@@ -62,3 +62,4 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return a.equals(b);
     }
 }
+
