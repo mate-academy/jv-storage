@@ -5,8 +5,8 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static class Entry<K, V> {
-        K key;
-        V value;
+        private K key;
+        private V value;
 
         Entry(K key, V value) {
             this.key = key;
