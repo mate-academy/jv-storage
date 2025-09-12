@@ -13,9 +13,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
+    private static final int MAX_CAPACITY = 10;
     private Entry<K, V>[] entries;
     private int size;
-    private static final int MAX_CAPACITY = 10;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
