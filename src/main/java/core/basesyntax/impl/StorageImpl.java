@@ -3,7 +3,6 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
     private static class Entry<K, V> {
         private K key;
         private V value;
@@ -16,20 +15,20 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private Entry<K, V>[] entries;
     private int size;
+    private static final int MAX_CAPACITY = 10;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-        entries = new Entry[10];
+        entries = new Entry[MAX_CAPACITY];
         size = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (keysEqual(entries[i].key, key)) {
-                entries[i].value = value; // replace
-                return;
-            }
+        int index = findIndexByKey(key);
+        if (index != -1) {
+            entries[index].value = value; // replace existing
+            return;
         }
         if (size == entries.length) {
             throw new IllegalStateException("Map is full");
@@ -39,17 +38,22 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keysEqual(entries[i].key, key)) {
-                return entries[i].value;
-            }
-        }
-        return null;
+        int index = findIndexByKey(key);
+        return (index != -1) ? entries[index].value : null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    private int findIndexByKey(K key) {
+        for (int i = 0; i < size; i++) {
+            if (keysEqual(entries[i].key, key)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private boolean keysEqual(K a, K b) {
@@ -62,4 +66,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return a.equals(b);
     }
 }
-
