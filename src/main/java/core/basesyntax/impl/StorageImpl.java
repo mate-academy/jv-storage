@@ -6,7 +6,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static class Entry<K, V> {
         private K key;
         private V value;
-
         Entry(K key, V value) {
             this.key = key;
             this.value = value;
@@ -19,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-        entries = new Entry[MAX_CAPACITY];
+        entries = (Entry<K, V>[]) new Entry[MAX_CAPACITY];
         size = 0;
     }
 
