@@ -1,10 +1,8 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private final List<K> keys = new ArrayList<K>();

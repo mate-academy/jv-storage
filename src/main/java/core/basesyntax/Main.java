@@ -8,7 +8,6 @@ public class Main {
 
         storage.put("test", 1);
         storage.put("test", 2);
-//        storage.put("test", 3);
         System.out.println(storage.get("tes2t"));
     }
 }
