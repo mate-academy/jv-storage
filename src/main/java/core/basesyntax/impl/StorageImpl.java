@@ -11,7 +11,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-
         this.keys = (K[]) new Object[MAX_CAPACITY];
         this.values = (V[]) new Object[MAX_CAPACITY];
         this.size = 0;
