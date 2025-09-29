@@ -1,11 +1,11 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final StorageCell<K, V>[] array = new StorageCell[10];
+    private static final int MAX_CAPACITY = 10;
+    private final StorageCell<K, V>[] array = new StorageCell[MAX_CAPACITY];
 
     @Override
     public void put(K key, V value) {
@@ -15,12 +15,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 continue;
             }
             K storageKey = storageCell.getKey();
-            if (Objects.equals(storageKey, key)) {
+            if (storageKey == key || storageKey != null && storageKey.equals(key)) {
                 storageCell.setValue(value);
                 present = true;
             }
         }
         if (!present) {
+            if (size() == MAX_CAPACITY) {
+                throw new IllegalStateException("Too many items in storage");
+            }
             this.array[size()] = new StorageCell<K, V>(key, value);
         }
     }
@@ -32,7 +35,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 continue;
             }
             K storageKey = storageCell.getKey();
-            if (Objects.equals(storageKey, key)) {
+            if (storageKey == key || storageKey != null && storageKey.equals(key)) {
                 return storageCell.getValue();
             }
         }

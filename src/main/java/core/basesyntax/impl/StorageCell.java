@@ -1,7 +1,5 @@
 package core.basesyntax.impl;
 
-import java.util.Objects;
-
 public class StorageCell<K, V> {
     private K key;
     private V value;
