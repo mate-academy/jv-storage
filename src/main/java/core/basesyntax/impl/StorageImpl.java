@@ -7,12 +7,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
+    private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_STORAGE_SIZE];
         this.values = (V[]) new Object[MAX_STORAGE_SIZE];
+        this.size = 0;
     }
 
     private int findKeyIndex(K key) {
@@ -27,7 +28,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public void put(K key, V value) {
         int index = findKeyIndex(key);
-
         if (index != -1) {
             values[index] = value;
         } else {
