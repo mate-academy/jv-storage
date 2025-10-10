@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
@@ -10,18 +9,17 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int count;
 
     public StorageImpl() {
-        this.keys = new Object[MAX_SIZE];
-        this.values = new Object[MAX_SIZE];
-        this.count = 0;
+        keys = new Object[MAX_SIZE];
+        values = new Object[MAX_SIZE];
+        count = 0;
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < count; i++) {
-            if (Objects.equals(keys[i], key)) {
-                values[i] = value;
-                return;
-            }
+        int index = indexOfKey(key);
+        if (index != -1) {
+            values[index] = value;
+            return;
         }
         if (count >= MAX_SIZE) {
             throw new IllegalStateException("Storage is full (max " + MAX_SIZE + ")");
@@ -34,10 +32,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     @Override
     public V get(K key) {
-        for (int i = 0; i < count; i++) {
-            if (Objects.equals(keys[i], key)) {
-                return (V) values[i];
-            }
+        int index = indexOfKey(key);
+        if (index != -1) {
+            return (V) values[index];
         }
         return null;
     }
@@ -45,5 +42,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return count;
+    }
+
+    private int indexOfKey(K key) {
+        for (int i = 0; i < count; i++) {
+            if (keysEqual(keys[i], key)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean keysEqual(Object a, Object b) {
+        return a == b || (a != null && a.equals(b));
     }
 }
