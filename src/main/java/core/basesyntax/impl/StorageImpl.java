@@ -6,13 +6,14 @@ import java.util.Objects;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int maxSize = 10;
 
-    private Object[] keys;
-    private Object[] values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
+    @SuppressWarnings("uncheked")
     public StorageImpl() {
-        this.keys = new Object[maxSize];
-        this.values = new Object[maxSize];
+        this.keys = (K[]) new Object[maxSize];
+        this.values = (V[]) new Object[maxSize];
         this.size = 0;
     }
 
@@ -46,8 +47,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int getIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) {
-                return i;
+            K currentKey = keys[i];
+            if (key == null) {
+                if (currentKey == null) {
+                    return i;
+                }
+            } else {
+                if (key.equals(currentKey)) {
+                    return i;
+                }
             }
         }
         return -1;
