@@ -9,7 +9,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private V[] values;
     private int size;
 
-    @SuppressWarnings("uncheked")
+    @SuppressWarnings("uncheсked")
     public StorageImpl() {
         this.keys = (K[]) new Object[maxSize];
         this.values = (V[]) new Object[maxSize];
