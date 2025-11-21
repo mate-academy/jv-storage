@@ -25,6 +25,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         if (!keyExists) {
+            if (size == keys.length) {
+                throw new IllegalStateException("Storage is full");
+            }
             values[size] = value;
             keys[size] = key;
             size++;
