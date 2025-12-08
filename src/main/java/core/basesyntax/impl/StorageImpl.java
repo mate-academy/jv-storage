@@ -1,15 +1,13 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NUMBER = 10;
     private final K[] keys;
     private final V[] values;
-    private int size;
+    private int size = 0;
 
-    @SuppressWarnings("unchecked")
     public StorageImpl() {
         keys = (K[]) new Object[NUMBER];
         values = (V[]) new Object[NUMBER];
@@ -17,25 +15,29 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(key, keys[i])) {
-                values[i] = value;
-                return;
-            }
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            values[index] = value;
+        } else {
+            keys[size] = key;
+            values[size] = value;
+            size++;
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
     }
 
     @Override
     public V get(K key) {
+        int index = findKeyIndex(key);
+        return index != -1 ? values[index] : null;
+    }
+
+    private int findKeyIndex(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(key, keys[i])) {
-                return values[i];
+            if (key == null ? keys[i] == null : key.equals(keys[i])) {
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     @Override
