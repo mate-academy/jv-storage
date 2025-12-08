@@ -7,6 +7,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private final K[] keys;
     private final V[] values;
     private int size;
+
     public StorageImpl() {
         keys = (K[]) new Object[NUMBER];
         values = (V[]) new Object[NUMBER];
