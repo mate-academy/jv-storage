@@ -6,11 +6,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int NUMBER = 10;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
-
+    private int size;
     public StorageImpl() {
         keys = (K[]) new Object[NUMBER];
         values = (V[]) new Object[NUMBER];
+        size = 0;
     }
 
     @Override
