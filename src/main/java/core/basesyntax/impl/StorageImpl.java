@@ -1,15 +1,12 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-
 import java.util.Objects;
-
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
     private Entry<K, V>[] entries = (Entry<K, V>[]) new Entry[MAX_CAPACITY];
     private int size = 0;
-
 
     private static class Entry<K, V> {
         private final K key;
