@@ -1,12 +1,16 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_CAPACITY = 10;
-    private Entry<K, V>[] entries = (Entry<K, V>[]) new Entry[MAX_CAPACITY];
-    private int size = 0;
+    private Entry<K, V>[] entries;
+    private int size;
+
+    public StorageImpl() {
+        entries = (Entry<K, V>[]) new Entry[MAX_CAPACITY];
+        size = 0;
+    }
 
     private static class Entry<K, V> {
         private final K key;
@@ -20,7 +24,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOfKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(entries[i].key, key)) {
+            K currentKey = entries[i].key;
+
+            if (currentKey == null && key == null) {
+                return i;
+            }
+
+            if (currentKey != null && currentKey.equals(key)) {
                 return i;
             }
         }
