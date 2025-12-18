@@ -3,17 +3,65 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_CAPACITY = 10;
+    private Entry<K, V>[] entries;
+    private int size;
+
+    public StorageImpl() {
+        entries = (Entry<K, V>[]) new Entry[MAX_CAPACITY];
+        size = 0;
+    }
+
+    private static class Entry<K, V> {
+        private final K key;
+        private V value;
+
+        Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private int indexOfKey(K key) {
+        for (int i = 0; i < size; i++) {
+            K currentKey = entries[i].key;
+
+            if (currentKey == null && key == null) {
+                return i;
+            }
+
+            if (currentKey != null && currentKey.equals(key)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public void put(K key, V value) {
+        int index = indexOfKey(key);
+
+        if (index != -1) {
+            entries[index].value = value;
+            return;
+        }
+
+        if (size == MAX_CAPACITY) {
+            throw new RuntimeException("Storage is full");
+        }
+
+        entries[size] = new Entry<>(key, value);
+        size++;
     }
 
     @Override
     public V get(K key) {
-        return null;
+        int index = indexOfKey(key);
+        return index == -1 ? null : entries[index].value;
     }
 
     @Override
     public int size() {
-        return -1;
+        return size;
     }
 }
