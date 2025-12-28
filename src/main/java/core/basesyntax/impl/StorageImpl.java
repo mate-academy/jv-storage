@@ -4,8 +4,14 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private StorageItem<K,V>[] storage = new StorageItem[MAX_STORAGE_SIZE];
-    private int counter = 0;
+    private StorageItem<K,V>[] storage;
+    private int counter;
+
+    @SuppressWarnings("unchecked")
+    public StorageImpl() {
+        this.storage = new StorageItem[MAX_STORAGE_SIZE];
+        this.counter = 0;
+    }
 
     @Override
     public void put(K key, V value) {
