@@ -29,7 +29,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             // Używamy Objects.equals, aby bezpiecznie porównać klucze (też te null)
             if (java.util.Objects.equals(key, keyS[i])) {
-                return  (V) values[i];
+                return (V) values[i];
             }
         }
         return null;

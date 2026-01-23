@@ -2,8 +2,6 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import javax.swing.*;
-
 public class Main {
     public static void main(String[] args) {
         Storage<Integer, String> storage = new StorageImpl<>();
