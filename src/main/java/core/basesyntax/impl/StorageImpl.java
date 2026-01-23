@@ -14,7 +14,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
             // Używamy Objects.equals, aby bezpiecznie porównać klucze (też te null)
-            if (java.util.Objects.equals(key,keyS[i])) {
+            if (key == keyS[i] || (key != null && key.equals(keyS[i]))){
                 values[i] = value;
                 return;
             }
@@ -28,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < size; i++) {
             // Używamy Objects.equals, aby bezpiecznie porównać klucze (też te null)
-            if (java.util.Objects.equals(key, keyS[i])) {
+            if (key == keyS[i] || (key != null && key.equals(keyS[i]))) {
                 return (V) values[i];
             }
         }
