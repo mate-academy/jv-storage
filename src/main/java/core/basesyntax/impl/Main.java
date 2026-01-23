@@ -8,7 +8,6 @@ public class Main {
     public static void main(String[] args) {
         Storage<Integer, String> storage = new StorageImpl<>();
 
-
         storage.put(0, "Cześć");
         String value = storage.get(0);
 
