@@ -17,7 +17,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
                 pairs[i] = new Pair<>(key, value);
                 return;
             } else if (pairs[i].hasKey(key)) {
-                pairs[i].key = key;
                 pairs[i].value = value;
                 return;
             }
