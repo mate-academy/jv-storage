@@ -4,7 +4,11 @@ import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     public static final int MAX_SIZE = 10;
-    private final Pair<K, V>[] pairs = new Pair[MAX_SIZE];
+    private final Pair<K, V>[] pairs;
+
+    public StorageImpl() {
+        pairs = new Pair[MAX_SIZE];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -24,7 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < MAX_SIZE; i++) {
             if (pairs[i] == null) {
-                return null;
+                continue;
             }
             if (pairs[i].hasKey(key)) {
                 return pairs[i].value;
@@ -37,9 +41,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public int size() {
         int size = 0;
         for (int i = 0; i < MAX_SIZE; i++) {
-            if (pairs[i] == null) {
-                return size;
-            } else {
+            if (pairs[i] != null) {
                 size++;
             }
         }
@@ -64,15 +66,8 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         public boolean hasKey(K input) {
-            if (input == key) {
-                return true;
-            }
-            if (key != null && input != null) {
-                if (input.getClass() == key.getClass()) {
-                    return input.equals(key);
-                }
-            }
-            return false;
+            return (key == input)
+                    || (key != null && key.equals(input));
         }
     }
 }
