@@ -9,10 +9,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (Pair<K, V> p : pairs) {
-            if (p.key == null || p.hasKey(key)) {
-                p.key = key;
-                p.value = value;
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (pairs[i] == null) {
+                pairs[i] = new Pair<>(key, value);
+                return;
+            } else if (pairs[i].hasKey(key)) {
+                pairs[i].key = key;
+                pairs[i].value = value;
                 return;
             }
         }
@@ -20,9 +23,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (Pair<K, V> p : pairs) {
-            if (p.hasKey(key)) {
-                return p.value;
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (pairs[i] == null) {
+                return null;
+            }
+            if (pairs[i].hasKey(key)) {
+                return pairs[i].value;
             }
         }
         return null;
@@ -30,15 +36,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        int i = 0;
-        for (Pair<K, V> p : pairs) {
-            if (p.key != null) {
-                i++;
+        int size = 0;
+        for (int i = 0; i < MAX_SIZE; i++) {
+            if (pairs[i] == null) {
+                return size;
             } else {
-                return i;
+                size++;
             }
         }
-        return i;
+        return size;
     }
 
     static class Pair<K, V> {
@@ -59,7 +65,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         public boolean hasKey(K input) {
-            if (key == null) {
+            if (key == null || input == null) {
                 return false;
             }
             if (input == key) {
