@@ -18,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = getKeyIndex(key);
 
-        if (index != -1) {
+        if (index != NO_SUCH_INDEX) {
             values[index] = value;
             return;
         }
