@@ -3,10 +3,10 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_SIZE = 10;
     private final K[] keys;
     private final V[] values;
     private int size = 0;
-    private static final int MAX_SIZE = 10;
 
     public StorageImpl() {
         this.keys = (K[]) new Object[MAX_SIZE];
