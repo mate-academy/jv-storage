@@ -1,19 +1,16 @@
 # jv-storage
 
-Implement the `Storage` of the `key-value` type that is parameterized with two types of data. 
-You should be able to put new key-value pairs and get value by key.
+Реалізуйте Storage типу key-value, який параметризується двома типами даних.
 
-If you are given the key-value pair, and the storage already contains this key, you should replace the value.
+Ви повинні мати можливість додавати нові пари ключ-значення та отримувати значення за ключем.
+Якщо вам передається пара ключ-значення, і сховище вже містить цей ключ, ви повинні замінити значення.
 
-Example:
-```java
-Storage<Integer, Box> storage = new StorageImpl<>(); 
+Приклад:
+```javaStorage<Integer, Box> storage = new StorageImpl<>(); 
 Box box = new Box();
 storage.put(22, box); 
-Box value = storage.get(22); // returns the Box
-int size = storage.size(); // returns storage size
+Box value = storage.get(22); // повертає Box
+int size = storage.size(); // повертає розмір сховища
 ```
-You should solve this task using one or two arrays (this depends on your implementation). 
-If you use arrays for your solution, we assume that the maximum number of elements in our `Storage` is 10.
-
-#### [Try to avoid these common mistakes while solving task](./checklist.md)
+Ви повинні розв'язати це завдання, використовуючи один або два масиви (це залежить від вашої реалізації).
+Якщо ви використовуєте масиви для свого розв'язку, ми припускаємо, що максимальна кількість елементів у нашому Storage дорівнює 10.
