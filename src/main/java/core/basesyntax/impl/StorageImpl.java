@@ -5,11 +5,12 @@ import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_STORAGE_SIZE = 10;
-    private int storageSize = 0;
+    private int storageSize;
     private K[] keyStorage;
     private V[] valueStorage;
 
     public StorageImpl() {
+        storageSize = 0;
         keyStorage = (K[]) new Object[]{};
         valueStorage = (V[]) new Object[]{};
     }
@@ -24,10 +25,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         if (keyIndex != -1) {
             valueStorage[keyIndex] = value;
         } else {
+            storageSize++;
+
             keyStorage = addElementToArray(keyStorage, key);
             valueStorage = addElementToArray(valueStorage, value);
 
-            storageSize++;
         }
     }
 
@@ -57,7 +59,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private <T> T[] addElementToArray(T[] array, T element) {
-        array = Arrays.copyOf(array, array.length + 1);
+        array = Arrays.copyOf(array, storageSize);
         array[array.length - 1] = element;
         return array;
     }
