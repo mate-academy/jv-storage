@@ -4,27 +4,30 @@ import core.basesyntax.Storage;
 import java.util.Arrays;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_STORAGE_SIZE = 10;
+    private int storageSize = 0;
     private K[] keyStorage;
     private V[] valueStorage;
 
+    public StorageImpl() {
+        keyStorage = (K[]) new Object[]{};
+        valueStorage = (V[]) new Object[]{};
+    }
+
     @Override
     public void put(K key, V value) {
-        if (keyStorage == null) {
-            keyStorage = (K[]) new Object[]{key};
-            valueStorage = (V[]) new Object[]{value};
-
-            return;
+        if (size() == MAX_STORAGE_SIZE) {
+            throw new RuntimeException("You rich the max size");
         }
 
         int keyIndex = getKeyIndex(key);
         if (keyIndex != -1) {
             valueStorage[keyIndex] = value;
         } else {
-            keyStorage = Arrays.copyOf(keyStorage, keyStorage.length + 1);
-            keyStorage[keyStorage.length - 1] = key;
+            keyStorage = addElementToArray(keyStorage, key);
+            valueStorage = addElementToArray(valueStorage, value);
 
-            valueStorage = Arrays.copyOf(valueStorage, valueStorage.length + 1);
-            valueStorage[valueStorage.length - 1] = value;
+            storageSize++;
         }
     }
 
@@ -36,7 +39,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return keyStorage == null ? 0 : keyStorage.length;
+        return storageSize;
     }
 
     private int getKeyIndex(K key) {
@@ -51,5 +54,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
         }
         return -1;
+    }
+
+    private <T> T[] addElementToArray(T[] array, T element) {
+        array = Arrays.copyOf(array, array.length + 1);
+        array[array.length - 1] = element;
+        return array;
     }
 }
