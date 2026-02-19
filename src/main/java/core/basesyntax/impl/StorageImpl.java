@@ -15,7 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size == MAX_STORAGE_ITEMS) {
+        if (size < MAX_STORAGE_ITEMS) {
             return;
         }
         for (int i = 0; i < size; i++) {
