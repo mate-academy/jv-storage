@@ -3,18 +3,21 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private final int maxStorageItems = 10; //MAX_STORAGE_ITEMS
-    private Object[] keys;
-    private Object[] values;
-    private int size;
+    private final int MAX_STORAGE_ITEMS = 10;
+    private K[] keys;
+    private V[] values;
+    private int size = 0;
 
     public StorageImpl() {
-        keys = new Object[maxStorageItems];
-        values = new Object[maxStorageItems];
+        keys = (K[]) new Object[MAX_STORAGE_ITEMS];
+        values = (V[]) new Object[MAX_STORAGE_ITEMS];
     }
 
     @Override
     public void put(K key, V value) {
+        if (size == MAX_STORAGE_ITEMS) {
+            return;
+        }
         for (int i = 0; i < size; i++) {
             if ((keys[i] == null && key == null) || (keys[i] != null && keys[i].equals(key))) {
                 values[i] = value;
