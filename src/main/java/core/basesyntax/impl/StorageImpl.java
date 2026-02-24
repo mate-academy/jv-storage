@@ -5,9 +5,15 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
 
-    private K[] keys = (K[]) new Object[MAX_SIZE];
-    private V[] values = (V[]) new Object[MAX_SIZE];
-    private int size = 0;
+    private K[] keys;
+    private V[] values;
+    private int size;
+
+    public StorageImpl() {
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
+        size = 0;
+    }
 
     @Override
     public void put(K key, V value) {
@@ -15,11 +21,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
         if (index != -1) {
             values[index] = value;
-        } else {
-            keys[size] = key;
-            values[size] = value;
-            size++;
+            return;
         }
+        if (size == MAX_SIZE) {
+            throw new IllegalStateException("Storage is full");
+        }
+        keys[size] = key;
+        values[size] = value;
+        size++;
     }
 
     @Override
