@@ -5,8 +5,6 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
 
     private static final int MAX_ITEMS_NUMBER = 10;
-    private Object[] items;
-
     private K[] keys;
     private V[] values;
     private int size;
@@ -17,20 +15,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         size = 0;
     }
 
-    @Override
-    public void put(K key, V value) {
-
+    private int findIndexByKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (keys[i].equals(key)) {
-                values[i] = value;
-                return;
+            if ((keys[i] == null && key == null)
+                    || (keys[i] != null && keys[i].equals(key))) {
+                return i;
             }
         }
+        return -1;
+    }
 
+    @Override
+    public void put(K key, V value) {
+        int index = findIndexByKey(key);
+
+        if (index != -1) {
+            values[index] = value;
+            return;
+        }
         if (size == MAX_ITEMS_NUMBER) {
             throw new RuntimeException("Storage is full");
         }
-
         keys[size] = key;
         values[size] = value;
         size++;
@@ -38,12 +43,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (keys[i].equals(key)) {
-                return values[i];
-            }
+        int index = findIndexByKey(key);
+        if (index != -1) {
+            return values[index];
         }
-
         return null;
     }
 
