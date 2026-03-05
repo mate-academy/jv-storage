@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
@@ -21,11 +20,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public void put(K key, V value) {
         int index = indexOfKey(key);
         if (index != -1) {
-            values[index] = value; // replace value for existing key
+            values[index] = value;
             return;
         }
 
-        // TODO (optional): handle overflow if size == MAX_CAPACITY
         keys[size] = key;
         values[size] = value;
         size++;
@@ -47,10 +45,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private int indexOfKey(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key)) { // null-safe compare
+            K currentKey = (K) keys[i];
+            if (areKeysEqual(currentKey, key)) {
                 return i;
             }
         }
         return -1;
+    }
+
+    private boolean areKeysEqual(K key1, K key2) {
+        if (key1 == null) {
+            return key2 == null;
+        }
+        return key1.equals(key2);
     }
 }
