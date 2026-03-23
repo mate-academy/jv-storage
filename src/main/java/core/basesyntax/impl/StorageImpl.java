@@ -7,16 +7,16 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ITEMS_NUMBER = 10;
     private K[] keys;
     private V[] values;
-    private int size;
+    private int siize;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_ITEMS_NUMBER];
         values = (V[]) new Object[MAX_ITEMS_NUMBER];
-        size = 0;
+        siize = 0;
     }
 
     private int findIndexByKey(K key) {
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < siize; i++) {
             if ((keys[i] == null && key == null)
                     || (keys[i] != null && keys[i].equals(key))) {
                 return i;
@@ -33,12 +33,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             values[index] = value;
             return;
         }
-        if (size == MAX_ITEMS_NUMBER) {
+        if (siize == MAX_ITEMS_NUMBER) {
             throw new RuntimeException("Storage is full");
         }
-        keys[size] = key;
-        values[size] = value;
-        size++;
+        keys[siize] = key;
+        values[siize] = value;
+        siize++;
     }
 
     @Override
@@ -52,6 +52,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public int size() {
-        return size;
+        return siize;
     }
 }
