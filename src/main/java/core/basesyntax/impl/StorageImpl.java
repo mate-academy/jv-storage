@@ -9,10 +9,18 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     private final K[] keys = (K[]) new Object[MAX_SIZE];
     private final V[] values = (V[]) new Object[MAX_SIZE];
-    private int currentIndex = 0;
+    private int currentIndex;
+
+    public StorageImpl() {
+        this.currentIndex = 0;
+    }
 
     @Override
     public void put(K key, V value) {
+        if (this.size() == MAX_SIZE) {
+            return;
+        }
+
         int index = this.getIndexByKey(key);
 
         if (index == -1) {
@@ -42,11 +50,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     private int getIndexByKey(K key) {
-        if (this.keys.length == 0) {
-            return -1;
-        }
-
-        for (int i = 0; i < this.keys.length; i++) {
+        for (int i = 0; i < this.currentIndex; i++) {
             if (Objects.equals(key, this.keys[i])) {
                 return i;
             }
