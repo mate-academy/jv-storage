@@ -17,13 +17,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (this.size() == MAX_SIZE) {
-            return;
-        }
-
+        boolean hasEmptySlots = this.size() < MAX_SIZE;
         int index = this.getIndexByKey(key);
 
-        if (index == -1) {
+        if (index == -1 && hasEmptySlots) {
             this.keys[currentIndex] = key;
             this.values[currentIndex] = value;
 
