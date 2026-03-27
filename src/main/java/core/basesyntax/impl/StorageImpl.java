@@ -17,16 +17,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        boolean hasEmptySlots = this.size() < MAX_SIZE;
         int index = this.getIndexByKey(key);
 
-        if (index == -1 && hasEmptySlots) {
-            this.keys[currentIndex] = key;
-            this.values[currentIndex] = value;
-
-            this.currentIndex++;
+        if (index == -1) {
+            this.putNew(key, value);
         } else {
-            this.values[index] = value;
+            this.replaceExisting(index, value);
         }
     }
 
@@ -54,5 +50,19 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
 
         return -1;
+    }
+
+    private void putNew(K key, V value) {
+        boolean hasEmptySlots = this.size() < MAX_SIZE;
+        if (hasEmptySlots) {
+            this.keys[currentIndex] = key;
+            this.values[currentIndex] = value;
+
+            this.currentIndex++;
+        }
+    }
+
+    private void replaceExisting(int index, V value) {
+        this.values[index] = value;
     }
 }
