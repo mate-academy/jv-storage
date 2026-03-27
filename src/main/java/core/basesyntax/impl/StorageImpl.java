@@ -1,19 +1,68 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
+import java.util.Objects;
 
+@SuppressWarnings("unchecked")
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_SIZE = 10;
+
+    private final K[] keys = (K[]) new Object[MAX_SIZE];
+    private final V[] values = (V[]) new Object[MAX_SIZE];
+    private int currentIndex;
+
+    public StorageImpl() {
+        this.currentIndex = 0;
+    }
+
     @Override
     public void put(K key, V value) {
+        int index = this.getIndexByKey(key);
+
+        if (index == -1) {
+            this.putNew(key, value);
+        } else {
+            this.replaceExisting(index, value);
+        }
     }
 
     @Override
     public V get(K key) {
-        return null;
+        int index = this.getIndexByKey(key);
+
+        if (index == -1) {
+            return null;
+        }
+
+        return this.values[index];
     }
 
     @Override
     public int size() {
+        return this.currentIndex;
+    }
+
+    private int getIndexByKey(K key) {
+        for (int i = 0; i < this.currentIndex; i++) {
+            if (Objects.equals(key, this.keys[i])) {
+                return i;
+            }
+        }
+
         return -1;
+    }
+
+    private void putNew(K key, V value) {
+        boolean hasEmptySlots = this.size() < MAX_SIZE;
+        if (hasEmptySlots) {
+            this.keys[currentIndex] = key;
+            this.values[currentIndex] = value;
+
+            this.currentIndex++;
+        }
+    }
+
+    private void replaceExisting(int index, V value) {
+        this.values[index] = value;
     }
 }
