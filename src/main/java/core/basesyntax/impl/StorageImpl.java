@@ -1,7 +1,6 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
@@ -48,7 +47,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private int indexOfKey(K key) {
         for (int i = 0; i < size; i++) {
             K existingKey = (K) keys[i];
-            if (Objects.equals(existingKey, key)) {
+            if (existingKey == null && key == null) {
+                return i;
+            }
+            if (existingKey != null && existingKey.equals(key)) {
                 return i;
             }
         }
