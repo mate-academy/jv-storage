@@ -6,12 +6,13 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int CAPACITY = 10;
     private final K[] keys;
     private final V[] values;
-    private int size = 0;
+    private int size;
 
     @SuppressWarnings("unchecked")
     public StorageImpl() {
-        keys = (K[]) new Object[10];
-        values = (V[]) new Object[10];
+        keys = (K[]) new Object[CAPACITY];
+        values = (V[]) new Object[CAPACITY];
+        this.size = 0;
     }
 
     private int indexOf(K key) {
