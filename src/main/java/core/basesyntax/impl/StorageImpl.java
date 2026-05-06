@@ -16,11 +16,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
-                values[i] = value;
-                return;
-            }
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            values[index] = value;
+            return;
         }
         keys[size] = key;
         values[size] = value;
@@ -30,10 +29,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     @SuppressWarnings("unchecked")
     public V get(K key) {
-        for (int i = 0; i < size; i++) {
-            if (key == keys[i] || key != null && key.equals(keys[i])) {
-                return (V) values[i];
-            }
+        int index = findKeyIndex(key);
+        if (index != -1) {
+            return (V) values[index];
         }
         return null;
     }
@@ -41,5 +39,14 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         return size;
+    }
+
+    private int findKeyIndex(K key) {
+        for (int i = 0; i < size; i++) {
+            if (key == keys[i] || key != null && key.equals(keys[i])) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
