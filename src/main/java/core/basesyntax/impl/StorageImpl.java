@@ -18,11 +18,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             if (keys[i] == null && key == null) {
                 values[i] = value;
-                break;
+                return;
             }
             if (keys[i] != null && keys[i].equals(key)) {
                 values[i] = value;
-                break;
+                return;
             }
         }
         keys[size] = key;
