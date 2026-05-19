@@ -15,6 +15,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.values = new Object[MAX_CAPACITY];
         this.size = 0;
     }
+
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
@@ -27,8 +28,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             keys[size] = key;
             values[size] = value;
             size++;
-        }
-        else {
+        } else {
             throw new IllegalStateException("Storage is full! Maximum capacity is " + MAX_CAPACITY);
         }
     }
