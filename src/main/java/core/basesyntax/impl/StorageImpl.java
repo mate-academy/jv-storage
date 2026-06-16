@@ -4,30 +4,37 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private static class First {
-        private Object key;
-        private Object value;
+    private static final int MAX_CAPACITY = 10;
 
-        public First(Object key, Object value) {
+    private final Element<K, V>[] elements;
+    private int size = 0;
+
+    @SuppressWarnings("unchecked")
+    public StorageImpl() {
+        this.elements = (Element<K, V>[]) new Element[MAX_CAPACITY];
+    }
+
+    private static class Element<K, V> {
+        private final K key;
+        private V value;
+
+        public Element(K key, V value) {
             this.key = key;
             this.value = value;
         }
     }
 
-    private First[] firsts = new First[10];
-    private int size = 0;
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(firsts[i].key,key)) {
-                firsts[i].value = value;
+            if (Objects.equals(elements[i].key, key)) {
+                elements[i].value = value;
                 return;
             }
         }
 
-        if (size <= 10) {
-            firsts[size] = new First(key, value);
+        if (size < MAX_CAPACITY) {
+            elements[size] = new Element<>(key, value);
             size++;
         }
     }
@@ -35,8 +42,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(firsts[i].key,key)) {
-                return (V) firsts[i].value;
+            // Використовуємо Objects.equals, щоб коректно обробляти ключ null
+            if (Objects.equals(elements[i].key, key)) {
+                return elements[i].value;
             }
         }
         return null;
@@ -47,4 +55,3 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return this.size;
     }
 }
-
