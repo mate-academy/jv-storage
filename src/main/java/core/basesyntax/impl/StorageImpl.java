@@ -1,17 +1,22 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    @SuppressWarnings("unchecked")
-    private Bucket<K, V>[] storage = (Bucket<K, V>[]) new Bucket[10];
-    private int filled = 0;
+    private record Bucket<K, V>(K key, V value) {}
+
+    private final Bucket<K, V>[] storage;
+    private int filled;
+
+    public StorageImpl() {
+        storage = (Bucket<K, V>[]) new Bucket[10];
+        filled = 0;
+    }
 
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < filled; i++) {
-            if (Objects.equals(storage[i].getKey(), key)) {
+            if (isSameKey(storage[i].key(), key)) {
                 storage[i] = new Bucket<>(key, value);
                 return;
             }
@@ -23,11 +28,12 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public V get(K key) {
-        for (Bucket<K, V> bucket : storage) {
-            if (bucket != null && Objects.equals(bucket.getKey(), key)) {
-                return bucket.getValue();
+        for (int i = 0; i < filled; i++) {
+            if (isSameKey(storage[i].key(), key)) {
+                return storage[i].value();
             }
         }
+
         return null;
     }
 
@@ -36,21 +42,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         return filled;
     }
 
-    private static class Bucket<K, V> {
-        private final K key;
-        private final V value;
-
-        private Bucket(K key, V value) {
-            this.key = key;
-            this.value = value;
+    private boolean isSameKey(K storedKey, K inputKey) {
+        if (storedKey == null && inputKey == null) {
+            return true;
         }
 
-        public K getKey() {
-            return key;
+        if (storedKey == null || inputKey == null) {
+            return false;
         }
 
-        public V getValue() {
-            return value;
-        }
+        return storedKey.equals(inputKey);
     }
 }
