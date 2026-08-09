@@ -4,10 +4,10 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+    private static final int MAX_STORAGE_CAPACITY = 10;
     private K[] keys;
     private V[] values;
     private int size = 0;
-    private static final int MAX_STORAGE_CAPACITY = 10;
 
     public StorageImpl() {
         keys = (K[]) new Object[MAX_STORAGE_CAPACITY];
@@ -22,7 +22,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         return -1;
     }
-
 
     @Override
     public void put(K key, V value) {
