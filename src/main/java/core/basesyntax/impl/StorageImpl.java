@@ -4,8 +4,9 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private K[] keys = (K[]) new Object[10];
-    private V[] values = (V[]) new Object[10];
+    private static final int MAX_STORAGE_CAPACITY = 10;
+    private K[] keys = (K[]) new Object[MAX_STORAGE_CAPACITY];
+    private V[] values = (V[]) new Object[MAX_STORAGE_CAPACITY];
     private int size = 0;
 
     @Override
@@ -17,7 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             return;
         }
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key) || (key == null && keys[i] == null)) {
+            if (key == keys[i] || Objects.equals(keys[i], key)) {
                 values[i] = value;
                 return;
             }
@@ -30,7 +31,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
-            if (Objects.equals(keys[i], key) || (key == null && keys[i] == null)) {
+            if (key == keys[i] || Objects.equals(keys[i], key)) {
                 return values[i];
             }
         }
