@@ -6,6 +6,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_SIZE = 10;
     private int count;
 
+    public StorageImpl() {
+        count = 0;
+        pairs = new Pair[MAX_ARRAY_SIZE];
+    }
+
     class Pair<K, V> {
         private K key;
         private V value;
@@ -16,7 +21,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
     }
 
-    private Pair<K, V>[] pairs = new Pair[MAX_ARRAY_SIZE];
+    private Pair<K, V>[] pairs;
 
     @Override
     public void put(K key, V value) {
