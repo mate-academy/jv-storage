@@ -5,6 +5,7 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_ARRAY_SIZE = 10;
     private int count;
+    private Pair<K, V>[] pairs;
 
     public StorageImpl() {
         count = 0;
@@ -20,8 +21,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.value = value;
         }
     }
-
-    private Pair<K, V>[] pairs;
 
     @Override
     public void put(K key, V value) {
