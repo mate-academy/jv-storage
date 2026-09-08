@@ -1,7 +1,5 @@
 package core.basesyntax.impl;
 
-import java.util.Objects;
-
 public class Box<K, V> {
     private final K key;
     private V value;
@@ -20,6 +18,6 @@ public class Box<K, V> {
     }
 
     public boolean equalsKey(Object key) {
-        return Objects.equals(this.key, key);
+        return this.key == null ? key == null : this.key.equals(key);
     }
 }

@@ -8,7 +8,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @SuppressWarnings("unchecked")
     private final Box<K, V>[] boxes = (Box<K, V>[]) new Box[MAX_SIZE];
 
-    private int size;
+    private int size = 0;
 
     @Override
     public void put(K key, V value) {
