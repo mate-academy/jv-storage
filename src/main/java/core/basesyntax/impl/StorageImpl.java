@@ -15,7 +15,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         this.values = (V[]) new Object[MAX_SIZE];
         this.size = 0;
     }
-
     @Override
     public void put(K key, V value) {
         for (int i = 0; i < size; i++) {
@@ -32,7 +31,6 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         values[size] = value;
         size++;
     }
-
     @Override
     public V get(K key) {
         for (int i = 0; i < size; i++) {
@@ -42,12 +40,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         }
         return null;
     }
-
     @Override
     public int size() {
         return size;
     }
-
     private boolean keysEqual(K first, K second) {
         if (first == null) {
             return second == null;
