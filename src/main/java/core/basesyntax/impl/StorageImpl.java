@@ -17,8 +17,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
-        if (size() == 10) {
+        if (size() == MAX_ARRAY_SIZE) {
             System.out.println("The storage is full");
+            return;
         }
 
         int index = getIndex(key);
