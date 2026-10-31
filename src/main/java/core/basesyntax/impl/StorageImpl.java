@@ -14,6 +14,11 @@ public class StorageImpl<K, V> implements Storage<K, V> {
 
     @Override
     public void put(K key, V value) {
+        for (int i = 0; i < size; i++) {
+            if (this.keys[i] == key) {
+                this.values[i] = value;
+            }
+        }
         if (size < 10) {
             this.keys[size] = key;
             this.values[size] = value;
@@ -26,9 +31,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     public V get(K key) {
         for (int i = 0; i < 10; i++) {
             if (this.keys[i] == key) {
-                return value[i];
+                return this.values[i];
             }
         }
+        return null;
     }
 
     @Override
