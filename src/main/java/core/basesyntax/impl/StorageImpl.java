@@ -5,6 +5,12 @@ import core.basesyntax.Storage;
 public class StorageImpl<K, V> implements Storage<K, V> {
     private K[] keys;
     private V[] values;
+    private static int size = 0;
+
+    public void StorageImpl() {
+        this.keys = (K[]) new Object[10];
+        this.values = (V[]) new Object[10];
+    }
 
     @Override
     public void put(K key, V value) {
@@ -12,6 +18,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.keys[this.keys.length] = key;
             this.values[this.keys.length] = value;
         }
+        size++;
     }
 
     @Override
@@ -23,18 +30,15 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             }
             i++;
         }
-        return this.values[i];
+        if (keyElement == key) {
+            return this.values[i];
+        } else {
+            return null;
+        }
     }
 
     @Override
     public int size() {
-        int i = 0;
-        if (this.keys == null) {
-            return 0;
-        }
-        for (K key : this.keys) {
-            i++;
-        }
-        return i;
+        return size;
     }
 }
