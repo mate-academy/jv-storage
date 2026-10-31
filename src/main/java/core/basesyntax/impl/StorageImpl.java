@@ -17,6 +17,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < size; i++) {
             if (this.keys[i] == key) {
                 this.values[i] = value;
+                return;
             }
         }
         if (size < 10) {
@@ -24,6 +25,7 @@ public class StorageImpl<K, V> implements Storage<K, V> {
             this.values[size] = value;
             size++;
         }
+        return;
 
     }
 
