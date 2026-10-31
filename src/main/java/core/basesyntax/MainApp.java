@@ -12,7 +12,7 @@ public class MainApp {
             Box box = new Box();
             storage.put(22 + i, box);
         }
-        Box value = storage.get(22);
+        Box value = storage.get(23);
         int size = storage.size();
     }
 }

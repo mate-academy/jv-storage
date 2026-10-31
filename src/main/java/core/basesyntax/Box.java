@@ -1,5 +1,5 @@
 package core.basesyntax.impl;
 
-public class Box extends StorageImpl {
+public class Box {
     private String color = "white";
 }
