@@ -3,8 +3,8 @@ package core.basesyntax.impl;
 import core.basesyntax.Storage;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-    private V value;
-    private K key;
+    private K[] keys;
+    private V[] values;
 
     @Override
     public void put(K key, V value) {
@@ -22,8 +22,9 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     @Override
     public int size() {
         int i = 0;
-        for (K keyElement : this.key) {
+        for (K key : this.keys) {
             i++;
         }
+        return i;
     }
 }

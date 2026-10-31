@@ -1,7 +1,7 @@
 package core.basesyntax;
 
 //import core.basesyntax.Storage;
-import core.basesyntax.impl.Box;
+import core.basesyntax.Box;
 import core.basesyntax.impl.StorageImpl;
 
 public class MainApp {
