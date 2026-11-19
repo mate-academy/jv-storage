@@ -4,14 +4,16 @@ import core.basesyntax.Storage;
 import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
+
     private int size;
-    private K[] key;
-    private V[] value;
+    private final K[] key;
+    private final V[] value;
+    private static final int INDEX = 10;
 
     public StorageImpl() {
         size = 0;
-        key = (K[]) new Object[10];
-        value = (V[]) new Object[10];
+        key = (K[]) new Object[INDEX];
+        value = (V[]) new Object[INDEX];
     }
 
     @Override
@@ -40,9 +42,10 @@ public class StorageImpl<K, V> implements Storage<K, V> {
     }
 
     public int getCellKey(K key) {
-        for (int i = 0; i < size; i++) {
-            if (Objects.equals(this.key[i], key)) {
-                return i;
+        for (int index = 0; index < size; index++) {
+            if (this.key[index] == key || (this.key[index] != null && this.key[index].equals(
+                    key))) {
+                return index;
             }
         }
         return -1;
