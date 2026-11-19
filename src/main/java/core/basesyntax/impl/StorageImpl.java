@@ -1,19 +1,17 @@
 package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
-import java.util.Objects;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
-
+    private static final int CAPACITY = 10;
     private int size;
     private final K[] key;
     private final V[] value;
-    private static final int INDEX = 10;
 
     public StorageImpl() {
         size = 0;
-        key = (K[]) new Object[INDEX];
-        value = (V[]) new Object[INDEX];
+        key = (K[]) new Object[CAPACITY];
+        value = (V[]) new Object[CAPACITY];
     }
 
     @Override
